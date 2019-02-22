@@ -2,14 +2,16 @@ package net.ramso.doc.dita.xml.wsdl;
 
 import java.io.IOException;
 
-public class CreateChapter extends BasicCreate {
+import net.ramso.doc.dita.BasicCreate;
+
+public class CreateService extends BasicCreate {
 
 	
 	private String content;
 	
 	
 
-	public CreateChapter(String title, String content) {
+	public CreateService(String title, String content) {
 		super(title);
 		setTemplateFile("template/portada.vm");
 		setContent(content);
@@ -20,7 +22,7 @@ public class CreateChapter extends BasicCreate {
 	public String create() throws IOException {		
 		getContext().put("content", getContent());
 		run(getContext());
-		return getFile_name() + "#" + getId();
+		return getFile_name();
 	}
 
 

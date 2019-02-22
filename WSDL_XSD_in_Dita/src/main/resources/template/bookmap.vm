@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bookmap xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:oasis:names:tc:dita:xsd:bookmap.xsd" xml:lang="es_es" translate="yes" collection-type="sequence" id="com.ontimebt.doc.as400">
+  <booktitle>
+    <mainbooktitle>$title</mainbooktitle>
+    <booktitlealt>$content</booktitlealt>
+  </booktitle>
+  <frontmatter>
+    <booklists>
+      <toc />
+    </booklists>
+  </frontmatter>
+  <part id="WSDL" href="wsdl.dita">
+  #foreach($service in $services)
+    <chapter href="Servicio_de_${service}">
+      <topicref translate="yes" collection-type="sequence" type="topic" toc="yes" href="Endpoint_de_${service}" />
+      <topicref translate="yes" collection-type="sequence" type="topic" toc="yes" href="Operaciones_de_${service}" />
+    </chapter>
+  #end
+  </part>
+  <backmatter>
+    <booklists>
+      <figurelist />
+      <tablelist />
+    </booklists>
+  </backmatter>
+</bookmap>

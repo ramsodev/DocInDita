@@ -5,13 +5,15 @@
     <shortdesc>Endpoints del servicio</shortdesc>
     <refbody>
         <table frame="all" rowsep="1" colsep="1" id="table_lkt_j12_wgb">
-            <tgroup cols="2">
+            <tgroup cols="3">
                 <colspec colname="c1" colnum="1" colwidth="1*"/>
-                <colspec colname="c2" colnum="2" colwidth="4*"/>
+                <colspec colname="c2" colnum="2" colwidth="5*"/>
+                <colspec colname="c3" colnum="3" colwidth="2*"/>
                 <thead>
                     <row>
                         <entry>Nombre </entry>
                         <entry>Dirección</entry>
+                        <entry>Binding</entry>
                     </row>
                 </thead>
                 <tbody>
@@ -19,13 +21,31 @@
                     <row>
                         <entry>${ep.getName()}</entry>
                         <entry>${ep.getAddress()}</entry>
+                        <entry>
+                        	<dl>
+                        		<dlentry>
+                        			<dt>${ep.getBinding().getQName().getLocalPart()}</dt>
+                        			<dd>
+                        			#if(${ep.getBinding().getBindingOperations().size()} > 0)
+                        				<ul>
+                        				#foreach($op in ${ep.getBinding().getBindingOperations()})
+                            				<li>${op.getQName().getLocalPart()}</li>
+                            			#end
+                        				</ul>
+                        				
+                        			#end
+                        			</dd>
+                        		</dlentry>
+                        	</dl>
+                        </entry>
                     </row>
-                
+                	#if(${ep.getDocumentation()}) 
                     <row>
-                        <entry namest="c1" nameend="c2">
+                        <entry namest="c1" nameend="c3">
                         <b>Descripción: </b> ${ep.getDocumentation().getContent()}
                         </entry>
                     </row>
+                    #end
                #end
                   
                 </tbody>

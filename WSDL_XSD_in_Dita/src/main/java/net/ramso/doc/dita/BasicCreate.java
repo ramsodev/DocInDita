@@ -1,4 +1,4 @@
-package net.ramso.doc.dita.xml.wsdl;
+package net.ramso.doc.dita;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -8,6 +8,8 @@ import java.io.IOException;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
+
+import net.ramso.doc.dita.xml.wsdl.iCreate;
 
 public abstract class BasicCreate implements iCreate {
 	private String file_name;
@@ -45,7 +47,7 @@ public abstract class BasicCreate implements iCreate {
 	}
 
 	protected void setFile_name(String file_name) {
-		this.file_name = file_name;
+		this.file_name = file_name.replaceAll("\\s+","_");
 	}
 
 	public String getId() {

@@ -4,48 +4,108 @@
     <title>${title}</title>
     <shortdesc>Operaciones del WSDL</shortdesc>
     <refbody>
-        <table frame="all" rowsoperation="1" colsoperation="1" id="table_lkt_j12_wgb">
+    #foreach( ${operation} in ${operations} )
+        <table frame="all" id="table_${id}_${operation.getQName().getLocalPart().toLowerCase()}">
+        <title>${operation.getQName().getLocalPart()}</title>
+         #if( ${operation.getDocumentation()})
+        <desc>${operation.getDocumentation().getContent()}</desc> 
+         #end
             <tgroup cols="3">
                 <colspec colname="c1" colnum="1" colwidth="1*"/>
-                <colspec colname="c2" colnum="2" colwidth="2*"/>
-                 <colspec colname="c3" colnum="3" colwidth="2*"/>
-                
+                <colspec colname="c2" colnum="2" colwidth="1*"/>
+                <colspec colname="c3" colnum="3" colwidth="1*"/>
+                <thead>
+                    <row>
+                        <entry>Tipo</entry>
+                        <entry>Nombre</entry>
+                        <entry>Elemento</entry>
+                    </row>
+                </thead>
                 <tbody>
-                #foreach( ${operation} in ${operations} )
-                	<row>
-                        <entry namest="c1" nameend="c3">
-                        <b>${operation.getQName().getLocalPart()}</b>
-                        #if( !${operation.getDocumentation()})
-                        <p> ${operation.getDocumentation().getContent()} </p>
+                    #set ($fp = ${operation.getInput().getParts().size()} - 1)
+                    #set ($uno = true)
+                    #foreach( ${part} in ${operation.getInput().getParts()} )
+                    	#if( ${part.getDocumentation()})
+                    		#set($fp = $fp +1)
+                    	#end
+                    #end
+                    #foreach( ${part} in ${operation.getInput().getParts()} )
+                    <row>
+                        #if($uno)
+                        <entry #if($fp > 0) morerows="${fp}"#end><b>Input</b></entry>
+                        	#set ($uno = false)
                         #end
+                        <entry>${part.getPartQName().getLocalPart()}</entry>
+                        <entry>${part.getElement().getQName().getLocalPart()}</entry>                        
+                    </row>
+                    #if(${part.getDocumentation()})  
+                    <row>                                     
+                    	<entry namest="c2" nameend="c3">
+                         ${part.getDocumentation().getContent()}                    
                         </entry>
+                        
                     </row>
+                    #end
+                    #end
+                    #set ($fp = ${operation.getOutput().getParts().size()} - 1)
+                    #set ($uno = true)
+                    #foreach( ${part} in ${operation.getOutput().getParts()} )
+                    	#if( ${part.getDocumentation()})
+                    		#set($fp = $fp +1)
+                    	#end
+                    #end
+                    #foreach( ${part} in ${operation.getOutput().getParts()} )
                     <row>
-                        <entry><b>Input</b></entry>
-                        <entry>${operation.getInput().getElementName()}</entry>
-                        <entry>${operation.getInput().getElement().getQName().getLocalPart()}</entry>
+                        #if($uno)
+                        <entry #if($fp > 0) morerows="${fp}"#end><b>Output</b></entry>
+                        	#set ($uno = false)
+                        #end
+                         <entry>${part.getPartQName().getLocalPart()}</entry>
+                        <entry>${part.getElement().getQName().getLocalPart()}</entry>                    	 
                     </row>
-                    <row>
-                        <entry><b>Output</b></entry>
-                        <entry>${operation.getOutput().getName()}</entry>
-                        <entry>${operation.getOutput().getElement().getQName().getLocalPart()}</entry>
+                     #if(${part.getDocumentation()})  
+                    <row>                                     
+                    	<entry namest="c2" nameend="c3">
+                         ${part.getDocumentation().getContent()}                    
+                        </entry>
+                        
                     </row>
-                    #set ($fs = ${operation.getFaults().size()})
+                    #end
+                    #end
+                    #set ($fs = ${operation.getFaults().size()} - 1)
                     #set ($uno = true)
                     #foreach( ${fault} in ${operation.getFaults()} )
+                     	#set ($fs = $fs + (${fault.getParts().size()} - 1))
+                    #end
+                    #foreach( ${part} in ${fault.getParts()} )
+                    	#if( ${part.getDocumentation()})
+                    		#set($fp = $fp +1)
+                    	#end
+                    #end
+                    #foreach( ${fault} in ${operation.getFaults()} )
+                      	#foreach( ${part} in ${fault.getParts()} )
                 	<row>
-                		#if($uno)
-                        <entry #if($fs > 1) morerows="$fs"#end ><b>Faults</b></entry>
-                        #set ($uno = false)
-                        #end
-                        <entry>${fault.getName()}</entry>
-                        <entry>${fault.getElement().getQName().getLocalPart()}</entry>
+                			#if($uno)
+                        <entry #if($fs > 0) morerows="${fs}"#end ><b>Faults</b></entry>
+                        		#set ($uno = false)
+                        	#end
+                         <entry>${part.getPartQName().getLocalPart()}</entry>
+                        <entry>${part.getElement().getQName().getLocalPart()}</entry>
                     </row>
-                   #end
-               #end
-                  
-                </tbody>
+                    	 #if(${part.getDocumentation()})  
+                    <row>                                     
+                    	<entry namest="c2" nameend="c3">
+                         ${part.getDocumentation().getContent()}                    
+                        </entry>
+                        
+                    </row>
+                    #end
+                    #end
+                  	#end
+                  	</tbody>
             </tgroup>
         </table>
+    #end                  
+                
     </refbody>
 </reference>
