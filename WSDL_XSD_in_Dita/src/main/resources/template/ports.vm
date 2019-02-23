@@ -2,9 +2,9 @@
 <reference id="${id}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="urn:oasis:names:tc:dita:xsd:reference.xsd">
     <title>${title}</title>
-    <shortdesc>Endpoints del servicio</shortdesc>
+    <shortdesc>ports del servicio</shortdesc>
     <refbody>
-        <table frame="all" rowsep="1" colsep="1" id="table_lkt_j12_wgb">
+        <table frame="all"  id="${id}_table">
             <tgroup cols="3">
                 <colspec colname="c1" colnum="1" colwidth="1*"/>
                 <colspec colname="c2" colnum="2" colwidth="5*"/>
@@ -12,24 +12,24 @@
                 <thead>
                     <row>
                         <entry>Nombre </entry>
-                        <entry>Dirección</entry>
+                        <entry>Endpoint</entry>
                         <entry>Binding</entry>
                     </row>
                 </thead>
                 <tbody>
-                #foreach( ${ep} in ${endpoints} )
+                #foreach( ${port} in ${ports} )
                     <row>
-                        <entry>${ep.getName()}</entry>
-                        <entry>${ep.getAddress()}</entry>
+                        <entry>${port.getName()}</entry>
+                        <entry>${port.getAddress().getLocation()}</entry>
                         <entry>
                         	<dl>
                         		<dlentry>
-                        			<dt>${ep.getBinding().getQName().getLocalPart()}</dt>
+                        			<dt>${port.getBinding().getName()}</dt>
                         			<dd>
-                        			#if(${ep.getBinding().getBindingOperations().size()} > 0)
+                        			#if(${port.getBinding().getOperations().size()} > 0)
                         				<ul>
-                        				#foreach($op in ${ep.getBinding().getBindingOperations()})
-                            				<li>${op.getQName().getLocalPart()}</li>
+                        				#foreach($op in ${port.getBinding().getOperations()})
+                            				<li>${op.getName()}</li>
                             			#end
                         				</ul>
                         				
@@ -39,10 +39,10 @@
                         	</dl>
                         </entry>
                     </row>
-                	#if(${ep.getDocumentation()}) 
+                	#if(${port.getDocumentation()}) 
                     <row>
                         <entry namest="c1" nameend="c3">
-                        <b>Descripción: </b> ${ep.getDocumentation().getContent()}
+                        <b>Descripción: </b> ${port.getDocumentation().getContent()}
                         </entry>
                     </row>
                     #end

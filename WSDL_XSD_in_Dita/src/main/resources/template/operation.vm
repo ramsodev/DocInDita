@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reference id="endpoints" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:oasis:names:tc:dita:xsd:reference.xsd">
+    <title>${title}</title>
+    <shortdesc>${content}</shortdesc>
+    <refbody>
+        <table frame="all" id="table_${id}_${operation.getName().toLowerCase()}">
+       
+            <tgroup cols="3">
+                <colspec colname="c1" colnum="1" colwidth="1*"/>
+                <colspec colname="c2" colnum="2" colwidth="1*"/>
+                <colspec colname="c3" colnum="3" colwidth="1*"/>
+                <thead>
+                    <row>
+                        <entry>Tipo</entry>
+                        <entry>Part</entry>
+                        <entry>Element</entry>
+                    </row>
+                </thead>
+                <tbody>
+                    #set ($fp = ${operation.getInput().getMessage().getParts().size()} - 1)
+                    #set ($uno = true)
+                    #set ($tipo = "Input")
+                    #if(${operation.getInput().getName()})
+                    	#set($tipo = ${operation.getInput().getName()})
+                    #end
+                    <row valign="middle">
+                        <entry><b>$tipo</b></entry>
+                        <entry><lines>
+                        #foreach( ${part} in ${operation.getInput().getMessage().getParts()} )
+                        	${part.getName()}
+                        #end
+                        </lines></entry>
+                        <entry>${operation.getInput().getMessage().getName()}</entry>
+                    </row>
+                    #set ($fp = ${operation.getOutput().getMessage().getParts().size()} - 1)
+                    #set ($uno = true)
+                    #set ($tipo = "Output")
+                    #if(${operation.getOutput().getName()})
+                    	#set($tipo = ${operation.getOutput().getName()})
+                    #end
+                    <row valign="middle">
+                        <entry><b>$tipo</b></entry>
+                        <entry><lines>
+                        #foreach( ${part} in ${operation.getOutput().getMessage().getParts()} )
+                        	${part.getName()}
+                        #end
+                        </lines></entry>
+                        <entry>${operation.getOutput().getMessage().getName()}</entry>
+                    </row>
+                    #set($fs = 0)
+ 	                #foreach( ${fault} in ${operation.getFaults()} )
+                    	#set ($tipo = "Fault " + $fs)
+                    	#set ($fs = $fs + 1)
+                    	#if(${fault.getName()})
+                    		#set($tipo = ${fault.getName()})
+                    	#end
+                	<row valign="middle">
+                        <entry><b>$tipo</b></entry>
+                         <entry><lines>
+                        #foreach( ${part} in ${fault.getMessage().getParts()} )
+                        	${part.getName()}
+                        #end
+                        </lines></entry>
+                        <entry>${fault.getMessage().getName()}</entry>
+                    </row>
+                  	#end
+                  	</tbody>
+            </tgroup>
+        </table>
+    </refbody>
+</reference>

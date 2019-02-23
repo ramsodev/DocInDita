@@ -1,0 +1,32 @@
+   <dl>
+   		<dlentry>
+       		<dt>Namespace</dt>
+            <dd>${complexType.getNameSpace()}</dd>
+        </dlentry> 
+       
+        <dlentry>
+       		<dt>Obligatorio</dt>
+            <dd>${complexType.isRequiered()}</dd>
+        </dlentry>
+        #if(${complexType.getMinOccurs()} > 0 || ${complexType.getMaxOccurs()})
+        <dlentry>
+        	<dt>Repeticiones admitidas</dt>
+        	<dd> #if(${complexType.getMinOccurs()} > 0)Desde ${complexType.getMinOccurs()} #end #if(${complexType.getMaxOccurs()} )hasta ${complexType.getMaxOccurs()}#end</dd>
+        </dlentry>
+        #end 
+    	<dlentry>
+       		<dt>Elements Embebed</dt>
+            <dd>            
+            	#if(${complexType.getElements()})
+            		#foreach($element in ${complexType.getElements()})
+            			#parse("element.vm")
+            		#end
+            	#end
+            </dd>
+        </dlentry>
+        <dlentry>
+       		<dt>Codigo</dt>
+            <dd><codeblock>${complexType.getCode()}</codeblock></dd>
+        </dlentry>
+        
+    </dl>

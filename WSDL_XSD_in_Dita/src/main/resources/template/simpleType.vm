@@ -1,0 +1,48 @@
+    <dl>
+    	<dlentry>
+       		<dt>Tipo base</dt>
+            <dd>${simpleType.getDataType()}</dd>
+        </dlentry>
+        #if(${simpleType.getSize()} > 0)
+        <dlentry>
+        	<dt>Tamaño</dt>
+        	<dd>${simpleType.getSize()}#if(${simpleType.getDecimals()} > 0),${simpleType.getDecimals()}#end</dd>
+        </dlentry>
+        #end
+        #if(${simpleType.getMinLength()} > 0 || ${simpleType.getMaxLength()} > 0)
+        <dlentry>
+        	<dt>Tamaño</dt>
+        	<dd> #if(${simpleType.getMinLength()} > 0)Desde ${simpleType.getMinLegth()} #end #if(${simpleType.getMaxLength()} > 0)hasta ${simpleType.getMaxLength()}#end</dd>
+        </dlentry>
+        #end 
+        #if(${simpleType.getMinValue()} || ${simpleType.getMaxValue()})
+        <dlentry>
+        	<dt>Rango de valores admitidos</dt>
+        	<dd> #if(${simpleType.getMinValue()})Desde ${simpleType.getMinValue()}#if(${simpleType.isMinInclusive()}) (incluido) #end #end #if(${simpleType.getMaxValue()})hasta ${simpleType.getMaxValue()} #if(${simpleType.isMaxInclusive()}) (incluido) #end#end</dd>
+        </dlentry>
+        #end
+        #if(${simpleType.isWhiteSpaces()})
+        <dlentry>
+        	<dt>Espacios en Blanco</dt>
+        	<dd>Eliminar</dd>
+        </dlentry>
+        #end
+        #if(${simpleType.getPattern()})
+        <dlentry>
+        	<dt>Patron de validación</dt>
+        	<dd>${simpleType.getPattern()}</dd>
+        </dlentry>
+        #end 
+        #if(${simpleType.getValues()})
+        <dlentry>
+       		<dt>Valores Admitidos</dt>
+       		<dd>
+       			<ul>
+       		#foreach($value in ${simpleType.getValues()})
+       				<li>${value}</li>
+       		#end		
+       			</ul>
+       		</dd>
+       	</dlentry>
+        #end
+    </dl>

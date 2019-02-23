@@ -10,18 +10,18 @@ public class CreateBookMap extends BasicCreate {
 	
 	
 
-	public CreateBookMap(String title, String content, String filename) {
-		super(title);
+	public CreateBookMap(String id,String title, String content) {
+		super(id,title);
 		setTemplateFile("template/bookmap.vm");
 		setContent(content);
-		setFile_name(filename);
+		setFile_name(id+".ditamap");
 	}
 
 	
 
-	public String create(ArrayList<String> services) throws IOException {		
+	public String create(ArrayList<References> references) throws IOException {		
 		getContext().put("content", getContent());
-		getContext().put("services", services);
+		getContext().put("references", references);
 		run(getContext());
 		return getFile_name();
 	}

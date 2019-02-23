@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<topic id="${id}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:oasis:names:tc:dita:xsd:topic.xsd">
+    <title>${title}</title>
+    <shortdesc>${content}</shortdesc>
+    <body>
+    	#if(${simpleType})
+    		#parse("simpleType.vm")
+    	#end
+    	#if(${complexType})
+    		#parse("complexType.vm")
+    	#end
+    	#if(${element})
+    		#parse("element.vm")
+    	#end
+    </body>
+</topic>

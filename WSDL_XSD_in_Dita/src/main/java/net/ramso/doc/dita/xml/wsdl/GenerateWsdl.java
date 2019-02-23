@@ -8,14 +8,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.velocity.app.Velocity;
-import org.ow2.easywsdl.schema.api.Schema;
-import org.ow2.easywsdl.wsdl.WSDLFactory;
-import org.ow2.easywsdl.wsdl.api.Description;
-import org.ow2.easywsdl.wsdl.api.Service;
-import org.ow2.easywsdl.wsdl.api.WSDLException;
-import org.ow2.easywsdl.wsdl.api.WSDLReader;
+
+import com.predic8.schema.Schema;
+import com.predic8.wsdl.Definitions;
+import com.predic8.wsdl.Operation;
+import com.predic8.wsdl.Service;
+import com.predic8.wsdl.WSDLParser;
 
 import net.ramso.doc.dita.CreateBookMap;
+import net.ramso.doc.dita.CreatePortada;
+import net.ramso.doc.dita.References;
+import net.ramso.doc.dita.xml.schema.GenerateSchema;
 
 public class GenerateWsdl {
 
@@ -30,38 +33,71 @@ public class GenerateWsdl {
 		Velocity.init(p);
 	}
 
-	public void generateWSDL(String url) throws WSDLException, MalformedURLException, IOException, URISyntaxException {
+	public void generateWSDL(String url) throws MalformedURLException, IOException, URISyntaxException {
 		generateWSDL(new URL(url));
 
 	}
 
-	public void generateWSDL(URL url) throws WSDLException, IOException, URISyntaxException {
-		
-		WSDLReader reader;
-		ArrayList<String> index = new ArrayList<String>();
-		reader = WSDLFactory.newInstance().newWSDLReader();
-		Description desc = reader.read(url);
+	public void generateWSDL(URL url) throws IOException, URISyntaxException {
+		String fileName = url.getPath().substring(url.getPath().lastIndexOf('/') + 1);
+		if (fileName.contains("?")) {
+			fileName = fileName.substring(0, fileName.lastIndexOf('?'));
+		} else {
+			fileName = fileName.substring(0, fileName.lastIndexOf('.'));
+		}
+		WSDLParser parser = new WSDLParser();
+		Definitions desc = parser.parse(url.openStream());
+		String content = "Definición del Servicio Web " + fileName;
+		if (desc.getDocumentation() != null) {
+			if (!desc.getDocumentation().getContent().isEmpty()) {
+				content = desc.getDocumentation().getContent();
+			}
+		}
+		ArrayList<References> index = new ArrayList<References>();
+
 		List<Service> services = desc.getServices();
 		for (Service service : services) {
-			CreateService cc = new CreateService("Servicio " + service.getQName().getLocalPart(),
-					service.getDocumentation().getContent());
-			index.add(cc.create());
+			content = "Definiciones del servicio " + service.getName();
+			if (service.getDocumentation() != null) {
+				content = service.getDocumentation().getContent();
+			}
+			CreatePortada cc = new CreatePortada(service.getName() + "Service",
+					"Documentacion del Servicio " + service.getName(), content);
+			References partService = new References(cc.create());
 			cc = null;
-			CreateEndPoints ce = new CreateEndPoints(service.getQName().getLocalPart());
-			ce.create(service.getEndpoints());
+			CreatePorts ce = new CreatePorts(service.getName());
+			partService.addChild(new References(ce.create(service.getPorts())));
 			ce = null;
-			CreateOperations co = new CreateOperations(service.getQName().getLocalPart());
-			co.create(service.getInterface().getOperations());
-			co = null;
+			content = "Operaciones del servicio " + service.getName();
+
+			cc = new CreatePortada(service.getName() + "Operations", "Operaciones de " + service.getName(), content);
+			References chapter = new References(cc.create());
+			cc = null;
+			for (Operation operation : desc.getOperations()) {
+				content = "Metodos de la operación " + operation.getName();
+				if (operation.getDocumentation() != null) {
+					content = operation.getDocumentation().getContent();
+				}
+				CreateOperation co = new CreateOperation(operation.getName() + "Operation",
+						"Operation " + operation.getName(), content);
+				chapter.addChild(new References(co.create(operation)));
+			}
+
+			partService.addChild(chapter);
+			index.add(partService);
 		}
-		List<Schema> schemas = desc.getTypes().getSchemas();
-		String fileName = url.getPath().substring(url.getPath().lastIndexOf('/')+1);
-		fileName = fileName.substring(0, fileName.lastIndexOf('.'));
-		String content = "";
-		if(desc.getDocumentation()!=null) {
+
+		List<Schema> schemas = desc.getSchemas();
+		for (Schema schema : schemas) {
+			GenerateSchema gs = new GenerateSchema();
+			index.addAll(gs.generateSchema(schema, true));
+			
+		}
+		content = "";
+		if (desc.getDocumentation() != null) {
 			content = desc.getDocumentation().getContent();
 		}
-		CreateBookMap cb = new CreateBookMap("Documentación  del WSDL " + fileName, content, fileName+".ditamap");
+		CreateBookMap cb = new CreateBookMap(fileName, "Documentación  del WSDL " + fileName, content);
 		cb.create(index);
 	}
 }

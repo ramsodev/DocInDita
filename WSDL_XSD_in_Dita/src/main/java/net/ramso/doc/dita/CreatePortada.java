@@ -1,18 +1,16 @@
-package net.ramso.doc.dita.xml.wsdl;
+package net.ramso.doc.dita;
 
 import java.io.IOException;
 
-import net.ramso.doc.dita.BasicCreate;
-
-public class CreateService extends BasicCreate {
+public class CreatePortada extends BasicCreate {
 
 	
 	private String content;
 	
 	
 
-	public CreateService(String title, String content) {
-		super(title);
+	public CreatePortada(String id ,String title, String content) {
+		super(id, title);
 		setTemplateFile("template/portada.vm");
 		setContent(content);
 	}

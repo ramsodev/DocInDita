@@ -19,8 +19,9 @@ public abstract class BasicCreate implements iCreate {
 	private Template template;
 	private VelocityContext context;
 
-	public BasicCreate(String title) {
+	public BasicCreate(String id, String title) {
 		super();
+		setId(id);
 		setTitle(title);
 	
 	}
@@ -56,15 +57,14 @@ public abstract class BasicCreate implements iCreate {
 
 	protected void setId(String id) {
 		this.id = id.replaceAll("\\s+","_");
+		setFile_name(id + ".dita");
 	}
 
 	public String getTitle() {
 		return title;
 	}
 
-	public void setTitle(String title) {
-		setId(title.toLowerCase());
-		setFile_name(title + ".dita");
+	public void setTitle(String title) {		
 		this.title = title;
 	}
 
