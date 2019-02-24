@@ -44,7 +44,7 @@ public class SimpleTypeModel {
 	public SimpleTypeModel(SimpleType type) {
 		super();
 		this.restriction = type.getRestriction();
-		this.code = type.getAsString();
+		this.code = type.getAsString().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 		this.doc = "";
 		if (type.getAnnotation() != null) {
 			for (Documentation doce : type.getAnnotation().getDocumentations()) {

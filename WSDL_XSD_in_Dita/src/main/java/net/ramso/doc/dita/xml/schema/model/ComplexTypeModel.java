@@ -71,7 +71,7 @@ public class ComplexTypeModel {
 	}
 
 	public String getCode() {
-		return type.getAsString();
+		return type.getAsString().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 	}
 
 	/**

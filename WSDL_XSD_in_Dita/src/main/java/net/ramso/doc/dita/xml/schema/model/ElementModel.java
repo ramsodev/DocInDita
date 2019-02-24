@@ -86,7 +86,7 @@ public class ElementModel {
 	}
 
 	public String getCode() {
-		return element.getAsString();
+		return element.getAsString().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 	}
 
 	/**
