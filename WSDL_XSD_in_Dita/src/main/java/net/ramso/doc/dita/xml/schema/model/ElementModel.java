@@ -1,5 +1,8 @@
 package net.ramso.doc.dita.xml.schema.model;
 
+import java.io.StringWriter;
+
+import com.predic8.schema.Documentation;
 import com.predic8.schema.Element;
 import com.predic8.schema.SimpleType;
 import com.predic8.schema.TypeDefinition;
@@ -12,6 +15,7 @@ public class ElementModel {
 	private SimpleTypeModel simpleType = null;
 	private String type = null;
 	private Element element;
+	private String name;
 
 	public ElementModel(Element element) {
 		super();
@@ -81,12 +85,25 @@ public class ElementModel {
 		return type;
 	}
 
-	public String getNameSpace() {
-		return element.getNAMESPACE();
-	}
-
 	public String getCode() {
 		return element.getAsString();
+	}
+
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return element.getName();
+	}
+	
+	public String getDoc() {
+		 String writer = "";
+		if(element.getAnnotation()!=null) {
+			for(Documentation doc : element.getAnnotation().getDocumentations()){
+				writer += doc.getContent() + "\n";
+			}
+		}
+		return writer;
 	}
 
 }

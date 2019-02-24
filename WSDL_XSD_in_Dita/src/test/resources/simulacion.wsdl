@@ -136,186 +136,190 @@
             </xsd:sequence>
          </xsd:complexType>
          <xsd:complexType name="DATOSALTAType">
-            <xsd:sequence>
-               <xsd:element minOccurs="0" name="fechaefecto">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:date"/>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element name="frecuenciapago">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:string">
-                        <xsd:minLength value="0"/>
-                        <xsd:maxLength value="1"/>
-                        <xsd:enumeration value="M"/>
-                        <xsd:enumeration value="B"/>
-                        <xsd:enumeration value="T"/>
-                        <xsd:enumeration value="S.A"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="polizareemplazada">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:decimal">
-                        <xsd:minInclusive value="-9999999"/>
-                        <xsd:maxInclusive value="9999999"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="fechadecrecho">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:date"/>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="dtocomercial">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:decimal">
-                        <xsd:minInclusive value="-99"/>
-                        <xsd:maxInclusive value="99"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element name="clase">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:string">
-                        <xsd:minLength value="0"/>
-                        <xsd:maxLength value="7"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element name="costeservicio">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:decimal">
-                        <xsd:minInclusive value="-999999"/>
-                        <xsd:maxInclusive value="999999"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element name="costenicho">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:decimal">
-                        <xsd:minInclusive value="-999999"/>
-                        <xsd:maxInclusive value="999999"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element name="capitalaccidente">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:decimal">
-                        <xsd:minInclusive value="-999999"/>
-                        <xsd:maxInclusive value="999999"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="capitalresponsabilidad">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:decimal">
-                        <xsd:minInclusive value="-999999"/>
-                        <xsd:maxInclusive value="999999"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="capitalquirurgica">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:decimal">
-                        <xsd:minInclusive value="-999999"/>
-                        <xsd:maxInclusive value="999999"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element name="garantiaacccirculacion">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:string">
-                        <xsd:minLength value="0"/>
-                        <xsd:maxLength value="1"/>
-                        <xsd:enumeration value="S"/>
-                        <xsd:enumeration value="N"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="ramo98">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:string">
-                        <xsd:minLength value="0"/>
-                        <xsd:maxLength value="1"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="ramo96">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:string">
-                        <xsd:minLength value="0"/>
-                        <xsd:maxLength value="1"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="ramo95">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:string">
-                        <xsd:minLength value="0"/>
-                        <xsd:maxLength value="1"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="emisionramo98">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:string">
-                        <xsd:minLength value="0"/>
-                        <xsd:maxLength value="1"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="emisionramo96">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:string">
-                        <xsd:minLength value="0"/>
-                        <xsd:maxLength value="1"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="emisionramo95">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:string">
-                        <xsd:minLength value="0"/>
-                        <xsd:maxLength value="1"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element name="asegurado">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:string">
-                        <xsd:minLength value="0"/>
-                        <xsd:maxLength value="1"/>
-                        <xsd:enumeration value="S"/>
-                        <xsd:enumeration value="N"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="condicionesparticulares">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:decimal">
-                        <xsd:minInclusive value="-99999"/>
-                        <xsd:maxInclusive value="99999"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="autorizado">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:string">
-                        <xsd:minLength value="0"/>
-                        <xsd:maxLength value="1"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="porcentajecomercial">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:decimal">
-                        <xsd:minInclusive value="-99.99"/>
-                        <xsd:maxInclusive value="99.99"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-            </xsd:sequence>
+         	<xsd:sequence>
+         		<xsd:element minOccurs="0" name="fechaefecto">
+         			<xsd:simpleType>
+         				<xsd:restriction base="xsd:date" />
+         			</xsd:simpleType>
+         		</xsd:element>
+         		<xsd:element name="frecuenciapago">
+         			<xsd:simpleType>
+         				<xsd:restriction base="xsd:string">
+         					<xsd:minLength value="0" />
+         					<xsd:maxLength value="1" />
+         					<xsd:enumeration value="M" />
+         					<xsd:enumeration value="B" />
+         					<xsd:enumeration value="T" />
+         					<xsd:enumeration value="S.A" />
+         				</xsd:restriction>
+         			</xsd:simpleType>
+         		</xsd:element>
+         		<xsd:element minOccurs="0" name="polizareemplazada">
+         			<xsd:simpleType>
+         				<xsd:restriction base="xsd:decimal">
+         					<xsd:minInclusive value="-9999999" />
+         					<xsd:maxInclusive value="9999999" />
+         				</xsd:restriction>
+         			</xsd:simpleType>
+         		</xsd:element>
+         		<xsd:element minOccurs="0" name="fechadecrecho">
+         			<xsd:simpleType>
+         				<xsd:restriction base="xsd:date" />
+         			</xsd:simpleType>
+         		</xsd:element>
+         		<xsd:element minOccurs="0" name="dtocomercial">
+         			<xsd:simpleType>
+         				<xsd:restriction base="xsd:decimal">
+         					<xsd:minInclusive value="-99" />
+         					<xsd:maxInclusive value="99" />
+         				</xsd:restriction>
+         			</xsd:simpleType>
+         		</xsd:element>
+         		<xsd:element name="clase">
+         			<xsd:simpleType>
+         				<xsd:restriction base="xsd:string">
+         					<xsd:minLength value="0" />
+         					<xsd:maxLength value="7" />
+         				</xsd:restriction>
+         			</xsd:simpleType>
+         		</xsd:element>
+         		<xsd:element name="costeservicio">
+         			<xsd:simpleType>
+         				<xsd:restriction base="xsd:decimal">
+         					<xsd:minInclusive value="-999999" />
+         					<xsd:maxInclusive value="999999" />
+         				</xsd:restriction>
+         			</xsd:simpleType>
+         		</xsd:element>
+         		<xsd:element name="costenicho">
+         			<xsd:simpleType>
+         				<xsd:restriction base="xsd:decimal">
+         					<xsd:minInclusive value="-999999" />
+         					<xsd:maxInclusive value="999999" />
+         				</xsd:restriction>
+         			</xsd:simpleType>
+         		</xsd:element>
+         		<xsd:element name="capitalaccidente">
+         			<xsd:simpleType>
+         				<xsd:restriction base="xsd:decimal">
+         					<xsd:minInclusive value="-999999" />
+         					<xsd:maxInclusive value="999999" />
+         				</xsd:restriction>
+         			</xsd:simpleType>
+         		</xsd:element>
+         		<xsd:element minOccurs="0"
+         			name="capitalresponsabilidad">
+         			<xsd:simpleType>
+         				<xsd:restriction base="xsd:decimal">
+         					<xsd:minInclusive value="-999999" />
+         					<xsd:maxInclusive value="999999" />
+         				</xsd:restriction>
+         			</xsd:simpleType>
+         		</xsd:element>
+         		<xsd:element minOccurs="0" name="capitalquirurgica">
+         			<xsd:simpleType>
+         				<xsd:restriction base="xsd:decimal">
+         					<xsd:minInclusive value="-999999" />
+         					<xsd:maxInclusive value="999999" />
+         				</xsd:restriction>
+         			</xsd:simpleType>
+         		</xsd:element>
+         		<xsd:element name="garantiaacccirculacion">
+         			<xsd:simpleType>
+         				<xsd:restriction base="xsd:string">
+         					<xsd:minLength value="0" />
+         					<xsd:maxLength value="1" />
+         					<xsd:enumeration value="S" />
+         					<xsd:enumeration value="N" />
+         				</xsd:restriction>
+         			</xsd:simpleType>
+         		</xsd:element>
+         		<xsd:element minOccurs="0" name="ramo98">
+         			<xsd:simpleType>
+         				<xsd:restriction base="xsd:string">
+         					<xsd:minLength value="0" />
+         					<xsd:maxLength value="1" />
+         				</xsd:restriction>
+         			</xsd:simpleType>
+         		</xsd:element>
+         		<xsd:element minOccurs="0" name="ramo96">
+         			<xsd:simpleType>
+         				<xsd:restriction base="xsd:string">
+         					<xsd:minLength value="0" />
+         					<xsd:maxLength value="1" />
+         				</xsd:restriction>
+         			</xsd:simpleType>
+         		</xsd:element>
+         		<xsd:element minOccurs="0" name="ramo95">
+         			<xsd:simpleType>
+         				<xsd:restriction base="xsd:string">
+         					<xsd:minLength value="0" />
+         					<xsd:maxLength value="1" />
+         				</xsd:restriction>
+         			</xsd:simpleType>
+         		</xsd:element>
+         		<xsd:element minOccurs="0" name="emisionramo98">
+         			<xsd:simpleType>
+         				<xsd:restriction base="xsd:string">
+         					<xsd:minLength value="0" />
+         					<xsd:maxLength value="1" />
+         				</xsd:restriction>
+         			</xsd:simpleType>
+         		</xsd:element>
+         		<xsd:element minOccurs="0" name="emisionramo96">
+         			<xsd:simpleType>
+         				<xsd:restriction base="xsd:string">
+         					<xsd:minLength value="0" />
+         					<xsd:maxLength value="1" />
+         				</xsd:restriction>
+         			</xsd:simpleType>
+         		</xsd:element>
+         		<xsd:element minOccurs="0" name="emisionramo95">
+         			<xsd:simpleType>
+         				<xsd:restriction base="xsd:string">
+         					<xsd:minLength value="0" />
+         					<xsd:maxLength value="1" />
+         				</xsd:restriction>
+         			</xsd:simpleType>
+         		</xsd:element>
+         		<xsd:element name="asegurado">
+         			<xsd:simpleType>
+         				<xsd:restriction base="xsd:string">
+         					<xsd:minLength value="0" />
+         					<xsd:maxLength value="1" />
+         					<xsd:enumeration value="S" />
+         					<xsd:enumeration value="N" />
+         				</xsd:restriction>
+         			</xsd:simpleType>
+         		</xsd:element>
+         		<xsd:element minOccurs="0"
+         			name="condicionesparticulares">
+         			<xsd:simpleType>
+         				<xsd:restriction base="xsd:decimal">
+         					<xsd:minInclusive value="-99999" />
+         					<xsd:maxInclusive value="99999" />
+         				</xsd:restriction>
+         			</xsd:simpleType>
+         		</xsd:element>
+         		<xsd:element minOccurs="0" name="autorizado">
+         			<xsd:simpleType>
+         				<xsd:restriction base="xsd:string">
+         					<xsd:minLength value="0" />
+         					<xsd:maxLength value="1" />
+         				</xsd:restriction>
+         			</xsd:simpleType>
+         		</xsd:element>
+         		<xsd:element minOccurs="0"
+         			name="porcentajecomercial">
+         			<xsd:simpleType>
+         				<xsd:restriction base="xsd:decimal">
+         					<xsd:minInclusive value="-99.99" />
+         					<xsd:maxInclusive value="99.99" />
+         				</xsd:restriction>
+         			</xsd:simpleType>
+         		</xsd:element>
+         	</xsd:sequence>
+         	<xsd:attribute name="NewAttribute" type="xsd:string"></xsd:attribute>
          </xsd:complexType>
          <xsd:complexType name="DATOSCOBROType">
             <xsd:sequence>
@@ -738,6 +742,16 @@
          <xsd:simpleType name="testalfa">
          <xsd:restriction base="xsd:boolean"></xsd:restriction>
          </xsd:simpleType>
+      
+         <xsd:group name="NewGroupDefinition">
+         	<xsd:sequence></xsd:sequence>
+         </xsd:group>
+      
+            <xsd:attribute name="NewAttribute" type="xsd:string"></xsd:attribute>
+        
+            <xsd:attributeGroup name="NewAttributeGroup">
+            	<xsd:attribute name="NewAttribute" type="xsd:string"></xsd:attribute>
+            </xsd:attributeGroup>
       </xsd:schema>
    </wsdl:types>
    <wsdl:message name="simulacionRequest">

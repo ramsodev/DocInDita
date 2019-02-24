@@ -3,6 +3,7 @@ package net.ramso.doc.dita.xml.schema.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.predic8.schema.Documentation;
 import com.predic8.schema.SimpleType;
 import com.predic8.schema.restriction.BaseRestriction;
 import com.predic8.schema.restriction.facet.EnumerationFacet;
@@ -36,9 +37,20 @@ public class SimpleTypeModel {
 	private String pattern = null;
 	private List<String> values;
 
+	private String code;
+
+	private String doc;
+
 	public SimpleTypeModel(SimpleType type) {
 		super();
 		this.restriction = type.getRestriction();
+		this.code = type.getAsString();
+		this.doc = "";
+		if (type.getAnnotation() != null) {
+			for (Documentation doce : type.getAnnotation().getDocumentations()) {
+				doc += doce.getContent() + "\n";
+			}
+		}
 		init();
 	}
 
@@ -53,29 +65,29 @@ public class SimpleTypeModel {
 			} else if (facet instanceof LengthFacet) {
 				size = Integer.parseInt(facet.getValue());
 			} else if (facet instanceof MaxExclusiveFacet) {
-				maxInclusive=false;
+				maxInclusive = false;
 				maxValue = facet.getValue();
 				setSizeFromMask(facet.getValue());
 			} else if (facet instanceof MaxInclusiveFacet) {
-				maxInclusive=true;
+				maxInclusive = true;
 				maxValue = facet.getValue();
 				setSizeFromMask(facet.getValue());
 			} else if (facet instanceof MaxLengthFacet) {
 				maxLength = Integer.parseInt(facet.getValue());
-				if(maxLength>size) {
+				if (maxLength > size) {
 					size = maxLength;
 				}
 			} else if (facet instanceof MinExclusiveFacet) {
-				minInclusive=false;
+				minInclusive = false;
 				minValue = facet.getValue();
 				setSizeFromMask(facet.getValue());
 			} else if (facet instanceof MinInclusiveFacet) {
-				minInclusive=false;
+				minInclusive = false;
 				minValue = facet.getValue();
 				setSizeFromMask(facet.getValue());
 			} else if (facet instanceof MinLengthFacet) {
 				minLength = Integer.parseInt(facet.getValue());
-				if(minLength>size) {
+				if (minLength > size) {
 					size = minLength;
 				}
 			} else if (facet instanceof PatternFacet) {
@@ -88,33 +100,34 @@ public class SimpleTypeModel {
 		}
 
 	}
+
 	/**
-     * Retorna el tamaño de un campo numerico en base a la mascara de maxValue
-     *
-     * @param mask
-     *            la mascara a traducir
-     * @return un array con dos elementos longitud, decimales
-     */
-    protected void setSizeFromMask(final String mask) {
-        final String[] cuts = mask.split("\\.");
-        final int[] sizes = new int[2];
-        sizes[0] = 0;
-        sizes[1] = -1;
-        if (cuts.length == 1) {
-            sizes[0] = cuts[0].trim().length();
-            
-        } else if (cuts.length > 1) {
- 
-            sizes[1] = cuts[1].trim().length();
-            sizes[0] = cuts[0].trim().length() + sizes[1];
-        }
-        if(sizes[0]>size) {
-        	size= sizes[0];
-        }
-        if(sizes[1]>decimals) {
-        	decimals= sizes[1];
-        }
-    }
+	 * Retorna el tamaño de un campo numerico en base a la mascara de maxValue
+	 *
+	 * @param mask la mascara a traducir
+	 * @return un array con dos elementos longitud, decimales
+	 */
+	protected void setSizeFromMask(final String mask) {
+		final String[] cuts = mask.split("\\.");
+		final int[] sizes = new int[2];
+		sizes[0] = 0;
+		sizes[1] = -1;
+		if (cuts.length == 1) {
+			sizes[0] = cuts[0].trim().length();
+
+		} else if (cuts.length > 1) {
+
+			sizes[1] = cuts[1].trim().length();
+			sizes[0] = cuts[0].trim().length() + sizes[1];
+		}
+		if (sizes[0] > size) {
+			size = sizes[0];
+		}
+		if (sizes[1] > decimals) {
+			decimals = sizes[1];
+		}
+	}
+
 	/**
 	 * @return the dataType
 	 */
@@ -204,6 +217,17 @@ public class SimpleTypeModel {
 	 */
 	public boolean isWhiteSpaces() {
 		return whiteSpaces;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	/**
+	 * @return the doc
+	 */
+	public String getDoc() {
+		return doc;
 	}
 
 }

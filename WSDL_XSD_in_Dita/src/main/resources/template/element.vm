@@ -1,9 +1,5 @@
+   <!-- Element Start -->
    <dl>
-   		<dlentry>
-       		<dt>Namespace</dt>
-            <dd>${element.getNameSpace()}</dd>
-        </dlentry> 
-       
         <dlentry>
        		<dt>Obligatorio</dt>
             <dd>${element.isRequiered()}</dd>
@@ -13,19 +9,31 @@
         	<dt>Repeticiones admitidas</dt>
         	<dd> #if(${element.getMinOccurs()} > 0)Desde ${element.getMinOccurs()} #end #if(${element.getMaxOccurs()})hasta ${element.getMaxOccurs()}#end</dd>
         </dlentry>
-        #end 
-    	<dlentry>
-       		<dt>#if(${element.getType()})Tipo#elseif(${element.getSimpleType()})Tipo Embebidos#end</dt>
-            <dd>#if(${element.getType()})${element.getType()}
-            	#elseif(${element.getSimpleType()})
-            		#set($simpleType = ${element.getSimpleType()})
-            		#parse("simpleType.vm")
-            	#end
-            </dd>
-        </dlentry>
+        #end
+        #if(${element.getType()})
         <dlentry>
-       		<dt>Codigo</dt>
-            <dd><codeblock>${element.getCode()}</codeblock></dd>
+       		<dt>Tipo</dt>
+            <dd>${element.getType()}</dd>
         </dlentry>
-        
-    </dl>
+   	</dl> 
+    	#elseif(${element.getSimpleType()})
+ 	</dl>
+ 			#if($child)
+ 		<sectiondiv>
+ 			<p><u><b>Tipo Embebidos</b></u></p>
+ 			#else
+    	<section id= "section_embebedType">    		
+    		<title>Tipo Embebido</title>
+    			#if(${element.getSimpleType().getDoc()})
+    		<p><lines>${element.getSimpleType().getDoc()}</lines></p>
+    			#end
+    		#end
+            #set($simpleType = ${element.getSimpleType()})
+            #parse("simpleType.vm")
+            #if($child)
+        </sectiondiv>    
+            #else
+        </section>
+        	#end
+        #end    
+    <!-- Element End -->

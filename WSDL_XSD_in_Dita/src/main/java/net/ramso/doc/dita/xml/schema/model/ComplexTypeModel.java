@@ -3,6 +3,7 @@ package net.ramso.doc.dita.xml.schema.model;
 import java.util.ArrayList;
 
 import com.predic8.schema.ComplexType;
+import com.predic8.schema.Documentation;
 import com.predic8.schema.Element;
 import com.predic8.schema.Sequence;
 
@@ -85,6 +86,20 @@ public class ComplexTypeModel {
 	 */
 	public ArrayList<ElementModel> getElements() {
 		return elements;
+	}
+	
+	public String getName() {
+		return type.getName();
+	}
+	
+	public String getDoc() {
+		 String writer = "";
+		if(type.getAnnotation()!=null) {
+			for(Documentation doc : type.getAnnotation().getDocumentations()){
+				writer += doc.getContent() + "\n";
+			}
+		}
+		return writer;
 	}
 
 }

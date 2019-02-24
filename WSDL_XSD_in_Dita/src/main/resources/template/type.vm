@@ -4,14 +4,24 @@
     <title>${title}</title>
     <shortdesc>${content}</shortdesc>
     <body>
+    	#set($child = false)
     	#if(${simpleType})
     		#parse("simpleType.vm")
+    	<section id="section_code">
+            <title>Codigo</title>            
+        	<codeblock>${simpleType.getCode()}</codeblock>
+        </section>
     	#end
     	#if(${complexType})
     		#parse("complexType.vm")
+    	
     	#end
     	#if(${element})
     		#parse("element.vm")
+    	<section id="section_code">
+            <title>Codigo</title>            
+        	<codeblock>${element.getCode()}</codeblock>
+        </section>
     	#end
     </body>
 </topic>
