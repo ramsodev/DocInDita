@@ -63,7 +63,14 @@
 			<version>${junit.jupiter.version}</version>
 			<scope>test</scope>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>com.mxgraph</groupId>
+			<artifactId>jgraphx</artifactId>
+			<version>3.9.12</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/libs/jgraphx-3.9.12.jar</systemPath>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
