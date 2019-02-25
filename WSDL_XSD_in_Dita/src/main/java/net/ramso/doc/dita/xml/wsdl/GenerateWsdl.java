@@ -19,6 +19,7 @@ import net.ramso.doc.dita.CreateBookMap;
 import net.ramso.doc.dita.CreatePortada;
 import net.ramso.doc.dita.References;
 import net.ramso.doc.dita.xml.schema.GenerateSchema;
+import net.ramso.tools.Constants;
 
 public class GenerateWsdl {
 
@@ -42,7 +43,7 @@ public class GenerateWsdl {
 		String fileName = url.getPath().substring(url.getPath().lastIndexOf('/') + 1);
 		if (fileName.contains("?")) {
 			fileName = fileName.substring(0, fileName.lastIndexOf('?'));
-		} else {
+		} else if  (fileName.contains(".")){
 			fileName = fileName.substring(0, fileName.lastIndexOf('.'));
 		}
 		WSDLParser parser = new WSDLParser();
@@ -78,7 +79,7 @@ public class GenerateWsdl {
 				if (operation.getDocumentation() != null) {
 					content = operation.getDocumentation().getContent();
 				}
-				CreateOperation co = new CreateOperation(operation.getName() + "Operation",
+				CreateOperation co = new CreateOperation(operation.getName() + Constants.SUFFIX_OPERATION,
 						"Operation " + operation.getName(), content);
 				chapter.addChild(new References(co.create(operation)));
 			}

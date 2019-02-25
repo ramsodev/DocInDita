@@ -5,6 +5,7 @@ import java.io.IOException;
 import com.predic8.wsdl.Operation;
 
 import net.ramso.doc.dita.BasicCreate;
+import net.ramso.tools.Tools;
 
 public class CreateOperation extends BasicCreate {
 	private String content;
@@ -16,7 +17,8 @@ public class CreateOperation extends BasicCreate {
 
 	public String create(Operation operation) throws IOException {
 		getContext().put("content", getContent());
-		getContext().put("operation", operation);		
+		getContext().put("operation", operation);
+		getContext().put("tools", Tools.class);
 		run(getContext());
 		return getFile_name();
 	}

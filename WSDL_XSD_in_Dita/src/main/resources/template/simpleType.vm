@@ -1,7 +1,7 @@
     <dl>
     	<dlentry>
        		<dt>Tipo base</dt>
-            <dd>${simpleType.getDataType()}</dd>
+            <dd><xref href="${simpleType.getHrefType()}" ${simpleType.getExternalHref()}>${simpleType.getDataType()}</xref></dd>
         </dlentry>
         #if(${simpleType.getSize()} > 0)
         <dlentry>

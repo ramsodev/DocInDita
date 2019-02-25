@@ -1,5 +1,6 @@
 package net.ramso.doc.dita.xml.schema.model;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,9 @@ import com.predic8.schema.restriction.facet.MinLengthFacet;
 import com.predic8.schema.restriction.facet.PatternFacet;
 import com.predic8.schema.restriction.facet.TotalDigitsFacet;
 import com.predic8.schema.restriction.facet.WhiteSpaceFacet;
+
+import net.ramso.tools.Constants;
+import net.ramso.tools.Tools;
 
 public class SimpleTypeModel {
 
@@ -134,7 +138,19 @@ public class SimpleTypeModel {
 	public String getDataType() {
 		return dataType;
 	}
-
+	public String getHrefType() throws MalformedURLException {
+		if(restriction.getBase().getNamespaceURI().equalsIgnoreCase(Constants.XSD_NAMESPACE)) {
+			return Constants.XSD_DOC_URI+restriction.getBase().getLocalPart();
+		}
+		return Tools.getHrefType(restriction.getBase());
+	}
+	
+	public String getExternalHref() {
+		if(restriction.getBase().getNamespaceURI().equalsIgnoreCase(Constants.XSD_NAMESPACE)) {
+			return "format=\"html\" scope=\"external\"";
+		}
+		return "";
+	}
 	/**
 	 * @return the maxLength
 	 */
@@ -220,7 +236,7 @@ public class SimpleTypeModel {
 	}
 
 	public String getCode() {
-		return code;
+		return code.replaceAll("<", "&lt;").replaceAll(">","&gt;");
 	}
 
 	/**

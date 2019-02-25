@@ -1,4 +1,4 @@
-package net.ramso.doc.dita.xml.wsdl;
+package net.ramso.doc.dita;
 
 public interface iCreate {
 	String getFile_name();

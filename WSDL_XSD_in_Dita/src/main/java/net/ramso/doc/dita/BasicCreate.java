@@ -9,8 +9,6 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 
-import net.ramso.doc.dita.xml.wsdl.iCreate;
-
 public abstract class BasicCreate implements iCreate {
 	private String file_name;
 	private String id;

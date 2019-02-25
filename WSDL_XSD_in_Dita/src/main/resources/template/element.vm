@@ -1,4 +1,5 @@
    <!-- Element Start -->
+   <!-- element child $child -->
    <dl>
         <dlentry>
        		<dt>Obligatorio</dt>
@@ -13,27 +14,63 @@
         #if(${element.getType()})
         <dlentry>
        		<dt>Tipo</dt>
-            <dd>${element.getType()}</dd>
+            <dd><xref href="${element.getHrefType()}" ${element.getExternalHref()}>${element.getType()}</xref></dd>
         </dlentry>
    	</dl> 
     	#elseif(${element.getSimpleType()})
  	</dl>
  			#if($child)
- 		<sectiondiv>
- 			<p><u><b>Tipo Embebidos</b></u></p>
+ 		<sectiondiv id= "section_embebedType${element.getName()}">
+ 			<p><u><b>Simple Type</b></u></p>
  			#else
     	<section id= "section_embebedType">    		
-    		<title>Tipo Embebido</title>
+    		<title>Simple Type</title>
     			#if(${element.getSimpleType().getDoc()})
     		<p><lines>${element.getSimpleType().getDoc()}</lines></p>
     			#end
     		#end
             #set($simpleType = ${element.getSimpleType()})
+            #set($childs = $child)
+            <!-- element child $child = $childs -->
+            #set($child = true)
             #parse("simpleType.vm")
+            #set($child =  $childs)
+            <!-- element child $child = $childs -->
             #if($child)
         </sectiondiv>    
             #else
         </section>
         	#end
-        #end    
+        #elseif(${element.getComplexType()})
+ 	</dl>
+ 			#if($child)
+ 		<sectiondiv id= "section_embebedType${element.getName()}">
+ 			<p><u><b>Complex Type</b></u></p>
+ 			#else
+    	<section id= "section_embebedType">    		
+    		<title>Complex Type</title>
+    			#if(${element.getComplexType().getDoc()})
+    		<p><lines>${element.getComplexType().getDoc()}</lines></p>
+    			#end
+    		#end
+    		#set($childp = $child)
+            #set($child = true)
+            <!-- element child $child = $childp -->
+            #set($complexType = ${element.getComplexType()})
+            #parse("complexType.vm")
+            <!-- element child $child = $childp -->
+            #set($child =  $childp)
+            #if($child)
+        </sectiondiv>    
+            #else
+        </section>
+        	#end
+        #end  
+        #if(!$child)
+        <section id="section_code">
+            <title>Codigo</title>            
+        	<codeblock>${element.getCode()}</codeblock>
+        </section>  
+        #end
     <!-- Element End -->
+    

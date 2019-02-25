@@ -1,11 +1,15 @@
 package net.ramso.doc.dita.xml.schema.model;
 
-import java.io.StringWriter;
+import java.net.MalformedURLException;
 
+import com.predic8.schema.ComplexType;
 import com.predic8.schema.Documentation;
 import com.predic8.schema.Element;
 import com.predic8.schema.SimpleType;
 import com.predic8.schema.TypeDefinition;
+
+import net.ramso.tools.Constants;
+import net.ramso.tools.Tools;
 
 public class ElementModel {
 
@@ -13,9 +17,10 @@ public class ElementModel {
 	private int minOccurs = -1;
 	private String maxOccurs = null;
 	private SimpleTypeModel simpleType = null;
+	private ComplexTypeModel complexType = null;
 	private String type = null;
 	private Element element;
-	private String name;
+	
 
 	public ElementModel(Element element) {
 		super();
@@ -37,8 +42,14 @@ public class ElementModel {
 			TypeDefinition t = element.getEmbeddedType();
 			if (t instanceof SimpleType) {
 				simpleType = new SimpleTypeModel((SimpleType) t);
+			} else if (t instanceof ComplexType) {
+				complexType = new ComplexTypeModel((ComplexType) t);
 			}
 		}
+	}
+
+	public ComplexTypeModel getComplexType() {
+		return complexType;
 	}
 
 	/**
@@ -49,7 +60,8 @@ public class ElementModel {
 	}
 
 	/**
-	 * @param minOccurs the minOccurs to set
+	 * @param minOccurs
+	 *            the minOccurs to set
 	 */
 	public void setMinOccurs(int minOccurs) {
 		this.minOccurs = minOccurs;
@@ -84,9 +96,24 @@ public class ElementModel {
 	public String getType() {
 		return type;
 	}
+	
+	public String getHrefType() throws MalformedURLException {
+		if(element.getType().getNamespaceURI().equalsIgnoreCase(Constants.XSD_NAMESPACE)) {
+			return Constants.XSD_DOC_URI+element.getType().getLocalPart();
+		}
+		
+		return Tools.getHrefType(element.getType());
+	}
+	
+	public String getExternalHref() {
+		if(element.getType().getNamespaceURI().equalsIgnoreCase(Constants.XSD_NAMESPACE)) {
+			return "format=\"html\" scope=\"external\"";
+		}
+		return "";
+	}
 
 	public String getCode() {
-		return element.getAsString();
+		return element.getAsString().replaceAll("<", "&lt;").replaceAll(">","&gt;");
 	}
 
 	/**
@@ -95,11 +122,11 @@ public class ElementModel {
 	public String getName() {
 		return element.getName();
 	}
-	
+
 	public String getDoc() {
-		 String writer = "";
-		if(element.getAnnotation()!=null) {
-			for(Documentation doc : element.getAnnotation().getDocumentations()){
+		String writer = "";
+		if (element.getAnnotation() != null) {
+			for (Documentation doc : element.getAnnotation().getDocumentations()) {
 				writer += doc.getContent() + "\n";
 			}
 		}
