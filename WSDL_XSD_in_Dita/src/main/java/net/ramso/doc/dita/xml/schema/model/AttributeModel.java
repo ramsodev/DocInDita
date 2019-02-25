@@ -3,23 +3,14 @@ package net.ramso.doc.dita.xml.schema.model;
 import java.net.MalformedURLException;
 
 import com.predic8.schema.Attribute;
-import com.predic8.schema.ComplexType;
-import com.predic8.schema.Documentation;
-import com.predic8.schema.Element;
 import com.predic8.schema.SchemaComponent;
-import com.predic8.schema.SimpleType;
-import com.predic8.schema.TypeDefinition;
 
 import groovy.xml.QName;
-import net.ramso.tools.Constants;
-import net.ramso.tools.Tools;
 
-public class AttributeModel extends AbstractComponentModel{
+public class AttributeModel extends AbstractComponentModel {
 
-	
 	private SimpleTypeModel simpleType = null;
-	
-	private String type = null;
+
 	private Attribute attribute;
 
 	private String defaultValue;
@@ -29,7 +20,6 @@ public class AttributeModel extends AbstractComponentModel{
 	private String form;
 
 	private String usage;
-	
 
 	public AttributeModel(Attribute attribute) {
 		super();
@@ -42,20 +32,15 @@ public class AttributeModel extends AbstractComponentModel{
 		fixedValue = attribute.getFixedValue();
 		form = attribute.getForm();
 		usage = attribute.getUse();
-		
-		if (attribute.getType() != null) {
-			type = attribute.getType().getLocalPart();
-		}
-		
-		if (attribute.getSimpleType() != null) {			
-				simpleType = new SimpleTypeModel(attribute.getSimpleType());			
+		if (attribute.getSimpleType() != null) {
+			simpleType = new SimpleTypeModel(attribute.getSimpleType());
 		}
 	}
 
-	public QName  getRef() {
+	public QName getRef() {
 		return attribute.getRef();
 	}
-	
+
 	/**
 	 * @return the simpleType
 	 */
@@ -63,18 +48,18 @@ public class AttributeModel extends AbstractComponentModel{
 		return simpleType;
 	}
 
-	
 	/**
 	 * @return the type
 	 */
 	public QName getType() {
-		return attribute.getType();
+		if (attribute.getType() != null) {
+			return attribute.getType();
+		}
+		return attribute.getRef();
 	}
 
-	
-
 	@Override
-	public SchemaComponent getComponent() {		
+	public SchemaComponent getComponent() {
 		return attribute;
 	}
 
@@ -92,6 +77,14 @@ public class AttributeModel extends AbstractComponentModel{
 
 	public String getUsage() {
 		return usage;
+	}
+
+	public String getHref() throws MalformedURLException {
+		if (getRef() != null) {
+			return getHrefType();
+		}
+		return null;
+
 	}
 
 }

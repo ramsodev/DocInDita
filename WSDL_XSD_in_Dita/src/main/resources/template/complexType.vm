@@ -9,6 +9,23 @@
         	<dt>Repeticiones admitidas</dt>
         	<dd> #if(${complexType.getMinOccurs()} > 0)Desde ${complexType.getMinOccurs()} #end #if(${complexType.getMaxOccurs()} )hasta ${complexType.getMaxOccurs()}#end</dd>
         </dlentry>
+        #end
+         #if(${complexType.getAttributes()} || ${complexType.getAttributeGroups()})
+        <dlentry>
+        	<dt>Atributos</dt>
+        	<dd><sl>
+            		#foreach($attribute in ${complexType.getAttributes()})
+            			<sli><xref #if(${attribute.getRef()})href="${attribute.getHref()}" ${attribute.getExternalHref()}>${attribute.getRef().getLocalPart()}
+            					   #else href="#$id/sectionAttribute${attribute.getName()}">${attribute.getName()}
+            					   #end </xref></sli>
+            		#end
+            		#foreach($attribute in ${complexType.getAttributeGroups()})
+            			<sli><xref #if(${attribute.getRef()})href="${attribute.getHref()}" ${attribute.getExternalHref()}>${attribute.getRef().getLocalPart()}
+            					   #else href="#$id/sectionAttributeGroup${attribute.getName()}">${attibute.getName()}
+            					   #end </xref></sli>
+            		#end
+            </sl></dd>
+        </dlentry>
         #end 
         #if(${complexType.getElements()})
         <dlentry>
@@ -28,6 +45,56 @@
         <codeblock>${complexType.getCode()}</codeblock>
     </section>
     	#end
+    	#if(${complexType.getAttributes()})
+       		#set($childc = $child)
+       		#set($child = true)
+       		#foreach($attribute in ${complexType.getAttributes()})
+       			#if(!${attribute.getRef()})
+       				#if($childc)
+ 	<sectiondiv id="sectionAttribute${attribute.getName()}">
+ 		<p><u><b>Attribute ${attribute.getName()}</b></u></p>
+ 					#else
+    <section id="sectionAttribute${attribute.getName()}">
+    	<title>Attribute ${attribute.getName()}</title>
+    				#end
+    				#if(${attribute.getDoc()})
+    	<p><lines>${attribute.getDoc()}</lines></p>
+    				#end
+       				#parse("attribute.vm")
+       				#if($childc)
+    </sectiondiv> 
+       				#else
+    </section>
+    				#end
+    			#end
+       		#end
+       		#set($child = $childc)
+       	#end
+       	#if(${complexType.getAttributeGroups()})
+       		#set($childc = $child)
+       		#set($child = true)
+       		#foreach($attributeGroup in ${complexType.getAttributeGroups()})
+       			#if(!${attributeGroup.getRef()})
+       				#if($childc)
+ 	<sectiondiv id="sectionAttribute${attributeGroup.getName()}">
+ 		<p><u><b>AttributeGroup ${attributeGroup.getName()}</b></u></p>
+ 					#else
+    <section id="sectionAttribute${attributeGroup.getName()}">
+    	<title>AttributeGroup ${attributeGroup.getName()}</title>
+    				#end
+    				#if(${attibuteGroup.getDoc()})
+    	<p><lines>${attributeGroup.getDoc()}</lines></p>
+    				#end
+       				#parse("attributeGroup.vm")
+       				#if($childc)
+    </sectiondiv> 
+       				#else
+    </section>
+    				#end
+    			#end
+       		#end
+       		#set($child = $childc)
+       	#end
        	#if(${complexType.getElements()})
        		#set($childc = $child)
        		#set($child = true)

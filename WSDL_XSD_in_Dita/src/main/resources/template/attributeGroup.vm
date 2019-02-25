@@ -6,6 +6,7 @@
             		#end
             </sl>
  	</section>
+   #set($childg = $child)
    #set($child = true)
    #foreach($attribute in ${attributeGroup.getAttributes()})
    	<section id = "sectionAttribute${attribute.getName()}">
@@ -13,10 +14,12 @@
    		#parse("attribute.vm")
    	</section>
    #end
+   #set($child = $childg)
+   #if(!$child)
         <section id="section_code">
             <title>Codigo</title>            
         	<codeblock>${attributeGroup.getCode()}</codeblock>
         </section>  
-   
+   #end
     
     

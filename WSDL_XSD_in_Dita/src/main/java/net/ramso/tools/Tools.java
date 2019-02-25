@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import com.predic8.schema.Attribute;
+import com.predic8.schema.AttributeGroup;
 import com.predic8.schema.ComplexType;
 import com.predic8.schema.Element;
 import com.predic8.schema.Schema;
@@ -40,7 +41,7 @@ public class Tools {
 	public static String getHrefType(QName type) throws MalformedURLException {
 		String idSchema = Tools.getSchemaId(type.getNamespaceURI());
 		String q = type.getQualifiedName();
-		String href = idSchema + "_" + type.getLocalPart() + getSuffixType(type)+".dita";
+		String href = idSchema + "_" + type.getLocalPart() + getSuffixType(type) + ".dita";
 		return href;
 	}
 
@@ -66,15 +67,25 @@ public class Tools {
 
 	public static String getSuffixType(QName type) {
 		if (SCHEMA != null) {
-			TypeDefinition td = SCHEMA.getType(type);
-			if (td instanceof SimpleType) {
-				return Constants.SUFFIX_SIMPLETYPE;
-			} else if (td instanceof ComplexType) {
-				return Constants.SUFFIX_COMPLEXTYPE;
-			}else {
-				Attribute a = SCHEMA.getAttribute(type);
-				if(a != null) {
-					return Constants.SUFFIX_ATTRIBUTE;
+			TypeDefinition td = null;
+			try {
+				td = SCHEMA.getType(type);
+			} catch (Exception e) {
+			} finally {
+				if (td != null && td instanceof SimpleType) {
+					return Constants.SUFFIX_SIMPLETYPE;
+				} else if (td != null && td instanceof ComplexType) {
+					return Constants.SUFFIX_COMPLEXTYPE;
+				} else {
+					Attribute a = SCHEMA.getAttribute(type);
+					if (a != null) {
+						return Constants.SUFFIX_ATTRIBUTE;
+					}else {
+						AttributeGroup g = SCHEMA.getAttributeGroup(type);
+						if(g != null) {
+							return Constants.SUFFIX_ATTRIBUTEGROUP;
+						}
+					}
 				}
 			}
 		}

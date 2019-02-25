@@ -1,5 +1,6 @@
 package net.ramso.doc.dita.xml.schema.model;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +54,16 @@ public class AttributeGroupModel extends AbstractComponentModel {
 	public List<AttributeModel> getAttributes() {
 		return attributes;
 	}
-	public QName  getRef() {
+
+	public QName getRef() {
 		return attributeGroup.getRef();
+	}
+
+	public String getHref() throws MalformedURLException {
+		if (getRef() != null) {
+			return getHrefType();
+		}
+		return null;
+
 	}
 }

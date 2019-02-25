@@ -118,4 +118,18 @@ public class ComplexTypeModel extends AbstractComponentModel {
 		return null;
 	}
 
+	/**
+	 * @return the attributes
+	 */
+	public List<AttributeModel> getAttributes() {
+		return attributes;
+	}
+
+	/**
+	 * @return the attributeGroups
+	 */
+	public ArrayList<AttributeGroupModel> getAttributeGroups() {
+		return attributeGroups;
+	}
+
 }
