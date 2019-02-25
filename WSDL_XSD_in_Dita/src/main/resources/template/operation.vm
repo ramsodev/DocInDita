@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<reference id="endpoints" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<reference id="$id" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="urn:oasis:names:tc:dita:xsd:reference.xsd">
     <title>${title}</title>
     <shortdesc>${content}</shortdesc>
@@ -24,30 +24,26 @@
                     #if(${operation.getInput().getName()})
                     	#set($tipo = ${operation.getInput().getName()})
                     #end
+                     #foreach( ${part} in ${operation.getInput().getMessage().getParts()} )
                     <row valign="middle">
                         <entry><b>$tipo</b></entry>
-                        <entry><lines>
-                        #foreach( ${part} in ${operation.getInput().getMessage().getParts()} )
-                        	${part.getName()}
-                        #end
-                        </lines></entry>
-                        <entry>${operation.getInput().getMessage().getName()}</entry>
+                        <entry>${part.getName()}</entry>   
+                        <entry><xref href="${tools.getHref(${part.getElement()})}">${part.getElement().getName()}</xref></entry>
                     </row>
+                    #end
                     #set ($fp = ${operation.getOutput().getMessage().getParts().size()} - 1)
                     #set ($uno = true)
                     #set ($tipo = "Output")
                     #if(${operation.getOutput().getName()})
                     	#set($tipo = ${operation.getOutput().getName()})
                     #end
+                    #foreach( ${part} in ${operation.getOutput().getMessage().getParts()} )
                     <row valign="middle">
                         <entry><b>$tipo</b></entry>
-                        <entry><lines>
-                        #foreach( ${part} in ${operation.getOutput().getMessage().getParts()} )
-                        	${part.getName()}
-                        #end
-                        </lines></entry>
-                        <entry>${operation.getOutput().getMessage().getName()}</entry>
+                        <entry>${part.getName()}</entry>   
+                        <entry><xref href="${tools.getHref(${part.getElement()})}">${part.getElement().getName()}</xref></entry>
                     </row>
+                    #end
                     #set($fs = 0)
  	                #foreach( ${fault} in ${operation.getFaults()} )
                     	#set ($tipo = "Fault " + $fs)
@@ -55,15 +51,13 @@
                     	#if(${fault.getName()})
                     		#set($tipo = ${fault.getName()})
                     	#end
+                    	#foreach( ${part} in ${fault.getMessage().getParts()} )
                 	<row valign="middle">
                         <entry><b>$tipo</b></entry>
-                         <entry><lines>
-                        #foreach( ${part} in ${fault.getMessage().getParts()} )
-                        	${part.getName()}
-                        #end
-                        </lines></entry>
-                        <entry>${fault.getMessage().getName()}</entry>
+                        <entry>${part.getName()}</entry>   
+                        <entry><xref href="${tools.getHref(${part.getElement()})}">${part.getElement().getName()}</xref></entry>
                     </row>
+                    	#end
                   	#end
                   	</tbody>
             </tgroup>

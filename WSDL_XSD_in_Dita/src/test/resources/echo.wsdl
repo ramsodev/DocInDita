@@ -58,9 +58,13 @@
          </xs:element>
          <xs:element name="echoInt">
             <xs:complexType>
-               <xs:sequence>
-                  <xs:element minOccurs="0" name="in" type="xs:int"/>
-               </xs:sequence>
+            	<xs:sequence>
+            		<xs:element minOccurs="0" name="in" type="xs:int" />
+            	</xs:sequence>
+            	<xs:attribute name="fijo" type="xs:string"></xs:attribute>
+            	<xs:attribute ref="ns:test"></xs:attribute>
+            	<xs:attributeGroup ref="ns:NewAttributeGroup"></xs:attributeGroup>
+
             </xs:complexType>
          </xs:element>
          <xs:element name="echoIntResponse">
@@ -143,6 +147,35 @@
          		</xs:sequence>
          	</xs:complexType>
          </xs:element>
+      
+         <xs:attributeGroup name="NewAttributeGroup">
+         	<xs:annotation>
+         		<xs:documentation>
+         			Documentación grupo
+         		</xs:documentation>
+         	</xs:annotation>
+         	<xs:attribute name="hola" type="xs:string" use="optional"
+         		default="aaaaa" form="qualified">
+         	</xs:attribute>
+         	<xs:attribute name="numero" use="required" fixed="120"
+         		form="qualified">
+         		<xs:simpleType>
+         			<xs:restriction base="xs:double">
+         				<xs:maxExclusive value="99999999"></xs:maxExclusive>
+         				<xs:minInclusive value="-1000"></xs:minInclusive>
+         			</xs:restriction>
+         		</xs:simpleType>
+         	</xs:attribute>
+         	
+            </xs:attributeGroup>
+
+         <xs:attribute name="test" type="xs:string"></xs:attribute>
+        
+            <xs:group name="NewGroupDefinition">
+            	<xs:sequence>
+            		
+            	</xs:sequence>
+            </xs:group>
       </xs:schema>
    </wsdl:types>
    <wsdl:message name="echoOMElementRequest">

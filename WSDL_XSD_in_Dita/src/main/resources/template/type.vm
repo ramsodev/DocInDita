@@ -18,10 +18,12 @@
     	#end
     	#if(${element})
     		#parse("element.vm")
-    	<section id="section_code">
-            <title>Codigo</title>            
-        	<codeblock>${element.getCode()}</codeblock>
-        </section>
+    	#end
+    	#if(${attribute})
+    		#parse("attribute.vm")
+    	#end
+    	#if(${attributeGroup})
+    		#parse("attributeGroup.vm")
     	#end
     </body>
 </topic>

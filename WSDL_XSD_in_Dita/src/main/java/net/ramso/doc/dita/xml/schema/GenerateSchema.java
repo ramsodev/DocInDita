@@ -9,14 +9,19 @@ import java.util.List;
 
 import org.apache.velocity.app.Velocity;
 
+import com.predic8.schema.Attribute;
+import com.predic8.schema.AttributeGroup;
 import com.predic8.schema.ComplexType;
 import com.predic8.schema.Element;
+import com.predic8.schema.Group;
 import com.predic8.schema.Schema;
 import com.predic8.schema.SimpleType;
 
 import net.ramso.doc.dita.CreateBookMap;
 import net.ramso.doc.dita.CreatePortada;
 import net.ramso.doc.dita.References;
+import net.ramso.tools.Constants;
+import net.ramso.tools.Tools;
 
 public class GenerateSchema {
 
@@ -40,20 +45,15 @@ public class GenerateSchema {
 
 	public void generateSchema(URL url) throws IOException, URISyntaxException {
 
-//		reader = SchemaFactory.newInstance().newSchemaReader();
-//		Schema schema = reader.read(url);
-//		generateSchema(schema, false);
+		// reader = SchemaFactory.newInstance().newSchemaReader();
+		// Schema schema = reader.read(url);
+		// generateSchema(schema, false);
 	}
 
 	public List<References> generateSchema(Schema schema, boolean portada) throws IOException {
+		Tools.setSchema(schema);
 		references = new ArrayList<References>();
-		URL url = new URL(schema.getTargetNamespace());
-		String idSchema = "";
-		if (url.getHost() != null)
-			idSchema += url.getHost().replaceAll("\\.", "");
-		if (url.getPath() != null) {
-			idSchema += url.getPath().replaceAll("\\/", "");
-		}
+		String idSchema = Tools.getSchemaId(schema.getTargetNamespace());
 		CreatePortada cc = new CreatePortada(idSchema + "Elements", "Elementos del esquema ",
 				"Elements del esquema XML");
 		References cover = new References(cc.create());
@@ -62,6 +62,7 @@ public class GenerateSchema {
 			CreateElement ce = new CreateElement(idSchema);
 			cover.addChild(new References(ce.create(element)));
 		}
+		
 		references.add(cover);
 		cc = new CreatePortada(idSchema + "SimpleTypes", "Simple Types del esquema ", "Tipos simples del esquema XML");
 		cover = new References(cc.create());
@@ -80,8 +81,20 @@ public class GenerateSchema {
 			cover.addChild(new References(ct.create(type)));
 		}
 		references.add(cover);
-//		List<Attribute> attributes = schema.getAttributes();
-
+		cc = new CreatePortada(idSchema + Constants.SUFFIX_ATTRIBUTE+"s", "Attributes del esquema ",
+				"Atributos del esquema XML");
+		cover = new References(cc.create());
+		for(Attribute attribute : schema.getAttributes()) {
+			CreateAttribute ca = new CreateAttribute(idSchema);
+			cover.addChild(new References(ca.create(attribute)));
+		}
+		for(AttributeGroup attributeGroup:schema.getAttributeGroups()) {
+			CreateAttributeGroup cag = new CreateAttributeGroup(idSchema);
+			cover.addChild(new References(cag.create(attributeGroup)));
+		}
+		references.add(cover);
+	
+//		List<Group> groups = schema.getGroups();
 		if (portada) {
 			cc = new CreatePortada(idSchema + "Schema", "Schema XML", "NameSpace:" + schema.getTargetNamespace());
 			cover = new References(cc.create());

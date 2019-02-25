@@ -1,0 +1,22 @@
+ 	<section>
+ 	<title>Atributos</title>
+ 	<sl>
+            		#foreach($attribute in ${attributeGroup.getAttributes()})
+            			<sli><xref href="#$id/sectionAttribute${attribute.getName()}">${attribute.getName()}</xref></sli>
+            		#end
+            </sl>
+ 	</section>
+   #set($child = true)
+   #foreach($attribute in ${attributeGroup.getAttributes()})
+   	<section id = "sectionAttribute${attribute.getName()}">
+   	<title>Attribute ${attribute.getName()}</title>
+   		#parse("attribute.vm")
+   	</section>
+   #end
+        <section id="section_code">
+            <title>Codigo</title>            
+        	<codeblock>${attributeGroup.getCode()}</codeblock>
+        </section>  
+   
+    
+    

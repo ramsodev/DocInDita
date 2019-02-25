@@ -3,9 +3,11 @@ package net.ramso.doc.dita.xml.wsdl;
 import java.io.IOException;
 import java.util.List;
 
+import com.predic8.wsdl.BindingOperation;
 import com.predic8.wsdl.Port;
 
 import net.ramso.doc.dita.BasicCreate;
+import net.ramso.tools.Tools;
 
 public class CreatePorts extends BasicCreate {
 	public CreatePorts(String serviceName) {
@@ -15,6 +17,7 @@ public class CreatePorts extends BasicCreate {
 
 	public String create(List<Port> ports) throws IOException {
 		getContext().put("ports", ports);
+		getContext().put("tools", Tools.class);
 		run(getContext());
 		return getFile_name();
 	}

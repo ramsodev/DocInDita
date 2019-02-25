@@ -11,19 +11,12 @@
     </booklists>
   </frontmatter>
   #foreach($reference in $references)
-  <part id="${reference.id}" href="${reference.href}">
-  	#if(${reference.getChilds()})
-  		#foreach($ref1 in ${reference.getChilds()})
-    <chapter id="${ref1.id}" href="${ref1.href}">
-    		#if(${ref1.getChilds()})
-    			#foreach($ref2 in ${ref1.getChilds()})
-      <topicref translate="yes" collection-type="sequence" type="topic" toc="yes" id="${ref2.id}" href="${ref2.href}" />
-      			#end
-      		#end
-    </chapter>
-    	#end
-    #end
-  </part>
+  <chapter id="${reference.id}" href="${reference.href}">
+  		#if(${reference.getChilds()})
+    		#set($refs = ${reference.getChilds()})
+    		#parse("bookmap_line.vm")
+      	#end
+  </chapter>    
   #end
   
   <backmatter>

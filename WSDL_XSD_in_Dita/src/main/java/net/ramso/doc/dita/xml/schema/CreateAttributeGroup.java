@@ -3,39 +3,38 @@ package net.ramso.doc.dita.xml.schema;
 import java.io.IOException;
 
 import com.predic8.schema.Annotation;
+import com.predic8.schema.AttributeGroup;
 import com.predic8.schema.Documentation;
-import com.predic8.schema.SimpleType;
 
 import net.ramso.doc.dita.BasicCreate;
-import net.ramso.doc.dita.xml.schema.model.SimpleTypeModel;
+import net.ramso.doc.dita.xml.schema.model.AttributeGroupModel;
 import net.ramso.tools.Constants;
-import net.ramso.tools.Tools;
 
-public class CreateSimpleType extends BasicCreate {
+public class CreateAttributeGroup extends BasicCreate {
 
 	private String content;
 	private String idSchema;
 
-	public CreateSimpleType(String idSchema) {
+	public CreateAttributeGroup(String idSchema) {
 		super("", "");
 		setTemplateFile("template/type.vm");
-		setContent("Definicioón del tipo de datos simple");
+		setContent("Definición del grupo de atributos");
 		this.idSchema = idSchema;
 	}
 
 	
 
-	public String create(SimpleType type) throws IOException {
-		setId(idSchema+"_"+type.getName() + Constants.SUFFIX_SIMPLETYPE);
-		setTitle("Simple Type " + type.getName());
+	public String create(AttributeGroup attributeGroup) throws IOException {
+		setId(idSchema+"_"+attributeGroup.getName() + Constants.SUFFIX_ATTRIBUTEGROUP);
+		setTitle("Attribute Group" + attributeGroup.getName());
+		loadContent(attributeGroup.getAnnotation());
 		init();
-		loadContent(type.getAnnotation());
 		getContext().put("content", getContent());
-		getContext().put("simpleType", new SimpleTypeModel(type));
-		getContext().put("tools", Tools.class);
+		getContext().put("attributeGroup", new AttributeGroupModel(attributeGroup));
 		run(getContext());
 		return getFile_name();
 	}
+	
 	public void loadContent(Annotation annotation) {
 		String value = "";
 		if(annotation!=null) {
@@ -47,6 +46,7 @@ public class CreateSimpleType extends BasicCreate {
 		}
 		if(!value.isEmpty()) setContent(value);
 	}
+
 	public String getContent() {
 		return content;
 	}

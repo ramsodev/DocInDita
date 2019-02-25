@@ -29,7 +29,7 @@
                         			#if(${port.getBinding().getOperations().size()} > 0)
                         				<ul>
                         				#foreach($op in ${port.getBinding().getOperations()})
-                            				<li>${op.getName()}</li>
+                            				<li><xref href="${tools.getHref($op)}">${op.getName()}</xref></li>
                             			#end
                         				</ul>
                         				

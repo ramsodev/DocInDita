@@ -1,3 +1,4 @@
+  <!-- complextype start -->
    <dl>
         <dlentry>
        		<dt>Obligatorio</dt>
@@ -28,16 +29,26 @@
     </section>
     	#end
        	#if(${complexType.getElements()})
-       		#set($chilp = $child)
+       		#set($childc = $child)
        		#set($child = true)
        		#foreach($element in ${complexType.getElements()})
+       			#if($childc)
+ 	<sectiondiv id="sectionElement${element.getName()}">
+ 		<p><u><b>Element ${element.getName()}</b></u></p>
+ 				#else
     <section id="sectionElement${element.getName()}">
     	<title>Element ${element.getName()}</title>
+    			#end
     			#if(${element.getDoc()})
     	<p><lines>${element.getDoc()}</lines></p>
     			#end
        			#parse("element.vm")
+       			#if($childc)
+    </sectiondiv> 
+       			#else
     </section>
+    			#end
        		#end
-       		#set($chil = $childp)
+       		#set($child = $childc)
        	#end
+    <!-- complextype end -->
