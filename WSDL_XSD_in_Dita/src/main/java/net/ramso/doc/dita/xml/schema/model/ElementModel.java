@@ -1,21 +1,22 @@
 package net.ramso.doc.dita.xml.schema.model;
 
-import java.io.StringWriter;
-
-import com.predic8.schema.Documentation;
+import com.predic8.schema.ComplexType;
 import com.predic8.schema.Element;
+import com.predic8.schema.SchemaComponent;
 import com.predic8.schema.SimpleType;
 import com.predic8.schema.TypeDefinition;
 
-public class ElementModel {
+import groovy.xml.QName;
+
+public class ElementModel extends AbstractComponentModel{
 
 	private boolean requiered = false;
 	private int minOccurs = -1;
 	private String maxOccurs = null;
 	private SimpleTypeModel simpleType = null;
-	private String type = null;
+	private ComplexTypeModel complexType = null;
 	private Element element;
-	private String name;
+	
 
 	public ElementModel(Element element) {
 		super();
@@ -30,15 +31,18 @@ public class ElementModel {
 		if (element.getMaxOccurs() != null && !element.getMaxOccurs().isEmpty()) {
 			maxOccurs = element.getMaxOccurs();
 		}
-		if (element.getType() != null) {
-			type = element.getType().getLocalPart();
-		}
 		if (element.getEmbeddedType() != null) {
 			TypeDefinition t = element.getEmbeddedType();
 			if (t instanceof SimpleType) {
 				simpleType = new SimpleTypeModel((SimpleType) t);
+			} else if (t instanceof ComplexType) {
+				complexType = new ComplexTypeModel((ComplexType) t);
 			}
 		}
+	}
+
+	public ComplexTypeModel getComplexType() {
+		return complexType;
 	}
 
 	/**
@@ -49,7 +53,8 @@ public class ElementModel {
 	}
 
 	/**
-	 * @param minOccurs the minOccurs to set
+	 * @param minOccurs
+	 *            the minOccurs to set
 	 */
 	public void setMinOccurs(int minOccurs) {
 		this.minOccurs = minOccurs;
@@ -78,32 +83,14 @@ public class ElementModel {
 		return simpleType;
 	}
 
-	/**
-	 * @return the type
-	 */
-	public String getType() {
-		return type;
+	@Override
+	public QName getType() {		
+		return element.getType();
 	}
 
-	public String getCode() {
-		return element.getAsString().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
-	}
-
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return element.getName();
-	}
-	
-	public String getDoc() {
-		 String writer = "";
-		if(element.getAnnotation()!=null) {
-			for(Documentation doc : element.getAnnotation().getDocumentations()){
-				writer += doc.getContent() + "\n";
-			}
-		}
-		return writer;
+	@Override
+	public SchemaComponent getComponent() {
+		return element;
 	}
 
 }

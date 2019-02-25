@@ -1,9 +1,10 @@
 package net.ramso.doc.dita.xml.schema.model;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.predic8.schema.Documentation;
+import com.predic8.schema.SchemaComponent;
 import com.predic8.schema.SimpleType;
 import com.predic8.schema.restriction.BaseRestriction;
 import com.predic8.schema.restriction.facet.EnumerationFacet;
@@ -20,7 +21,11 @@ import com.predic8.schema.restriction.facet.PatternFacet;
 import com.predic8.schema.restriction.facet.TotalDigitsFacet;
 import com.predic8.schema.restriction.facet.WhiteSpaceFacet;
 
-public class SimpleTypeModel {
+import groovy.xml.QName;
+import net.ramso.tools.Constants;
+import net.ramso.tools.Tools;
+
+public class SimpleTypeModel extends AbstractComponentModel {
 
 	private BaseRestriction restriction;
 
@@ -37,20 +42,12 @@ public class SimpleTypeModel {
 	private String pattern = null;
 	private List<String> values;
 
-	private String code;
-
-	private String doc;
+	private SimpleType simpleType;
 
 	public SimpleTypeModel(SimpleType type) {
 		super();
+		this.simpleType = type;
 		this.restriction = type.getRestriction();
-		this.code = type.getAsString().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
-		this.doc = "";
-		if (type.getAnnotation() != null) {
-			for (Documentation doce : type.getAnnotation().getDocumentations()) {
-				doc += doce.getContent() + "\n";
-			}
-		}
 		init();
 	}
 
@@ -104,7 +101,8 @@ public class SimpleTypeModel {
 	/**
 	 * Retorna el tamaño de un campo numerico en base a la mascara de maxValue
 	 *
-	 * @param mask la mascara a traducir
+	 * @param mask
+	 *            la mascara a traducir
 	 * @return un array con dos elementos longitud, decimales
 	 */
 	protected void setSizeFromMask(final String mask) {
@@ -133,6 +131,20 @@ public class SimpleTypeModel {
 	 */
 	public String getDataType() {
 		return dataType;
+	}
+
+	public String getHrefType() throws MalformedURLException {
+		if (restriction.getBase().getNamespaceURI().equalsIgnoreCase(Constants.XSD_NAMESPACE)) {
+			return Constants.XSD_DOC_URI + restriction.getBase().getLocalPart();
+		}
+		return Tools.getHrefType(restriction.getBase());
+	}
+
+	public String getExternalHref() {
+		if (restriction.getBase().getNamespaceURI().equalsIgnoreCase(Constants.XSD_NAMESPACE)) {
+			return "format=\"html\" scope=\"external\"";
+		}
+		return "";
 	}
 
 	/**
@@ -219,15 +231,14 @@ public class SimpleTypeModel {
 		return whiteSpaces;
 	}
 
-	public String getCode() {
-		return code;
+	@Override
+	public SchemaComponent getComponent() {
+		return simpleType;
 	}
 
-	/**
-	 * @return the doc
-	 */
-	public String getDoc() {
-		return doc;
+	@Override
+	public QName getType() {
+		return restriction.getBase();
 	}
 
 }

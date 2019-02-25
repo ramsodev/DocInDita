@@ -1,30 +1,48 @@
 package net.ramso.doc.dita.xml.schema.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import com.predic8.schema.Attribute;
+import com.predic8.schema.AttributeGroup;
 import com.predic8.schema.ComplexType;
-import com.predic8.schema.Documentation;
 import com.predic8.schema.Element;
+import com.predic8.schema.SchemaComponent;
 import com.predic8.schema.Sequence;
 
-public class ComplexTypeModel {
+import groovy.xml.QName;
+
+public class ComplexTypeModel extends AbstractComponentModel {
 	private boolean requiered = false;
 	private int minOccurs = -1;
 	private int maxOccurs = -1;
 	private ArrayList<ElementModel> elements = null;
 
-	private ComplexType type;
+	private ComplexType complexType;
+	private List<AttributeModel> attributes;
+	private ArrayList<AttributeGroupModel> attributeGroups;
 
 	public ComplexTypeModel(ComplexType type) {
 		super();
-		this.type = type;
+		this.complexType = type;
 		init();
 	}
 
 	private void init() {
-		type.getAllAttributes();
-		type.getAttributeGroups();
-		Sequence s = type.getSequence();
+
+		complexType.getAttributeGroups();
+		Sequence s = complexType.getSequence();
+
+		for (Attribute atr : complexType.getAttributes()) {
+			if (attributes == null)
+				attributes = new ArrayList<AttributeModel>();
+			attributes.add(new AttributeModel(atr));
+		}
+		for (AttributeGroup atr : complexType.getAttributeGroups()) {
+			if (attributeGroups == null)
+				attributeGroups = new ArrayList<AttributeGroupModel>();
+			attributeGroups.add(new AttributeGroupModel(atr));
+		}
 		for (Element e : s.getElements()) {
 			addElement(new ElementModel(e));
 		}
@@ -44,7 +62,8 @@ public class ComplexTypeModel {
 	}
 
 	/**
-	 * @param minOccurs the minOccurs to set
+	 * @param minOccurs
+	 *            the minOccurs to set
 	 */
 	public void setMinOccurs(int minOccurs) {
 		this.minOccurs = minOccurs;
@@ -67,11 +86,11 @@ public class ComplexTypeModel {
 	}
 
 	public String getNameSpace() {
-		return type.getNamespaceUri();
+		return complexType.getNamespaceUri();
 	}
 
 	public String getCode() {
-		return type.getAsString().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+		return complexType.getAsString().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 	}
 
 	/**
@@ -87,19 +106,16 @@ public class ComplexTypeModel {
 	public ArrayList<ElementModel> getElements() {
 		return elements;
 	}
-	
-	public String getName() {
-		return type.getName();
+
+	@Override
+	public SchemaComponent getComponent() {
+		return complexType;
 	}
-	
-	public String getDoc() {
-		 String writer = "";
-		if(type.getAnnotation()!=null) {
-			for(Documentation doc : type.getAnnotation().getDocumentations()){
-				writer += doc.getContent() + "\n";
-			}
-		}
-		return writer;
+
+	@Override
+	public QName getType() {
+
+		return null;
 	}
 
 }
