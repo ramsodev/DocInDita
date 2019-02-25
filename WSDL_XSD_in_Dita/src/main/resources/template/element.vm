@@ -1,5 +1,4 @@
-   <!-- Element Start -->
-   <!-- element child $child -->
+   
    <dl>
         <dlentry>
        		<dt>Obligatorio</dt>
@@ -14,7 +13,7 @@
         #if(${element.getType()})
         <dlentry>
        		<dt>Tipo</dt>
-            <dd><xref href="${element.getHrefType()}" ${element.getExternalHref()}>${element.getType()}</xref></dd>
+            <dd><xref href="${element.getHrefType()}" ${element.getExternalHref()}>${element.getType().getLocalPart()}</xref></dd>
         </dlentry>
    	</dl> 
     	#elseif(${element.getSimpleType()})
@@ -31,11 +30,11 @@
     		#end
             #set($simpleType = ${element.getSimpleType()})
             #set($childs = $child)
-            <!-- element child $child = $childs -->
+           
             #set($child = true)
             #parse("simpleType.vm")
             #set($child =  $childs)
-            <!-- element child $child = $childs -->
+            
             #if($child)
         </sectiondiv>    
             #else
@@ -55,10 +54,10 @@
     		#end
     		#set($childp = $child)
             #set($child = true)
-            <!-- element child $child = $childp -->
+           
             #set($complexType = ${element.getComplexType()})
             #parse("complexType.vm")
-            <!-- element child $child = $childp -->
+            
             #set($child =  $childp)
             #if($child)
         </sectiondiv>    
@@ -72,5 +71,5 @@
         	<codeblock>${element.getCode()}</codeblock>
         </section>  
         #end
-    <!-- Element End -->
+
     

@@ -3,6 +3,7 @@ package net.ramso.tools;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import com.predic8.schema.Attribute;
 import com.predic8.schema.ComplexType;
 import com.predic8.schema.Element;
 import com.predic8.schema.Schema;
@@ -70,6 +71,11 @@ public class Tools {
 				return Constants.SUFFIX_SIMPLETYPE;
 			} else if (td instanceof ComplexType) {
 				return Constants.SUFFIX_COMPLEXTYPE;
+			}else {
+				Attribute a = SCHEMA.getAttribute(type);
+				if(a != null) {
+					return Constants.SUFFIX_ATTRIBUTE;
+				}
 			}
 		}
 		return Constants.SUFFIX_TYPE;

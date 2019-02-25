@@ -1,24 +1,20 @@
 package net.ramso.doc.dita.xml.schema.model;
 
-import java.net.MalformedURLException;
-
 import com.predic8.schema.ComplexType;
-import com.predic8.schema.Documentation;
 import com.predic8.schema.Element;
+import com.predic8.schema.SchemaComponent;
 import com.predic8.schema.SimpleType;
 import com.predic8.schema.TypeDefinition;
 
-import net.ramso.tools.Constants;
-import net.ramso.tools.Tools;
+import groovy.xml.QName;
 
-public class ElementModel {
+public class ElementModel extends AbstractComponentModel{
 
 	private boolean requiered = false;
 	private int minOccurs = -1;
 	private String maxOccurs = null;
 	private SimpleTypeModel simpleType = null;
 	private ComplexTypeModel complexType = null;
-	private String type = null;
 	private Element element;
 	
 
@@ -34,9 +30,6 @@ public class ElementModel {
 		}
 		if (element.getMaxOccurs() != null && !element.getMaxOccurs().isEmpty()) {
 			maxOccurs = element.getMaxOccurs();
-		}
-		if (element.getType() != null) {
-			type = element.getType().getLocalPart();
 		}
 		if (element.getEmbeddedType() != null) {
 			TypeDefinition t = element.getEmbeddedType();
@@ -90,47 +83,14 @@ public class ElementModel {
 		return simpleType;
 	}
 
-	/**
-	 * @return the type
-	 */
-	public String getType() {
-		return type;
-	}
-	
-	public String getHrefType() throws MalformedURLException {
-		if(element.getType().getNamespaceURI().equalsIgnoreCase(Constants.XSD_NAMESPACE)) {
-			return Constants.XSD_DOC_URI+element.getType().getLocalPart();
-		}
-		
-		return Tools.getHrefType(element.getType());
-	}
-	
-	public String getExternalHref() {
-		if(element.getType().getNamespaceURI().equalsIgnoreCase(Constants.XSD_NAMESPACE)) {
-			return "format=\"html\" scope=\"external\"";
-		}
-		return "";
+	@Override
+	public QName getType() {		
+		return element.getType();
 	}
 
-	public String getCode() {
-		return element.getAsString().replaceAll("<", "&lt;").replaceAll(">","&gt;");
-	}
-
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return element.getName();
-	}
-
-	public String getDoc() {
-		String writer = "";
-		if (element.getAnnotation() != null) {
-			for (Documentation doc : element.getAnnotation().getDocumentations()) {
-				writer += doc.getContent() + "\n";
-			}
-		}
-		return writer;
+	@Override
+	public SchemaComponent getComponent() {
+		return element;
 	}
 
 }

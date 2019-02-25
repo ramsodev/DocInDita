@@ -8,4 +8,6 @@ public class Constants {
 	public static final String SUFFIX_TYPE = "Type";
 	public static final String SUFFIX_SIMPLETYPE = "SimpleType";
 	public static final String SUFFIX_COMPLEXTYPE = "ComplexType";
+	public static final String SUFFIX_ATTRIBUTE = "Attribute";
+	public static final String SUFFIX_ATTRIBUTEGROUP = "AttributeGroup";
 }

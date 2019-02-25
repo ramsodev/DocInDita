@@ -1,0 +1,62 @@
+   
+   <dl>
+   	#if(${attribute.getUsage()})
+        <dlentry>
+       		<dt>Usage</dt>
+            <dd>${attribute.getUsage()}</dd>
+        </dlentry>
+    #end
+    #if(${attribute.getFixedValue()})
+        <dlentry>
+        	<dt>Fixed Value</dt>
+        	<dd>${attribute.getFixedValue()}</dd>
+        </dlentry>
+    #elseif(${attribute.getDefaultValue()})
+    	<dlentry>
+        	<dt>Default Value</dt>
+        	<dd>${attribute.getDefaultValue()}</dd>
+        </dlentry>
+    #end
+    #if(${attribute.getForm()})
+        <dlentry>
+       		<dt>Form qualification</dt>
+            <dd>${attribute.getForm()}</dd>
+        </dlentry>
+    #end
+    #if(${attribute.getType()})
+        <dlentry>
+       		<dt>Tipo</dt>
+            <dd><xref href="${attribute.getHrefType()}" ${attribute.getExternalHref()}>${attribute.getType().getLocalPart()}</xref></dd>
+        </dlentry>
+   	</dl> 
+    #elseif(${attribute.getSimpleType()})
+ 	</dl>
+ 			#if($child)
+ 		<sectiondiv id= "section_embebedType${attribute.getName()}">
+ 			<p><u><b>Simple Type</b></u></p>
+ 			#else
+    	<section id= "section_embebedType">    		
+    		<title>Simple Type</title>
+    			#if(${attribute.getSimpleType().getDoc()})
+    		<p><lines>${attribute.getSimpleType().getDoc()}</lines></p>
+    			#end
+    		#end
+            #set($simpleType = ${attribute.getSimpleType()})
+            #set($childs = $child)
+            #set($child = true)
+            #parse("simpleType.vm")
+            #set($child =  $childs)
+            #if($child)
+        </sectiondiv>    
+            #else
+        </section>
+        	#end
+    #end  
+    #if(!$child)
+        <section id="section_code">
+            <title>Codigo</title>            
+        	<codeblock>${attribute.getCode()}</codeblock>
+        </section>  
+    #end
+    
+    

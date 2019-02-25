@@ -19,5 +19,11 @@
     	#if(${element})
     		#parse("element.vm")
     	#end
+    	#if(${attribute})
+    		#parse("attribute.vm")
+    	#end
+    	#if(${attributeGroup})
+    		#parse("attributeGroup.vm")
+    	#end
     </body>
 </topic>
