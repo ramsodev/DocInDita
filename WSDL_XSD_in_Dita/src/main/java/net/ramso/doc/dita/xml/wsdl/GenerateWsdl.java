@@ -1,6 +1,8 @@
 package net.ramso.doc.dita.xml.wsdl;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -14,6 +16,7 @@ import com.predic8.wsdl.Definitions;
 import com.predic8.wsdl.Operation;
 import com.predic8.wsdl.Service;
 import com.predic8.wsdl.WSDLParser;
+import com.predic8.wsdl.WSDLParserContext;
 
 import net.ramso.doc.dita.CreateBookMap;
 import net.ramso.doc.dita.CreatePortada;
@@ -40,6 +43,7 @@ public class GenerateWsdl {
 	}
 
 	public void generateWSDL(URL url) throws IOException, URISyntaxException {
+		
 		String fileName = url.getPath().substring(url.getPath().lastIndexOf('/') + 1);
 		if (fileName.contains("?")) {
 			fileName = fileName.substring(0, fileName.lastIndexOf('?'));
@@ -47,7 +51,13 @@ public class GenerateWsdl {
 			fileName = fileName.substring(0, fileName.lastIndexOf('.'));
 		}
 		WSDLParser parser = new WSDLParser();
-		Definitions desc = parser.parse(url.openStream());
+		WSDLParserContext ctx = new WSDLParserContext();
+		ctx.setInput( url.toExternalForm());
+//		if(url.getProtocol().startsWith("file")) {
+//			File f = new File(url.getPath());
+//			ctx.setBaseDir(f.getParent());
+//		}
+		Definitions desc = parser.parse(ctx);
 		String content = "Definición del Servicio Web " + fileName;
 		if (desc.getDocumentation() != null) {
 			if (!desc.getDocumentation().getContent().isEmpty()) {
