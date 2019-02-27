@@ -1,20 +1,24 @@
 package net.ramso.doc.dita.xml.schema.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.predic8.schema.All;
 import com.predic8.schema.Choice;
 import com.predic8.schema.Element;
+import com.predic8.schema.Group;
+import com.predic8.schema.GroupRef;
+import com.predic8.schema.SchemaComponent;
 import com.predic8.schema.Sequence;
 
 import net.ramso.tools.Constants;
 
-public abstract class AbstractComplexContentModel extends AbstractComponentModel {
+public abstract class AbstractComplexContentModel extends AbstractComponentModel implements IComplexContentModel {
 
 	private int minOccurs = -1;
 	private String maxOccurs = "-1";
 	private boolean requiered;
-	private ArrayList<ElementModel> elements;
+	private ArrayList<IComplexContentModel> elements;
 	private String contentType = Constants.SEQUENCE;
 
 	protected void procesModel(Object model) {
@@ -27,13 +31,9 @@ public abstract class AbstractComplexContentModel extends AbstractComponentModel
 		}
 	}
 
-	private void procesChoice(Choice choice) {
+	protected void procesChoice(Choice choice) {
 		this.contentType = Constants.CHOICE;
-		if (choice.getElements() != null) {
-			for (Element e : choice.getElements()) {
-				addElement(new ElementModel(e));
-			}
-		}
+		processParticles(choice.getParticles());
 		if (choice.getMinOccurs() != null) {
 			setMinOccurs(((Integer) choice.getMinOccurs()));
 		}
@@ -43,13 +43,9 @@ public abstract class AbstractComplexContentModel extends AbstractComponentModel
 
 	}
 
-	private void procesAll(All all) {
+	protected void procesAll(All all) {
 		this.contentType = Constants.ALL;
-		if (all.getElements() != null) {
-			for (Element e : all.getElements()) {
-				addElement(new ElementModel(e));
-			}
-		}
+		processParticles(all.getParticles());
 		if (all.getMinOccurs() != null) {
 			setMinOccurs(((Integer) all.getMinOccurs()));
 		}
@@ -59,14 +55,9 @@ public abstract class AbstractComplexContentModel extends AbstractComponentModel
 
 	}
 
-	private void procesSequence(Sequence sequence) {
+	protected void procesSequence(Sequence sequence) {
 		this.contentType = Constants.SEQUENCE;
-
-		if (sequence.getElements() != null) {
-			for (Element e : sequence.getElements()) {
-				addElement(new ElementModel(e));
-			}
-		}
+		processParticles(sequence.getParticles());
 		if (sequence.getMinOccurs() != null) {
 			setMinOccurs(((Integer) sequence.getMinOccurs()));
 		}
@@ -75,15 +66,33 @@ public abstract class AbstractComplexContentModel extends AbstractComponentModel
 		}
 	}
 
-	private void addElement(ElementModel elementModel) {
+	private void processParticles(List<SchemaComponent> particles) {
+		for (SchemaComponent par : particles) {
+			if (par instanceof Element) {
+				addElement(new ElementModel((Element) par));
+			} else if (par instanceof Choice) {
+				addElement(new ChoiceModel((Choice) par));
+			} else if (par instanceof Sequence) {
+				addElement(new SequenceModel((Sequence) par));
+			} else if (par instanceof All) {
+				addElement(new AllModel((All) par));
+			} else if (par instanceof Group) {
+				addElement(new GroupModel((Group) par));
+			} else if (par instanceof GroupRef) {
+				addElement(new GroupModel((GroupRef) par));
+			}
+		}
+
+	}
+
+	protected void addElement(IComplexContentModel elementModel) {
 		if (elements == null)
-			elements = new ArrayList<ElementModel>();
+			elements = new ArrayList<IComplexContentModel>();
 		elements.add(elementModel);
 	}
 
 	/**
-	 * @param minOccurs
-	 *            the minOccurs to set
+	 * @param minOccurs the minOccurs to set
 	 */
 	public void setMinOccurs(int minOccurs) {
 		this.minOccurs = minOccurs;
@@ -127,11 +136,11 @@ public abstract class AbstractComplexContentModel extends AbstractComponentModel
 		return contentType;
 	}
 
-	public ArrayList<ElementModel> getElements() {
+	public ArrayList<IComplexContentModel> getElements() {
 		return elements;
 	}
 
-	public void setElements(ArrayList<ElementModel> elements) {
+	public void setElements(ArrayList<IComplexContentModel> elements) {
 		this.elements = elements;
 	}
 

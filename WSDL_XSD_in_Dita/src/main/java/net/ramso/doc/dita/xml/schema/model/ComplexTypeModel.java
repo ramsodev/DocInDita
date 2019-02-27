@@ -7,13 +7,13 @@ import com.predic8.schema.Attribute;
 import com.predic8.schema.AttributeGroup;
 import com.predic8.schema.ComplexContent;
 import com.predic8.schema.ComplexType;
-import com.predic8.schema.Element;
 import com.predic8.schema.Extension;
 import com.predic8.schema.SchemaComponent;
 import com.predic8.schema.Sequence;
 import com.predic8.schema.SimpleContent;
 
 import groovy.xml.QName;
+import net.ramso.tools.Constants;
 
 public class ComplexTypeModel extends AbstractComplexContentModel {
 
@@ -125,6 +125,17 @@ public class ComplexTypeModel extends AbstractComplexContentModel {
 
 	public List<QName> getSupers() {
 		return supers;
+	}
+
+	@Override
+	public QName getRef() {
+		return null;
+	}
+
+	@Override
+	public String getComponentName() {
+		
+		return Constants.NAME_COMPLEXTYPE;
 	}
 
 }

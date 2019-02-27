@@ -14,4 +14,7 @@ public class Constants {
 	public static final String ALL = "All";
 	public static final String CHOICE = "Choice";
 	public static final String SUFFIX_GROUP = "Group";
+	public static final String NAME_COMPLEXTYPE = "ComplexType";
+	public static final String NAME_ELEMENT = "Element";
+	public static final String NAME_GROUP = "Group";
 }

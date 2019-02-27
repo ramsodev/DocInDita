@@ -15,6 +15,7 @@
 						<xsd:sequence>
 							<xsd:element maxOccurs="1" minOccurs="0"
 								name="CallReference" type="tns:CallReferenceType" />
+
 						</xsd:sequence>
 					</xsd:extension>
 				</xsd:complexContent>
@@ -801,7 +802,9 @@
 			</xsd:complexType>
 			<xsd:complexType name="MAPAEType">
 				<xsd:sequence>
-					<xsd:element maxOccurs="1" minOccurs="0" name="usuario">
+					<xsd:group ref="tns:NewGroupDefinitionAll"></xsd:group>
+					<xsd:element maxOccurs="1" minOccurs="0"
+						name="usuario">
 						<xsd:simpleType>
 							<xsd:restriction base="xsd:string">
 								<xsd:minLength value="0" />
@@ -811,16 +814,24 @@
 					</xsd:element>
 					<xsd:element maxOccurs="1" minOccurs="0"
 						name="simulacion" type="tns:DATOSSIMULACIONType" />
-					<xsd:element maxOccurs="1" minOccurs="0" name="cliente"
-						type="tns:DATOSCLIENTEType" />
+					<xsd:element maxOccurs="1" minOccurs="0"
+						name="cliente" type="tns:DATOSCLIENTEType" />
 					<xsd:element maxOccurs="1" minOccurs="0"
 						name="clienteadicional" type="tns:DATOSCLIENTE2Type" />
-					<xsd:element maxOccurs="1" minOccurs="0" name="cobro"
-						type="tns:DATOSCOBROType" />
+					<xsd:element maxOccurs="1" minOccurs="0"
+						name="cobro" type="tns:DATOSCOBROType" />
 					<xsd:element maxOccurs="1" minOccurs="0" name="alta"
 						type="tns:DATOSALTAType" />
 					<xsd:element maxOccurs="20" minOccurs="0"
 						name="asegurados" type="tns:DATOSASEGURADOType" />
+					<xsd:sequence>
+						<xsd:choice>
+							<xsd:element name="NewElement"
+								type="xsd:string">
+							</xsd:element>
+							<xsd:element ref="tns:BTW020WSFault"></xsd:element>
+						</xsd:choice>
+					</xsd:sequence>
 				</xsd:sequence>
 			</xsd:complexType>
 			<xsd:complexType name="CallReferenceType">
@@ -860,7 +871,7 @@
 				</xsd:sequence>
 			</xsd:complexType>
 			<xsd:element name="BTW020WSFault" type="xsd:string" />
-		<xsd:group name="NewGroupDefinitionSequence">
+			<xsd:group name="NewGroupDefinitionSequence">
 				<xsd:sequence>
 					<xsd:element name="NewElement" type="xsd:string"></xsd:element>
 					<xsd:element name="NewElement1" type="xsd:string"></xsd:element>

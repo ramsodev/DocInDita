@@ -1,7 +1,5 @@
 package net.ramso.tools;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;

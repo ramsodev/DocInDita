@@ -13,7 +13,7 @@
         </section>
     	#end
     	#if(${complexType})
-    		#parse("complexType.vm")
+    		#parse("complextype.vm")
     	
     	#end
     	#if(${element})

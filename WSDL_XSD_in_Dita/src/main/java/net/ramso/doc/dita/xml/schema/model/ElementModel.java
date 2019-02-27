@@ -7,8 +7,9 @@ import com.predic8.schema.SimpleType;
 import com.predic8.schema.TypeDefinition;
 
 import groovy.xml.QName;
+import net.ramso.tools.Constants;
 
-public class ElementModel extends AbstractComponentModel{
+public class ElementModel extends AbstractComplexContentModel {
 
 	private boolean requiered = false;
 	private int minOccurs = -1;
@@ -99,6 +100,11 @@ public class ElementModel extends AbstractComponentModel{
 	
 	public QName getRef() {
 		return element.getRef();
+	}
+
+	@Override
+	public String getComponentName() {
+		return Constants.NAME_ELEMENT;
 	}
 
 }

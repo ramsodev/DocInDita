@@ -56,7 +56,7 @@
             #set($child = true)
            
             #set($complexType = ${element.getComplexType()})
-            #parse("complexType.vm")
+            #parse("complextype.vm")
             
             #set($child =  $childp)
             #if($child)

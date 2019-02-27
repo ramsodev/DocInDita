@@ -14,7 +14,7 @@
         
         #if(${group.getElements()})
         <dlentry>
-        	<dt>Elementos para ${group.getContentType()}</dt>
+        	<dt>Contenido de ${group.getContentType()}</dt>
         	<dd><sl>
             		#foreach($element in ${group.getElements()})
             			<sli><xref #if(${element.getRef()})href="${element.getHrefType()}" ${element.getExternalHref()}>${element.getRef().getLocalPart()}
@@ -72,7 +72,15 @@
     				#if(${element.getDoc()})
     	<p><lines>${element.getDoc()}</lines></p>
     				#end
-       				#parse("element.vm")
+       				#if(${element.getComponentName().equalsIgnoreCase("ComplexType")})
+    					#set($complexType = $element)
+       					#parse("complextype.vm")
+       				#elseif(${element.getComponentName().equalsIgnoreCase("Element")})
+       					#parse("element.vm")       					
+       				#else
+       					#set($group = $element)
+       					#parse("group.vm")
+       				#end
        				#if($childc)
     </sectiondiv> 
        				#else

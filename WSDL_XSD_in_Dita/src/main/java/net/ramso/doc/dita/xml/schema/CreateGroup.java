@@ -26,7 +26,7 @@ public class CreateGroup extends BasicCreate {
 	
 
 	public String create(Group group) throws IOException {
-		setId(idSchema+"_"+group.getName() + Constants.SUFFIX_COMPLEXTYPE);
+		setId(idSchema+"_"+group.getName() + Constants.SUFFIX_GROUP);
 		setTitle("Complex Type " + group.getName());
 		loadContent(group.getAnnotation());
 		init();		
