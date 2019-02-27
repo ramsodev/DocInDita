@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema
+	targetNamespace="http://soap.sctinst.redsys.es/consumed/CONCILIACION"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="http://soap.sctinst.redsys.es/consumed/CONCILIACION"
+	xmlns:pref="http://soap.sctinst.redsys.es/common" >
+
+	<xsd:import schemaLocation="../FTM_Redsys_Common_Lib/Common_PPII_iSCTDTTypes.xsd" 
+	namespace="http://soap.sctinst.redsys.es/common"></xsd:import>
+	
+	<xsd:element name="Input" type="tns:Input"></xsd:element>
+
+	<xsd:complexType name="SttlmInf_Type">
+		<xsd:sequence>
+		
+			<xsd:element name="SttlmEntInf" type="tns:SettlmEntInf_Type" />
+			
+			<xsd:element name="RepresentedEntListInf" type="tns:RepresentedEntListInf_Type" minOccurs="1"
+			maxOccurs="unbounded" />
+			
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="SettlmEntInf_Type">
+		<xsd:sequence>
+		
+			<xsd:element name="SttlmEntBIC" type="pref:BICIdentifier" />	
+			<xsd:element name="SttlmDt" type="pref:ISODate" />
+			<xsd:element name="SttlmCycle" type="pref:SettlementCycle" />
+			
+			<xsd:element name="TotalSttlmAmt" type="pref:CurrencyAndAmount_1" />
+			
+			<xsd:element name="DbtrCdtrInd" type="tns:DbtrCdtrInd_Type" />
+	
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="RepresentedEntListInf_Type">
+		<xsd:sequence>
+			<xsd:element name="RepresentedEntInf" type="tns:RepresentedEntInf_Type" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="RepresentedEntInf_Type">
+		<xsd:sequence>
+			<xsd:element name="RepresentedEntBIC" type="pref:BICIdentifier" />
+			
+			<xsd:element name="NbTransferOrdersSent" type="tns:Number" />
+			
+			<xsd:element name="TtlAmtTransferOrdersSent" type="pref:CurrencyAndAmount_1" />
+			
+			<xsd:element name="NbRefundsSent" type="tns:Number"/>
+			
+			<xsd:element name="TtlAmtRefundsSent" type="pref:CurrencyAndAmount_1"/>
+			
+			<xsd:element name="NbTransferOrdersReceived" type="tns:Number"/>
+			
+			<xsd:element name="TtlAmtTransferOrdersReceived" type="pref:CurrencyAndAmount_1"/>
+			
+			<xsd:element name="NbRefundsReceived" type="tns:Number"/>
+			
+			<xsd:element name="TtlAmtRefundsReceived" type="pref:CurrencyAndAmount_1"/>
+			
+			<xsd:element name="SttlmAmt" type="pref:CurrencyAndAmount_1"/>
+			<xsd:element name="DbtrCdtrInd" type="tns:DbtrCdtrInd_Type"/>
+			
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:simpleType name="Number">
+    	<xsd:restriction base="xsd:int">
+    		<xsd:minInclusive value="0"></xsd:minInclusive>
+    		<xsd:totalDigits value="18" />
+    	</xsd:restriction>
+    </xsd:simpleType>
+    
+    <xsd:simpleType name="DbtrCdtrInd_Type">
+   		<xsd:restriction base="xsd:string">
+    		<xsd:maxLength value="1"></xsd:maxLength>
+    		<xsd:enumeration value="+" />
+    		<xsd:enumeration value="-" />
+    	</xsd:restriction>
+    </xsd:simpleType>
+
+	<xsd:complexType name="Input">
+		<xsd:sequence>
+			<xsd:element name="SttlmInf" type="tns:SttlmInf_Type">
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

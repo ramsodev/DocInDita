@@ -9,6 +9,9 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 
+import com.predic8.schema.Annotation;
+import com.predic8.schema.Documentation;
+
 public abstract class BasicCreate implements iCreate {
 	private String file_name;
 	private String id;
@@ -16,6 +19,7 @@ public abstract class BasicCreate implements iCreate {
 	private static String TEMPLATE = "template/basic.vm";
 	private Template template;
 	private VelocityContext context;
+	private String content;
 
 	public BasicCreate(String id, String title) {
 		super();
@@ -40,7 +44,27 @@ public abstract class BasicCreate implements iCreate {
 		writer.flush();
 		writer.close();
 	}
+	public void loadContent(Annotation annotation) {
+		String value = "";
+		if(annotation!=null) {
+			if(annotation.getDocumentations()!=null) {
+				for(Documentation doc:annotation.getDocumentations()) {
+					if (doc.getSource() != null)
+						value += doc.getSource() + ": ";
+					value += doc.getContent().replaceAll("<", "&lt;").replaceAll(">", "&gt;") + ". \n";
+				}
+			}
+		}
+		if(!value.isEmpty()) setContent(value);
+	}
 
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
 	public String getFile_name() {
 		return file_name;
 	}

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions 
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+     name="RECEPCION_NEGACION" 
+     targetNamespace="http://soap.sctinst.redsys.es/consumed/RECEPCION_NEGACION" 
+     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+     xmlns:tns="http://soap.sctinst.redsys.es/consumed/RECEPCION_NEGACION" 
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:documentation>
+    <wsdl:appinfo source="WMQI_APPINFO">
+      <MRWSDLAppInfo imported="true">        
+        <binding hasEncoding="false" imported="true" name="RecepcionNegacionPortBinding" originalBindingStyle="document"/>
+      </MRWSDLAppInfo>
+    </wsdl:appinfo>
+  </wsdl:documentation>
+  
+  <wsdl:types>
+     <xsd:schema>
+		<xsd:import namespace="http://soap.sctinst.redsys.es/consumed/RECEPCION_NEGACION" schemaLocation="../Redsys_Consumed_Lib/Consumed_WS_RECEPCION_NEGACION_Request.xsd">
+    	</xsd:import>
+		<xsd:import namespace="http://soap.sctinst.redsys.es/consumed/RECEPCION_NEGACION" schemaLocation="../Redsys_Consumed_Lib/Consumed_WS_RECEPCION_NEGACION_Response.xsd">
+    	</xsd:import>
+    </xsd:schema>  
+  </wsdl:types>
+  
+  <wsdl:message name="recepcionNegacionOpRequest">
+    <wsdl:part element="tns:Input" name="WS_Recepcion_Negacion_Request"/>
+  </wsdl:message>
+  <wsdl:message name="recepcionNegacionOpResponse">
+    <wsdl:part element="tns:Output" name="WS_Recepcion_Negacion_response"/>
+  </wsdl:message>
+  
+  <wsdl:portType name="iSCTRejectOfReversal">
+    <wsdl:operation name="recepcionNegacionOp">
+      <wsdl:input message="tns:recepcionNegacionOpRequest"/>
+      <wsdl:output message="tns:recepcionNegacionOpResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  
+  <wsdl:binding name="RecepcionNegacionPortBinding" type="tns:iSCTRejectOfReversal">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="recepcionNegacionOp">
+      <soap:operation soapAction="http://soap.sctinst.redsys.es/Consumed_WS_Recepcion_Negacion/recepcionNegacionOp"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  
+  <wsdl:service name="WS_RECEPCION_NEGACION">
+    <wsdl:port binding="tns:RecepcionNegacionPortBinding" name="RecepcionNegacionPort">
+      <soap:address location="http://localhost:7080/WS_RECEPCION_NEGACION"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

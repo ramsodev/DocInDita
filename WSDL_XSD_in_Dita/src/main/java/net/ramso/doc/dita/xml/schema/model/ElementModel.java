@@ -25,6 +25,7 @@ public class ElementModel extends AbstractComponentModel{
 	}
 
 	private void init() {
+		
 		if (element.getMinOccurs() != null && !element.getMinOccurs().isEmpty()) {
 			setMinOccurs(Integer.parseInt(element.getMinOccurs()));
 		}
@@ -84,13 +85,20 @@ public class ElementModel extends AbstractComponentModel{
 	}
 
 	@Override
-	public QName getType() {		
+	public QName getType() {
+		if(element.getRef() != null) {
+			return element.getRef();
+		}
 		return element.getType();
 	}
 
 	@Override
 	public SchemaComponent getComponent() {
 		return element;
+	}
+	
+	public QName getRef() {
+		return element.getRef();
 	}
 
 }

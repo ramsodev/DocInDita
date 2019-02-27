@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema
+	targetNamespace="http://soap.sctinst.redsys.es/consumed/CONCILIACION"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="http://soap.sctinst.redsys.es/consumed/CONCILIACION"
+	xmlns:pref="http://soap.sctinst.redsys.es/common">
+
+
+	<xsd:import schemaLocation="../FTM_Redsys_Common_Lib/Common_PPII_iSCTDTTypes.xsd" namespace="http://soap.sctinst.redsys.es/common"></xsd:import>
+	<xsd:complexType name="Output">
+		<xsd:sequence>
+			<xsd:element name="StatusCd" type="pref:StatusCode"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:element name="Output" type="tns:Output"></xsd:element>
+
+</xsd:schema>

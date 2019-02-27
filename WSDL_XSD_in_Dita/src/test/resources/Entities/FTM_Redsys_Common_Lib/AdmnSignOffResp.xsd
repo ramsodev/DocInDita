@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="urn:AdmnSignOffResp" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	targetNamespace="urn:AdmnSignOffResp" 
+	elementFormDefault="qualified">
+
+  <xs:element name="Document" type="DocumentType"/>
+  
+  <xs:complexType name="DocumentType">
+	<xs:sequence>
+		<xs:element name="AdmnSignOffResp" type="AdmnSignOffResp_Type">
+            <xs:annotation>
+              <xs:documentation source="Yellow Field"/>
+            </xs:annotation>
+        </xs:element>	
+	</xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="AdmnSignOffResp_Type">
+  
+		<xs:sequence>
+			<xs:element name="GrpHdr" type="GrpHdr_Type">
+				<xs:annotation>
+					<xs:documentation source="Yellow Field"/>
+				</xs:annotation>
+			</xs:element>
+		
+			<xs:element name="SignOffResp" type="SignOffResp_Type">
+				<xs:annotation>
+					<xs:documentation source="Yellow Field"/>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+  
+  </xs:complexType>
+  
+  <xs:complexType name="GrpHdr_Type">
+	<xs:sequence>
+		<xs:element name="MsgId" type="Max35Text">
+			<xs:annotation>
+				<xs:documentation source="Yellow Field"/>
+			</xs:annotation>
+		</xs:element>
+		
+		<xs:element name="CreDtTm" type="ISODateTime">
+			<xs:annotation>
+				<xs:documentation source="Yellow Field"/>
+			</xs:annotation>
+		</xs:element>
+	</xs:sequence>
+  </xs:complexType>
+  
+  
+  <xs:complexType name="SignOffResp_Type">
+	<xs:sequence>
+		
+		<xs:element name="OrgnlInstrId" type="Max35Text">
+			<xs:annotation>
+				<xs:documentation source="Yellow Field"/>
+			</xs:annotation>
+		</xs:element>
+		
+		<xs:element name="InstgAgt" type="BranchAndFinancialInstitutionIdentification4">
+			<xs:annotation>
+			  <xs:documentation xml:lang="EN" source="Name">Instructing Agent</xs:documentation>
+			  <xs:documentation xml:lang="EN" source="Definition">Agent that instructs the next party in the chain to carry out the (set of) instruction(s).</xs:documentation>
+			</xs:annotation>
+		</xs:element>
+		
+		<xs:element name="InstdAgt" type="BranchAndFinancialInstitutionIdentification4">
+			<xs:annotation>
+			  <xs:documentation xml:lang="EN" source="Name">Instructed Agent</xs:documentation>
+			  <xs:documentation xml:lang="EN" source="Definition">Agent that is instructed by the previous party in the chain to carry out the (set of) instruction(s).</xs:documentation>
+			</xs:annotation>
+		</xs:element>
+		
+		<xs:element name="Sts" type="ReqStatus_Type">
+			<xs:annotation>
+				<xs:documentation source="Yellow Field">
+				Request status
+				</xs:documentation>
+			</xs:annotation>
+		</xs:element>
+		
+		<!-- Optional -->
+		<xs:element name="StsRsnInf" type="StsRsnInf_Type" minOccurs="0">
+			<xs:annotation>
+					<xs:documentation source="Yellow Field">
+					This field is only filled in when Sts = RJCT
+					</xs:documentation>
+			</xs:annotation>
+		</xs:element>
+	
+	</xs:sequence>
+  </xs:complexType>
+    
+   <xs:simpleType name="ReqStatus_Type"> 
+    <xs:annotation> 
+      <xs:documentation xml:lang="EN" source="Name">Request status</xs:documentation> 
+      <xs:documentation xml:lang="EN" source="Definition">Specifies a character string with a maximum length of 4 characters and allowed characteres.</xs:documentation> 
+    </xs:annotation> 
+    <xs:restriction base="xs:string"> 
+      <xs:minLength value="1"/> 
+      <xs:maxLength value="4"/> 
+      <xs:pattern value="[ACCP|RJCT]{4,4}"></xs:pattern>
+    </xs:restriction> 
+  </xs:simpleType>
+   
+  <xs:complexType name="StsRsnInf_Type">
+	  <xs:sequence>
+	  	<xs:element name="Rsn" type="Rsn_Type" /> 
+	  </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="Rsn_Type">
+  	<xs:sequence>
+  		<xs:element name="Prtry" type="Prtry_Type" />
+  	</xs:sequence>
+  </xs:complexType>
+  
+  <xs:simpleType name="Prtry_Type"> 
+    <xs:annotation> 
+      <xs:documentation xml:lang="EN" source="Name">Propietary code</xs:documentation> 
+      <xs:documentation xml:lang="EN" source="Definition">Specifies a character string with a maximum length of 4 characters and allowed characteres.</xs:documentation> 
+    </xs:annotation> 
+    <xs:restriction base="xs:string"> 
+      <xs:minLength value="1"/> 
+      <xs:maxLength value="4"/> 
+      <xs:enumeration value="9946"/>
+      <xs:enumeration value="9948"/>
+      <xs:enumeration value="9964"/>
+      <xs:enumeration value="FF01"/>
+	  <xs:enumeration value="AB05"/>
+	  <xs:enumeration value="AB06"/>
+	  <xs:enumeration value="AB07"/>
+	  <xs:enumeration value="AB08"/>
+	  <xs:enumeration value="AB09"/>
+	  <xs:enumeration value="AB10"/>
+	  <xs:enumeration value="AC01"/>
+	  <xs:enumeration value="AG02"/>
+	  <xs:enumeration value="AG09"/>
+	  <xs:enumeration value="AG10"/>
+	  <xs:enumeration value="AG11"/>
+	  <xs:enumeration value="AM02"/>
+	  <xs:enumeration value="AM05"/>
+	  <xs:enumeration value="AM23"/>
+	  <xs:enumeration value="RC01"/>
+	  <xs:enumeration value="RR01"/>
+	  <xs:enumeration value="RR02"/>
+	  <xs:enumeration value="RR03"/>
+	  <xs:enumeration value="RR04"/>
+	  <xs:enumeration value="CNOR"/>
+	  <xs:enumeration value="DNOR"/>
+	  <xs:enumeration value="AM13"/>
+	  <xs:enumeration value="IT00"/>
+	  <xs:enumeration value="IT01"/>
+	  <xs:enumeration value="IT02"/>
+	  <xs:enumeration value="IT03"/>
+	  <xs:enumeration value="IT05"/>
+	  <xs:enumeration value="IT06"/>
+	  <xs:enumeration value="IT09"/>
+	  <xs:enumeration value="IT10"/>
+	  <xs:enumeration value="IT11"/>
+	  <xs:enumeration value="IT12"/>
+	  <xs:enumeration value="IT13"/>
+	  <xs:enumeration value="IT14"/>
+	  <xs:enumeration value="IT15"/>
+	  <xs:enumeration value="IT16"/>
+	  <xs:enumeration value="IT17"/>
+	  <xs:enumeration value="IT20"/>
+	  <xs:enumeration value="IT21"/>
+	  <xs:enumeration value="IT22"/>
+	  <xs:enumeration value="IT24"/>
+	  <xs:enumeration value="IT25"/>
+	  <xs:enumeration value="IT26"/>
+	  <xs:enumeration value="IT27"/>
+	  <xs:enumeration value="IT28"/>
+	  <xs:enumeration value="IT29"/>
+	  <xs:enumeration value="IT30"/>
+	  <xs:enumeration value="IT31"/>
+	  <xs:enumeration value="IT32"/>
+	  <xs:enumeration value="IT33"/>
+	  <xs:enumeration value="IT37"/>
+	  <xs:enumeration value="IT39"/>
+	  <xs:enumeration value="IT44"/>
+	  <xs:enumeration value="IT49"/>
+	  <xs:enumeration value="IT51"/>
+	  <xs:enumeration value="IT52"/>
+	  <xs:enumeration value="IT97"/>
+	  <xs:enumeration value="IT98"/>
+	  <xs:enumeration value="AC04"/>
+	  <xs:enumeration value="AC06"/>
+	  <xs:enumeration value="AG01"/>
+	  <xs:enumeration value="AM05"/>
+	  <xs:enumeration value="BE04"/>
+	  <xs:enumeration value="MD07"/>
+	  <xs:enumeration value="MS02"/>
+	  <xs:enumeration value="NARR"/>		  
+    </xs:restriction> 
+  </xs:simpleType>
+  
+  <xs:complexType name="BranchAndFinancialInstitutionIdentification4">
+    <xs:annotation>
+      <xs:documentation xml:lang="EN" source="Name">Branch And Financial Institution Identification 4</xs:documentation>
+      <xs:documentation xml:lang="EN" source="Definition">Set of elements used to uniquely and unambiguously identify a financial institution or a branch of a financial institution.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="FinInstnId" type="FinancialInstitutionIdentification7">
+        <xs:annotation>
+          <xs:documentation xml:lang="EN" source="Name">Financial Institution Identification</xs:documentation>
+          <xs:documentation xml:lang="EN" source="Definition">Unique and unambiguous identification of a financial institution, as assigned under an internationally recognised or proprietary identification scheme.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="FinancialInstitutionIdentification7">
+    <xs:annotation>
+      <xs:documentation xml:lang="EN" source="Name">Financial Institution Identification 7</xs:documentation>
+      <xs:documentation xml:lang="EN" source="Definition">Set of elements used to identify a financial institution.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="BIC" type="BICIdentifier">
+        <xs:annotation>
+          <xs:documentation xml:lang="EN" source="Name">BIC</xs:documentation>
+          <xs:documentation xml:lang="EN" source="Definition">Code allocated to a financial institution by the ISO 9362 Registration Authority as described in ISO 9362 "Banking - Banking telecommunication messages - Business identifier code (BIC)".</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:simpleType name="Max35Text"> 
+    <xs:annotation> 
+      <xs:documentation xml:lang="EN" source="Name">Max 35Text allowed characteres</xs:documentation> 
+      <xs:documentation xml:lang="EN" source="Definition">Specifies a character string with a maximum length of 35 characters and allowed characteres.</xs:documentation> 
+    </xs:annotation> 
+    <xs:restriction base="xs:string"> 
+      <xs:minLength value="1"/> 
+      <xs:maxLength value="35"/> 
+    </xs:restriction> 
+  </xs:simpleType>
+  
+  <xs:simpleType name="ISODateTime">
+    <xs:annotation>
+      <xs:documentation xml:lang="EN" source="Name">ISODate Time</xs:documentation>
+      <xs:documentation xml:lang="EN" source="Definition">
+A particular point in the progression of time defined by a mandatory date and a mandatory time component, expressed in either UTC time format (YYYY-MM-DDThh:mm:ss.sssZ), local time with UTC offset format (YYYY-MM-DDThh:mm:ss.sss+/-hh:mm), or local time format (YYYY-MM-DDThh:mm:ss.sss). These representations are defined in "XML Schema Part 2: Datatypes Second Edition - W3C Recommendation 28 October 2004" which is aligned with ISO 8601.
+Note on the time format:
+1) beginning / end of calendar day
+00:00:00 = the beginning of a calendar day
+24:00:00 = the end of a calendar day
+2) fractions of second in time format
+Decimal fractions of seconds may be included. In this case, the involved parties shall agree on the maximum number of digits that are allowed.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:dateTime"/>
+  </xs:simpleType>
+   
+   
+  <xs:simpleType name="BICIdentifier">
+    <xs:annotation>
+      <xs:documentation xml:lang="EN" source="Name">BICIdentifier</xs:documentation>
+      <xs:documentation xml:lang="EN" source="Definition">Code allocated to a financial institution by the ISO 9362 Registration Authority as described in ISO 9362 "Banking - Banking telecommunication messages - Business identifier code (BIC)".</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[A-Z]{6,6}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3,3}){0,1}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

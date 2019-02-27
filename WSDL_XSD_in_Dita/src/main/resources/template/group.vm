@@ -1,0 +1,85 @@
+
+   <dl>
+   		
+        <dlentry>
+       		<dt>Obligatorio</dt>
+            <dd>${group.isRequiered()}</dd>
+        </dlentry>
+        #if(${group.getMinOccurs()} > 0 || ${group.getMaxOccurs()})
+        <dlentry>
+        	<dt>Repeticiones admitidas</dt>
+        	<dd> #if(${group.getMinOccurs()} > 0)Desde ${group.getMinOccurs()} #end #if(${group.getMaxOccurs()} )hasta ${group.getMaxOccurs()}#end</dd>
+        </dlentry>
+        #end
+        
+        #if(${group.getElements()})
+        <dlentry>
+        	<dt>Elementos para ${group.getContentType()}</dt>
+        	<dd><sl>
+            		#foreach($element in ${group.getElements()})
+            			<sli><xref #if(${element.getRef()})href="${element.getHrefType()}" ${element.getExternalHref()}>${element.getRef().getLocalPart()}
+            					   #else href="#$id/sectionElement${element.getName()}">${element.getName()}
+            					   #end </xref></sli>
+            		#end
+            </sl></dd>
+        </dlentry>
+        #end
+            	
+	</dl>
+    	#if(!$child)
+    <section id="section_code">
+    	<title>Codigo</title>            
+        <codeblock>${group.getCode()}</codeblock>
+    </section>
+    	#end
+    	#if(${group.getAttributes()})
+       		#set($childc = $child)
+       		#set($child = true)
+       		#foreach($attribute in ${group.getAttributes()})
+       			#if(!${attribute.getRef()})
+       				#if($childc)
+ 	<sectiondiv id="sectionAttribute${attribute.getName()}">
+ 		<p><u><b>Attribute ${attribute.getName()}</b></u></p>
+ 					#else
+    <section id="sectionAttribute${attribute.getName()}">
+    	<title>Attribute ${attribute.getName()}</title>
+    				#end
+    				#if(${attribute.getDoc()})
+    	<p><lines>${attribute.getDoc()}</lines></p>
+    				#end
+       				#parse("attribute.vm")
+       				#if($childc)
+    </sectiondiv> 
+       				#else
+    </section>
+    				#end
+    			#end
+       		#end
+       		#set($child = $childc)
+       	#end
+       	#if(${group.getElements()})
+       		#set($childc = $child)
+       		#set($child = true)
+       		#foreach($element in ${group.getElements()})
+       			#if(!${element.getRef()})
+       				#if($childc)
+ 	<sectiondiv id="sectionElement${element.getName()}">
+ 		<p><u><b>Element ${element.getName()}</b></u></p>
+ 					#else
+    <section id="sectionElement${element.getName()}">
+    	<title>Element ${element.getName()}</title>
+    				#end
+    				#if(${element.getDoc()})
+    	<p><lines>${element.getDoc()}</lines></p>
+    				#end
+       				#parse("element.vm")
+       				#if($childc)
+    </sectiondiv> 
+       				#else
+    </section>
+    				#end
+    			#end
+       		#end
+       		#set($child = $childc)
+       	#end
+

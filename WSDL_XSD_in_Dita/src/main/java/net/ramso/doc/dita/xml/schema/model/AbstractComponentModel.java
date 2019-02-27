@@ -10,26 +10,26 @@ import net.ramso.tools.Constants;
 import net.ramso.tools.Tools;
 
 public abstract class AbstractComponentModel implements iComponentModel {
-	
+
 	public abstract SchemaComponent getComponent();
 
 	public String getHrefType() throws MalformedURLException {
-		if(getType().getNamespaceURI().equalsIgnoreCase(Constants.XSD_NAMESPACE)) {
-			return Constants.XSD_DOC_URI+getType().getLocalPart();
+		if (getType().getNamespaceURI().equalsIgnoreCase(Constants.XSD_NAMESPACE)) {
+			return Constants.XSD_DOC_URI + getType().getLocalPart();
 		}
-		
+
 		return Tools.getHrefType(getType());
 	}
-	
+
 	public String getExternalHref() {
-		if(getType().getNamespaceURI().equalsIgnoreCase(Constants.XSD_NAMESPACE)) {
+		if (getType().getNamespaceURI().equalsIgnoreCase(Constants.XSD_NAMESPACE)) {
 			return "format=\"html\" scope=\"external\"";
 		}
 		return "";
 	}
 
 	public String getCode() {
-		return getComponent().getAsString().replaceAll("<", "&lt;").replaceAll(">","&gt;");
+		return getComponent().getAsString().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 	}
 
 	/**
@@ -45,13 +45,15 @@ public abstract class AbstractComponentModel implements iComponentModel {
 	}
 
 	public String getDoc() {
-		String writer = "";
+		String value = "";
 		if (getComponent().getAnnotation() != null) {
 			for (Documentation doc : getComponent().getAnnotation().getDocumentations()) {
-				writer += doc.getContent() + "\n";
+				if (doc.getSource() != null)
+					value += doc.getSource() + ": ";
+				value += doc.getContent().replaceAll("<", "&lt;").replaceAll(">", "&gt;") + ". \n";
 			}
 		}
-		return writer;
+		return value;
 	}
 
 }

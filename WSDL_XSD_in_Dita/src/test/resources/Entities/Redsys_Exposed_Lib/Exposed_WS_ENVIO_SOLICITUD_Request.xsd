@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema
+	targetNamespace="http://soap.sctinst.redsys.es/exposed/ENVIO_SOLICITUD" 
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	xmlns:tns="http://soap.sctinst.redsys.es/exposed/ENVIO_SOLICITUD" 
+	xmlns:Q1="urn:iso:std:iso:20022:tech:xsd:camt.056.001.01">
+
+
+	<xsd:import schemaLocation="../FTM_Redsys_Common_Lib/camt.056.001.01.xsd" namespace="urn:iso:std:iso:20022:tech:xsd:camt.056.001.01"></xsd:import>
+	<xsd:complexType name="Input">
+		<xsd:sequence>
+			<xsd:element maxOccurs="1" minOccurs="1" ref="Q1:Document" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:element name="Input" type="tns:Input"></xsd:element>
+</xsd:schema>

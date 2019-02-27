@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions 
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+     name="ENVIO_TRANSFERENCIA"
+     targetNamespace="http://soap.sctinst.redsys.es/exposed/ENVIO_TRANSFERENCIA"
+     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+     xmlns:tns="http://soap.sctinst.redsys.es/exposed/ENVIO_TRANSFERENCIA"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:documentation>
+    <wsdl:appinfo source="WMQI_APPINFO">
+      <MRWSDLAppInfo imported="true">
+        <binding hasEncoding="false" imported="true" name="EnvioTransferenciaPortBinding" originalBindingStyle="document"/>
+      </MRWSDLAppInfo>
+    </wsdl:appinfo>
+  </wsdl:documentation>
+  
+  <wsdl:types>
+     <xsd:schema>
+		<xsd:import namespace="http://soap.sctinst.redsys.es/exposed/ENVIO_TRANSFERENCIA" schemaLocation="../Redsys_Exposed_Lib/Exposed_WS_ENVIO_TRANSFERENCIA_Request.xsd">
+    	</xsd:import>
+		<xsd:import namespace="http://soap.sctinst.redsys.es/exposed/ENVIO_TRANSFERENCIA" schemaLocation="../Redsys_Exposed_Lib/Exposed_WS_ENVIO_TRANSFERENCIA_Response.xsd">
+    	</xsd:import>
+    </xsd:schema>
+  </wsdl:types>
+  
+  <wsdl:message name="envioTransferenciaOpRequest">
+  	<wsdl:part element="tns:Input" name="WS_Envio_Transferencia_Request"/>
+  </wsdl:message>
+  <wsdl:message name="envioTransferenciaOpResponse">
+  	<wsdl:part element="tns:Output" name="WS_Envio_Transferencia_Response"/>
+  </wsdl:message>
+
+  <wsdl:portType name="iSCTTransferOrder">
+  	<wsdl:operation name="envioTransferenciaOp">
+  		<wsdl:input message="tns:envioTransferenciaOpRequest"/>
+  		<wsdl:output message="tns:envioTransferenciaOpResponse"/>
+  	</wsdl:operation>
+  </wsdl:portType>
+  
+  <wsdl:binding name="EnvioTransferenciaPortBinding" type="tns:iSCTTransferOrder">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="envioTransferenciaOp">
+      <soap:operation soapAction="http://soap.sctinst.redsys.es/Exposed_Envio_Transferencia/envioTransferenciaOp"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  
+  <wsdl:service name="WS_ENVIO_TRANSFERENCIA">
+    <wsdl:port binding="tns:EnvioTransferenciaPortBinding" name="iSCTTransferOrderPort">
+      <soap:address location="https://sctinst-i.redsys.es/sbasico-entproc/WS_ENVIO_TRANSFERENCIA"/>
+    </wsdl:port>
+  </wsdl:service>
+  
+</wsdl:definitions>

@@ -12,7 +12,7 @@
         #if(${simpleType.getMinLength()} > 0 || ${simpleType.getMaxLength()} > 0)
         <dlentry>
         	<dt>Tamaño</dt>
-        	<dd> #if(${simpleType.getMinLength()} > 0)Desde ${simpleType.getMinLegth()} #end #if(${simpleType.getMaxLength()} > 0)hasta ${simpleType.getMaxLength()}#end</dd>
+        	<dd> #if(${simpleType.getMinLength()} > 0)Desde ${simpleType.getMinLength()} #end #if(${simpleType.getMaxLength()} > 0)hasta ${simpleType.getMaxLength()}#end</dd>
         </dlentry>
         #end 
         #if(${simpleType.getMinValue()} || ${simpleType.getMaxValue()})

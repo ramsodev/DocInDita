@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions 
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+     name="CONCILIACION" 
+     targetNamespace="http://soap.sctinst.redsys.es/consumed/CONCILIACION" 
+     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+     xmlns:tns="http://soap.sctinst.redsys.es/consumed/CONCILIACION" 
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:documentation>
+    <wsdl:appinfo source="WMQI_APPINFO">
+      <MRWSDLAppInfo imported="true">
+        <binding hasEncoding="false" imported="true" name="ConciliacionPortBinding" originalBindingStyle="document"/>
+      </MRWSDLAppInfo>
+    </wsdl:appinfo>
+  </wsdl:documentation>
+  
+  <wsdl:types>
+    <xsd:schema>
+		<xsd:import namespace="http://soap.sctinst.redsys.es/consumed/CONCILIACION" schemaLocation="../Redsys_Consumed_Lib/Consumed_WS_CONCILIACION_Request.xsd">
+    	</xsd:import>
+		<xsd:import namespace="http://soap.sctinst.redsys.es/consumed/CONCILIACION" schemaLocation="../Redsys_Consumed_Lib/Consumed_WS_CONCILIACION_Response.xsd">
+    	</xsd:import>
+    </xsd:schema>
+  </wsdl:types>
+
+  <wsdl:message name="conciliacionOpRequest">
+  	<wsdl:part element="tns:Input" name="WS_Conciliacion_Request" />
+  </wsdl:message>
+  <wsdl:message name="conciliacionOpResponse">
+  	<wsdl:part element="tns:Output" name="WS_Conciliacion_Response" />
+  </wsdl:message>
+
+  <wsdl:portType name="ConciliacionPendingOpr">
+  	<wsdl:operation name="conciliacionOp">
+  		<wsdl:input message="tns:conciliacionOpRequest"/>
+  		<wsdl:output message="tns:conciliacionOpResponse"/>
+  	</wsdl:operation>
+  </wsdl:portType>
+
+  <wsdl:binding name="ConciliacionPortBinding" type="tns:ConciliacionPendingOpr">
+  	<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+  	<wsdl:operation name="conciliacionOp">
+  		<soap:operation soapAction="http://soap.sctinst.redsys.es/Consumed_Conciliacion/conciliacionOp"/>
+  		<wsdl:input>
+  			<soap:body use="literal"/>
+  		</wsdl:input>
+  		<wsdl:output>
+  			<soap:body use="literal"/>
+  		</wsdl:output>
+  	</wsdl:operation>
+  </wsdl:binding>
+  
+  <wsdl:service name="WS_CONCILIACION">
+    <wsdl:port binding="tns:ConciliacionPortBinding" name="ConciliacionPort">
+      <soap:address location="http://localhost:7800/WS_CONCILIACION"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -43,25 +43,31 @@ public class GenerateWsdl {
 	}
 
 	public void generateWSDL(URL url) throws IOException, URISyntaxException {
-		
+
 		String fileName = url.getPath().substring(url.getPath().lastIndexOf('/') + 1);
 		if (fileName.contains("?")) {
 			fileName = fileName.substring(0, fileName.lastIndexOf('?'));
-		} else if  (fileName.contains(".")){
+		} else if (fileName.contains(".")) {
 			fileName = fileName.substring(0, fileName.lastIndexOf('.'));
 		}
 		WSDLParser parser = new WSDLParser();
 		WSDLParserContext ctx = new WSDLParserContext();
-		ctx.setInput( url.toExternalForm());
-//		if(url.getProtocol().startsWith("file")) {
-//			File f = new File(url.getPath());
-//			ctx.setBaseDir(f.getParent());
-//		}
+		if (url.getProtocol().startsWith("file")) {
+			String p = url.getPath();
+			ctx.setInput(p);
+		} else {
+			ctx.setInput(url.toExternalForm());
+		}
+
+		// if(url.getProtocol().startsWith("file")) {
+		// File f = new File(url.getPath());
+		// ctx.setBaseDir(f.getParent());
+		// }
 		Definitions desc = parser.parse(ctx);
 		String content = "Definición del Servicio Web " + fileName;
 		if (desc.getDocumentation() != null) {
 			if (!desc.getDocumentation().getContent().isEmpty()) {
-				content = desc.getDocumentation().getContent();
+				content = desc.getDocumentation().getContent().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 			}
 		}
 		ArrayList<References> index = new ArrayList<References>();
@@ -70,7 +76,7 @@ public class GenerateWsdl {
 		for (Service service : services) {
 			content = "Definiciones del servicio " + service.getName();
 			if (service.getDocumentation() != null) {
-				content = service.getDocumentation().getContent();
+				content = service.getDocumentation().getContent().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 			}
 			CreatePortada cc = new CreatePortada(service.getName() + "Service",
 					"Documentacion del Servicio " + service.getName(), content);
@@ -87,7 +93,7 @@ public class GenerateWsdl {
 			for (Operation operation : desc.getOperations()) {
 				content = "Metodos de la operación " + operation.getName();
 				if (operation.getDocumentation() != null) {
-					content = operation.getDocumentation().getContent();
+					content = operation.getDocumentation().getContent().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 				}
 				CreateOperation co = new CreateOperation(operation.getName() + Constants.SUFFIX_OPERATION,
 						"Operation " + operation.getName(), content);
@@ -102,11 +108,11 @@ public class GenerateWsdl {
 		for (Schema schema : schemas) {
 			GenerateSchema gs = new GenerateSchema();
 			index.addAll(gs.generateSchema(schema, true));
-			
+
 		}
 		content = "";
 		if (desc.getDocumentation() != null) {
-			content = desc.getDocumentation().getContent();
+			content = desc.getDocumentation().getContent().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 		}
 		CreateBookMap cb = new CreateBookMap(fileName, "Documentación  del WSDL " + fileName, content);
 		cb.create(index);

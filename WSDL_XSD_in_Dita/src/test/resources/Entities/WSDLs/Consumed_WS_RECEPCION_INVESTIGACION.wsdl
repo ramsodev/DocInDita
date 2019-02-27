@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions 
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+     name="RECEPCION_INVESTIGACION" 
+     targetNamespace="http://soap.sctinst.redsys.es/consumed/RECEPCION_INVESTIGACION" 
+     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+     xmlns:tns="http://soap.sctinst.redsys.es/consumed/RECEPCION_INVESTIGACION" 
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:documentation>
+    <wsdl:appinfo source="WMQI_APPINFO">
+      <MRWSDLAppInfo imported="true">
+        <binding hasEncoding="false" imported="true" name="RecepcionInvestigacionPortBinding" originalBindingStyle="document"/>
+      </MRWSDLAppInfo>
+    </wsdl:appinfo>
+  </wsdl:documentation>
+  
+  <wsdl:types>
+     <xsd:schema>
+		<xsd:import namespace="http://soap.sctinst.redsys.es/consumed/RECEPCION_INVESTIGACION" schemaLocation="../Redsys_Consumed_Lib/Consumed_WS_RECEPCION_INVESTIGACION_Request.xsd">
+    	</xsd:import>
+		<xsd:import namespace="http://soap.sctinst.redsys.es/consumed/RECEPCION_INVESTIGACION" schemaLocation="../Redsys_Consumed_Lib/Consumed_WS_RECEPCION_INVESTIGACION_Response.xsd">
+    	</xsd:import>
+    </xsd:schema>
+  </wsdl:types>
+  
+  <wsdl:message name="recepcionInvestigacionOpRequest">
+    <wsdl:part element="tns:Input" name="WS_RECEPCION_Investigacion_Request"/>
+  </wsdl:message>
+  <wsdl:message name="recepcionInvestigacionOpResponse">
+    <wsdl:part element="tns:Output" name="WS_RECEPCION_Investigacion_Response"/>
+  </wsdl:message>
+  
+  <wsdl:portType name="iSCTRecpxnOfInvestigacionReq">
+    <wsdl:operation name="recepcionInvestigacionOp">
+      <wsdl:input message="tns:recepcionInvestigacionOpRequest"/>
+      <wsdl:output message="tns:recepcionInvestigacionOpResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  
+  <wsdl:binding name="RecepcionInvestigacionPortBinding" type="tns:iSCTRecpxnOfInvestigacionReq">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="recepcionInvestigacionOp">
+      <soap:operation soapAction="http://soap.sctinst.redsys.es/Consumed_Recepcion_Transferencia/recepcionTransferenciaOp"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  
+  <wsdl:service name="WS_RECEPCION_INVESTIGACION">
+    <wsdl:port binding="tns:RecepcionInvestigacionPortBinding" name="RecepcionInvestigacionPort">
+      <soap:address location="http://localhost:7080/WS_RECEPCION_INVESTIGACION"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

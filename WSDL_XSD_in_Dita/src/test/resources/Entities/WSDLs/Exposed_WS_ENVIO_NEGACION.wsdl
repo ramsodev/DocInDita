@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions 
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+     name="ENVIO_NEGACION" 
+     targetNamespace="http://soap.sctinst.redsys.es/exposed/ENVIO_NEGACION" 
+     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+     xmlns:tns="http://soap.sctinst.redsys.es/exposed/ENVIO_NEGACION" 
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:documentation>
+    <wsdl:appinfo source="WMQI_APPINFO">
+      <MRWSDLAppInfo imported="true">
+        <binding hasEncoding="false" imported="true" name="EnvioNegacionPortBinding" originalBindingStyle="document"/>
+      </MRWSDLAppInfo>
+    </wsdl:appinfo>
+  </wsdl:documentation>
+  
+  <wsdl:types>
+     <xsd:schema>
+		<xsd:import namespace="http://soap.sctinst.redsys.es/exposed/ENVIO_NEGACION" schemaLocation="../Redsys_Exposed_Lib/Exposed_WS_ENVIO_NEGACION_Request.xsd">
+    	</xsd:import>
+		<xsd:import namespace="http://soap.sctinst.redsys.es/exposed/ENVIO_NEGACION" schemaLocation="../Redsys_Exposed_Lib/Exposed_WS_ENVIO_NEGACION_Response.xsd">
+    	</xsd:import>
+    </xsd:schema>
+  </wsdl:types>
+  
+  <wsdl:message name="envioNegacionOpRequest">
+    <wsdl:part element="tns:Input" name="WS_Envio_Negacion_Request"/>
+  </wsdl:message>
+  <wsdl:message name="envioNegacionOpResponse">
+    <wsdl:part element="tns:Output" name="WS_Envio_Negacion_Response"/>
+  </wsdl:message>
+
+  <wsdl:portType name="iSCTRRRejectPort">
+  	<wsdl:operation name="envioNegacionOp">
+  		<wsdl:input message="tns:envioNegacionOpRequest"/>
+  		<wsdl:output message="tns:envioNegacionOpResponse"/>
+  	</wsdl:operation>
+  </wsdl:portType>
+
+  <wsdl:binding name="EnvioNegacionPortBinding" type="tns:iSCTRRRejectPort">
+  	<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+  	<wsdl:operation name="envioNegacionOp">
+  		<soap:operation soapAction="http://soap.sctinst.redsys.es/Exposed_Envio_Negacion/envioNegacionOp"/>
+  		<wsdl:input>
+  			<soap:body use="literal"/>
+  		</wsdl:input>
+  		<wsdl:output>
+  			<soap:body use="literal"/>
+  		</wsdl:output>
+  	</wsdl:operation>
+  </wsdl:binding>
+  
+  <wsdl:service name="WS_ENVIO_NEGACION">
+    <wsdl:port binding="tns:EnvioNegacionPortBinding" name="iSCTRRRejectPort">
+      <soap:address location="https://sctinst-i.redsys.es/sbasico-entproc/WS_ENVIO_NEGACION"/>
+    </wsdl:port>
+  </wsdl:service>
+  
+</wsdl:definitions>

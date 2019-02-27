@@ -94,7 +94,15 @@ public class GenerateSchema {
 		}
 		references.add(cover);
 	
-//		List<Group> groups = schema.getGroups();
+		cc = new CreatePortada(idSchema + Constants.SUFFIX_GROUP, "Grupos del esquema ",
+				"Grupos del esquema XML");
+		cover = new References(cc.create());
+
+		for (Group group : schema.getGroups()) {
+			CreateGroup cg = new CreateGroup(idSchema);
+			cover.addChild(new References(cg.create(group)));
+		}
+		references.add(cover);
 		if (portada) {
 			cc = new CreatePortada(idSchema + "Schema", "Schema XML", "NameSpace:" + schema.getTargetNamespace());
 			cover = new References(cc.create());

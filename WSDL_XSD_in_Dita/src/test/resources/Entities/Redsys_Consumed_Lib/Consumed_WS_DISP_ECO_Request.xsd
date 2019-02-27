@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema
+	targetNamespace="http://soap.sctinst.redsys.es/consumed/DISP_ECO"
+	 xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	 xmlns:tns="http://soap.sctinst.redsys.es/consumed/DISP_ECO" 
+	 xmlns:pref="http://soap.sctinst.redsys.es/common"
+	 xmlns:Q1="urn:AdmnEchoReq">
+
+    <xsd:import
+		schemaLocation="../FTM_Redsys_Common_Lib/Common_PPII_iSCTDTTypes.xsd"
+		namespace="http://soap.sctinst.redsys.es/common">
+	</xsd:import>
+	
+	<xsd:import
+		schemaLocation="../FTM_Redsys_Common_Lib/AdmnEchoReq.xsd"
+		namespace="urn:AdmnEchoReq">
+	</xsd:import>
+	
+	
+	
+	<xsd:complexType name="Input">
+		<xsd:sequence minOccurs="1" maxOccurs="1">
+		
+		   <!-- Input ECO availability message -->
+		   <xsd:element name="inputEcoMsg" type="Q1:DocumentType"
+		   	minOccurs="1" maxOccurs="1">
+		   </xsd:element>
+
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:simpleType name="ArrayOperationType">
+		<xsd:restriction base="xsd:base64Binary">
+			<xsd:maxLength value="16000"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:element name="Input" type="tns:Input"></xsd:element>
+
+</xsd:schema>

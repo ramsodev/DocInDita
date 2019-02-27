@@ -10,4 +10,8 @@ public class Constants {
 	public static final String SUFFIX_COMPLEXTYPE = "ComplexType";
 	public static final String SUFFIX_ATTRIBUTE = "Attribute";
 	public static final String SUFFIX_ATTRIBUTEGROUP = "AttributeGroup";
+	public static final String SEQUENCE = "Sequence";
+	public static final String ALL = "All";
+	public static final String CHOICE = "Choice";
+	public static final String SUFFIX_GROUP = "Group";
 }

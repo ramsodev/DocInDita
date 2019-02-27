@@ -12,7 +12,6 @@ import net.ramso.tools.Tools;
 
 public class CreateElement extends BasicCreate {
 
-	private String content;
 	private String idSchema;
 
 	public CreateElement(String idSchema) {
@@ -22,10 +21,8 @@ public class CreateElement extends BasicCreate {
 		this.idSchema = idSchema;
 	}
 
-	
-
 	public String create(Element element) throws IOException {
-		setId(idSchema+"_"+element.getName() + "Element");
+		setId(idSchema + "_" + element.getName() + "Element");
 		setTitle("Element " + element.getName());
 		loadContent(element.getAnnotation());
 		init();
@@ -34,25 +31,4 @@ public class CreateElement extends BasicCreate {
 		run(getContext());
 		return getFile_name();
 	}
-	
-	public void loadContent(Annotation annotation) {
-		String value = "";
-		if(annotation!=null) {
-			if(annotation.getDocumentations()!=null) {
-				for(Documentation doc:annotation.getDocumentations()) {
-					value += doc.getContent();
-				}
-			}
-		}
-		if(!value.isEmpty()) setContent(value);
-	}
-
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
-
 }

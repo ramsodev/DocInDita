@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema
+	targetNamespace="http://soap.sctinst.redsys.es/consumed/RECEPCION_NEGACION" 
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	xmlns:tns="http://soap.sctinst.redsys.es/consumed/RECEPCION_NEGACION" 
+	xmlns:Q1="urn:iso:std:iso:20022:tech:xsd:pacs.002.001.03" 
+	xmlns:pref="http://soap.sctinst.redsys.es/common">
+
+	<xsd:import
+		schemaLocation="../FTM_Redsys_Common_Lib/pacs.002.001.03.xsd"
+		namespace="urn:iso:std:iso:20022:tech:xsd:pacs.002.001.03">
+	</xsd:import>
+	<xsd:import schemaLocation="../FTM_Redsys_Common_Lib/Common_PPII_iSCTDTTypes.xsd" namespace="http://soap.sctinst.redsys.es/common"></xsd:import>
+	<xsd:element name="Output" type="tns:Output"></xsd:element>
+
+	<xsd:complexType name="Output">
+		<xsd:sequence>
+			<xsd:element name="StatusCd" type="pref:StatusCode"></xsd:element>
+			<xsd:element ref="Q1:Document" minOccurs="0"
+				maxOccurs="1">
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+
+</xsd:schema>

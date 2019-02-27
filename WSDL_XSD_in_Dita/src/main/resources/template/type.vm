@@ -25,5 +25,8 @@
     	#if(${attributeGroup})
     		#parse("attributeGroup.vm")
     	#end
+    	#if(${group})
+    		#parse("group.vm")
+    	#end
     </body>
 </topic>

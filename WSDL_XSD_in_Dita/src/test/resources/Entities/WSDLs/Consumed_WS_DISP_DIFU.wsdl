@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	name="DISP_DIFU" 
+	targetNamespace="http://soap.sctinst.redsys.es/consumed/DISP_DIFU"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+	xmlns:tns="http://soap.sctinst.redsys.es/consumed/DISP_DIFU"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	
+	<wsdl:documentation>
+		<wsdl:appinfo source="WMQI_APPINFO">
+			<MRWSDLAppInfo imported="true">
+				<binding hasEncoding="false" imported="true"
+					name="DispDifuPortBinding" originalBindingStyle="document" />
+			</MRWSDLAppInfo>
+		</wsdl:appinfo>
+	</wsdl:documentation>
+	<wsdl:types>
+		<xsd:schema>
+			<xsd:import namespace="http://soap.sctinst.redsys.es/consumed/DISP_DIFU" schemaLocation="../Redsys_Consumed_Lib/Consumed_WS_DISP_DIFU_Request.xsd"></xsd:import>
+			<xsd:import namespace="http://soap.sctinst.redsys.es/consumed/DISP_DIFU" schemaLocation="../Redsys_Consumed_Lib/Consumed_WS_DISP_DIFU_Response.xsd"></xsd:import>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="dispDifuRequest">
+		<wsdl:part element="tns:Input" name="WS_DISP_DIFU_Request" />
+	</wsdl:message>
+	<wsdl:message name="dispDifuResponse">
+		<wsdl:part element="tns:Output" name="WS_DISP_DIFU_Response" />
+	</wsdl:message>
+	<wsdl:portType name="WsDispDifu">
+		<wsdl:operation name="DispDifuOp">
+			<wsdl:input message="tns:dispDifuRequest" />
+			<wsdl:output message="tns:dispDifuResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="DispDifuPortBinding" type="tns:WsDispDifu">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="DispDifuOp">
+			<soap:operation
+				soapAction="http://soap.sctinst.redsys.es/WS_DISP_DIFU/DispDifuOp" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="WS_DISP_DIFU_service">
+		<wsdl:port binding="tns:DispDifuPortBinding" name="WsDispDifuPort">
+			<soap:address location="http://localhost:7800/WS_DISP_DIFU" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

@@ -1,5 +1,15 @@
   <!-- complextype start -->
    <dl>
+   		#if(${complexType.getSupers()})
+   		<dlentry>
+       		<dt>Extended</dt>
+            <dd><sl>
+            		#foreach($super in ${complexType.getSupers()})
+            			<sli><xref href="${tools.getHref(${super})}">${super.getLocalPart()} </xref></sli>
+            		#end
+            </sl></dd>
+        </dlentry>
+   		#end 
         <dlentry>
        		<dt>Obligatorio</dt>
             <dd>${complexType.isRequiered()}</dd>
@@ -29,10 +39,12 @@
         #end 
         #if(${complexType.getElements()})
         <dlentry>
-        	<dt>Elementos</dt>
+        	<dt>Elementos para ${complexType.getContentType()}</dt>
         	<dd><sl>
             		#foreach($element in ${complexType.getElements()})
-            			<sli><xref href="#$id/sectionElement${element.getName()}">${element.getName()}</xref></sli>
+            			<sli><xref #if(${element.getRef()})href="${element.getHrefType()}" ${element.getExternalHref()}>${element.getRef().getLocalPart()}
+            					   #else href="#$id/sectionElement${element.getName()}">${element.getName()}
+            					   #end </xref></sli>
             		#end
             </sl></dd>
         </dlentry>
@@ -99,21 +111,23 @@
        		#set($childc = $child)
        		#set($child = true)
        		#foreach($element in ${complexType.getElements()})
-       			#if($childc)
+       			#if(!${element.getRef()})
+       				#if($childc)
  	<sectiondiv id="sectionElement${element.getName()}">
  		<p><u><b>Element ${element.getName()}</b></u></p>
- 				#else
+ 					#else
     <section id="sectionElement${element.getName()}">
     	<title>Element ${element.getName()}</title>
-    			#end
-    			#if(${element.getDoc()})
+    				#end
+    				#if(${element.getDoc()})
     	<p><lines>${element.getDoc()}</lines></p>
-    			#end
-       			#parse("element.vm")
-       			#if($childc)
+    				#end
+       				#parse("element.vm")
+       				#if($childc)
     </sectiondiv> 
-       			#else
+       				#else
     </section>
+    				#end
     			#end
        		#end
        		#set($child = $childc)
