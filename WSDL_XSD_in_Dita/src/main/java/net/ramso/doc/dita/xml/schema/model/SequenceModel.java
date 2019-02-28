@@ -7,7 +7,7 @@ import com.predic8.schema.SchemaComponent;
 import com.predic8.schema.Sequence;
 
 import groovy.xml.QName;
-import net.ramso.tools.Constants;
+import net.ramso.doc.dita.tools.Constants;
 
 public class SequenceModel extends AbstractComplexContentModel {
 	private Sequence sequence;

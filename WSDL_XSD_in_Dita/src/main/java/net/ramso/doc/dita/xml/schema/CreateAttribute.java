@@ -5,8 +5,8 @@ import java.io.IOException;
 import com.predic8.schema.Attribute;
 
 import net.ramso.doc.dita.BasicCreate;
+import net.ramso.doc.dita.tools.Constants;
 import net.ramso.doc.dita.xml.schema.model.AttributeModel;
-import net.ramso.tools.Constants;
 
 public class CreateAttribute extends BasicCreate {
 

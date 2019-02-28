@@ -1,8 +1,6 @@
 package net.ramso.doc.dita.xml.wsdl;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -21,20 +19,13 @@ import com.predic8.wsdl.WSDLParserContext;
 import net.ramso.doc.dita.CreateBookMap;
 import net.ramso.doc.dita.CreatePortada;
 import net.ramso.doc.dita.References;
+import net.ramso.doc.dita.tools.Constants;
 import net.ramso.doc.dita.xml.schema.GenerateSchema;
-import net.ramso.tools.Constants;
 
 public class GenerateWsdl {
 
 	public GenerateWsdl() {
 		super();
-		init();
-	}
-
-	private void init() {
-		// TODO: Usar fichero de properties y Verificar configuracion
-		String p = Thread.currentThread().getContextClassLoader().getResource("velocity.properties").getPath();
-		Velocity.init(p);
 	}
 
 	public void generateWSDL(String url) throws MalformedURLException, IOException, URISyntaxException {
@@ -43,7 +34,6 @@ public class GenerateWsdl {
 	}
 
 	public void generateWSDL(URL url) throws IOException, URISyntaxException {
-
 		String fileName = url.getPath().substring(url.getPath().lastIndexOf('/') + 1);
 		if (fileName.contains("?")) {
 			fileName = fileName.substring(0, fileName.lastIndexOf('?'));
@@ -58,11 +48,6 @@ public class GenerateWsdl {
 		} else {
 			ctx.setInput(url.toExternalForm());
 		}
-
-		// if(url.getProtocol().startsWith("file")) {
-		// File f = new File(url.getPath());
-		// ctx.setBaseDir(f.getParent());
-		// }
 		Definitions desc = parser.parse(ctx);
 		String content = "Definición del Servicio Web " + fileName;
 		if (desc.getDocumentation() != null) {
@@ -71,14 +56,13 @@ public class GenerateWsdl {
 			}
 		}
 		ArrayList<References> index = new ArrayList<References>();
-
 		List<Service> services = desc.getServices();
 		for (Service service : services) {
 			content = "Definiciones del servicio " + service.getName();
 			if (service.getDocumentation() != null) {
 				content = service.getDocumentation().getContent().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 			}
-			CreatePortada cc = new CreatePortada(service.getName() + "Service",
+			CreatePortada cc = new CreatePortada(service.getName() + Constants.SUFFIX_SERVICE,
 					"Documentacion del Servicio " + service.getName(), content);
 			References partService = new References(cc.create());
 			cc = null;
@@ -87,7 +71,8 @@ public class GenerateWsdl {
 			ce = null;
 			content = "Operaciones del servicio " + service.getName();
 
-			cc = new CreatePortada(service.getName() + "Operations", "Operaciones de " + service.getName(), content);
+			cc = new CreatePortada(service.getName() + Constants.SUFFIX_OPERATION,
+					"Operaciones de " + service.getName(), content);
 			References chapter = new References(cc.create());
 			cc = null;
 			for (Operation operation : desc.getOperations()) {
@@ -103,12 +88,10 @@ public class GenerateWsdl {
 			partService.addChild(chapter);
 			index.add(partService);
 		}
-
 		List<Schema> schemas = desc.getSchemas();
 		for (Schema schema : schemas) {
 			GenerateSchema gs = new GenerateSchema();
 			index.addAll(gs.generateSchema(schema, true));
-
 		}
 		content = "";
 		if (desc.getDocumentation() != null) {

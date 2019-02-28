@@ -11,7 +11,7 @@ import com.predic8.schema.GroupRef;
 import com.predic8.schema.SchemaComponent;
 import com.predic8.schema.Sequence;
 
-import net.ramso.tools.Constants;
+import net.ramso.doc.dita.tools.Constants;
 
 public abstract class AbstractComplexContentModel extends AbstractComponentModel implements IComplexContentModel {
 

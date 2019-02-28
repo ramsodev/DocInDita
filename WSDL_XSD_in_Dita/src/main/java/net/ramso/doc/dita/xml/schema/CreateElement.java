@@ -7,8 +7,8 @@ import com.predic8.schema.Documentation;
 import com.predic8.schema.Element;
 
 import net.ramso.doc.dita.BasicCreate;
+import net.ramso.doc.dita.tools.Tools;
 import net.ramso.doc.dita.xml.schema.model.ElementModel;
-import net.ramso.tools.Tools;
 
 public class CreateElement extends BasicCreate {
 

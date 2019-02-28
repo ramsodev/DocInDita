@@ -7,7 +7,7 @@ import com.predic8.wsdl.BindingOperation;
 import com.predic8.wsdl.Port;
 
 import net.ramso.doc.dita.BasicCreate;
-import net.ramso.tools.Tools;
+import net.ramso.doc.dita.tools.Tools;
 
 public class CreatePorts extends BasicCreate {
 	public CreatePorts(String serviceName) {

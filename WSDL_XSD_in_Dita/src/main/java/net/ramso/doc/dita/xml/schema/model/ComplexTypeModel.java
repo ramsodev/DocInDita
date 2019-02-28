@@ -13,7 +13,7 @@ import com.predic8.schema.Sequence;
 import com.predic8.schema.SimpleContent;
 
 import groovy.xml.QName;
-import net.ramso.tools.Constants;
+import net.ramso.doc.dita.tools.Constants;
 
 public class ComplexTypeModel extends AbstractComplexContentModel {
 

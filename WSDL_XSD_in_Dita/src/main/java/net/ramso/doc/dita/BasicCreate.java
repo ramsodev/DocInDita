@@ -9,6 +9,7 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 
+import com.ontimebt.doc.Config;
 import com.predic8.schema.Annotation;
 import com.predic8.schema.Documentation;
 
@@ -36,7 +37,7 @@ public abstract class BasicCreate implements iCreate {
 	}
 
 	protected void run(VelocityContext context) throws IOException {
-		File file = new File("out" + File.separator + getFile_name());
+		File file = new File(Config.getOutputDir() + File.separator + getFile_name());
 		file.getParentFile().mkdirs();
 		BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 		if (getTemplate() != null)

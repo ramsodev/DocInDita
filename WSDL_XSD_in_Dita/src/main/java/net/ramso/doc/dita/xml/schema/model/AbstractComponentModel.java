@@ -2,12 +2,11 @@ package net.ramso.doc.dita.xml.schema.model;
 
 import java.net.MalformedURLException;
 import groovy.xml.QName;
+import net.ramso.doc.dita.tools.Constants;
+import net.ramso.doc.dita.tools.Tools;
 
 import com.predic8.schema.Documentation;
 import com.predic8.schema.SchemaComponent;
-
-import net.ramso.tools.Constants;
-import net.ramso.tools.Tools;
 
 public abstract class AbstractComponentModel implements iComponentModel {
 

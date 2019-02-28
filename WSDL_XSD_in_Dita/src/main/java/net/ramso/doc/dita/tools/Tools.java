@@ -1,8 +1,17 @@
-package net.ramso.tools;
+package net.ramso.doc.dita.tools;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 import com.predic8.schema.Attribute;
 import com.predic8.schema.AttributeGroup;
@@ -15,6 +24,7 @@ import com.predic8.schema.TypeDefinition;
 import com.predic8.wsdl.BindingOperation;
 
 import groovy.xml.QName;
+import net.ramso.tools.LogManager;
 
 public class Tools {
 	public static Schema SCHEMA = null;
@@ -40,7 +50,7 @@ public class Tools {
 		String href = idSchema + "_" + getHref(true, element.getName() + Constants.SUFFIX_ELEMENT);
 		return href;
 	}
-	
+
 	public static String getHref(QName qname) throws MalformedURLException {
 		String idSchema = Tools.getSchemaId(qname.getNamespaceURI());
 		String href = idSchema + "_" + getHref(true, qname.getLocalPart() + getSuffixType(qname));
@@ -49,7 +59,6 @@ public class Tools {
 
 	public static String getHrefType(QName type) throws MalformedURLException {
 		String idSchema = Tools.getSchemaId(type.getNamespaceURI());
-		String q = type.getQualifiedName();
 		String href = idSchema + "_" + type.getLocalPart() + getSuffixType(type) + ".dita";
 		return href;
 	}
@@ -65,7 +74,6 @@ public class Tools {
 			return "noNamespace";
 		} else if (uri.startsWith("urn")) {
 			URI urn = URI.create(uri);
-			String p = urn.getPath();
 			String a = urn.getSchemeSpecificPart().replaceAll("\\.", "").replaceAll("\\:", "");
 			return a;
 		} else {
@@ -103,9 +111,9 @@ public class Tools {
 						AttributeGroup g = SCHEMA.getAttributeGroup(type);
 						if (g != null) {
 							return Constants.SUFFIX_ATTRIBUTEGROUP;
-						}else {
+						} else {
 							Group gr = SCHEMA.getGroup(type);
-							if(gr!=null) {
+							if (gr != null) {
 								return Constants.SUFFIX_GROUP;
 							}
 						}
@@ -118,6 +126,27 @@ public class Tools {
 
 	public static TypeDefinition getType(QName type) {
 		return SCHEMA.getType(type);
-		
+	}
+
+	public static String getFileType(URL url) {
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder;
+		try {
+			dBuilder = dbFactory.newDocumentBuilder();
+			Document doc = dBuilder.parse(url.toURI().toString());
+			switch (doc.getDocumentElement().getNodeName()) {
+			case Constants.WSDL_ELEMENTNAME:
+				return Constants.WSDL;
+			case Constants.WADL_ELEMENTNAME:
+				return Constants.WADL;
+			case Constants.XSD_ELEMENTNAME:
+				return Constants.XSD;
+			default:
+				return "";
+			}
+		} catch (ParserConfigurationException | SAXException | IOException | URISyntaxException e) {
+			LogManager.error("Error al buscar el tipo de definición", e);
+		}
+		return null;
 	}
 }

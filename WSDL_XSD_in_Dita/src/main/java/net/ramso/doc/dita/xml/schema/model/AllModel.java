@@ -8,7 +8,7 @@ import com.predic8.schema.GroupRef;
 import com.predic8.schema.SchemaComponent;
 
 import groovy.xml.QName;
-import net.ramso.tools.Constants;
+import net.ramso.doc.dita.tools.Constants;
 
 public class AllModel extends AbstractComplexContentModel {
 	private All all;

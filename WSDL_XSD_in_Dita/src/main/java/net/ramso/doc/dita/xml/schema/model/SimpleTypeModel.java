@@ -22,8 +22,8 @@ import com.predic8.schema.restriction.facet.TotalDigitsFacet;
 import com.predic8.schema.restriction.facet.WhiteSpaceFacet;
 
 import groovy.xml.QName;
-import net.ramso.tools.Constants;
-import net.ramso.tools.Tools;
+import net.ramso.doc.dita.tools.Constants;
+import net.ramso.doc.dita.tools.Tools;
 
 public class SimpleTypeModel extends AbstractComponentModel {
 

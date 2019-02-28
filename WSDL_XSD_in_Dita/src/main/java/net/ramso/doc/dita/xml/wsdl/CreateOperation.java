@@ -5,7 +5,7 @@ import java.io.IOException;
 import com.predic8.wsdl.Operation;
 
 import net.ramso.doc.dita.BasicCreate;
-import net.ramso.tools.Tools;
+import net.ramso.doc.dita.tools.Tools;
 
 public class CreateOperation extends BasicCreate {
 	private String content;

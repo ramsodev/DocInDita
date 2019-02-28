@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.ramso.doc.dita.xml</groupId>
-	<artifactId>WSDL_XSD_in_Dita</artifactId>
+	<artifactId>XMLDocInDita</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -32,6 +32,16 @@
 			<groupId>org.apache.velocity.tools</groupId>
 			<artifactId>velocity-tools-generic</artifactId>
 			<version>3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.0.13</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jasypt</groupId>
+			<artifactId>jasypt</artifactId>
+			<version>1.9.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>

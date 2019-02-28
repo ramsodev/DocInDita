@@ -7,9 +7,9 @@ import com.predic8.schema.Documentation;
 import com.predic8.schema.SimpleType;
 
 import net.ramso.doc.dita.BasicCreate;
+import net.ramso.doc.dita.tools.Constants;
+import net.ramso.doc.dita.tools.Tools;
 import net.ramso.doc.dita.xml.schema.model.SimpleTypeModel;
-import net.ramso.tools.Constants;
-import net.ramso.tools.Tools;
 
 public class CreateSimpleType extends BasicCreate {
 

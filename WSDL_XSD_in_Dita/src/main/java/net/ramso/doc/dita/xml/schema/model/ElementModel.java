@@ -7,7 +7,7 @@ import com.predic8.schema.SimpleType;
 import com.predic8.schema.TypeDefinition;
 
 import groovy.xml.QName;
-import net.ramso.tools.Constants;
+import net.ramso.doc.dita.tools.Constants;
 
 public class ElementModel extends AbstractComplexContentModel {
 

@@ -5,9 +5,9 @@ import java.io.IOException;
 import com.predic8.schema.ComplexType;
 
 import net.ramso.doc.dita.BasicCreate;
+import net.ramso.doc.dita.tools.Constants;
+import net.ramso.doc.dita.tools.Tools;
 import net.ramso.doc.dita.xml.schema.model.ComplexTypeModel;
-import net.ramso.tools.Constants;
-import net.ramso.tools.Tools;
 
 public class CreateComplexType extends BasicCreate {
 
