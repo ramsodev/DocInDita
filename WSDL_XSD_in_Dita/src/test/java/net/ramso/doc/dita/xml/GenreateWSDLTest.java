@@ -18,8 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import com.ontimebt.doc.Config;
-
+import net.ramso.doc.Config;
 import net.ramso.doc.dita.xml.wsdl.GenerateWsdl;
 
 class GenreateWSDLTest {

@@ -9,9 +9,10 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 
-import com.ontimebt.doc.Config;
 import com.predic8.schema.Annotation;
 import com.predic8.schema.Documentation;
+
+import net.ramso.doc.Config;
 
 public abstract class BasicCreate implements iCreate {
 	private String file_name;

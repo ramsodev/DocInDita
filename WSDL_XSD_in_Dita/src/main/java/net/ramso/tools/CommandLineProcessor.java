@@ -12,8 +12,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
-import com.ontimebt.doc.Config;
-
+import net.ramso.doc.Config;
 import net.ramso.doc.dita.tools.Constants;
 
 public class CommandLineProcessor {

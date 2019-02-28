@@ -5,8 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.ontimebt.doc.Config;
-
+import net.ramso.doc.Config;
 import net.ramso.tools.CommandLineProcessor;
 
 class ToolsTest {
