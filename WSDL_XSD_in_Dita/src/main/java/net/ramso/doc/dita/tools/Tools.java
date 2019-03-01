@@ -24,6 +24,7 @@ import com.predic8.schema.TypeDefinition;
 import com.predic8.wsdl.BindingOperation;
 
 import groovy.xml.QName;
+import net.ramso.tools.FileTools;
 import net.ramso.tools.LogManager;
 
 public class Tools {
@@ -129,11 +130,8 @@ public class Tools {
 	}
 
 	public static String getFileType(URL url) {
-		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder dBuilder;
-		try {
-			dBuilder = dbFactory.newDocumentBuilder();
-			Document doc = dBuilder.parse(url.toURI().toString());
+		try {			
+			Document doc = FileTools.parseXML(url);
 			switch (doc.getDocumentElement().getNodeName()) {
 			case Constants.WSDL_ELEMENTNAME:
 				return Constants.WSDL;

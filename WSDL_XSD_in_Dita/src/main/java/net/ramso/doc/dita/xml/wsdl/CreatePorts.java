@@ -7,11 +7,12 @@ import com.predic8.wsdl.BindingOperation;
 import com.predic8.wsdl.Port;
 
 import net.ramso.doc.dita.BasicCreate;
+import net.ramso.doc.dita.tools.Constants;
 import net.ramso.doc.dita.tools.Tools;
 
 public class CreatePorts extends BasicCreate {
 	public CreatePorts(String serviceName) {
-		super(serviceName+"Ports","Ports del servicio " + serviceName);
+		super(serviceName+Constants.SUFFIX_PORT,"Ports del servicio " + serviceName);
 		setTemplateFile("template/ports.vm");
 	}
 

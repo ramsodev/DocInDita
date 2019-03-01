@@ -21,6 +21,7 @@ import net.ramso.doc.dita.CreatePortada;
 import net.ramso.doc.dita.References;
 import net.ramso.doc.dita.tools.Constants;
 import net.ramso.doc.dita.xml.schema.GenerateSchema;
+import net.ramso.doc.dita.xml.wsdl.graph.WSDLGraph;
 
 public class GenerateWsdl {
 
@@ -62,6 +63,7 @@ public class GenerateWsdl {
 			if (service.getDocumentation() != null) {
 				content = service.getDocumentation().getContent().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 			}
+			WSDLGraph graph = new WSDLGraph(service);
 			CreatePortada cc = new CreatePortada(service.getName() + Constants.SUFFIX_SERVICE,
 					"Documentacion del Servicio " + service.getName(), content);
 			References partService = new References(cc.create());

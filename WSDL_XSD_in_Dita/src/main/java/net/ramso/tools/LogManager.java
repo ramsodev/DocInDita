@@ -1,7 +1,5 @@
 package net.ramso.tools;
 
-import java.io.InputStream;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,6 +15,9 @@ public class LogManager {
 		info, warn, error, debug
 	};
 
+	public static void init(Logger externalLogger) {
+		logger = externalLogger;
+	}
 	/**
 	 * Configura el logger con el nombre el tipo y las configuraciones recibidas
 	 * 
