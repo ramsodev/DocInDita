@@ -90,4 +90,25 @@ public class FileTools {
 	public static Document parseXML(File file) throws ParserConfigurationException, SAXException, IOException {
 		return parseXML(file.getAbsolutePath());
 	}
+
+	public static boolean checkPath(String filename, boolean mkparentDirs) {
+		
+		return checkPath(new File(filename), mkparentDirs);
+		
+	}
+	public static boolean checkPath(File file, boolean mkparentDirs) {
+		if(!file.exists()) {
+			File parent = file.getParentFile();
+			if(!parent.exists() ) {
+				if(mkparentDirs) {
+					parent.mkdirs();
+				}else {
+					return false;
+				}
+			}else if(!parent.isDirectory()) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

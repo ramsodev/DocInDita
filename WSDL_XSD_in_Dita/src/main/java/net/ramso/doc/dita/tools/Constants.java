@@ -34,4 +34,7 @@ public class Constants {
 	public static final String PREFIX_CMD_ARGUMENT = "cmd.option.argument";
 	public static final String PREFIX_CMD_TYPE = "cmd.option.type";
 	public static final String OUTDIR_NAME = "outDir";
+	public static final String SUFFIX_ADDRESS = "Address";
+	public static final String SUFFIX_BINDING = "Binding";
+	public static final String IMAGE_PATH = "images";
 }

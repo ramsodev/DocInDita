@@ -38,73 +38,13 @@ class WSDLGraphTest {
 
 	}
 
-	// @Test
-	// @DisplayName("Procesar echo")
-	// void testGenerateWSDL() {
-	// URL echo =
-	// Thread.currentThread().getContextClassLoader().getResource("echo.wsdl");
-	// try {
-	// generate.generateWSDL(echo);
-	// } catch (Exception e) {
-	//
-	// e.printStackTrace();
-	// fail(e.getLocalizedMessage());
-	// }
-	// assertTrue(true);
-	// }
-	//
-	// @Test
-	// @DisplayName("Procesar Simulacion")
-	// void testGenerateWSDL2() {
-	// URL echo =
-	// Thread.currentThread().getContextClassLoader().getResource("simulacion.wsdl");
-	// try {
-	// generate.generateWSDL(echo);
-	// } catch (Exception e) {
-	//
-	// e.printStackTrace();
-	// fail(e.getLocalizedMessage());
-	// }
-	// assertTrue(true);
-	// }
-	//
-	// @Test
-	// @DisplayName("Procesar Tarificador")
-	// void testGenerateWSDL3() {
-	// URL echo;
-	// try {
-	// echo = new URL("https://svd.almudenaseguros.es/services/tarificador?wsdl");
-	// generate.generateWSDL(echo);
-	// } catch (Exception e) {
-	//
-	// e.printStackTrace();
-	// fail(e.getLocalizedMessage());
-	// }
-	// assertTrue(true);
-	// }
 
-	// @Test
-	// @DisplayName("Procesar Sepa")
-	// void testGenerateWSDL4() {
-	//
-	// try {
-	// URL echo = Thread.currentThread().getContextClassLoader()
-	// .getResource("Entities/WSDLs/Exposed_WS_ENVIO_TRANSFERENCIA.wsdl");
-	//
-	// generate.generateWSDL(echo);
-	// } catch (Exception e) {
-	//
-	// e.printStackTrace();
-	// fail(e.getLocalizedMessage());
-	// }
-	// assertTrue(true);
-	// }
 	@Test
 	@DisplayName("Procesar as400")
 	void testGenerateWSDL5() {
 
 		try {
-			URL url = Thread.currentThread().getContextClassLoader().getResource("btw020ws.wsdl");
+			URL url = Thread.currentThread().getContextClassLoader().getResource("echo.wsdl");
 			WSDLParser parser = new WSDLParser();
 			WSDLParserContext ctx = new WSDLParserContext();
 			if (url.getProtocol().startsWith("file")) {

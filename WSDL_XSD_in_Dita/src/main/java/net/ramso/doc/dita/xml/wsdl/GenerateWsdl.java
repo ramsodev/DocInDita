@@ -66,6 +66,7 @@ public class GenerateWsdl {
 			WSDLGraph graph = new WSDLGraph(service);
 			CreatePortada cc = new CreatePortada(service.getName() + Constants.SUFFIX_SERVICE,
 					"Documentacion del Servicio " + service.getName(), content);
+			cc.setDiagram(graph.generate());
 			References partService = new References(cc.create());
 			cc = null;
 			CreatePorts ce = new CreatePorts(service.getName());
