@@ -87,4 +87,10 @@ public class AttributeModel extends AbstractComponentModel {
 
 	}
 
+	@Override
+	public String getDiagram() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

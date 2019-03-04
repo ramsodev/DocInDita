@@ -200,6 +200,32 @@
 
 				</xs:sequence>
 			</xs:group>
+
+			<xs:complexType name="test0">
+				<xs:simpleContent>
+					<xs:extension base="xs:dateTime"></xs:extension>
+				</xs:simpleContent>
+			</xs:complexType>
+
+			<xs:complexType name="test2">
+				<xs:complexContent>
+					<xs:restriction>
+						<xs:sequence>
+							<xs:element name="pasar"></xs:element>
+						</xs:sequence>
+					</xs:restriction>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="test1">
+				<xs:simpleContent>
+					<xs:restriction>
+						<xs:attribute name="mierda"></xs:attribute>
+					</xs:restriction>
+				</xs:simpleContent>
+			</xs:complexType>
+
+
+
 		</xs:schema>
 	</wsdl:types>
 	<wsdl:message name="echoOMElementRequest">

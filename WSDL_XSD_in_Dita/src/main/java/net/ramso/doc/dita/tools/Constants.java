@@ -36,5 +36,9 @@ public class Constants {
 	public static final String OUTDIR_NAME = "outDir";
 	public static final String SUFFIX_ADDRESS = "Address";
 	public static final String SUFFIX_BINDING = "Binding";
-	public static final String IMAGE_PATH = "images";
+
+	public static final String SUFFIX_RESTRICTION = "Restricccion";
+	public static final String SUFFIX_PORT_TYPE = "PortType";
+	public static final String UNBOUNDED = "unbounded";
+
 }

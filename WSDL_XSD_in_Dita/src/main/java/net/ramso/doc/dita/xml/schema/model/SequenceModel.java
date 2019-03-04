@@ -56,5 +56,11 @@ public class SequenceModel extends AbstractComplexContentModel {
 		
 		return Constants.SEQUENCE;
 	}
+
+	@Override
+	public String getDiagram() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

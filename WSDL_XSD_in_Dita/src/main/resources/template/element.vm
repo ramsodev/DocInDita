@@ -18,6 +18,7 @@
    	</dl> 
     	#elseif(${element.getSimpleType()})
  	</dl>
+	
  			#if($child)
  		<sectiondiv id= "section_embebedType${element.getName()}">
  			<p><u><b>Simple Type</b></u></p>
@@ -64,7 +65,17 @@
             #else
         </section>
         	#end
-        #end  
+        #end
+        
+ 	 #if(!$child)
+        <section id="section_diagram">
+            <title>Diagrama</title>            
+        		<fig id="${id}Diagram">
+            		<title>Diagrama para ${title}</title>
+           			<image placement="break" href="${element.getDiagram()}" align="center" id="${id}Image" scalefit="yes"/>
+        		</fig>
+        </section>  
+     #end  
         #if(!$child)
         <section id="section_code">
             <title>Codigo</title>            

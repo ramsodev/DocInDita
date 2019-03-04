@@ -320,6 +320,7 @@
          		</xsd:element>
          	</xsd:sequence>
          	<xsd:attribute name="NewAttribute" type="xsd:string"></xsd:attribute>
+         	<xsd:attributeGroup ref="tns:NewAttributeGroup"></xsd:attributeGroup>
          </xsd:complexType>
          <xsd:complexType name="DATOSCOBROType">
             <xsd:sequence>
@@ -752,7 +753,9 @@
             <xsd:attributeGroup name="NewAttributeGroup">
             	<xsd:attribute name="NewAttribute" type="xsd:string"></xsd:attribute>
             </xsd:attributeGroup>
-      </xsd:schema>
+      
+            <xsd:element name="NewElement" type="tns:importeNeto"></xsd:element>
+        </xsd:schema>
    </wsdl:types>
    <wsdl:message name="simulacionRequest">
       <wsdl:part name="parameters" element="tns:simulacionInput"/>

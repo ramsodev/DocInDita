@@ -24,6 +24,7 @@ import com.predic8.schema.restriction.facet.WhiteSpaceFacet;
 import groovy.xml.QName;
 import net.ramso.doc.dita.tools.Constants;
 import net.ramso.doc.dita.tools.Tools;
+import net.ramso.doc.dita.xml.schema.model.graph.SimpleTypeGraph;
 
 public class SimpleTypeModel extends AbstractComponentModel {
 
@@ -43,6 +44,8 @@ public class SimpleTypeModel extends AbstractComponentModel {
 	private List<String> values;
 
 	private SimpleType simpleType;
+
+	private String diagram;
 
 	public SimpleTypeModel(SimpleType type) {
 		super();
@@ -239,6 +242,16 @@ public class SimpleTypeModel extends AbstractComponentModel {
 	@Override
 	public QName getType() {
 		return restriction.getBase();
+	}
+
+	@Override
+	public String getDiagram() {
+		if (this.diagram == null) {
+			SimpleTypeGraph stg = new SimpleTypeGraph(this);
+			diagram = stg.generate();
+			stg = null;
+		}
+		return diagram;
 	}
 
 }

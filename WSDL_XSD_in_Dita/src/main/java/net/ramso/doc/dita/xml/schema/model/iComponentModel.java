@@ -20,5 +20,7 @@ public interface iComponentModel {
 	public String getDoc();
 	
 	SchemaComponent getComponent();
+	
+	String getDiagram();
 
 }

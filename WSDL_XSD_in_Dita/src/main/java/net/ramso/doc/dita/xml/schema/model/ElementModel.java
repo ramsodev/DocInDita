@@ -8,6 +8,7 @@ import com.predic8.schema.TypeDefinition;
 
 import groovy.xml.QName;
 import net.ramso.doc.dita.tools.Constants;
+import net.ramso.doc.dita.xml.schema.model.graph.ElementGraph;
 
 public class ElementModel extends AbstractComplexContentModel {
 
@@ -17,6 +18,7 @@ public class ElementModel extends AbstractComplexContentModel {
 	private SimpleTypeModel simpleType = null;
 	private ComplexTypeModel complexType = null;
 	private Element element;
+	private String diagram;
 	
 
 	public ElementModel(Element element) {
@@ -25,8 +27,7 @@ public class ElementModel extends AbstractComplexContentModel {
 		init();
 	}
 
-	private void init() {
-		
+	private void init() {		
 		if (element.getMinOccurs() != null && !element.getMinOccurs().isEmpty()) {
 			setMinOccurs(Integer.parseInt(element.getMinOccurs()));
 		}
@@ -105,6 +106,15 @@ public class ElementModel extends AbstractComplexContentModel {
 	@Override
 	public String getComponentName() {
 		return Constants.NAME_ELEMENT;
+	}
+
+	@Override
+	public String getDiagram() {
+		if(this.diagram == null) {
+			ElementGraph graph = new ElementGraph(this);
+			diagram = graph.generate();
+		}
+		return diagram;
 	}
 
 }

@@ -7,13 +7,16 @@ import com.predic8.schema.Attribute;
 import com.predic8.schema.AttributeGroup;
 import com.predic8.schema.ComplexContent;
 import com.predic8.schema.ComplexType;
+import com.predic8.schema.Derivation;
 import com.predic8.schema.Extension;
+import com.predic8.schema.Restriction;
 import com.predic8.schema.SchemaComponent;
 import com.predic8.schema.Sequence;
 import com.predic8.schema.SimpleContent;
 
 import groovy.xml.QName;
 import net.ramso.doc.dita.tools.Constants;
+import net.ramso.doc.dita.xml.schema.model.graph.ComplexTypeGraph;
 
 public class ComplexTypeModel extends AbstractComplexContentModel {
 
@@ -21,6 +24,7 @@ public class ComplexTypeModel extends AbstractComplexContentModel {
 	private List<AttributeModel> attributes;
 	private ArrayList<AttributeGroupModel> attributeGroups;
 	private List<QName> supers;
+	private String diagram;
 
 	public ComplexTypeModel(ComplexType type) {
 		super();
@@ -30,40 +34,52 @@ public class ComplexTypeModel extends AbstractComplexContentModel {
 
 	private void init() {
 		Sequence s = complexType.getSequence();
-		supers = complexType.getSuperTypes();
-		addAttributes(complexType.getAllAttributes());
-		addAttributeGroups(complexType.getAttributeGroups());
-		if (supers != null && supers.size() > 0) {
+		try {
+			supers = complexType.getSuperTypes();
+			addAttributes(complexType.getAllAttributes());
+			addAttributeGroups(complexType.getAttributeGroups());
+		} catch (Exception e) {
+			supers = null;
+		}
+
+		if ((supers != null && supers.size() > 0) || s == null) {
 			procesContent(complexType.getModel());
 		}
 		if (s != null) {
 			procesModel(s);
-		} else {
-			setElements(null);
 		}
 	}
 
 	private void procesContent(SchemaComponent model) {
+		Derivation derivation = null;
 		if (model instanceof ComplexContent) {
 			ComplexContent c = (ComplexContent) model;
 			if (((ComplexContent) model).getRestriction() == null) {
-				Extension extension = (Extension) c.getDerivation();
-				if (extension != null) {
-					procesModel(extension.getModel());
-					addAttributes(extension.getAttributes());
-					addAttributeGroups(extension.getAttributeGroups());
-				}
+				derivation = c.getDerivation();
 			}
 		} else if (model instanceof SimpleContent) {
 			SimpleContent s = ((SimpleContent) model);
 			if (s.getRestriction() == null) {
-				Extension extension = s.getExtension();
+				derivation = (Derivation) s.getDerivation();
+			}
+		}
+		if (derivation != null) {
+			if (derivation instanceof Extension) {
+				Extension extension = (Extension) derivation;
 				if (extension != null) {
 					procesModel(extension.getModel());
 					addAttributes(extension.getAttributes());
 					addAttributeGroups(extension.getAttributeGroups());
 				}
+			} else if (derivation instanceof Restriction) {
+				Restriction restriction = (Restriction) derivation;
+				if (restriction != null) {
+					procesModel(restriction.getModel());
+					addAttributes(restriction.getAttributes());
+					addAttributeGroups(restriction.getAttributeGroups());
+				}
 			}
+
 		}
 
 	}
@@ -95,7 +111,11 @@ public class ComplexTypeModel extends AbstractComplexContentModel {
 	}
 
 	public String getCode() {
-		return complexType.getAsString().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+		try {
+			return complexType.getAsString().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+		} catch (Exception e) {
+			return "";
+		}
 	}
 
 	@Override
@@ -134,8 +154,19 @@ public class ComplexTypeModel extends AbstractComplexContentModel {
 
 	@Override
 	public String getComponentName() {
-		
+
 		return Constants.NAME_COMPLEXTYPE;
 	}
+
+	@Override
+	public String getDiagram() {		
+		if(this.diagram == null) {
+			ComplexTypeGraph graph = new ComplexTypeGraph(this);
+			diagram = graph.generate();
+		}
+		return diagram;
+	}
+
+
 
 }

@@ -8,6 +8,8 @@ import java.net.URL;
 
 import com.mxgraph.util.mxConstants;
 
+import net.ramso.tools.LogManager;
+
 public class GraphTools {
 
 	public static Rectangle2D getTextSize(String text) {
@@ -21,18 +23,34 @@ public class GraphTools {
 	}
 
 	public static String getStyle(boolean title, boolean border) {
-		return getStyle(title, border, "BLUE");
+		return getStyle(title, border, "BLUE", -1);
+	}
+
+	public static String getStyle(boolean title, boolean border, int space) {
+		return getStyle(title, border, "BLUE", space);
 	}
 
 	public static String getStyle(boolean title) {
 		return getStyle(title, "BLUE");
 	}
 
+	public static String getStyle(boolean title, int space) {
+		return getStyle(title, "BLUE", space);
+	}
+
 	public static String getStyle(boolean title, String color) {
-		return getStyle(title, false, color);
+		return getStyle(title, false, color, -1);
+	}
+
+	public static String getStyle(boolean title, String color, int space) {
+		return getStyle(title, false, color, -1);
 	}
 
 	public static String getStyle(boolean title, boolean border, String color) {
+		return getStyle(title, border, color, -1);
+	}
+
+	public static String getStyle(boolean title, boolean border, String color, int space) {
 		String style = mxConstants.STYLE_AUTOSIZE + "=1;" + mxConstants.STYLE_RESIZABLE + "=1;";
 		if (title) {
 			style += mxConstants.STYLE_GRADIENTCOLOR + "=" + color + ";";
@@ -53,6 +71,10 @@ public class GraphTools {
 		} else {
 			style += mxConstants.STYLE_FONTSTYLE + "=0;";
 		}
+		if (space > 0) {
+			style += mxConstants.STYLE_SPACING + "=" + (space) + ";";
+			style += mxConstants.STYLE_ALIGN + "=" + mxConstants.ALIGN_LEFT + ";";
+		}
 		return style;
 	}
 
@@ -60,7 +82,11 @@ public class GraphTools {
 
 		String style = mxConstants.STYLE_SHAPE + "=" + mxConstants.SHAPE_IMAGE + ";";
 		URL url = Thread.currentThread().getContextClassLoader().getResource("icons/" + icon + ".gif");
-		style += mxConstants.STYLE_IMAGE + "=" + url.toExternalForm() + ";";
+		if (url == null) {
+			LogManager.warn("Icono " + icon + "No existe", null);
+		} else {
+			style += mxConstants.STYLE_IMAGE + "=" + url.toExternalForm() + ";";
+		}
 		style += mxConstants.STYLE_IMAGE_ALIGN + "=" + mxConstants.ALIGN_CENTER + ";";
 		style += mxConstants.STYLE_IMAGE_VERTICAL_ALIGN + "=" + mxConstants.ALIGN_MIDDLE + ";";
 		style += mxConstants.STYLE_IMAGE_HEIGHT + "=" + height + ";";

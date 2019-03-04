@@ -1,28 +1,14 @@
 package net.ramso.doc.dita.xml.wsdl.graph;
 
-import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.geom.Rectangle2D;
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
-import javax.swing.JFrame;
-
-import com.mxgraph.canvas.mxICanvas;
-import com.mxgraph.canvas.mxSvgCanvas;
-import com.mxgraph.layout.mxStackLayout;
 import com.mxgraph.model.mxCell;
 import com.mxgraph.model.mxGeometry;
-import com.mxgraph.swing.mxGraphComponent;
-import com.mxgraph.util.mxCellRenderer;
-import com.mxgraph.util.mxCellRenderer.CanvasFactory;
 import com.mxgraph.util.mxConstants;
-import com.mxgraph.util.mxDomUtils;
-import com.mxgraph.util.mxUtils;
-import com.mxgraph.util.mxXmlUtils;
 import com.mxgraph.view.mxGraph;
 import com.predic8.wsdl.Binding;
 import com.predic8.wsdl.Fault;
@@ -32,17 +18,15 @@ import com.predic8.wsdl.Port;
 import com.predic8.wsdl.PortType;
 import com.predic8.wsdl.Service;
 
-import net.ramso.doc.Config;
 import net.ramso.doc.dita.tools.Constants;
-import net.ramso.tools.FileTools;
+import net.ramso.tools.graph.AbstractGraph;
 import net.ramso.tools.graph.GraphConstants;
 import net.ramso.tools.graph.GraphTools;
 
-public class WSDLGraph {
+public class WSDLGraph extends AbstractGraph {
 
 	private Service service;
-	private String fileName;
-	private mxGraph graph;
+
 	private int maxWith;
 	private HashMap<String, Object> binds;
 	private int maxWith2;
@@ -51,15 +35,16 @@ public class WSDLGraph {
 
 	public WSDLGraph(Service service) {
 		this.service = service;
+		SUFFIX=Constants.SUFFIX_SERVICE;
 		setFileName(service.getName());
 	}
 
 	public String generate() {
-		graph = new mxGraph();
-		graph.setAutoSizeCells(true);
-		graph.setCellsResizable(true);
+		setGraph(new mxGraph());
+		getGraph().setAutoSizeCells(true);
+		getGraph().setCellsResizable(true);
 
-		Object parent = graph.getDefaultParent();
+		Object parent = getGraph().getDefaultParent();
 		Rectangle2D base = GraphTools.getTextSize(service.getName());
 		int altura = (int) (base.getHeight() + (base.getHeight() / 2));
 		int anchura = (int) (base.getWidth() + (base.getWidth() * 25) / 100);
@@ -68,23 +53,26 @@ public class WSDLGraph {
 		int alt = (service.getPorts().size() * altura);
 		binds = new HashMap<String, Object>();
 		pts = new HashMap<String, Object>();
-		mxCell ports = (mxCell) graph.insertVertex(parent, service.getName(), "", 100, 100, anchura, alt,
+		mxCell ports = (mxCell) getGraph().insertVertex(parent, service.getName(), "", 100, 100, anchura, alt,
 				GraphTools.getStyle(false, true));
-		mxCell bindingGroup = (mxCell) graph.createVertex(parent, "group" + Constants.SUFFIX_BINDING, "", 100, 100, 80,
-				alt, mxConstants.STYLE_AUTOSIZE + "=1;" + mxConstants.STYLE_RESIZABLE + "=1;"
+
+		mxCell bindingGroup = (mxCell) getGraph().createVertex(parent,
+				GraphConstants.EXCLUDE_PREFIX_GROUP + Constants.SUFFIX_BINDING, "", 100, 100, 80, alt,
+				mxConstants.STYLE_AUTOSIZE + "=1;" + mxConstants.STYLE_RESIZABLE + "=1;"
 						+ mxConstants.STYLE_STROKE_OPACITY + "=0;" + mxConstants.STYLE_FILL_OPACITY + "=0;");
 		int y = 0;
-		Object titulo = graph.insertVertex(ports, "title", service.getName(), 0, y, anchura, altura,
+		Object titulo = getGraph().insertVertex(ports, "title", service.getName(), 0, y, anchura, altura,
 				GraphTools.getStyle(true, true, "BLUE"));
-		graph.insertVertex(titulo, "Icon", "", 0, 0, altura, altura,
-				GraphTools.getStyleImage(true, altura - 2, altura - 2, Constants.SUFFIX_SERVICE.toLowerCase()));
+		insertIcon((mxCell) titulo, Constants.SUFFIX_SERVICE.toLowerCase(), altura);
+
 		for (Port port : service.getPorts()) {
 			mxCell adrs = createPort(ports, port, altura);
 			mxCell bind = createBinding(bindingGroup, port.getBinding());
-			graph.insertEdge(parent, "edge" + "_" + port.getName() + "_" + port.getBinding().getName(), "", adrs, bind);
+			getGraph().insertEdge(parent, "edge" + "_" + port.getName() + "_" + port.getBinding().getName(), "", adrs,
+					bind);
 			mxCell portType = createPortType(parent, port.getBinding().getPortType(), altura);
 
-			graph.insertEdge(parent,
+			getGraph().insertEdge(parent,
 					"edge" + "_" + port.getBinding().getName() + "_" + port.getBinding().getPortType().getName(), "",
 					bind, portType);
 
@@ -99,15 +87,15 @@ public class WSDLGraph {
 			y += 80;
 			bindingGroup.insert(c);
 		}
-		graph.addCell(bindingGroup);
+		getGraph().addCell(bindingGroup);
 
 		for (Entry<String, Object> entry : getPts().entrySet()) {
-			graph.addCell(entry.getValue());
+			getGraph().addCell(entry.getValue());
 			if (entry.getValue() instanceof mxCell) {
 				resizeCell((mxCell) entry.getValue(), getMaxWith2());
 			}
 		}
-		process(graph);
+		process(getGraph());
 		return getFileName();
 
 	}
@@ -121,13 +109,12 @@ public class WSDLGraph {
 			Rectangle2D base = GraphTools.getTextSize(portType.getName());
 			int anchura = (int) (base.getWidth() + (base.getWidth() * 25) / 100);
 			setMaxWith2(anchura);
-			portTypeCell = (mxCell) graph.createVertex(parent, portType.getName(), "", 500, 100, anchura, alt,
+			portTypeCell = (mxCell) getGraph().createVertex(parent, portType.getName(), "", 500, 100, anchura, alt,
 					GraphTools.getStyle(false, true));
 			int y = 0;
-			Object titulo = graph.insertVertex(portTypeCell, "Title" + portType.getName(), portType.getName(), 0, y,
-					anchura, altura, GraphTools.getStyle(true, true, "BLUE"));
-			graph.insertVertex(titulo, "IconTitle" + portType.getName(), "", 0, 0, altura, altura,
-					GraphTools.getStyleImage(true, altura - 2, altura - 2, "portType"));
+			Object titulo = getGraph().insertVertex(portTypeCell, "Title" + portType.getName(), portType.getName(), 0,
+					y, anchura, altura, GraphTools.getStyle(true, true, "BLUE"));
+			insertIcon((mxCell) titulo, Constants.SUFFIX_PORT_TYPE.toLowerCase(), altura);
 			y += altura;
 			for (Operation operation : portType.getOperations()) {
 				y += createOperation(portTypeCell, operation, y, altura);
@@ -143,13 +130,12 @@ public class WSDLGraph {
 		int anchura = (int) (base.getWidth() + (base.getWidth() * 25) / 100);
 		if (anchura > getMaxWith2())
 			setMaxWith2(anchura);
-		Object oprg = graph.insertVertex(parent, operation.getName() + Constants.SUFFIX_OPERATION, operation.getName(),
-				0, y, anchura, alt, GraphTools.getStyle(false, true));
-		
-		Object titulo = graph.insertVertex(oprg, operation.getName() + Constants.SUFFIX_OPERATION, operation.getName(),
-				0, 0, anchura, altura, GraphTools.getStyle(true, true, "GREEN"));
-		graph.insertVertex(titulo, "Icon" + operation.getName() + Constants.SUFFIX_OPERATION, "", 0, 0, altura, altura,
-				GraphTools.getStyleImage(true, altura - 2, altura - 2, Constants.SUFFIX_OPERATION.toLowerCase()));
+		Object oprg = getGraph().insertVertex(parent, operation.getName() + Constants.SUFFIX_OPERATION,
+				operation.getName(), 0, y, anchura, alt, GraphTools.getStyle(false, true));
+
+		Object titulo = getGraph().insertVertex(oprg, operation.getName() + Constants.SUFFIX_OPERATION,
+				operation.getName(), 0, 0, anchura, altura, GraphTools.getStyle(true, true, "GREEN"));
+		insertIcon((mxCell) titulo, Constants.SUFFIX_OPERATION.toLowerCase(), altura);
 		int alturaTotal = altura;
 		alturaTotal = createOperationLine(oprg, operation.getName(), "Input",
 				operation.getInput().getMessage().getParts(), alturaTotal, altura);
@@ -165,35 +151,44 @@ public class WSDLGraph {
 		return alturaTotal;
 	}
 
-	private int createOperationLine(Object oprg, String operation, String title, List<Part> parts, int posicion, int altura) {
+	private int createOperationLine(Object oprg, String operation, String title, List<Part> parts, int posicion,
+			int altura) {
 		Rectangle2D base = GraphTools.getTextSize(title, Font.BOLD);
 		anchura = 50 + altura;
-		Object input = graph.insertVertex(oprg, "group" + title + operation + Constants.SUFFIX_OPERATION, "", 0, posicion, 200,
-				altura, GraphTools.getStyle(false, true));
-		Object titulo = graph.insertVertex(input, "group" + title + "Title" + operation + Constants.SUFFIX_OPERATION,
-				title, 0, 0, anchura, altura,
-				mxConstants.STYLE_SPACING + "=" + altura + ";" + mxConstants.STYLE_ALIGN + "=" + mxConstants.ALIGN_LEFT
-						+ ";" + mxConstants.STYLE_ALIGN + "=" + mxConstants.ALIGN_LEFT + ";"
-						+ GraphTools.getStyle(true, true, "LIGHT_GRAY"));
-		graph.insertVertex(titulo, "IconInput" + operation + Constants.SUFFIX_OPERATION, "", 0, 0, altura, altura,
-				GraphTools.getStyleImage(true, altura - 2, altura - 2, "input"));
+		Object input = getGraph().insertVertex(oprg,
+				GraphConstants.EXCLUDE_PREFIX_GROUP + title + operation + Constants.SUFFIX_OPERATION, "", 0, posicion,
+				200, altura, GraphTools.getStyle(false, true));
+		Object titulo = getGraph().insertVertex(input,
+				GraphConstants.EXCLUDE_PREFIX_GROUP + title + "Title" + operation + Constants.SUFFIX_OPERATION, title,
+				0, 0, anchura, altura, GraphTools.getStyle(true, true, "LIGHT_GRAY", altura));
+		String icon = "fault";
+		switch (title) {
+		case "Input":
+		case "Output":
+			icon = title.toLowerCase();
+			break;
+		default:
+			break;
+		}
+		insertIcon((mxCell) titulo, icon, altura);
 		int groupWith = anchura;
 		for (Part part : parts) {
 			base = GraphTools.getTextSize(part.getName());
 			anchura = (int) (base.getWidth() + (base.getWidth() * 25) / 100);
 
-			graph.insertVertex(input, "group" + part.getName() + Constants.SUFFIX_ELEMENT, part.getName(), groupWith, 0,
-					anchura, altura, GraphTools.getStyle(false, true));
+			getGraph().insertVertex(input,
+					GraphConstants.EXCLUDE_PREFIX_GROUP + part.getName() + Constants.SUFFIX_ELEMENT, part.getName(),
+					groupWith, 0, anchura, altura, GraphTools.getStyle(false, true));
 			groupWith += anchura;
 			base = GraphTools.getTextSize(part.getElement().getName().trim());
 			anchura = (int) (base.getWidth() + (altura * 2));
 
-			titulo = graph.insertVertex(input, "group" + part.getElement().getName() + Constants.SUFFIX_ELEMENT,
+			titulo = getGraph().insertVertex(input,
+					GraphConstants.EXCLUDE_PREFIX_GROUP + part.getElement().getName() + Constants.SUFFIX_ELEMENT,
 					part.getElement().getName().trim(), groupWith, 0, anchura, altura,
-					mxConstants.STYLE_SPACING + "=" + altura + ";" + mxConstants.STYLE_ALIGN + "="
-							+ mxConstants.ALIGN_LEFT + ";" + GraphTools.getStyle(false));
-			graph.insertVertex(titulo, "IconElement" + operation + Constants.SUFFIX_OPERATION, "", 0, 0, altura, altura,
-					GraphTools.getStyleImage(true, altura - 2, altura - 2, Constants.SUFFIX_ELEMENT.toLowerCase()));
+					GraphTools.getStyle(false, altura));
+
+			insertIcon((mxCell) titulo, Constants.SUFFIX_ELEMENT.toLowerCase(), altura);
 			groupWith += anchura;
 		}
 		if (groupWith > getMaxWith2())
@@ -209,7 +204,7 @@ public class WSDLGraph {
 			if (((String) bind.getProtocol()).startsWith("SOAP")) {
 				icon = "soapbinding";
 			}
-			b = graph.createVertex(parent, bind.getName() + Constants.SUFFIX_BINDING, "", 0, 15, 30, 30,
+			b = getGraph().createVertex(parent, bind.getName() + Constants.SUFFIX_BINDING, "", 0, 15, 30, 30,
 					GraphTools.getStyleImage(true, 25, 25, icon));
 			getBinds().put(bind.getName(), b);
 		}
@@ -241,82 +236,10 @@ public class WSDLGraph {
 		anchura = (int) (base.getWidth() + (base.getWidth() * 25) / 100);
 		if ((anchura + 20) > getMaxWith())
 			setMaxWith(anchura + 20);
-		mxCell adrs = (mxCell) getGraph().insertVertex(p, port.getName() + Constants.SUFFIX_ADDRESS, url, 10, altura, anchura,
-				altura, GraphTools.getStyle(false, true));
-		
+		mxCell adrs = (mxCell) getGraph().insertVertex(p, port.getName() + Constants.SUFFIX_ADDRESS, url, 10, altura,
+				anchura, altura, GraphTools.getStyle(false, true));
 
 		return adrs;
-	}
-
-	private void resizeCell(mxCell cell, int maxWith) {
-		if (!cell.getId().startsWith("Icon")) {
-			mxGeometry g = cell.getGeometry();
-			if (cell.getId().endsWith(Constants.SUFFIX_ADDRESS)) {
-				maxWith -= 20;
-			}
-			g.setWidth(maxWith);
-			int e = cell.getChildCount();
-			if (!cell.getId().startsWith("group")) {
-				for (int i = 0; i < e; i++) {
-					if (!cell.getId().startsWith("group")) {
-						resizeCell((mxCell) cell.getChildAt(i), maxWith);
-					} else {
-
-					}
-				}
-			}
-		}
-	}
-
-	protected void process(mxGraph graph) {
-		JFrame f = new JFrame();
-		f.setSize(800, 800);
-		f.setLocation(300, 200);
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		mxGraphComponent graphComponent = new mxGraphComponent(graph);
-		f.getContentPane().add(graphComponent, BorderLayout.CENTER);
-		f.setVisible(false);
-		morphGraph(graph, graphComponent);
-		try {
-			export(graph);
-		} catch (IOException e) {
-			net.ramso.tools.LogManager.warn("Error al exportar el diagrama " + getFileName(), e);
-		}
-	}
-
-	private static void morphGraph(mxGraph graph, mxGraphComponent graphComponent) {
-		mxStackLayout layout = new mxStackLayout(graph, true, 50, 100, 100, 100);
-		layout.execute(graph.getDefaultParent());
-	}
-
-	protected void export(mxGraph graph) throws IOException {
-		String filename = Config.getOutputDir() + File.separator + getFileName();
-		if (FileTools.checkPath(filename, true)) {
-			mxSvgCanvas canvas = (mxSvgCanvas) mxCellRenderer.drawCells(graph, null, 1, null, new CanvasFactory() {
-				public mxICanvas createCanvas(int width, int height) {
-					mxSvgCanvas canvas = new mxSvgCanvas(mxDomUtils.createSvgDocument(width, height));
-					canvas.setEmbedded(true);
-					return canvas;
-				}
-			});
-			mxUtils.writeFile(mxXmlUtils.getXml(canvas.getDocument()), filename);
-		}
-	}
-
-	protected void setFileName(String file_name) {
-		this.fileName = (Constants.IMAGE_PATH + File.separator + file_name + Constants.SUFFIX_SERVICE + "."
-				+ GraphConstants.SVG_EXTENSION).replaceAll("\\s+", "_");
-	}
-
-	public String getFileName() {
-		return fileName;
-	}
-
-	/**
-	 * @return the graph
-	 */
-	protected mxGraph getGraph() {
-		return graph;
 	}
 
 	/**
@@ -327,7 +250,8 @@ public class WSDLGraph {
 	}
 
 	/**
-	 * @param maxWith the maxWith to set
+	 * @param maxWith
+	 *            the maxWith to set
 	 */
 	protected void setMaxWith(int maxWith) {
 		this.maxWith = maxWith;
@@ -348,7 +272,8 @@ public class WSDLGraph {
 	}
 
 	/**
-	 * @param maxWith2 the maxWith2 to set
+	 * @param maxWith2
+	 *            the maxWith2 to set
 	 */
 	protected void setMaxWith2(int maxWith2) {
 		this.maxWith2 = maxWith2;

@@ -57,5 +57,11 @@ public class AllModel extends AbstractComplexContentModel {
 		
 		return Constants.CHOICE;
 	}
+
+	@Override
+	public String getDiagram() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

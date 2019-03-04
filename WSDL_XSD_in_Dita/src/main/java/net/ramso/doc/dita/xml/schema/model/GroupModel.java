@@ -78,5 +78,11 @@ public class GroupModel extends AbstractComplexContentModel {
 		return Constants.NAME_GROUP;
 	}
 
+	@Override
+	public String getDiagram() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 }

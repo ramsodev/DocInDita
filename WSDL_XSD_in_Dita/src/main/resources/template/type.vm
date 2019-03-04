@@ -7,10 +7,7 @@
     	#set($child = false)
     	#if(${simpleType})
     		#parse("simpleType.vm")
-    	<section id="section_code">
-            <title>Codigo</title>            
-        	<codeblock>${simpleType.getCode()}</codeblock>
-        </section>
+    	
     	#end
     	#if(${complexType})
     		#parse("complextype.vm")

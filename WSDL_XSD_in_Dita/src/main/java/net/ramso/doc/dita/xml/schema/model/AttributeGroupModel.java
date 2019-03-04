@@ -66,4 +66,10 @@ public class AttributeGroupModel extends AbstractComponentModel {
 		return null;
 
 	}
+
+	@Override
+	public String getDiagram() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
