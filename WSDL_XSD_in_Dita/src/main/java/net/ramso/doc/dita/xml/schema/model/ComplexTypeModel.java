@@ -33,6 +33,7 @@ public class ComplexTypeModel extends AbstractComplexContentModel {
 	}
 
 	private void init() {
+		this.contentType = Constants.SUFFIX_COMPLEXTYPE;
 		Sequence s = complexType.getSequence();
 		try {
 			supers = complexType.getSuperTypes();
@@ -46,7 +47,7 @@ public class ComplexTypeModel extends AbstractComplexContentModel {
 			procesContent(complexType.getModel());
 		}
 		if (s != null) {
-			procesModel(s);
+			procesModel(complexType.getModel());
 		}
 	}
 

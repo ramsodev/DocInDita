@@ -12,6 +12,7 @@ import com.predic8.schema.SchemaComponent;
 import com.predic8.schema.Sequence;
 
 import net.ramso.doc.dita.tools.Constants;
+import net.ramso.tools.LogManager;
 
 public abstract class AbstractComplexContentModel extends AbstractComponentModel implements IComplexContentModel {
 
@@ -19,20 +20,22 @@ public abstract class AbstractComplexContentModel extends AbstractComponentModel
 	private String maxOccurs = "-1";
 	private boolean requiered;
 	private ArrayList<IComplexContentModel> elements;
-	private String contentType = Constants.SEQUENCE;
+	protected String contentType = Constants.SEQUENCE;
 
 	protected void procesModel(Object model) {
 		if (model instanceof Sequence) {
-			procesSequence((Sequence) model);
+			addElement(new SequenceModel((Sequence) model));
 		} else if (model instanceof All) {
-			procesAll((All) model);
+			addElement(new AllModel((All) model));
 		} else if (model instanceof Choice) {
-			procesChoice((Choice) model);
+			addElement(new ChoiceModel((Choice) model));
+		} else {
+			LogManager.error("Otro tipo" + model.getClass().getSimpleName(), null);
 		}
 	}
 
 	protected void procesChoice(Choice choice) {
-		this.contentType = Constants.CHOICE;
+		
 		processParticles(choice.getParticles());
 		if (choice.getMinOccurs() != null) {
 			setMinOccurs(((Integer) choice.getMinOccurs()));
@@ -44,7 +47,7 @@ public abstract class AbstractComplexContentModel extends AbstractComponentModel
 	}
 
 	protected void procesAll(All all) {
-		this.contentType = Constants.ALL;
+		
 		processParticles(all.getParticles());
 		if (all.getMinOccurs() != null) {
 			setMinOccurs(((Integer) all.getMinOccurs()));
@@ -56,7 +59,7 @@ public abstract class AbstractComplexContentModel extends AbstractComponentModel
 	}
 
 	protected void procesSequence(Sequence sequence) {
-		this.contentType = Constants.SEQUENCE;
+		
 		processParticles(sequence.getParticles());
 		if (sequence.getMinOccurs() != null) {
 			setMinOccurs(((Integer) sequence.getMinOccurs()));
@@ -92,7 +95,8 @@ public abstract class AbstractComplexContentModel extends AbstractComponentModel
 	}
 
 	/**
-	 * @param minOccurs the minOccurs to set
+	 * @param minOccurs
+	 *            the minOccurs to set
 	 */
 	public void setMinOccurs(int minOccurs) {
 		this.minOccurs = minOccurs;
@@ -144,4 +148,7 @@ public abstract class AbstractComplexContentModel extends AbstractComponentModel
 		this.elements = elements;
 	}
 
+	public boolean isElement() {
+		return this instanceof ElementModel;
+	}
 }

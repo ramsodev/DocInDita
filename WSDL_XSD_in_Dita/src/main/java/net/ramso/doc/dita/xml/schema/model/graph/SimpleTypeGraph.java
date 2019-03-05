@@ -17,8 +17,13 @@ public class SimpleTypeGraph extends AbstractXmlGraph {
 	public SimpleTypeGraph(SimpleTypeModel simpleType) {
 		super();
 		this.simpleType = simpleType;
-		SUFFIX=Constants.SUFFIX_SIMPLETYPE;
+		SUFFIX = Constants.SUFFIX_SIMPLETYPE;
 		setFileName(simpleType.getName());
+	}
+
+	public SimpleTypeGraph(SimpleTypeModel simpleType, mxGraph graph) {
+		this(simpleType);
+		setGraph(graph);
 	}
 
 	@Override
@@ -44,17 +49,25 @@ public class SimpleTypeGraph extends AbstractXmlGraph {
 	}
 
 	public mxCell createSimpleType(mxCell parent) {
-		Rectangle2D base = GraphTools.getTextSize(simpleType.getName());
+		return createSimpleType(parent, simpleType.getName());
+	}
+
+	public mxCell createSimpleType(mxCell parent, String name) {
+		Rectangle2D base = GraphTools.getTextSize(name);
 		int altura = (int) (base.getHeight() + (base.getHeight() / 2));
 		int anchura = (int) ((base.getWidth() + (base.getWidth() * 25) / 100) + altura);
-		return createSimpleType(parent, 0, 0, anchura, altura);
+		return createSimpleType(parent, name, 0, 0, anchura, altura);
 	}
 
 	public mxCell createSimpleType(mxCell parent, int x, int y, int width, int height) {
-		mxCell cell = (mxCell) getGraph().createVertex(parent, simpleType.getName() + Constants.SUFFIX_SIMPLETYPE, "",
-				x, y, width, height, GraphTools.getStyle(false, true));
-		Object titulo = getGraph().insertVertex(cell, "Title" + simpleType.getName() + Constants.SUFFIX_SIMPLETYPE,
-				simpleType.getName(), 0, 0, width, height, GraphTools.getStyle(true, true, "BLUE", height));
+		return createSimpleType(parent, simpleType.getName(), x, y, width, height);
+	}
+
+	public mxCell createSimpleType(mxCell parent, String name, int x, int y, int width, int height) {
+		mxCell cell = (mxCell) getGraph().createVertex(parent, name + Constants.SUFFIX_SIMPLETYPE, "", x, y, width,
+				height, GraphTools.getStyle(false, true));
+		Object titulo = getGraph().insertVertex(cell, "Title" + name + Constants.SUFFIX_SIMPLETYPE, name, 0, 0, width,
+				height, GraphTools.getStyle(true, true, "BLUE", height));
 		insertIcon((mxCell) titulo, Constants.SUFFIX_SIMPLETYPE.toLowerCase(), height);
 		return cell;
 	}

@@ -25,7 +25,8 @@ public class GroupModel extends AbstractComplexContentModel {
 	}
 
 	private void init() {
-		if(component instanceof Group) {
+		this.contentType = Constants.SUFFIX_GROUP;
+		if(component instanceof Group) {			
 			procesGroup((Group) component);
 		}else {
 			procesRef((GroupRef) component);
@@ -82,6 +83,11 @@ public class GroupModel extends AbstractComplexContentModel {
 	public String getDiagram() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public boolean isElement() {
+		return component instanceof GroupRef; 
 	}
 
 	

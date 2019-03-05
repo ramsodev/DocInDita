@@ -1,0 +1,45 @@
+#set($slc = $sl)
+	
+				#foreach($element in $childs)
+            			#if(${element.isElement()})
+            				#if(!$sl)
+            				#set($sl = true)
+            		<sl>
+            				#end
+            			<sli><xref #if(${element.getRef()})href="${element.getHrefType()}" ${element.getExternalHref()}>${element.getComponentName()} ${element.getRef().getLocalPart()}
+            					   #else href="#$id/sectionElement${element.getName()}">${element.getComponentName()} ${element.getName()}
+            					   #end </xref></sli>
+            				   
+            			#else
+            				
+            				#if($i > 0)
+            <dl>
+            				
+            				#end
+            			<dlentry>
+        	<dt>Contenido ${element.getContentType()}</dt>
+        	
+        					#set($slc1 = $sl)
+        					#set($i = $i + 1)
+        				
+        	<dd>			#set($sl = false)
+        					#set($dl = true)
+        					#if(${element.getElements()})
+            					#set($childs = $element.getElements())
+            					#parse("complexContentRefs.vm")
+            				#end
+            				#set($i = $i - 1)
+            				#if(!$sl)            			
+            		</sl>
+            				#end
+            				#set($sl = $slc1)
+            				</dd>
+        </dlentry>
+        					#if($i > 0)
+        </dl>
+        					#end
+        					#set($dl = $dlc)
+            			#end
+            		#end
+
+#set($sl = $slc)

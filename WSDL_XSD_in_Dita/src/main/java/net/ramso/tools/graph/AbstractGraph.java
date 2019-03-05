@@ -13,10 +13,10 @@ import com.mxgraph.model.mxCell;
 import com.mxgraph.model.mxGeometry;
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.util.mxCellRenderer;
+import com.mxgraph.util.mxCellRenderer.CanvasFactory;
 import com.mxgraph.util.mxDomUtils;
 import com.mxgraph.util.mxUtils;
 import com.mxgraph.util.mxXmlUtils;
-import com.mxgraph.util.mxCellRenderer.CanvasFactory;
 import com.mxgraph.view.mxGraph;
 
 import net.ramso.doc.Config;
@@ -30,11 +30,11 @@ public abstract class AbstractGraph {
 
 	public abstract String generate();
 
-	protected void insertIcon(mxCell parent, String icon, int size) {
-		getGraph().insertVertex(parent, GraphConstants.EXCLUDE_PREFIX_ICON+parent.getId(), "", 0, 0, size, size,
-				GraphTools.getStyleImage(true, size - 2, size - 2, icon));
+	protected mxCell insertIcon(mxCell parent, String icon, int size) {
+		return (mxCell) getGraph().insertVertex(parent, GraphConstants.EXCLUDE_PREFIX_ICON + parent.getId(), "", 0, 0,
+				size, size, GraphTools.getStyleImage(true, size - 2, size - 2, icon));
 	}
-	
+
 	protected void resizeCell(mxCell cell, int maxWith) {
 		if (!cell.getId().startsWith(GraphConstants.EXCLUDE_PREFIX_ICON)) {
 			mxGeometry g = cell.getGeometry();
@@ -71,8 +71,10 @@ public abstract class AbstractGraph {
 		}
 	}
 
-	private static void morphGraph(mxGraph graph, mxGraphComponent graphComponent) {
-		mxStackLayout layout = new mxStackLayout(graph, true, 50, 100, 100, 100);
+	protected void morphGraph(mxGraph graph, mxGraphComponent graphComponent) {
+		mxStackLayout layout = new mxStackLayout(graph, true, 50);
+	
+//		mxPartitionLayout layout = new mxPartitionLayout(graph,true, 50, 100);
 		layout.execute(graph.getDefaultParent());
 	}
 

@@ -43,9 +43,9 @@
        		#end		
        			</ul>
        		</dd>
-       	</dlentry>        
+       	</dlentry>
+       	#end        
     </dl>
-    #end
     #if(!$child)
         <section id="section_diagram">
             <title>Diagrama</title>            

@@ -27,7 +27,8 @@ public class ElementModel extends AbstractComplexContentModel {
 		init();
 	}
 
-	private void init() {		
+	private void init() {
+		this.contentType = Constants.SUFFIX_ELEMENT;
 		if (element.getMinOccurs() != null && !element.getMinOccurs().isEmpty()) {
 			setMinOccurs(Integer.parseInt(element.getMinOccurs()));
 		}

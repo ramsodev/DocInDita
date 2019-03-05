@@ -22,5 +22,5 @@ public interface IComplexContentModel extends iComponentModel {
 	public QName getRef();
 	
 	public String getComponentName();
-
+	public boolean isElement();
 }

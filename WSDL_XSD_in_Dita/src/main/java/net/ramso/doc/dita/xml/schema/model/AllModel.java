@@ -2,9 +2,6 @@ package net.ramso.doc.dita.xml.schema.model;
 
 
 import com.predic8.schema.All;
-import com.predic8.schema.Choice;
-import com.predic8.schema.Group;
-import com.predic8.schema.GroupRef;
 import com.predic8.schema.SchemaComponent;
 
 import groovy.xml.QName;
@@ -21,6 +18,7 @@ public class AllModel extends AbstractComplexContentModel {
 	}
 
 	private void init() {
+		this.contentType = Constants.ALL;
 		procesAll(all);
 		
 	}

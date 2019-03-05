@@ -20,6 +20,7 @@ public class SequenceModel extends AbstractComplexContentModel {
 	}
 
 	private void init() {
+		this.contentType = Constants.SEQUENCE;
 		procesSequence(sequence);
 		
 	}

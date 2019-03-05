@@ -19,6 +19,7 @@ public class ChoiceModel extends AbstractComplexContentModel {
 	}
 
 	private void init() {
+		this.contentType = Constants.CHOICE;
 		procesChoice(choice);
 		
 	}

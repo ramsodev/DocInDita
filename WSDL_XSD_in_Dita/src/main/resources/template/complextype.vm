@@ -1,4 +1,4 @@
-  <!-- complextype start -->
+
    <dl>
    		#if(${complexType.getSupers()})
    		<dlentry>
@@ -38,17 +38,12 @@
         </dlentry>
         #end 
         #if(${complexType.getElements()})
-        <dlentry>
-        	<dt>Contenido ${complexType.getContentType()}</dt>
-        	<dd><sl>
-            		#foreach($element in ${complexType.getElements()})
-            			<sli><xref #if(${element.getRef()})href="${element.getHrefType()}" ${element.getExternalHref()}>${element.getComponentName()} ${element.getRef().getLocalPart()}
-            					   #else href="#$id/sectionElement${element.getName()}">${element.getComponentName()} ${element.getName()}
-            					   #end </xref></sli>
-            		#end
-            </sl></dd>
-        </dlentry>
+        	#set($sl = false)
+        	#set($i =0)
+        	#set($childs = ${complexType.getElements()})
+        	#parse("complexContentRefs.vm")
         #end
+      
             	
 	</dl>
 	 #if(!$child)
@@ -117,36 +112,7 @@
        		#set($child = $childc)
        	#end
        	#if(${complexType.getElements()})
-       		#set($childc = $child)
-       		#set($child = true)
-       		#foreach($element in ${complexType.getElements()})
-       			#if(!${element.getRef()})
-       				#if($childc)
- 	<sectiondiv id="sectionElement${element.getName()}">
- 		<p><u><b>${element.getComponentName()} ${element.getName()}</b></u></p>
- 					#else
-    <section id="sectionElement${element.getName()}">
-    	<title>${element.getComponentName()} ${element.getName()}</title>
-    				#end
-    				#if(${element.getDoc()})
-    	<p><lines>${element.getDoc()}</lines></p>
-    				#end
-    				#if(${element.getComponentName().equalsIgnoreCase("ComplexType")})
-    					#set($complexType = $element)
-       					#parse("complextype.vm")
-       				#elseif(${element.getComponentName().equalsIgnoreCase("Element")})
-       					#parse("element.vm")       					
-       				#else
-       					#set($group = $element)
-       					#parse("group.vm")
-       				#end
-       				#if($childc)
-    </sectiondiv> 
-       				#else
-    </section>
-    				#end
-    			#end
-       		#end
-       		#set($child = $childc)
-       	#end
-    <!-- complextype end -->
+        	#set($childs = ${complexType.getElements()})
+        	#parse("complexContentDetail.vm")
+        #end
+

@@ -1,838 +1,899 @@
-<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.almudena.es/ws/simulacion/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://www.almudena.es/ws/simulacion/">
-   <wsp:Policy xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:Id="UTOverTransport">
-      <wsp:ExactlyOne>
-         <wsp:All>
-            <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
-               <wsp:Policy>
-                  <sp:TransportToken>
-                     <wsp:Policy>
-                        <sp:HttpsToken RequireClientCertificate="false"/>
-                     </wsp:Policy>
-                  </sp:TransportToken>
-                  <sp:AlgorithmSuite>
-                     <wsp:Policy>
-                        <sp:Basic256/>
-                     </wsp:Policy>
-                  </sp:AlgorithmSuite>
-                  <sp:Layout>
-                     <wsp:Policy>
-                        <sp:Lax/>
-                     </wsp:Policy>
-                  </sp:Layout>
-                  <sp:IncludeTimestamp/>
-               </wsp:Policy>
-            </sp:TransportBinding>
-            <sp:SignedSupportingTokens xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
-               <wsp:Policy>
-                  <sp:UsernameToken sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient"/>
-               </wsp:Policy>
-            </sp:SignedSupportingTokens>
-         </wsp:All>
-      </wsp:ExactlyOne>
-   </wsp:Policy>
-   <wsdl:types>
-      <xsd:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://www.almudena.es/ws/simulacion/">
-         <xsd:element name="simulacionInput" type="tns:simulacionInputType"/>
-         <xsd:complexType name="simulacionInputType">
-            <xsd:sequence>
-               <xsd:element name="usuario">
-                  <xsd:annotation>
-                     <xsd:documentation>ID Usuario asociado a la simulación
+<wsdl:definitions
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl"
+	xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+	xmlns:tns="http://www.almudena.es/ws/simulacion/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+	xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	targetNamespace="http://www.almudena.es/ws/simulacion/">
+	<wsp:Policy
+		xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"
+		xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+		wsu:Id="UTOverTransport">
+		<wsp:ExactlyOne>
+			<wsp:All>
+				<sp:TransportBinding
+					xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+					<wsp:Policy>
+						<sp:TransportToken>
+							<wsp:Policy>
+								<sp:HttpsToken RequireClientCertificate="false" />
+							</wsp:Policy>
+						</sp:TransportToken>
+						<sp:AlgorithmSuite>
+							<wsp:Policy>
+								<sp:Basic256 />
+							</wsp:Policy>
+						</sp:AlgorithmSuite>
+						<sp:Layout>
+							<wsp:Policy>
+								<sp:Lax />
+							</wsp:Policy>
+						</sp:Layout>
+						<sp:IncludeTimestamp />
+					</wsp:Policy>
+				</sp:TransportBinding>
+				<sp:SignedSupportingTokens
+					xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+					<wsp:Policy>
+						<sp:UsernameToken
+							sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient" />
+					</wsp:Policy>
+				</sp:SignedSupportingTokens>
+			</wsp:All>
+		</wsp:ExactlyOne>
+	</wsp:Policy>
+	<wsdl:types>
+		<xsd:schema attributeFormDefault="unqualified"
+			elementFormDefault="unqualified"
+			targetNamespace="http://www.almudena.es/ws/simulacion/">
+			<xsd:element name="simulacionInput"
+				type="tns:simulacionInputType" />
+			<xsd:complexType name="simulacionInputType">
+				<xsd:sequence>
+					<xsd:element name="usuario">
+						<xsd:annotation>
+							<xsd:documentation>ID Usuario asociado a la simulación
 							</xsd:documentation>
-                  </xsd:annotation>
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:string">
-                        <xsd:minLength value="0"/>
-                        <xsd:maxLength value="10"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="simulacion" type="tns:DATOSSIMULACIONType"/>
-               <xsd:element name="cliente" type="tns:DATOSCLIENTEType"/>
-               <xsd:element name="clienteadicional" type="tns:DATOSCLIENTE2Type"/>
-               <xsd:element name="cobro" type="tns:DATOSCOBROType"/>
-               <xsd:element minOccurs="0" name="alta" type="tns:DATOSALTAType"/>
-               <xsd:element maxOccurs="20" minOccurs="0" name="asegurados" type="tns:DATOSASEGURADOType"/>
-            </xsd:sequence>
-         </xsd:complexType>
-         <xsd:element name="simulacionOutput" type="tns:simulacionOutputType"/>
-         <xsd:complexType name="simulacionOutputType">
-            <xsd:sequence>
-               <xsd:element minOccurs="0" name="numerosimulacion">
-                  <xsd:annotation>
-                     <xsd:documentation>Numero de simulación </xsd:documentation>
-                  </xsd:annotation>
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:decimal">
-                        <xsd:minInclusive value="-999999999"/>
-                        <xsd:maxInclusive value="999999999"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element maxOccurs="unbounded" name="Primas" type="tns:primasType"/>
-            </xsd:sequence>
-         </xsd:complexType>
-         <xsd:complexType name="DATOSASEGURADOType">
-            <xsd:sequence>
-               <xsd:element minOccurs="0" name="beneficiario">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:decimal">
-                        <xsd:minInclusive value="-99"/>
-                        <xsd:maxInclusive value="99"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="numerocliente">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:decimal">
-                        <xsd:minInclusive value="-999999999"/>
-                        <xsd:maxInclusive value="999999999"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element name="identificacion" type="tns:DATOSIDENTIFICACIONType"/>
-               <xsd:element minOccurs="0" name="domicilio" type="tns:DATOSDOMICILIOType"/>
-               <xsd:element minOccurs="0" name="fechaderecho">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:date"/>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="polizareemplazada">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:decimal">
-                        <xsd:minInclusive value="-9999999"/>
-                        <xsd:maxInclusive value="9999999"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="capitalquirurgica">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:decimal">
-                        <xsd:minInclusive value="-999999"/>
-                        <xsd:maxInclusive value="999999"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element name="muerteinvalidez">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:string">
-                        <xsd:minLength value="0"/>
-                        <xsd:maxLength value="1"/>
-                        <xsd:enumeration value="S"/>
-                        <xsd:enumeration value="N"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element name="tarificamenores">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:string">
-                        <xsd:minLength value="0"/>
-                        <xsd:maxLength value="1"/>
-                        <xsd:enumeration value="S"/>
-                        <xsd:enumeration value="N"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-            </xsd:sequence>
-         </xsd:complexType>
-         <xsd:complexType name="DATOSALTAType">
-         	<xsd:sequence>
-         		<xsd:element minOccurs="0" name="fechaefecto">
-         			<xsd:simpleType>
-         				<xsd:restriction base="xsd:date" />
-         			</xsd:simpleType>
-         		</xsd:element>
-         		<xsd:element name="frecuenciapago">
-         			<xsd:simpleType>
-         				<xsd:restriction base="xsd:string">
-         					<xsd:minLength value="0" />
-         					<xsd:maxLength value="1" />
-         					<xsd:enumeration value="M" />
-         					<xsd:enumeration value="B" />
-         					<xsd:enumeration value="T" />
-         					<xsd:enumeration value="S.A" />
-         				</xsd:restriction>
-         			</xsd:simpleType>
-         		</xsd:element>
-         		<xsd:element minOccurs="0" name="polizareemplazada">
-         			<xsd:simpleType>
-         				<xsd:restriction base="xsd:decimal">
-         					<xsd:minInclusive value="-9999999" />
-         					<xsd:maxInclusive value="9999999" />
-         				</xsd:restriction>
-         			</xsd:simpleType>
-         		</xsd:element>
-         		<xsd:element minOccurs="0" name="fechadecrecho">
-         			<xsd:simpleType>
-         				<xsd:restriction base="xsd:date" />
-         			</xsd:simpleType>
-         		</xsd:element>
-         		<xsd:element minOccurs="0" name="dtocomercial">
-         			<xsd:simpleType>
-         				<xsd:restriction base="xsd:decimal">
-         					<xsd:minInclusive value="-99" />
-         					<xsd:maxInclusive value="99" />
-         				</xsd:restriction>
-         			</xsd:simpleType>
-         		</xsd:element>
-         		<xsd:element name="clase">
-         			<xsd:simpleType>
-         				<xsd:restriction base="xsd:string">
-         					<xsd:minLength value="0" />
-         					<xsd:maxLength value="7" />
-         				</xsd:restriction>
-         			</xsd:simpleType>
-         		</xsd:element>
-         		<xsd:element name="costeservicio">
-         			<xsd:simpleType>
-         				<xsd:restriction base="xsd:decimal">
-         					<xsd:minInclusive value="-999999" />
-         					<xsd:maxInclusive value="999999" />
-         				</xsd:restriction>
-         			</xsd:simpleType>
-         		</xsd:element>
-         		<xsd:element name="costenicho">
-         			<xsd:simpleType>
-         				<xsd:restriction base="xsd:decimal">
-         					<xsd:minInclusive value="-999999" />
-         					<xsd:maxInclusive value="999999" />
-         				</xsd:restriction>
-         			</xsd:simpleType>
-         		</xsd:element>
-         		<xsd:element name="capitalaccidente">
-         			<xsd:simpleType>
-         				<xsd:restriction base="xsd:decimal">
-         					<xsd:minInclusive value="-999999" />
-         					<xsd:maxInclusive value="999999" />
-         				</xsd:restriction>
-         			</xsd:simpleType>
-         		</xsd:element>
-         		<xsd:element minOccurs="0"
-         			name="capitalresponsabilidad">
-         			<xsd:simpleType>
-         				<xsd:restriction base="xsd:decimal">
-         					<xsd:minInclusive value="-999999" />
-         					<xsd:maxInclusive value="999999" />
-         				</xsd:restriction>
-         			</xsd:simpleType>
-         		</xsd:element>
-         		<xsd:element minOccurs="0" name="capitalquirurgica">
-         			<xsd:simpleType>
-         				<xsd:restriction base="xsd:decimal">
-         					<xsd:minInclusive value="-999999" />
-         					<xsd:maxInclusive value="999999" />
-         				</xsd:restriction>
-         			</xsd:simpleType>
-         		</xsd:element>
-         		<xsd:element name="garantiaacccirculacion">
-         			<xsd:simpleType>
-         				<xsd:restriction base="xsd:string">
-         					<xsd:minLength value="0" />
-         					<xsd:maxLength value="1" />
-         					<xsd:enumeration value="S" />
-         					<xsd:enumeration value="N" />
-         				</xsd:restriction>
-         			</xsd:simpleType>
-         		</xsd:element>
-         		<xsd:element minOccurs="0" name="ramo98">
-         			<xsd:simpleType>
-         				<xsd:restriction base="xsd:string">
-         					<xsd:minLength value="0" />
-         					<xsd:maxLength value="1" />
-         				</xsd:restriction>
-         			</xsd:simpleType>
-         		</xsd:element>
-         		<xsd:element minOccurs="0" name="ramo96">
-         			<xsd:simpleType>
-         				<xsd:restriction base="xsd:string">
-         					<xsd:minLength value="0" />
-         					<xsd:maxLength value="1" />
-         				</xsd:restriction>
-         			</xsd:simpleType>
-         		</xsd:element>
-         		<xsd:element minOccurs="0" name="ramo95">
-         			<xsd:simpleType>
-         				<xsd:restriction base="xsd:string">
-         					<xsd:minLength value="0" />
-         					<xsd:maxLength value="1" />
-         				</xsd:restriction>
-         			</xsd:simpleType>
-         		</xsd:element>
-         		<xsd:element minOccurs="0" name="emisionramo98">
-         			<xsd:simpleType>
-         				<xsd:restriction base="xsd:string">
-         					<xsd:minLength value="0" />
-         					<xsd:maxLength value="1" />
-         				</xsd:restriction>
-         			</xsd:simpleType>
-         		</xsd:element>
-         		<xsd:element minOccurs="0" name="emisionramo96">
-         			<xsd:simpleType>
-         				<xsd:restriction base="xsd:string">
-         					<xsd:minLength value="0" />
-         					<xsd:maxLength value="1" />
-         				</xsd:restriction>
-         			</xsd:simpleType>
-         		</xsd:element>
-         		<xsd:element minOccurs="0" name="emisionramo95">
-         			<xsd:simpleType>
-         				<xsd:restriction base="xsd:string">
-         					<xsd:minLength value="0" />
-         					<xsd:maxLength value="1" />
-         				</xsd:restriction>
-         			</xsd:simpleType>
-         		</xsd:element>
-         		<xsd:element name="asegurado">
-         			<xsd:simpleType>
-         				<xsd:restriction base="xsd:string">
-         					<xsd:minLength value="0" />
-         					<xsd:maxLength value="1" />
-         					<xsd:enumeration value="S" />
-         					<xsd:enumeration value="N" />
-         				</xsd:restriction>
-         			</xsd:simpleType>
-         		</xsd:element>
-         		<xsd:element minOccurs="0"
-         			name="condicionesparticulares">
-         			<xsd:simpleType>
-         				<xsd:restriction base="xsd:decimal">
-         					<xsd:minInclusive value="-99999" />
-         					<xsd:maxInclusive value="99999" />
-         				</xsd:restriction>
-         			</xsd:simpleType>
-         		</xsd:element>
-         		<xsd:element minOccurs="0" name="autorizado">
-         			<xsd:simpleType>
-         				<xsd:restriction base="xsd:string">
-         					<xsd:minLength value="0" />
-         					<xsd:maxLength value="1" />
-         				</xsd:restriction>
-         			</xsd:simpleType>
-         		</xsd:element>
-         		<xsd:element minOccurs="0"
-         			name="porcentajecomercial">
-         			<xsd:simpleType>
-         				<xsd:restriction base="xsd:decimal">
-         					<xsd:minInclusive value="-99.99" />
-         					<xsd:maxInclusive value="99.99" />
-         				</xsd:restriction>
-         			</xsd:simpleType>
-         		</xsd:element>
-         	</xsd:sequence>
-         	<xsd:attribute name="NewAttribute" type="xsd:string"></xsd:attribute>
-         	<xsd:attributeGroup ref="tns:NewAttributeGroup"></xsd:attributeGroup>
-         </xsd:complexType>
-         <xsd:complexType name="DATOSCOBROType">
-            <xsd:sequence>
-               <xsd:element name="domiciliocobro">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:string">
-                        <xsd:minLength value="0"/>
-                        <xsd:maxLength value="40"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="domiciliodiferente">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:string">
-                        <xsd:minLength value="0"/>
-                        <xsd:maxLength value="1"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="domicilio" type="tns:DATOSDOMICILIOType"/>
-               <xsd:element minOccurs="0" name="telefono">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:decimal">
-                        <xsd:minInclusive value="-999999999"/>
-                        <xsd:maxInclusive value="999999999"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="movil">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:decimal">
-                        <xsd:minInclusive value="-999999999"/>
-                        <xsd:maxInclusive value="999999999"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="email">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:string">
-                        <xsd:minLength value="0"/>
-                        <xsd:maxLength value="40"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-            </xsd:sequence>
-         </xsd:complexType>
-         <xsd:complexType name="DATOSCLIENTE2Type">
-            <xsd:sequence>
-               <xsd:element minOccurs="0" name="telefono">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:decimal">
-                        <xsd:minInclusive value="-999999999"/>
-                        <xsd:maxInclusive value="999999999"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="movil">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:decimal">
-                        <xsd:minInclusive value="-999999999"/>
-                        <xsd:maxInclusive value="999999999"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="ramo">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:decimal">
-                        <xsd:minInclusive value="-99"/>
-                        <xsd:maxInclusive value="99"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="poliza">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:decimal">
-                        <xsd:minInclusive value="-9999999"/>
-                        <xsd:maxInclusive value="9999999"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="beneficiario">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:decimal">
-                        <xsd:minInclusive value="-99"/>
-                        <xsd:maxInclusive value="99"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-            </xsd:sequence>
-         </xsd:complexType>
-         <xsd:complexType name="DATOSDOMICILIOType">
-            <xsd:sequence>
-               <xsd:element name="tipovia">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:string">
-                        <xsd:minLength value="0"/>
-                        <xsd:maxLength value="2"/>
-                        <xsd:enumeration value="AV"/>
-                        <xsd:enumeration value="CL"/>
-                        <xsd:enumeration value="CM"/>
-                        <xsd:enumeration value="CR"/>
-                        <xsd:enumeration value="GL"/>
-                        <xsd:enumeration value="Pº"/>
-                        <xsd:enumeration value="PG"/>
-                        <xsd:enumeration value="PJ"/>
-                        <xsd:enumeration value="PL"/>
-                        <xsd:enumeration value="PZ"/>
-                        <xsd:enumeration value="RD"/>
-                        <xsd:enumeration value="TR"/>
-                        <xsd:enumeration value="UR"/>
-                        <xsd:enumeration value="LG"/>
-                        <xsd:enumeration value="PB"/>
-                        <xsd:enumeration value="BA"/>
-                        <xsd:enumeration value="CA"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element name="domicilio">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:string">
-                        <xsd:minLength value="0"/>
-                        <xsd:maxLength value="40"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="numero">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:string">
-                        <xsd:minLength value="0"/>
-                        <xsd:maxLength value="4"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="bloque">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:string">
-                        <xsd:minLength value="0"/>
-                        <xsd:maxLength value="2"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="escalera">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:string">
-                        <xsd:minLength value="0"/>
-                        <xsd:maxLength value="2"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="piso">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:string">
-                        <xsd:minLength value="0"/>
-                        <xsd:maxLength value="2"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="letra">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:string">
-                        <xsd:minLength value="0"/>
-                        <xsd:maxLength value="1"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element name="provincia">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:string">
-                        <xsd:minLength value="0"/>
-                        <xsd:maxLength value="30"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element name="localidad">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:string">
-                        <xsd:minLength value="0"/>
-                        <xsd:maxLength value="30"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element name="codigopostal">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:decimal">
-                        <xsd:minInclusive value="-99999"/>
-                        <xsd:maxInclusive value="99999"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-            </xsd:sequence>
-         </xsd:complexType>
-         <xsd:complexType name="DATOSIDENTIFICACIONType">
-            <xsd:sequence>
-               <xsd:element name="nif">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:string">
-                        <xsd:minLength value="0"/>
-                        <xsd:maxLength value="9"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element name="nombre">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:string">
-                        <xsd:minLength value="0"/>
-                        <xsd:maxLength value="20"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element name="apellido1">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:string">
-                        <xsd:minLength value="0"/>
-                        <xsd:maxLength value="20"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="apellido2">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:string">
-                        <xsd:minLength value="0"/>
-                        <xsd:maxLength value="20"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element name="fechanacimiento">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:date"/>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="edad">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:decimal">
-                        <xsd:minInclusive value="-99"/>
-                        <xsd:maxInclusive value="99"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element name="sexo">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:string">
-                        <xsd:minLength value="0"/>
-                        <xsd:maxLength value="1"/>
-                        <xsd:enumeration value="H"/>
-                        <xsd:enumeration value="M"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-            </xsd:sequence>
-         </xsd:complexType>
-         <xsd:complexType name="DATOSCLIENTEType">
-            <xsd:sequence>
-               <xsd:element minOccurs="0" name="numerocliente">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:decimal">
-                        <xsd:minInclusive value="-999999999"/>
-                        <xsd:maxInclusive value="999999999"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="identificacion" type="tns:DATOSIDENTIFICACIONType"/>
-               <xsd:element minOccurs="0" name="domicilio" type="tns:DATOSDOMICILIOType"/>
-               <xsd:element minOccurs="0" name="email">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:string">
-                        <xsd:minLength value="0"/>
-                        <xsd:maxLength value="40"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element name="propaganda">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:string">
-                        <xsd:minLength value="0"/>
-                        <xsd:maxLength value="1"/>
-                        <xsd:enumeration value="S"/>
-                        <xsd:enumeration value="N"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-            </xsd:sequence>
-         </xsd:complexType>
-         <xsd:complexType name="DATOSSIMULACIONType">
-            <xsd:sequence>
-               <xsd:element minOccurs="0" name="numerosimulacion">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:decimal">
-                        <xsd:minInclusive value="-999999999"/>
-                        <xsd:maxInclusive value="999999999"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="fechasimulacion">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:date"/>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="administradora">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:decimal">
-                        <xsd:minInclusive value="-999999"/>
-                        <xsd:maxInclusive value="999999"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="gestor">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:decimal">
-                        <xsd:minInclusive value="-999999"/>
-                        <xsd:maxInclusive value="999999"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="cobrador">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:decimal">
-                        <xsd:minInclusive value="-999"/>
-                        <xsd:maxInclusive value="999"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element minOccurs="0" name="inspector">
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:decimal">
-                        <xsd:minInclusive value="-999"/>
-                        <xsd:maxInclusive value="999"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-            </xsd:sequence>
-         </xsd:complexType>
-         <xsd:element name="simulacionFault" type="xsd:string"/>
-         <xsd:complexType name="primasType">
-            <xsd:sequence>
-               <xsd:element name="ramo">
-                  <xsd:annotation>
-                     <xsd:documentation>Codigo ramo</xsd:documentation>
-                  </xsd:annotation>
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:int">
-                        <xsd:minExclusive value="0"/>
-                        <xsd:maxExclusive value="99"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element name="Accidentes" type="tns:importe">
-                  <xsd:annotation>
-                     <xsd:documentation>Prima para Accidentes</xsd:documentation>
-                  </xsd:annotation>
-               </xsd:element>
-               <xsd:element name="Asistencia" type="tns:importe">
-                  <xsd:annotation>
-                     <xsd:documentation>Prima de Asistencia</xsd:documentation>
-                  </xsd:annotation>
-               </xsd:element>
-               <xsd:element name="ResponsabilidadCivil" type="tns:importe">
-                  <xsd:annotation>
-                     <xsd:documentation>Prima por resposabilidad civil</xsd:documentation>
-                  </xsd:annotation>
-               </xsd:element>
-               <xsd:element name="Quirurgica" type="tns:importe">
-                  <xsd:annotation>
-                     <xsd:documentation>Prima para operación quirunrgica</xsd:documentation>
-                  </xsd:annotation>
-               </xsd:element>
-               <xsd:element name="DescuentoAplicado">
-                  <xsd:annotation>
-                     <xsd:documentation>Procentaje de descuento</xsd:documentation>
-                  </xsd:annotation>
-                  <xsd:simpleType>
-                     <xsd:restriction base="xsd:int">
-                        <xsd:minExclusive value="0"/>
-                        <xsd:maxExclusive value="99"/>
-                     </xsd:restriction>
-                  </xsd:simpleType>
-               </xsd:element>
-               <xsd:element name="TotalDescuento" type="tns:importe">
-                  <xsd:annotation>
-                     <xsd:documentation>Importe del descuento</xsd:documentation>
-                  </xsd:annotation>
-               </xsd:element>
-               <xsd:element name="NetoDecesos" type="tns:importe">
-                  <xsd:annotation>
-                     <xsd:documentation>Prima neta de descesos</xsd:documentation>
-                  </xsd:annotation>
-               </xsd:element>
-               <xsd:element name="PrimaNeta" type="tns:importeNeto">
-                  <xsd:annotation>
-                     <xsd:documentation>Prima neta</xsd:documentation>
-                  </xsd:annotation>
-               </xsd:element>
-               <xsd:element name="PrimaTotal" type="tns:importeNeto">
-                  <xsd:annotation>
-                     <xsd:documentation>Prima Total</xsd:documentation>
-                  </xsd:annotation>
-               </xsd:element>
-            </xsd:sequence>
-         </xsd:complexType>
-         <xsd:simpleType name="importe">
-         	<xsd:restriction base="xsd:decimal">
-         		<xsd:minInclusive value="0.00" />
-         		<xsd:maxExclusive value="999999.99" />
-         		<xsd:totalDigits value="6" />
-         		<xsd:fractionDigits value="2" />
-         		<xsd:enumeration value="1"></xsd:enumeration>
-         		<xsd:enumeration value="2"></xsd:enumeration>
-         		<xsd:enumeration value="4"></xsd:enumeration>
-         		<xsd:enumeration value="5"></xsd:enumeration>
-         	</xsd:restriction>
-         </xsd:simpleType>
-         <xsd:simpleType name="importeNeto">
-         	<xsd:restriction base="xsd:decimal">
-         		<xsd:minInclusive value="0.00" />
-         		<xsd:maxExclusive value="9999999.99" />
-         		<xsd:totalDigits value="7" />
-         		<xsd:fractionDigits value="2" />
-         		<xsd:pattern value=".*/d"></xsd:pattern>
-         	</xsd:restriction>
-         </xsd:simpleType>
-         <xsd:simpleType name="testalfa">
-         <xsd:restriction base="xsd:boolean"></xsd:restriction>
-         </xsd:simpleType>
-      
-         <xsd:group name="NewGroupDefinition">
-         	<xsd:sequence></xsd:sequence>
-         </xsd:group>
-      
-            <xsd:attribute name="NewAttribute" type="xsd:string"></xsd:attribute>
-        
-            <xsd:attributeGroup name="NewAttributeGroup">
-            	<xsd:attribute name="NewAttribute" type="xsd:string"></xsd:attribute>
-            </xsd:attributeGroup>
-      
-            <xsd:element name="NewElement" type="tns:importeNeto"></xsd:element>
-        </xsd:schema>
-   </wsdl:types>
-   <wsdl:message name="simulacionRequest">
-      <wsdl:part name="parameters" element="tns:simulacionInput"/>
-   </wsdl:message>
-   <wsdl:message name="simulacionResponse">
-      <wsdl:part name="parameters" element="tns:simulacionOutput"/>
-   </wsdl:message>
-   <wsdl:message name="fault">
-      <wsdl:part name="parameters" element="tns:simulacionFault"/>
-   </wsdl:message>
-   <wsdl:portType xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" name="simulacionPortType" wsp:PolicyURIs="#UTOverTransport">
-      <wsdl:operation name="Simular">
-         <wsdl:input message="tns:simulacionRequest" wsaw:Action="http://www.almudena.es/ws/simulacion/Simular"/>
-         <wsdl:output message="tns:simulacionResponse" wsaw:Action="http://www.almudena.es/ws/simulacion/simulacion/simulacionOutput"/>
-         <wsdl:fault message="tns:fault" name="fault" wsaw:Action="http://www.almudena.es/ws/simulacion/simulacion/Simular/Fault/fault"/>
-      </wsdl:operation>
-   </wsdl:portType>
-   <wsdl:binding name="simulacionSoap11Binding" type="tns:simulacionPortType">
-      <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-      <wsdl:operation name="Simular">
-         <soap:operation soapAction="http://www.almudena.es/ws/simulacion/Simular" style="document"/>
-         <wsdl:input>
-            <soap:body use="literal"/>
-         </wsdl:input>
-         <wsdl:output>
-            <soap:body use="literal"/>
-         </wsdl:output>
-         <wsdl:fault name="fault">
-            <soap:fault use="literal" name="fault"/>
-         </wsdl:fault>
-      </wsdl:operation>
-   </wsdl:binding>
-   <wsdl:binding name="simulacionSoap12Binding" type="tns:simulacionPortType">
-      <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-      <wsdl:operation name="Simular">
-         <soap12:operation soapAction="http://www.almudena.es/ws/simulacion/Simular" style="document"/>
-         <wsdl:input>
-            <soap12:body use="literal"/>
-         </wsdl:input>
-         <wsdl:output>
-            <soap12:body use="literal"/>
-         </wsdl:output>
-         <wsdl:fault name="fault">
-            <soap12:fault use="literal" name="fault"/>
-         </wsdl:fault>
-      </wsdl:operation>
-   </wsdl:binding>
-   <wsdl:binding name="simulacionHttpBinding" type="tns:simulacionPortType">
-      <http:binding verb="POST"/>
-      <wsdl:operation name="Simular">
-         <http:operation location="Simular"/>
-         <wsdl:input>
-            <mime:content type="text/xml" part="parameters"/>
-         </wsdl:input>
-         <wsdl:output>
-            <mime:content type="text/xml" part="parameters"/>
-         </wsdl:output>
-      </wsdl:operation>
-   </wsdl:binding>
-   <wsdl:service name="simulacion">
-      <wsdl:port name="simulacionHttpSoap11Endpoint" binding="tns:simulacionSoap11Binding">
-         <soap:address location="http://esbdev:8280/services/simulacion.simulacionHttpSoap11Endpoint"/>
-      </wsdl:port>
-      <wsdl:port name="simulacionHttpsSoap11Endpoint" binding="tns:simulacionSoap11Binding">
-         <soap:address location="https://esbdev:8243/services/simulacion.simulacionHttpsSoap11Endpoint"/>
-      </wsdl:port>
-      <wsdl:port name="simulacionHttpsSoap12Endpoint" binding="tns:simulacionSoap12Binding">
-         <soap12:address location="https://esbdev:8243/services/simulacion.simulacionHttpsSoap12Endpoint"/>
-      </wsdl:port>
-      <wsdl:port name="simulacionHttpSoap12Endpoint" binding="tns:simulacionSoap12Binding">
-         <soap12:address location="http://esbdev:8280/services/simulacion.simulacionHttpSoap12Endpoint"/>
-      </wsdl:port>
-      <wsdl:port name="simulacionHttpsEndpoint" binding="tns:simulacionHttpBinding">
-         <http:address location="https://esbdev:8243/services/simulacion.simulacionHttpsEndpoint"/>
-      </wsdl:port>
-      <wsdl:port name="simulacionHttpEndpoint" binding="tns:simulacionHttpBinding">
-         <http:address location="http://esbdev:8280/services/simulacion.simulacionHttpEndpoint"/>
-      </wsdl:port>
-   </wsdl:service>
+						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:minLength value="0" />
+								<xsd:maxLength value="10" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="simulacion"
+						type="tns:DATOSSIMULACIONType" />
+					<xsd:element name="cliente" type="tns:DATOSCLIENTEType" />
+					<xsd:element name="clienteadicional"
+						type="tns:DATOSCLIENTE2Type" />
+					<xsd:element name="cobro" type="tns:DATOSCOBROType" />
+					<xsd:element minOccurs="0" name="alta"
+						type="tns:DATOSALTAType" />
+					<xsd:element maxOccurs="20" minOccurs="0"
+						name="asegurados" type="tns:DATOSASEGURADOType" />
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="simulacionOutput"
+				type="tns:simulacionOutputType" />
+			<xsd:complexType name="simulacionOutputType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="numerosimulacion">
+						<xsd:annotation>
+							<xsd:documentation>Numero de simulación </xsd:documentation>
+						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:decimal">
+								<xsd:minInclusive value="-999999999" />
+								<xsd:maxInclusive value="999999999" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element maxOccurs="unbounded" name="Primas"
+						type="tns:primasType" />
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="DATOSASEGURADOType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="beneficiario">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:decimal">
+								<xsd:minInclusive value="-99" />
+								<xsd:maxInclusive value="99" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="numerocliente">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:decimal">
+								<xsd:minInclusive value="-999999999" />
+								<xsd:maxInclusive value="999999999" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name="identificacion"
+						type="tns:DATOSIDENTIFICACIONType" />
+					<xsd:element minOccurs="0" name="domicilio"
+						type="tns:DATOSDOMICILIOType" />
+					<xsd:element minOccurs="0" name="fechaderecho">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:date" />
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="polizareemplazada">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:decimal">
+								<xsd:minInclusive value="-9999999" />
+								<xsd:maxInclusive value="9999999" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="capitalquirurgica">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:decimal">
+								<xsd:minInclusive value="-999999" />
+								<xsd:maxInclusive value="999999" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name="muerteinvalidez">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:minLength value="0" />
+								<xsd:maxLength value="1" />
+								<xsd:enumeration value="S" />
+								<xsd:enumeration value="N" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name="tarificamenores">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:minLength value="0" />
+								<xsd:maxLength value="1" />
+								<xsd:enumeration value="S" />
+								<xsd:enumeration value="N" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="DATOSALTAType">
+				<xsd:sequence>
+					<xsd:choice>
+						<xsd:group ref="tns:NewGroupDefinition"></xsd:group>
+						<xsd:element name="testEnChoice" type="xsd:string"></xsd:element>
+					</xsd:choice>
+					<xsd:element minOccurs="0" name="fechaefecto">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:date" />
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name="frecuenciapago">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:minLength value="0" />
+								<xsd:maxLength value="1" />
+								<xsd:enumeration value="M" />
+								<xsd:enumeration value="B" />
+								<xsd:enumeration value="T" />
+								<xsd:enumeration value="S.A" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="polizareemplazada">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:decimal">
+								<xsd:minInclusive value="-9999999" />
+								<xsd:maxInclusive value="9999999" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="fechadecrecho">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:date" />
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="dtocomercial">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:decimal">
+								<xsd:minInclusive value="-99" />
+								<xsd:maxInclusive value="99" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name="clase">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:minLength value="0" />
+								<xsd:maxLength value="7" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name="costeservicio">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:decimal">
+								<xsd:minInclusive value="-999999" />
+								<xsd:maxInclusive value="999999" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name="costenicho">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:decimal">
+								<xsd:minInclusive value="-999999" />
+								<xsd:maxInclusive value="999999" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name="capitalaccidente">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:decimal">
+								<xsd:minInclusive value="-999999" />
+								<xsd:maxInclusive value="999999" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0"
+						name="capitalresponsabilidad">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:decimal">
+								<xsd:minInclusive value="-999999" />
+								<xsd:maxInclusive value="999999" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="capitalquirurgica">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:decimal">
+								<xsd:minInclusive value="-999999" />
+								<xsd:maxInclusive value="999999" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name="garantiaacccirculacion">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:minLength value="0" />
+								<xsd:maxLength value="1" />
+								<xsd:enumeration value="S" />
+								<xsd:enumeration value="N" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="ramo98">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:minLength value="0" />
+								<xsd:maxLength value="1" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="ramo96">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:minLength value="0" />
+								<xsd:maxLength value="1" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="ramo95">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:minLength value="0" />
+								<xsd:maxLength value="1" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="emisionramo98">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:minLength value="0" />
+								<xsd:maxLength value="1" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="emisionramo96">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:minLength value="0" />
+								<xsd:maxLength value="1" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="emisionramo95">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:minLength value="0" />
+								<xsd:maxLength value="1" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name="asegurado">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:minLength value="0" />
+								<xsd:maxLength value="1" />
+								<xsd:enumeration value="S" />
+								<xsd:enumeration value="N" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0"
+						name="condicionesparticulares">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:decimal">
+								<xsd:minInclusive value="-99999" />
+								<xsd:maxInclusive value="99999" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="autorizado">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:minLength value="0" />
+								<xsd:maxLength value="1" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="porcentajecomercial">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:decimal">
+								<xsd:minInclusive value="-99.99" />
+								<xsd:maxInclusive value="99.99" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:attribute name="NewAttribute2" type="xsd:string"></xsd:attribute>
+				<xsd:attributeGroup ref="tns:NewAttributeGroup"></xsd:attributeGroup>
+			</xsd:complexType>
+			<xsd:complexType name="DATOSCOBROType">
+				<xsd:sequence>
+					<xsd:element name="domiciliocobro">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:minLength value="0" />
+								<xsd:maxLength value="40" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="domiciliodiferente">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:minLength value="0" />
+								<xsd:maxLength value="1" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="domicilio"
+						type="tns:DATOSDOMICILIOType" />
+					<xsd:element minOccurs="0" name="telefono">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:decimal">
+								<xsd:minInclusive value="-999999999" />
+								<xsd:maxInclusive value="999999999" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="movil">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:decimal">
+								<xsd:minInclusive value="-999999999" />
+								<xsd:maxInclusive value="999999999" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="email">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:minLength value="0" />
+								<xsd:maxLength value="40" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="DATOSCLIENTE2Type">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="telefono">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:decimal">
+								<xsd:minInclusive value="-999999999" />
+								<xsd:maxInclusive value="999999999" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="movil">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:decimal">
+								<xsd:minInclusive value="-999999999" />
+								<xsd:maxInclusive value="999999999" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="ramo">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:decimal">
+								<xsd:minInclusive value="-99" />
+								<xsd:maxInclusive value="99" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="poliza">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:decimal">
+								<xsd:minInclusive value="-9999999" />
+								<xsd:maxInclusive value="9999999" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="beneficiario">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:decimal">
+								<xsd:minInclusive value="-99" />
+								<xsd:maxInclusive value="99" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="DATOSDOMICILIOType">
+				<xsd:sequence>
+					<xsd:element name="tipovia">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:minLength value="0" />
+								<xsd:maxLength value="2" />
+								<xsd:enumeration value="AV" />
+								<xsd:enumeration value="CL" />
+								<xsd:enumeration value="CM" />
+								<xsd:enumeration value="CR" />
+								<xsd:enumeration value="GL" />
+								<xsd:enumeration value="Pº" />
+								<xsd:enumeration value="PG" />
+								<xsd:enumeration value="PJ" />
+								<xsd:enumeration value="PL" />
+								<xsd:enumeration value="PZ" />
+								<xsd:enumeration value="RD" />
+								<xsd:enumeration value="TR" />
+								<xsd:enumeration value="UR" />
+								<xsd:enumeration value="LG" />
+								<xsd:enumeration value="PB" />
+								<xsd:enumeration value="BA" />
+								<xsd:enumeration value="CA" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name="domicilio">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:minLength value="0" />
+								<xsd:maxLength value="40" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="numero">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:minLength value="0" />
+								<xsd:maxLength value="4" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="bloque">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:minLength value="0" />
+								<xsd:maxLength value="2" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="escalera">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:minLength value="0" />
+								<xsd:maxLength value="2" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="piso">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:minLength value="0" />
+								<xsd:maxLength value="2" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="letra">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:minLength value="0" />
+								<xsd:maxLength value="1" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name="provincia">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:minLength value="0" />
+								<xsd:maxLength value="30" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name="localidad">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:minLength value="0" />
+								<xsd:maxLength value="30" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name="codigopostal">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:decimal">
+								<xsd:minInclusive value="-99999" />
+								<xsd:maxInclusive value="99999" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="DATOSIDENTIFICACIONType">
+				<xsd:sequence>
+					<xsd:element name="nif">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:minLength value="0" />
+								<xsd:maxLength value="9" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name="nombre">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:minLength value="0" />
+								<xsd:maxLength value="20" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name="apellido1">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:minLength value="0" />
+								<xsd:maxLength value="20" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="apellido2">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:minLength value="0" />
+								<xsd:maxLength value="20" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name="fechanacimiento">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:date" />
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="edad">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:decimal">
+								<xsd:minInclusive value="-99" />
+								<xsd:maxInclusive value="99" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name="sexo">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:minLength value="0" />
+								<xsd:maxLength value="1" />
+								<xsd:enumeration value="H" />
+								<xsd:enumeration value="M" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="DATOSCLIENTEType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="numerocliente">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:decimal">
+								<xsd:minInclusive value="-999999999" />
+								<xsd:maxInclusive value="999999999" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="identificacion"
+						type="tns:DATOSIDENTIFICACIONType" />
+					<xsd:element minOccurs="0" name="domicilio"
+						type="tns:DATOSDOMICILIOType" />
+					<xsd:element minOccurs="0" name="email">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:minLength value="0" />
+								<xsd:maxLength value="40" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name="propaganda">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:minLength value="0" />
+								<xsd:maxLength value="1" />
+								<xsd:enumeration value="S" />
+								<xsd:enumeration value="N" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="DATOSSIMULACIONType">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="numerosimulacion">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:decimal">
+								<xsd:minInclusive value="-999999999" />
+								<xsd:maxInclusive value="999999999" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="fechasimulacion">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:date" />
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="administradora">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:decimal">
+								<xsd:minInclusive value="-999999" />
+								<xsd:maxInclusive value="999999" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="gestor">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:decimal">
+								<xsd:minInclusive value="-999999" />
+								<xsd:maxInclusive value="999999" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="cobrador">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:decimal">
+								<xsd:minInclusive value="-999" />
+								<xsd:maxInclusive value="999" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="inspector">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:decimal">
+								<xsd:minInclusive value="-999" />
+								<xsd:maxInclusive value="999" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="simulacionFault" type="xsd:string" />
+			<xsd:complexType name="primasType">
+				<xsd:sequence>
+					<xsd:element name="ramo">
+						<xsd:annotation>
+							<xsd:documentation>Codigo ramo</xsd:documentation>
+						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:int">
+								<xsd:minExclusive value="0" />
+								<xsd:maxExclusive value="99" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name="Accidentes" type="tns:importe">
+						<xsd:annotation>
+							<xsd:documentation>Prima para Accidentes</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="Asistencia" type="tns:importe">
+						<xsd:annotation>
+							<xsd:documentation>Prima de Asistencia</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="ResponsabilidadCivil"
+						type="tns:importe">
+						<xsd:annotation>
+							<xsd:documentation>Prima por resposabilidad civil
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="Quirurgica" type="tns:importe">
+						<xsd:annotation>
+							<xsd:documentation>Prima para operación quirunrgica
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="DescuentoAplicado">
+						<xsd:annotation>
+							<xsd:documentation>Procentaje de descuento</xsd:documentation>
+						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:int">
+								<xsd:minExclusive value="0" />
+								<xsd:maxExclusive value="99" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name="TotalDescuento" type="tns:importe">
+						<xsd:annotation>
+							<xsd:documentation>Importe del descuento</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="NetoDecesos" type="tns:importe">
+						<xsd:annotation>
+							<xsd:documentation>Prima neta de descesos</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="PrimaNeta" type="tns:importeNeto">
+						<xsd:annotation>
+							<xsd:documentation>Prima neta</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="PrimaTotal" type="tns:importeNeto">
+						<xsd:annotation>
+							<xsd:documentation>Prima Total</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:simpleType name="importe">
+				<xsd:restriction base="xsd:decimal">
+					<xsd:minInclusive value="0.00" />
+					<xsd:maxExclusive value="999999.99" />
+					<xsd:totalDigits value="6" />
+					<xsd:fractionDigits value="2" />
+					<xsd:enumeration value="1"></xsd:enumeration>
+					<xsd:enumeration value="2"></xsd:enumeration>
+					<xsd:enumeration value="4"></xsd:enumeration>
+					<xsd:enumeration value="5"></xsd:enumeration>
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="importeNeto">
+				<xsd:restriction base="xsd:decimal">
+					<xsd:minInclusive value="0.00" />
+					<xsd:maxExclusive value="9999999.99" />
+					<xsd:totalDigits value="7" />
+					<xsd:fractionDigits value="2" />
+					<xsd:pattern value=".*/d"></xsd:pattern>
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="testalfa">
+				<xsd:restriction base="xsd:boolean"></xsd:restriction>
+			</xsd:simpleType>
+
+			<xsd:group name="NewGroupDefinition">
+				<xsd:sequence></xsd:sequence>
+			</xsd:group>
+
+			<xsd:attribute name="NewAttribute" type="xsd:string"></xsd:attribute>
+
+			<xsd:attributeGroup name="NewAttributeGroup">
+				<xsd:attribute name="NewAttribute" type="xsd:string"></xsd:attribute>
+			</xsd:attributeGroup>
+
+			<xsd:element name="NewElement" type="tns:importeNeto"></xsd:element>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="simulacionRequest">
+		<wsdl:part name="parameters" element="tns:simulacionInput" />
+	</wsdl:message>
+	<wsdl:message name="simulacionResponse">
+		<wsdl:part name="parameters" element="tns:simulacionOutput" />
+	</wsdl:message>
+	<wsdl:message name="fault">
+		<wsdl:part name="parameters" element="tns:simulacionFault" />
+	</wsdl:message>
+	<wsdl:portType
+		xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"
+		name="simulacionPortType" wsp:PolicyURIs="#UTOverTransport">
+		<wsdl:operation name="Simular">
+			<wsdl:input message="tns:simulacionRequest"
+				wsaw:Action="http://www.almudena.es/ws/simulacion/Simular" />
+			<wsdl:output message="tns:simulacionResponse"
+				wsaw:Action="http://www.almudena.es/ws/simulacion/simulacion/simulacionOutput" />
+			<wsdl:fault message="tns:fault" name="fault"
+				wsaw:Action="http://www.almudena.es/ws/simulacion/simulacion/Simular/Fault/fault" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="simulacionSoap11Binding"
+		type="tns:simulacionPortType">
+		<soap:binding
+			transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+		<wsdl:operation name="Simular">
+			<soap:operation
+				soapAction="http://www.almudena.es/ws/simulacion/Simular"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="fault">
+				<soap:fault use="literal" name="fault" />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:binding name="simulacionSoap12Binding"
+		type="tns:simulacionPortType">
+		<soap12:binding
+			transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+		<wsdl:operation name="Simular">
+			<soap12:operation
+				soapAction="http://www.almudena.es/ws/simulacion/Simular"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="fault">
+				<soap12:fault use="literal" name="fault" />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:binding name="simulacionHttpBinding"
+		type="tns:simulacionPortType">
+		<http:binding verb="POST" />
+		<wsdl:operation name="Simular">
+			<http:operation location="Simular" />
+			<wsdl:input>
+				<mime:content type="text/xml" part="parameters" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:content type="text/xml" part="parameters" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="simulacion">
+		<wsdl:port name="simulacionHttpSoap11Endpoint"
+			binding="tns:simulacionSoap11Binding">
+			<soap:address
+				location="http://esbdev:8280/services/simulacion.simulacionHttpSoap11Endpoint" />
+		</wsdl:port>
+		<wsdl:port name="simulacionHttpsSoap11Endpoint"
+			binding="tns:simulacionSoap11Binding">
+			<soap:address
+				location="https://esbdev:8243/services/simulacion.simulacionHttpsSoap11Endpoint" />
+		</wsdl:port>
+		<wsdl:port name="simulacionHttpsSoap12Endpoint"
+			binding="tns:simulacionSoap12Binding">
+			<soap12:address
+				location="https://esbdev:8243/services/simulacion.simulacionHttpsSoap12Endpoint" />
+		</wsdl:port>
+		<wsdl:port name="simulacionHttpSoap12Endpoint"
+			binding="tns:simulacionSoap12Binding">
+			<soap12:address
+				location="http://esbdev:8280/services/simulacion.simulacionHttpSoap12Endpoint" />
+		</wsdl:port>
+		<wsdl:port name="simulacionHttpsEndpoint"
+			binding="tns:simulacionHttpBinding">
+			<http:address
+				location="https://esbdev:8243/services/simulacion.simulacionHttpsEndpoint" />
+		</wsdl:port>
+		<wsdl:port name="simulacionHttpEndpoint"
+			binding="tns:simulacionHttpBinding">
+			<http:address
+				location="http://esbdev:8280/services/simulacion.simulacionHttpEndpoint" />
+		</wsdl:port>
+	</wsdl:service>
 </wsdl:definitions>
