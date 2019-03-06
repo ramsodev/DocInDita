@@ -19,7 +19,7 @@ public abstract class AbstractComplexContentModel extends AbstractComponentModel
 	private int minOccurs = -1;
 	private String maxOccurs = "-1";
 	private boolean requiered;
-	private ArrayList<IComplexContentModel> elements;
+	private ArrayList<IComplexContentModel> elements = new ArrayList<IComplexContentModel>();
 	protected String contentType = Constants.SEQUENCE;
 
 	protected void procesModel(Object model) {

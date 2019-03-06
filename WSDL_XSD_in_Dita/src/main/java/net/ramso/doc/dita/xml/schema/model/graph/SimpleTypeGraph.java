@@ -2,7 +2,9 @@ package net.ramso.doc.dita.xml.schema.model.graph;
 
 import java.awt.geom.Rectangle2D;
 
+import com.mxgraph.layout.mxStackLayout;
 import com.mxgraph.model.mxCell;
+import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.util.mxConstants;
 import com.mxgraph.view.mxGraph;
 
@@ -53,10 +55,14 @@ public class SimpleTypeGraph extends AbstractXmlGraph {
 	}
 
 	public mxCell createSimpleType(mxCell parent, String name) {
+		return createSimpleType(parent, name, 0, 0);
+	}
+
+	public mxCell createSimpleType(mxCell parent, String name, int x, int y) {
 		Rectangle2D base = GraphTools.getTextSize(name);
 		int altura = (int) (base.getHeight() + (base.getHeight() / 2));
 		int anchura = (int) ((base.getWidth() + (base.getWidth() * 25) / 100) + altura);
-		return createSimpleType(parent, name, 0, 0, anchura, altura);
+		return createSimpleType(parent, name, x, y, anchura, altura);
 	}
 
 	public mxCell createSimpleType(mxCell parent, int x, int y, int width, int height) {
@@ -66,10 +72,21 @@ public class SimpleTypeGraph extends AbstractXmlGraph {
 	public mxCell createSimpleType(mxCell parent, String name, int x, int y, int width, int height) {
 		mxCell cell = (mxCell) getGraph().createVertex(parent, name + Constants.SUFFIX_SIMPLETYPE, "", x, y, width,
 				height, GraphTools.getStyle(false, true));
+		String color = "BLUE";
+		if(name.startsWith("(")) {
+			color = "LIGHTGRAY";
+		}
 		Object titulo = getGraph().insertVertex(cell, "Title" + name + Constants.SUFFIX_SIMPLETYPE, name, 0, 0, width,
-				height, GraphTools.getStyle(true, true, "BLUE", height));
+				height, GraphTools.getStyle(true, true, color, height));
+		
 		insertIcon((mxCell) titulo, Constants.SUFFIX_SIMPLETYPE.toLowerCase(), height);
 		return cell;
+	}
+
+	@Override
+	protected void morphGraph(mxGraph graph, mxGraphComponent graphComponent) {
+		mxStackLayout layout = new mxStackLayout(graph, false, 50);
+		layout.execute(graph.getDefaultParent());
 	}
 
 }

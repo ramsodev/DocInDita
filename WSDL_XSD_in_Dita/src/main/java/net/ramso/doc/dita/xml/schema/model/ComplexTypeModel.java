@@ -21,8 +21,8 @@ import net.ramso.doc.dita.xml.schema.model.graph.ComplexTypeGraph;
 public class ComplexTypeModel extends AbstractComplexContentModel {
 
 	private ComplexType complexType;
-	private List<AttributeModel> attributes;
-	private ArrayList<AttributeGroupModel> attributeGroups;
+	private List<AttributeModel> attributes = new ArrayList<AttributeModel>();
+	private ArrayList<AttributeGroupModel> attributeGroups = new ArrayList<AttributeGroupModel>();
 	private List<QName> supers;
 	private String diagram;
 
@@ -37,7 +37,7 @@ public class ComplexTypeModel extends AbstractComplexContentModel {
 		Sequence s = complexType.getSequence();
 		try {
 			supers = complexType.getSuperTypes();
-			addAttributes(complexType.getAllAttributes());
+			addAttributes(complexType.getAttributes());
 			addAttributeGroups(complexType.getAttributeGroups());
 		} catch (Exception e) {
 			supers = null;
@@ -160,14 +160,12 @@ public class ComplexTypeModel extends AbstractComplexContentModel {
 	}
 
 	@Override
-	public String getDiagram() {		
-		if(this.diagram == null) {
+	public String getDiagram() {
+		if (this.diagram == null) {
 			ComplexTypeGraph graph = new ComplexTypeGraph(this);
 			diagram = graph.generate();
 		}
 		return diagram;
 	}
-
-
 
 }

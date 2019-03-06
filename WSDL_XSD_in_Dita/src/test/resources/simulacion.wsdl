@@ -780,7 +780,10 @@
 			</xsd:simpleType>
 
 			<xsd:group name="NewGroupDefinition">
-				<xsd:sequence></xsd:sequence>
+				<xsd:sequence>
+					<xsd:element name="NewElement" type="xsd:string"></xsd:element>
+					<xsd:element name="NewElement1" type="xsd:string"></xsd:element>
+				</xsd:sequence>
 			</xsd:group>
 
 			<xsd:attribute name="NewAttribute" type="xsd:string"></xsd:attribute>

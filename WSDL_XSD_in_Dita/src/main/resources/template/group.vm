@@ -12,82 +12,31 @@
         </dlentry>
         #end
         
-        #if(${group.getElements()})
-        <dlentry>
-        	<dt>Contenido de ${group.getContentType()}</dt>
-        	<dd><sl>
-            		#foreach($element in ${group.getElements()})
-            			<sli><xref #if(${element.getRef()})href="${element.getHrefType()}" ${element.getExternalHref()}>${element.getRef().getLocalPart()}
-            					   #else href="#$id/sectionElement${element.getName()}">${element.getName()}
-            					   #end </xref></sli>
-            		#end
-            </sl></dd>
-        </dlentry>
+          #if(${group.getElements()})
+        	#set($sl = false)
+        	#set($i =0)
+        	#set($childs = ${group.getElements()})
+        	#parse("complexContentRefs.vm")
         #end
             	
 	</dl>
+	 #if(!$child)
+        <section id="section_diagram">
+            <title>Diagrama</title>            
+        		<fig id="${id}Diagram">
+            		<title>Diagrama para ${title}</title>
+           			<image placement="break" href="${group.getDiagram()}" align="center" id="${id}Image" scalefit="yes"/>
+        		</fig>
+        </section>  
+     #end  
     	#if(!$child)
     <section id="section_code">
     	<title>Codigo</title>            
         <codeblock>${group.getCode()}</codeblock>
     </section>
     	#end
-    	#if(${group.getAttributes()})
-       		#set($childc = $child)
-       		#set($child = true)
-       		#foreach($attribute in ${group.getAttributes()})
-       			#if(!${attribute.getRef()})
-       				#if($childc)
- 	<sectiondiv id="sectionAttribute${attribute.getName()}">
- 		<p><u><b>Attribute ${attribute.getName()}</b></u></p>
- 					#else
-    <section id="sectionAttribute${attribute.getName()}">
-    	<title>Attribute ${attribute.getName()}</title>
-    				#end
-    				#if(${attribute.getDoc()})
-    	<p><lines>${attribute.getDoc()}</lines></p>
-    				#end
-       				#parse("attribute.vm")
-       				#if($childc)
-    </sectiondiv> 
-       				#else
-    </section>
-    				#end
-    			#end
-       		#end
-       		#set($child = $childc)
-       	#end
        	#if(${group.getElements()})
-       		#set($childc = $child)
-       		#set($child = true)
-       		#foreach($element in ${group.getElements()})
-       			#if(!${element.getRef()})
-       				#if($childc)
- 	<sectiondiv id="sectionElement${element.getName()}">
- 		<p><u><b>Element ${element.getName()}</b></u></p>
- 					#else
-    <section id="sectionElement${element.getName()}">
-    	<title>Element ${element.getName()}</title>
-    				#end
-    				#if(${element.getDoc()})
-    	<p><lines>${element.getDoc()}</lines></p>
-    				#end
-       				#if(${element.getComponentName().equalsIgnoreCase("ComplexType")})
-    					#set($complexType = $element)
-       					#parse("complextype.vm")
-       				#elseif(${element.getComponentName().equalsIgnoreCase("Element")})
-       					#parse("element.vm")       					
-       				#else
-       					#set($group = $element)
-       					#parse("group.vm")
-       				#end
-       				#if($childc)
-    </sectiondiv> 
-       				#else
-    </section>
-    				#end
-    			#end
-       		#end
-       		#set($child = $childc)
-       	#end
+        	#set($childs = ${group.getElements()})
+        	#parse("complexContentDetail.vm")
+        #end
 

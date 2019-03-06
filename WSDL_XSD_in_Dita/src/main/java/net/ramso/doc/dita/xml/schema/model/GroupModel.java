@@ -1,15 +1,19 @@
 package net.ramso.doc.dita.xml.schema.model;
 
+import java.util.ArrayList;
+
 import com.predic8.schema.Group;
 import com.predic8.schema.GroupRef;
 import com.predic8.schema.SchemaComponent;
 
 import groovy.xml.QName;
 import net.ramso.doc.dita.tools.Constants;
+import net.ramso.doc.dita.xml.schema.model.graph.GroupGraph;
 
 public class GroupModel extends AbstractComplexContentModel {
 	private SchemaComponent component;
 	private QName ref;
+	private String diagram;
 	
 
 	public GroupModel(Group group) {
@@ -37,6 +41,7 @@ public class GroupModel extends AbstractComplexContentModel {
 	
 	private void procesRef(GroupRef group) {
 		ref = group.getRef();
+		setElements(new ArrayList<IComplexContentModel>());
 		
 	}
 
@@ -80,11 +85,13 @@ public class GroupModel extends AbstractComplexContentModel {
 	}
 
 	@Override
-	public String getDiagram() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getDiagram() {		
+		if(this.diagram == null) {
+			GroupGraph graph = new GroupGraph(this);
+			diagram = graph.generate();
+		}
+		return diagram;
 	}
-
 	@Override
 	public boolean isElement() {
 		return component instanceof GroupRef; 

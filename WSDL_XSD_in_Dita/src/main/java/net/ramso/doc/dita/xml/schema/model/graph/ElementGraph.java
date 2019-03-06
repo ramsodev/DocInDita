@@ -2,7 +2,9 @@ package net.ramso.doc.dita.xml.schema.model.graph;
 
 import java.awt.geom.Rectangle2D;
 
+import com.mxgraph.layout.mxStackLayout;
 import com.mxgraph.model.mxCell;
+import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.util.mxConstants;
 import com.mxgraph.view.mxGraph;
 
@@ -133,5 +135,11 @@ public class ElementGraph extends AbstractXmlGraph {
 				GraphTools.getStyle(false, false, height));
 		insertIcon((mxCell) titulo, icon, height);
 		return cell;
+	}
+
+	@Override
+	protected void morphGraph(mxGraph graph, mxGraphComponent graphComponent) {
+		mxStackLayout layout = new mxStackLayout(graph, false, 50);
+		layout.execute(graph.getDefaultParent());
 	}
 }

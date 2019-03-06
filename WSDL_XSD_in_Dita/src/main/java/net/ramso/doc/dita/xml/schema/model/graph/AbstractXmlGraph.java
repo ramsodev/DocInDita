@@ -10,17 +10,22 @@ import net.ramso.tools.graph.GraphTools;
 
 public abstract class AbstractXmlGraph extends AbstractGraph {
 	protected mxCell createType(mxCell parent, String name) {
-		Rectangle2D base = GraphTools.getTextSize(name);
-		int altura = (int) (base.getHeight() + (base.getHeight() / 2));
-		int anchura = (int) ((base.getWidth() + (base.getWidth() * 25) / 100) + altura);
-		return createType(parent, name, 0, 0, anchura, altura, Constants.SUFFIX_TYPE.toLowerCase());
+		return createType(parent, name, 0, 0);
+	}
+
+	protected mxCell createType(mxCell parent, String name, int x, int y) {
+		return createType(parent, name, x, y, Constants.SUFFIX_TYPE.toLowerCase());
 	}
 
 	protected mxCell createType(mxCell parent, String name, String icon) {
+		return createType(parent, name, 0, 0, icon);
+	}
+
+	protected mxCell createType(mxCell parent, String name, int x, int y, String icon) {
 		Rectangle2D base = GraphTools.getTextSize(name);
 		int altura = (int) (base.getHeight() + (base.getHeight() / 2));
 		int anchura = (int) ((base.getWidth() + (base.getWidth() * 25) / 100) + altura);
-		return createType(parent, name, 0, 0, anchura, altura, icon);
+		return createType(parent, name, x, y, anchura, altura, icon);
 	}
 
 	protected mxCell createType(mxCell parent, String name, int x, int y, int width, int height, String icon) {
