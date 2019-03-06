@@ -92,12 +92,12 @@ public class ElementGraph extends AbstractXmlGraph {
 	public mxCell createElementLine(mxCell parent, int x, int y, int width, int height, int widthType) {
 		mxCell cell = (mxCell) getGraph().insertVertex(parent,
 				GraphConstants.EXCLUDE_PREFIX_GROUP + parent.getId() + element.getName() + Constants.SUFFIX_ELEMENT, "",
-				x, y, width + 100 + widthType, height, GraphTools.getStyle(false, true));
+				x, y, width + 100 -6  + widthType, height, GraphTools.getStyle(false, true));
 
 		Object titulo = getGraph().insertVertex(cell, cell.getId() + "Name", element.getName(), 0, 0, width, height,
 				GraphTools.getStyle(false, false, height));
 		insertIcon((mxCell) titulo, Constants.SUFFIX_ELEMENT.toLowerCase(), height);
-		int anchura = 100;
+		int anchura = 100-6;
 		String value = "";
 		if (element.getMinOccurs() >= 0) {
 			value += "[" + element.getMinOccurs();

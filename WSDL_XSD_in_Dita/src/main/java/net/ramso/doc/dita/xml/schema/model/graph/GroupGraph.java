@@ -13,7 +13,6 @@ import com.mxgraph.view.mxGraph;
 import net.ramso.doc.dita.tools.Constants;
 import net.ramso.doc.dita.xml.schema.model.AttributeGroupModel;
 import net.ramso.doc.dita.xml.schema.model.AttributeModel;
-import net.ramso.doc.dita.xml.schema.model.ComplexTypeModel;
 import net.ramso.doc.dita.xml.schema.model.ElementModel;
 import net.ramso.doc.dita.xml.schema.model.GroupModel;
 import net.ramso.doc.dita.xml.schema.model.IComplexContentModel;
@@ -28,10 +27,11 @@ public class GroupGraph extends AbstractXmlGraph {
 	private int contentPosition = 0;
 	private mxCell typeGroup;
 	private boolean addType = false;
+	private int maxWidth;
 
 	public GroupGraph(GroupModel group) {
 		super();
-		this.group = group;
+		this.group = group.getModel();
 		SUFFIX = Constants.SUFFIX_GROUP;
 		setFileName(group.getName());
 	}
@@ -85,28 +85,35 @@ public class GroupGraph extends AbstractXmlGraph {
 	public mxCell createGroupCell(mxCell parent, String name, int x, int y, int width, int height, int[] sizes) {
 
 		String color = "BLUE";
-		if (name.startsWith("("))
+		if (name.startsWith("(")) {
 			color = "LIGHTGRAY";
+		}
+		if (!isAddType()) {
+			setMaxWidth(width);
+		}
 		mxCell cell = (mxCell) getGraph().createVertex(parent, name + Constants.SUFFIX_GROUP, "", x, y, width, height,
-				GraphTools.getStyle(false, true));
-		mxCell titulo = (mxCell) getGraph().insertVertex(cell, "Title" + name + Constants.SUFFIX_GROUP, name, x, y,
+				GraphTools.getStyle(false, true, "BLUE"));
+
+		mxCell titulo = (mxCell) getGraph().insertVertex(cell, "Title" + name + Constants.SUFFIX_GROUP, name, 0, 0,
 				width, height, GraphTools.getStyle(true, true, color, height));
 		super.insertIcon((mxCell) titulo, Constants.SUFFIX_GROUP.toLowerCase(), height);
-		y += height + 3;
+		y = height + 3;
+		width -= 6;
 		if (group.getElements().size() > 0) {
-			mxCell subCell = (mxCell) getGraph().insertVertex(cell, group.getName() + Constants.SUFFIX_GROUP, "", x, y,
-					width, height, GraphTools.getStyle(false, true));
-			y = 0;
+			mxCell subCell = (mxCell) getGraph().insertVertex(cell, group.getName() + Constants.SUFFIX_GROUP, "", x + 3,
+					y, width, height, GraphTools.getStyle(false, true));
 			contentPosition = 0;
-			typeGroup = (mxCell) getGraph().createVertex(parent,
-					GraphConstants.EXCLUDE_PREFIX_GROUP + Constants.SUFFIX_TYPE, "", 100, 100, 300, 0,
-					mxConstants.STYLE_AUTOSIZE + "=1;" + mxConstants.STYLE_RESIZABLE + "=1;"
-							+ mxConstants.STYLE_STROKE_OPACITY + "=0;" + mxConstants.STYLE_FILL_OPACITY + "=0;");
+			if (isAddType()) {
+				typeGroup = (mxCell) getGraph().createVertex(parent,
+						GraphConstants.EXCLUDE_PREFIX_GROUP + Constants.SUFFIX_TYPE, "", 100, 100, 300, 0,
+						mxConstants.STYLE_AUTOSIZE + "=1;" + mxConstants.STYLE_RESIZABLE + "=1;"
+								+ mxConstants.STYLE_STROKE_OPACITY + "=0;" + mxConstants.STYLE_FILL_OPACITY + "=0;");
+			}
 			apppendContent(subCell, null, group.getElements(), sizes, height);
 			width = (int) resize(subCell, sizes);
-
+			cell.getGeometry().setHeight(height + subCell.getGeometry().getHeight());
 		}
-		cell.getGeometry().setWidth(width);
+		cell.getGeometry().setWidth(width);		
 		titulo.getGeometry().setWidth(width);
 		return cell;
 	}
@@ -126,11 +133,18 @@ public class GroupGraph extends AbstractXmlGraph {
 			}
 		}
 		double x = (iWidth * icons.size()) + ((iWidth / 3) * icons.size()) + (iWidth / 3);
-		width = sizes[0] + 100 + sizes[1] + x;
+		if (isAddType()) {
+			width = sizes[0] + 100 - 6 + sizes[1] + x;
+		} else {
+			width = getMaxWidth() - x;
+		}
 		for (int i = 0; i < cell.getChildCount(); i++) {
 			mxCell child = (mxCell) cell.getChildAt(i);
 			if (!child.getId().startsWith(GraphConstants.EXCLUDE_PREFIX_ICON)) {
 				child.getGeometry().setX(x);
+				if (!isAddType()) {
+					child.getGeometry().setWidth(width - x);
+				}
 				heigth += child.getGeometry().getHeight();
 			}
 		}
@@ -191,7 +205,7 @@ public class GroupGraph extends AbstractXmlGraph {
 					}
 					GroupGraph eg = new GroupGraph(ele, getGraph());
 					mxCell cellLine = eg.createGroupCell(parent, name, 0, getContentPosition(),
-							widths[0] + widths[1] + 100, height, widths);
+							widths[0] + widths[1] + 100 - 6, height, widths);
 					if (iconParent != null) {
 						getGraph().insertEdge(getGraph().getDefaultParent(), "", "", iconParent, cellLine,
 								mxConstants.STYLE_EDGE + "=" + mxConstants.EDGESTYLE_ORTHOGONAL + ";");
@@ -408,6 +422,18 @@ public class GroupGraph extends AbstractXmlGraph {
 
 	protected boolean isAddType() {
 		return addType;
+	}
+
+	private void setMaxWidth(int width) {
+		this.maxWidth = width;
+
+	}
+
+	/**
+	 * @return the maxWidth
+	 */
+	protected int getMaxWidth() {
+		return maxWidth;
 	}
 
 }

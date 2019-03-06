@@ -89,15 +89,15 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 			color = "LIGHTGRAY";
 		mxCell cell = (mxCell) getGraph().createVertex(parent, name + Constants.SUFFIX_COMPLEXTYPE, "", x, y, width,
 				height, GraphTools.getStyle(false, true));
-		mxCell titulo = (mxCell) getGraph().insertVertex(cell, "Title" + name + Constants.SUFFIX_COMPLEXTYPE, name, x,
-				y, width, height, GraphTools.getStyle(true, true, color, height));
+		mxCell titulo = (mxCell) getGraph().insertVertex(cell, "Title" + name + Constants.SUFFIX_COMPLEXTYPE, name, 0,
+				0, width, height, GraphTools.getStyle(true, true, color, height));
 		super.insertIcon((mxCell) titulo, Constants.SUFFIX_COMPLEXTYPE.toLowerCase(), height);
-		y += height + 3;
-
+		y += height;
+		width -= 6;
 		if (complexType.getElements().size() > 0 || complexType.getAttributes().size() > 0) {
 			mxCell subCell = (mxCell) getGraph().insertVertex(cell,
-					complexType.getName() + Constants.SUFFIX_COMPLEXTYPE, "", x, y, width, height,
-					GraphTools.getStyle(false, true));
+					complexType.getName() + Constants.SUFFIX_COMPLEXTYPE, "", x + 3, y, width, height,
+					GraphTools.getStyle(false, false));
 
 			contentPosition = 0;
 			typeGroup = (mxCell) getGraph().createVertex(parent,
@@ -105,14 +105,9 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 					mxConstants.STYLE_AUTOSIZE + "=1;" + mxConstants.STYLE_RESIZABLE + "=1;"
 							+ mxConstants.STYLE_STROKE_OPACITY + "=0;" + mxConstants.STYLE_FILL_OPACITY + "=0;");
 			apppendContentAttributeGroup(subCell, null, complexType.getAttributeGroups(), sizes, height);
-			contentPosition += 3;
 			apppendContent(subCell, null, complexType.getAttributes(), sizes, height);
-			contentPosition += 3;
 			apppendContent(subCell, null, complexType.getElements(), sizes, height);
-			int w = (int) resize(subCell, sizes);
-			if (w > width) {
-				width = w;
-			}
+			width = (int) resize(subCell, sizes);
 		}
 		cell.getGeometry().setWidth(width);
 		titulo.getGeometry().setWidth(width);
@@ -134,7 +129,7 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 			}
 		}
 		double x = (iWidth * icons.size()) + ((iWidth / 3) * icons.size()) + (iWidth / 3);
-		width = sizes[0] + 100 + sizes[1] + x;
+		width = sizes[0] + 100 - 6 + sizes[1] + x;
 		for (int i = 0; i < cell.getChildCount(); i++) {
 			mxCell child = (mxCell) cell.getChildAt(i);
 			if (!child.getId().startsWith(GraphConstants.EXCLUDE_PREFIX_ICON)) {
@@ -199,7 +194,7 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 					}
 					GroupGraph eg = new GroupGraph(ele, getGraph());
 					mxCell cellLine = eg.createGroupCell(parent, name, 0, getContentPosition(),
-							widths[0] + widths[1] + 100, height, widths);
+							widths[0] + widths[1] + 100 - 6, height, widths);
 					if (iconParent != null) {
 						getGraph().insertEdge(getGraph().getDefaultParent(), "", "", iconParent, cellLine,
 								mxConstants.STYLE_EDGE + "=" + mxConstants.EDGESTYLE_ORTHOGONAL + ";");
@@ -247,6 +242,8 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 			g.setTerminalPoint(new mxPoint(g.getWidth(), g.getHeight() / 2), true);
 			cellLine.setGeometry(g);
 		}
+		if (attributes.size() > 0)
+			contentPosition += 3;
 	}
 
 	private void apppendContentAttributeGroup(mxCell parent, Object iconParent, List<AttributeGroupModel> attributes,
@@ -259,7 +256,7 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 			}
 			AttributeGroupGraph eg = new AttributeGroupGraph(attribute, getGraph());
 			mxCell cellLine = eg.crateAttributeGroupCell(parent, name, 0, getContentPosition(),
-					widths[0] + widths[1] + 100, height, widths);
+					widths[0] + widths[1] + 100 - 6, height, widths);
 			cellLine.setStyle(mxConstants.STYLE_STROKECOLOR + "=GREEN" + cellLine.getStyle());
 			mxGeometry g = cellLine.getGeometry();
 			contentPosition += g.getHeight();
@@ -269,6 +266,8 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 			cellLine.setGeometry(g);
 			parent.insert(cellLine);
 		}
+		if (attributes.size() > 0)
+			contentPosition += 3;
 
 	}
 

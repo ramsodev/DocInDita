@@ -56,7 +56,11 @@ public class GraphTools {
 			style += mxConstants.STYLE_GRADIENTCOLOR + "=" + color + ";";
 		}
 		if (border) {
-			style += mxConstants.STYLE_STROKECOLOR + "=BLACK;";
+			String borderColor = "BLACK";
+			if (!title && color != null) {
+				borderColor = color;
+			}
+			style += mxConstants.STYLE_STROKECOLOR + "=" + borderColor + ";";
 			style += mxConstants.STYLE_SHADOW + "=true;";
 		} else {
 			style += mxConstants.STYLE_GLASS + "=1;";

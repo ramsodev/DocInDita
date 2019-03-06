@@ -84,14 +84,15 @@ public class AttributeGroupGraph extends AbstractXmlGraph {
 		if (name.startsWith("("))
 			color = "LIGHTGRAY";
 		mxCell cell = (mxCell) getGraph().createVertex(parent, name + Constants.SUFFIX_ATTRIBUTEGROUP, "", x, y, width,
-				height, GraphTools.getStyle(false, true));
+				height, GraphTools.getStyle(false, true, "GREEN"));
 		mxCell titulo = (mxCell) getGraph().insertVertex(cell, "Title" + name + Constants.SUFFIX_ATTRIBUTEGROUP, name, x,
 				y, width, height, GraphTools.getStyle(true, true, color, height));
 		super.insertIcon((mxCell) titulo, Constants.SUFFIX_ATTRIBUTEGROUP.toLowerCase(), height);
 		y += height;
+		width -= 6;
 		if (attributeGroup.getAttributes().size() > 0) {
 			mxCell subCell = (mxCell) getGraph().insertVertex(cell,
-					attributeGroup.getName() + Constants.SUFFIX_ATTRIBUTEGROUP, "", x, y, width, height,
+					attributeGroup.getName() + Constants.SUFFIX_ATTRIBUTEGROUP, "", x+3, y, width, height,
 					GraphTools.getStyle(false, true));
 			y = 0;
 			contentPosition = 0;
@@ -99,6 +100,7 @@ public class AttributeGroupGraph extends AbstractXmlGraph {
 					GraphConstants.EXCLUDE_PREFIX_GROUP + Constants.SUFFIX_TYPE, "", 100, 100, 300, 0,
 					mxConstants.STYLE_AUTOSIZE + "=1;" + mxConstants.STYLE_RESIZABLE + "=1;"
 							+ mxConstants.STYLE_STROKE_OPACITY + "=0;" + mxConstants.STYLE_FILL_OPACITY + "=0;");
+			
 			apppendContent(subCell, null, attributeGroup.getAttributes(), sizes, height);
 			width = (int) resize(subCell, sizes);
 

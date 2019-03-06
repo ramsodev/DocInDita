@@ -14,14 +14,13 @@ public class GroupModel extends AbstractComplexContentModel {
 	private SchemaComponent component;
 	private QName ref;
 	private String diagram;
-	
 
 	public GroupModel(Group group) {
 		super();
 		this.component = group;
 		init();
 	}
-	
+
 	public GroupModel(GroupRef group) {
 		super();
 		this.component = group;
@@ -30,19 +29,26 @@ public class GroupModel extends AbstractComplexContentModel {
 
 	private void init() {
 		this.contentType = Constants.SUFFIX_GROUP;
-		if(component instanceof Group) {			
+		if (component instanceof Group) {
 			procesGroup((Group) component);
-		}else {
+		} else {
 			procesRef((GroupRef) component);
 		}
 
 	}
 
-	
+	public GroupModel getModel() {
+		if (getRef() == null) {
+			return this;
+		} else {
+			return new GroupModel(getComponent().getSchema().getGroup(getRef()));
+		}
+	}
+
 	private void procesRef(GroupRef group) {
 		ref = group.getRef();
 		setElements(new ArrayList<IComplexContentModel>());
-		
+
 	}
 
 	private void procesGroup(Group group) {
@@ -55,7 +61,7 @@ public class GroupModel extends AbstractComplexContentModel {
 		if (group.getMaxOccurs() != null) {
 			setMaxOccurs(group.getMaxOccurs());
 		}
-		
+
 	}
 
 	@Override
@@ -66,7 +72,7 @@ public class GroupModel extends AbstractComplexContentModel {
 
 	@Override
 	public QName getType() {
-		if(getRef()!= null) {
+		if (getRef() != null) {
 			return getRef();
 		}
 		return ((Group) component).getQname();
@@ -85,17 +91,17 @@ public class GroupModel extends AbstractComplexContentModel {
 	}
 
 	@Override
-	public String getDiagram() {		
-		if(this.diagram == null) {
+	public String getDiagram() {
+		if (this.diagram == null) {
 			GroupGraph graph = new GroupGraph(this);
 			diagram = graph.generate();
 		}
 		return diagram;
 	}
+
 	@Override
 	public boolean isElement() {
-		return component instanceof GroupRef; 
+		return component instanceof GroupRef;
 	}
 
-	
 }
