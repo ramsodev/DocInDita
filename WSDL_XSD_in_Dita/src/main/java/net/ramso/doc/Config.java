@@ -9,7 +9,7 @@ import org.apache.commons.cli.ParseException;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.runtime.RuntimeConstants;
 
-import net.ramso.doc.dita.tools.Constants;
+import net.ramso.doc.dita.tools.DitaConstants;
 import net.ramso.tools.CommandLineProcessor;
 import net.ramso.tools.ConfigurationException;
 import net.ramso.tools.ConfigurationManager;
@@ -31,7 +31,7 @@ public class Config extends ConfigurationManager {
 	}
 
 	private static void load() {
-		outputDir = getProperty(Constants.OUTDIR_PROPERTY, Constants.OUTDIR_DEFAULT);
+		outputDir = getProperty(DitaConstants.OUTDIR_PROPERTY, DitaConstants.OUTDIR_DEFAULT);
 
 	}
 
@@ -48,7 +48,7 @@ public class Config extends ConfigurationManager {
 	}
 
 	protected static Properties getVelocityConfig() {
-		Properties p = getProperties(Constants.VELOCITY_PREFIX);
+		Properties p = getProperties(DitaConstants.VELOCITY_PREFIX);
 		Properties velocityConfig = new Properties();
 		for (Entry<Object, Object> entry : p.entrySet()) {
 			String key = (String) entry.getKey();
@@ -63,7 +63,7 @@ public class Config extends ConfigurationManager {
 
 	public static void set(String property, String value) throws ConfigurationException {
 		switch (property) {
-		case Constants.OUTDIR_NAME:
+		case DitaConstants.OUTDIR_NAME:
 			outputDir = value;
 			File f = new File(outputDir);
 			if(f.exists() && !f.isDirectory()) {

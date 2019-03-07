@@ -15,7 +15,7 @@ import com.predic8.schema.Sequence;
 import com.predic8.schema.SimpleContent;
 
 import groovy.xml.QName;
-import net.ramso.doc.dita.tools.Constants;
+import net.ramso.doc.dita.tools.DitaConstants;
 import net.ramso.doc.dita.xml.schema.model.graph.ComplexTypeGraph;
 
 public class ComplexTypeModel extends AbstractComplexContentModel {
@@ -33,7 +33,7 @@ public class ComplexTypeModel extends AbstractComplexContentModel {
 	}
 
 	private void init() {
-		this.contentType = Constants.SUFFIX_COMPLEXTYPE;
+		this.contentType = DitaConstants.SUFFIX_COMPLEXTYPE;
 		Sequence s = complexType.getSequence();
 		try {
 			supers = complexType.getSuperTypes();
@@ -156,7 +156,7 @@ public class ComplexTypeModel extends AbstractComplexContentModel {
 	@Override
 	public String getComponentName() {
 
-		return Constants.NAME_COMPLEXTYPE;
+		return DitaConstants.NAME_COMPLEXTYPE;
 	}
 
 	@Override
@@ -164,6 +164,7 @@ public class ComplexTypeModel extends AbstractComplexContentModel {
 		if (this.diagram == null) {
 			ComplexTypeGraph graph = new ComplexTypeGraph(this);
 			diagram = graph.generate();
+			setScaleDiagram(graph.scale());
 		}
 		return diagram;
 	}

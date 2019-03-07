@@ -25,7 +25,7 @@
             <title>Diagrama</title>            
         		<fig id="${id}Diagram">
             		<title>Diagrama para ${title}</title>
-           			<image placement="break" href="${group.getDiagram()}" align="center" id="${id}Image" scalefit="yes"/>
+           			<image placement="break" href="${group.getDiagram()}" align="center" id="${id}Image" #if(${group.isScaleDiagram()})scalefit="yes"#end/>
         		</fig>
         </section>  
      #end  

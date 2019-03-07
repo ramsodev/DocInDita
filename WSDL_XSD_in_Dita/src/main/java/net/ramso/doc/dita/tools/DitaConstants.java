@@ -1,6 +1,6 @@
 package net.ramso.doc.dita.tools;
 
-public class Constants {
+public class DitaConstants {
 	public static final String XSD_NAMESPACE = "http://www.w3.org/2001/XMLSchema";
 	public static final String XSD_DOC_URI = "https://www.w3.org/TR/xmlschema11-2/#";
 	public static final String SUFFIX_OPERATION = "Operation";

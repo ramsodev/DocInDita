@@ -6,7 +6,7 @@ import com.predic8.schema.GroupRef;
 import com.predic8.schema.SchemaComponent;
 
 import groovy.xml.QName;
-import net.ramso.doc.dita.tools.Constants;
+import net.ramso.doc.dita.tools.DitaConstants;
 
 public class ChoiceModel extends AbstractComplexContentModel {
 	private Choice choice;
@@ -19,7 +19,7 @@ public class ChoiceModel extends AbstractComplexContentModel {
 	}
 
 	private void init() {
-		this.contentType = Constants.CHOICE;
+		this.contentType = DitaConstants.CHOICE;
 		procesChoice(choice);
 		
 	}
@@ -45,7 +45,7 @@ public class ChoiceModel extends AbstractComplexContentModel {
 
 	@Override
 	public String getComponentName() {
-		return Constants.CHOICE;
+		return DitaConstants.CHOICE;
 	}
 
 	/* (non-Javadoc)
@@ -54,7 +54,7 @@ public class ChoiceModel extends AbstractComplexContentModel {
 	@Override
 	public String getName() {
 		
-		return Constants.CHOICE;
+		return DitaConstants.CHOICE;
 	}
 
 	@Override

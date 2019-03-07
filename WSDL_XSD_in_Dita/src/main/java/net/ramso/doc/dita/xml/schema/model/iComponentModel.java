@@ -22,5 +22,6 @@ public interface iComponentModel {
 	SchemaComponent getComponent();
 	
 	String getDiagram();
+	boolean isScaleDiagram();
 
 }

@@ -11,7 +11,7 @@ import com.predic8.schema.GroupRef;
 import com.predic8.schema.SchemaComponent;
 import com.predic8.schema.Sequence;
 
-import net.ramso.doc.dita.tools.Constants;
+import net.ramso.doc.dita.tools.DitaConstants;
 import net.ramso.tools.LogManager;
 
 public abstract class AbstractComplexContentModel extends AbstractComponentModel implements IComplexContentModel {
@@ -20,22 +20,24 @@ public abstract class AbstractComplexContentModel extends AbstractComponentModel
 	private String maxOccurs = "-1";
 	private boolean requiered;
 	private ArrayList<IComplexContentModel> elements = new ArrayList<IComplexContentModel>();
-	protected String contentType = Constants.SEQUENCE;
+	protected String contentType = DitaConstants.SEQUENCE;
 
 	protected void procesModel(Object model) {
-		if (model instanceof Sequence) {
-			addElement(new SequenceModel((Sequence) model));
-		} else if (model instanceof All) {
-			addElement(new AllModel((All) model));
-		} else if (model instanceof Choice) {
-			addElement(new ChoiceModel((Choice) model));
-		} else {
-			LogManager.error("Otro tipo" + model.getClass().getSimpleName(), null);
+		if (model != null) {
+			if (model instanceof Sequence) {
+				addElement(new SequenceModel((Sequence) model));
+			} else if (model instanceof All) {
+				addElement(new AllModel((All) model));
+			} else if (model instanceof Choice) {
+				addElement(new ChoiceModel((Choice) model));
+			} else {
+				LogManager.error("Otro tipo" + model.getClass().getSimpleName(), null);
+			}
 		}
 	}
 
 	protected void procesChoice(Choice choice) {
-		
+
 		processParticles(choice.getParticles());
 		if (choice.getMinOccurs() != null) {
 			setMinOccurs(((Integer) choice.getMinOccurs()));
@@ -47,7 +49,7 @@ public abstract class AbstractComplexContentModel extends AbstractComponentModel
 	}
 
 	protected void procesAll(All all) {
-		
+
 		processParticles(all.getParticles());
 		if (all.getMinOccurs() != null) {
 			setMinOccurs(((Integer) all.getMinOccurs()));
@@ -59,7 +61,7 @@ public abstract class AbstractComplexContentModel extends AbstractComponentModel
 	}
 
 	protected void procesSequence(Sequence sequence) {
-		
+
 		processParticles(sequence.getParticles());
 		if (sequence.getMinOccurs() != null) {
 			setMinOccurs(((Integer) sequence.getMinOccurs()));

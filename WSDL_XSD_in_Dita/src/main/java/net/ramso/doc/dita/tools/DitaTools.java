@@ -27,7 +27,7 @@ import groovy.xml.QName;
 import net.ramso.tools.FileTools;
 import net.ramso.tools.LogManager;
 
-public class Tools {
+public class DitaTools {
 	public static Schema SCHEMA = null;
 
 	public static String getHref(boolean file, String id) {
@@ -47,26 +47,35 @@ public class Tools {
 	}
 
 	public static String getHref(Element element) throws MalformedURLException {
-		String idSchema = Tools.getSchemaId(element.getNamespaceUri());
-		String href = idSchema + "_" + getHref(true, element.getName() + Constants.SUFFIX_ELEMENT);
+		String idSchema = DitaTools.getSchemaId(element.getNamespaceUri());
+		String href = idSchema + "_" + getHref(true, element.getName() + DitaConstants.SUFFIX_ELEMENT);
 		return href;
 	}
 
 	public static String getHref(QName qname) throws MalformedURLException {
-		String idSchema = Tools.getSchemaId(qname.getNamespaceURI());
+		if(qname.getNamespaceURI().equalsIgnoreCase(DitaConstants.XSD_NAMESPACE)) {
+			return DitaConstants.XSD_DOC_URI + qname.getLocalPart();
+		}
+		String idSchema = DitaTools.getSchemaId(qname.getNamespaceURI());
 		String href = idSchema + "_" + getHref(true, qname.getLocalPart() + getSuffixType(qname));
 		return href;
 	}
 
 	public static String getHrefType(QName type) throws MalformedURLException {
-		String idSchema = Tools.getSchemaId(type.getNamespaceURI());
+		String idSchema = DitaTools.getSchemaId(type.getNamespaceURI());
 		String href = idSchema + "_" + type.getLocalPart() + getSuffixType(type) + ".dita";
 		return href;
 	}
 
 	public static String getHref(BindingOperation operation) throws MalformedURLException {
-		String href = getHref(true, operation.getName() + Constants.SUFFIX_OPERATION);
+		String href = getHref(true, operation.getName() + DitaConstants.SUFFIX_OPERATION);
 		return href;
+	}
+	public static String getExternalHref(QName type) {
+		if (type.getNamespaceURI().equalsIgnoreCase(DitaConstants.XSD_NAMESPACE)) {
+			return "format=\"html\" scope=\"external\"";
+		}
+		return "";
 	}
 
 	public static String getSchemaId(String uri) throws MalformedURLException {
@@ -101,28 +110,28 @@ public class Tools {
 			} catch (Exception e) {
 			} finally {
 				if (td != null && td instanceof SimpleType) {
-					return Constants.SUFFIX_SIMPLETYPE;
+					return DitaConstants.SUFFIX_SIMPLETYPE;
 				} else if (td != null && td instanceof ComplexType) {
-					return Constants.SUFFIX_COMPLEXTYPE;
+					return DitaConstants.SUFFIX_COMPLEXTYPE;
 				} else {
 					Attribute a = SCHEMA.getAttribute(type);
 					if (a != null) {
-						return Constants.SUFFIX_ATTRIBUTE;
+						return DitaConstants.SUFFIX_ATTRIBUTE;
 					} else {
 						AttributeGroup g = SCHEMA.getAttributeGroup(type);
 						if (g != null) {
-							return Constants.SUFFIX_ATTRIBUTEGROUP;
+							return DitaConstants.SUFFIX_ATTRIBUTEGROUP;
 						} else {
 							Group gr = SCHEMA.getGroup(type);
 							if (gr != null) {
-								return Constants.SUFFIX_GROUP;
+								return DitaConstants.SUFFIX_GROUP;
 							}
 						}
 					}
 				}
 			}
 		}
-		return Constants.SUFFIX_TYPE;
+		return DitaConstants.SUFFIX_TYPE;
 	}
 
 	public static TypeDefinition getType(QName type) {
@@ -133,12 +142,12 @@ public class Tools {
 		try {			
 			Document doc = FileTools.parseXML(url);
 			switch (doc.getDocumentElement().getNodeName()) {
-			case Constants.WSDL_ELEMENTNAME:
-				return Constants.WSDL;
-			case Constants.WADL_ELEMENTNAME:
-				return Constants.WADL;
-			case Constants.XSD_ELEMENTNAME:
-				return Constants.XSD;
+			case DitaConstants.WSDL_ELEMENTNAME:
+				return DitaConstants.WSDL;
+			case DitaConstants.WADL_ELEMENTNAME:
+				return DitaConstants.WADL;
+			case DitaConstants.XSD_ELEMENTNAME:
+				return DitaConstants.XSD;
 			default:
 				return "";
 			}

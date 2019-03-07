@@ -9,6 +9,8 @@ import com.predic8.schema.AttributeGroup;
 import com.predic8.schema.SchemaComponent;
 
 import groovy.xml.QName;
+import net.ramso.doc.dita.xml.schema.model.graph.AttributeGroupGraph;
+import net.ramso.doc.dita.xml.schema.model.graph.ElementGraph;
 
 public class AttributeGroupModel extends AbstractComponentModel {
 
@@ -17,6 +19,8 @@ public class AttributeGroupModel extends AbstractComponentModel {
 	private AttributeGroup attributeGroup;
 
 	private List<AttributeModel> attributes;
+
+	private String diagram;
 
 	public AttributeGroupModel(AttributeGroup attribute) {
 		super();
@@ -69,7 +73,11 @@ public class AttributeGroupModel extends AbstractComponentModel {
 
 	@Override
 	public String getDiagram() {
-		// TODO Auto-generated method stub
-		return null;
+		if (this.diagram == null) {
+			AttributeGroupGraph graph = new AttributeGroupGraph(this);
+			diagram = graph.generate();
+			setScaleDiagram(graph.scale());
+		}
+		return diagram;
 	}
 }

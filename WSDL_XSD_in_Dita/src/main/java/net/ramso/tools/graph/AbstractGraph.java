@@ -20,7 +20,7 @@ import com.mxgraph.util.mxXmlUtils;
 import com.mxgraph.view.mxGraph;
 
 import net.ramso.doc.Config;
-import net.ramso.doc.dita.tools.Constants;
+import net.ramso.doc.dita.tools.DitaConstants;
 import net.ramso.tools.FileTools;
 
 public abstract class AbstractGraph {
@@ -38,7 +38,7 @@ public abstract class AbstractGraph {
 	protected void resizeCell(mxCell cell, int maxWith) {
 		if (!cell.getId().startsWith(GraphConstants.EXCLUDE_PREFIX_ICON)) {
 			mxGeometry g = cell.getGeometry();
-			if (cell.getId().endsWith(Constants.SUFFIX_ADDRESS)) {
+			if (cell.getId().endsWith(DitaConstants.SUFFIX_ADDRESS)) {
 				maxWith -= 20;
 			}
 			g.setWidth(maxWith);
@@ -66,7 +66,7 @@ public abstract class AbstractGraph {
 		morphGraph(graph, graphComponent);
 		try {
 			export(graph);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			net.ramso.tools.LogManager.warn("Error al exportar el diagrama " + getFileName(), e);
 		}
 	}
@@ -110,5 +110,12 @@ public abstract class AbstractGraph {
 
 	protected void setGraph(mxGraph graph) {
 		this.graph = graph;
+	}
+	
+	public boolean scale() {
+		if(getGraph().getGraphBounds().getWidth()>500) {
+			return true;
+		}
+		return false;
 	}
 }

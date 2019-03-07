@@ -7,7 +7,7 @@ import com.predic8.schema.SchemaComponent;
 import com.predic8.schema.Sequence;
 
 import groovy.xml.QName;
-import net.ramso.doc.dita.tools.Constants;
+import net.ramso.doc.dita.tools.DitaConstants;
 
 public class SequenceModel extends AbstractComplexContentModel {
 	private Sequence sequence;
@@ -20,7 +20,7 @@ public class SequenceModel extends AbstractComplexContentModel {
 	}
 
 	private void init() {
-		this.contentType = Constants.SEQUENCE;
+		this.contentType = DitaConstants.SEQUENCE;
 		procesSequence(sequence);
 		
 	}
@@ -46,7 +46,7 @@ public class SequenceModel extends AbstractComplexContentModel {
 
 	@Override
 	public String getComponentName() {
-		return Constants.SEQUENCE;
+		return DitaConstants.SEQUENCE;
 	}
 
 	/* (non-Javadoc)
@@ -55,7 +55,7 @@ public class SequenceModel extends AbstractComplexContentModel {
 	@Override
 	public String getName() {
 		
-		return Constants.SEQUENCE;
+		return DitaConstants.SEQUENCE;
 	}
 
 	@Override

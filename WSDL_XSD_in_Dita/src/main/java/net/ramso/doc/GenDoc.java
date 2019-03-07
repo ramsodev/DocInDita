@@ -7,8 +7,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 
-import net.ramso.doc.dita.tools.Constants;
-import net.ramso.doc.dita.tools.Tools;
+import net.ramso.doc.dita.tools.DitaConstants;
+import net.ramso.doc.dita.tools.DitaTools;
 import net.ramso.doc.dita.xml.schema.GenerateSchema;
 import net.ramso.doc.dita.xml.wsdl.GenerateWsdl;
 import net.ramso.tools.ConfigurationException;
@@ -35,12 +35,12 @@ public class GenDoc {
 						url = f.toURI().toURL();
 					}
 				}
-				switch (Tools.getFileType(url)) {
-				case Constants.WSDL:
+				switch (DitaTools.getFileType(url)) {
+				case DitaConstants.WSDL:
 					GenerateWsdl gen = new GenerateWsdl();
 					gen.generateWSDL(url);
 					break;
-				case Constants.XSD:
+				case DitaConstants.XSD:
 					GenerateSchema xsd = new GenerateSchema();
 					xsd.generateSchema(url);
 					break;

@@ -4,7 +4,7 @@ import java.awt.geom.Rectangle2D;
 
 import com.mxgraph.model.mxCell;
 
-import net.ramso.doc.dita.tools.Constants;
+import net.ramso.doc.dita.tools.DitaConstants;
 import net.ramso.tools.graph.AbstractGraph;
 import net.ramso.tools.graph.GraphTools;
 
@@ -14,7 +14,7 @@ public abstract class AbstractXmlGraph extends AbstractGraph {
 	}
 
 	protected mxCell createType(mxCell parent, String name, int x, int y) {
-		return createType(parent, name, x, y, Constants.SUFFIX_TYPE.toLowerCase());
+		return createType(parent, name, x, y, DitaConstants.SUFFIX_TYPE.toLowerCase());
 	}
 
 	protected mxCell createType(mxCell parent, String name, String icon) {

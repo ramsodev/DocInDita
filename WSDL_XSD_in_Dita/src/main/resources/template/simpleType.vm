@@ -51,7 +51,7 @@
             <title>Diagrama</title>            
         		<fig id="${id}Diagram">
             		<title>Diagrama para ${title}</title>
-           			<image placement="break" href="${simpleType.getDiagram()}" align="center" id="${id}Image" scalefit="yes"/>
+           			<image placement="break" href="${simpleType.getDiagram()}" align="center" id="${id}Image" #if(${simpleType.isScaleDiagram()})scalefit="yes"#end/>
         		</fig>
         </section>  
      #end  

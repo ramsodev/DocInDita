@@ -5,7 +5,7 @@
        		<dt>Extended</dt>
             <dd><sl>
             		#foreach($super in ${complexType.getSupers()})
-            			<sli><xref href="${tools.getHref(${super})}">${super.getLocalPart()} </xref></sli>
+            			<sli><xref href="${tools.getHref(${super})}" ${tools.getExternalHref(${super})} >${super.getLocalPart()} </xref></sli>
             		#end
             </sl></dd>
         </dlentry>
@@ -51,7 +51,7 @@
             <title>Diagrama</title>            
         		<fig id="${id}Diagram">
             		<title>Diagrama para ${title}</title>
-           			<image placement="break" href="${complexType.getDiagram()}" align="center" id="${id}Image" scalefit="yes"/>
+           			<image placement="break" href="${complexType.getDiagram()}" align="center" id="${id}Image" #if(${complexType.isScaleDiagram()})scalefit="yes"#end/>
         		</fig>
         </section>  
      #end  

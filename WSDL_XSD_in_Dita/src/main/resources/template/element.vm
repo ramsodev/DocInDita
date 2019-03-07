@@ -72,7 +72,7 @@
             <title>Diagrama</title>            
         		<fig id="${id}Diagram">
             		<title>Diagrama para ${title}</title>
-           			<image placement="break" href="${element.getDiagram()}" align="center" id="${id}Image" scalefit="yes"/>
+           			<image placement="break" href="${element.getDiagram()}" align="center" id="${id}Image" #if(${element.isScaleDiagram()})scalefit="yes"#end/>
         		</fig>
         </section>  
      #end  

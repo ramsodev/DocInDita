@@ -8,7 +8,7 @@ import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.util.mxConstants;
 import com.mxgraph.view.mxGraph;
 
-import net.ramso.doc.dita.tools.Constants;
+import net.ramso.doc.dita.tools.DitaConstants;
 import net.ramso.doc.dita.xml.schema.model.ElementModel;
 import net.ramso.tools.graph.GraphConstants;
 import net.ramso.tools.graph.GraphTools;
@@ -19,7 +19,7 @@ public class ElementGraph extends AbstractXmlGraph {
 
 	public ElementGraph(ElementModel element) {
 		this.element = element;
-		SUFFIX = Constants.SUFFIX_ELEMENT;
+		SUFFIX = DitaConstants.SUFFIX_ELEMENT;
 		setFileName(element.getName());
 	}
 
@@ -45,20 +45,20 @@ public class ElementGraph extends AbstractXmlGraph {
 
 			String value = element.getSimpleType().getName();
 			if (value == null || value.isEmpty()) {
-				value = "(" + element.getName() + Constants.SUFFIX_SIMPLETYPE + ")";
+				value = "(" + element.getName() + DitaConstants.SUFFIX_SIMPLETYPE + ")";
 			}
 
-			type = createType(parent, value, Constants.SUFFIX_SIMPLETYPE);
+			type = createType(parent, value, DitaConstants.SUFFIX_SIMPLETYPE);
 		} else if (element.getComplexType() != null) {
 			String value = element.getComplexType().getName();
 			if (value == null || value.isEmpty()) {
-				value = "(" + element.getName() + Constants.SUFFIX_COMPLEXTYPE + ")";
+				value = "(" + element.getName() + DitaConstants.SUFFIX_COMPLEXTYPE + ")";
 			}
 			type = createType(parent, value);
 		}
 
 		getGraph().insertEdge(parent, "", "", elementCell, type,
-				mxConstants.STYLE_EDGE + "=" + mxConstants.EDGESTYLE_ELBOW + ";");
+				GraphTools.getOrtogonalEdgeStyle(true));
 		getGraph().addCell(elementCell);
 		getGraph().addCell(type);
 		process(getGraph());
@@ -81,30 +81,30 @@ public class ElementGraph extends AbstractXmlGraph {
 	}
 
 	public mxCell createElement(mxCell parent, String name, int x, int y, int width, int height) {
-		mxCell cell = (mxCell) getGraph().createVertex(parent, name + Constants.SUFFIX_ELEMENT, "", x, y, width, height,
+		mxCell cell = (mxCell) getGraph().createVertex(parent, name + DitaConstants.SUFFIX_ELEMENT, "", x, y, width, height,
 				GraphTools.getStyle(false, true));
-		Object titulo = getGraph().insertVertex(cell, "Title" + name + Constants.SUFFIX_ELEMENT, name, 0, 0, width,
+		Object titulo = getGraph().insertVertex(cell, "Title" + name + DitaConstants.SUFFIX_ELEMENT, name, 0, 0, width,
 				height, GraphTools.getStyle(true, true, "BLUE", height));
-		insertIcon((mxCell) titulo, Constants.SUFFIX_ELEMENT.toLowerCase(), height);
+		insertIcon((mxCell) titulo, DitaConstants.SUFFIX_ELEMENT.toLowerCase(), height);
 		return cell;
 	}
 
 	public mxCell createElementLine(mxCell parent, int x, int y, int width, int height, int widthType) {
 		mxCell cell = (mxCell) getGraph().insertVertex(parent,
-				GraphConstants.EXCLUDE_PREFIX_GROUP + parent.getId() + element.getName() + Constants.SUFFIX_ELEMENT, "",
-				x, y, width + 100 -6  + widthType, height, GraphTools.getStyle(false, true));
+				GraphConstants.EXCLUDE_PREFIX_GROUP + parent.getId() + element.getName() + DitaConstants.SUFFIX_ELEMENT, "",
+				x, y, width + (100 - 6) + widthType, height, GraphTools.getStyle(false, true));
 
 		Object titulo = getGraph().insertVertex(cell, cell.getId() + "Name", element.getName(), 0, 0, width, height,
 				GraphTools.getStyle(false, false, height));
-		insertIcon((mxCell) titulo, Constants.SUFFIX_ELEMENT.toLowerCase(), height);
-		int anchura = 100-6;
+		insertIcon((mxCell) titulo, DitaConstants.SUFFIX_ELEMENT.toLowerCase(), height);
+		int anchura = 100 - 6;
 		String value = "";
 		if (element.getMinOccurs() >= 0) {
 			value += "[" + element.getMinOccurs();
 		}
 		if (!element.getMaxOccurs().isEmpty()) {
 			value += ".. ";
-			if (element.getMaxOccurs().equalsIgnoreCase(Constants.UNBOUNDED)) {
+			if (element.getMaxOccurs().equalsIgnoreCase(DitaConstants.UNBOUNDED)) {
 				value += "*";
 			} else {
 				value += element.getMaxOccurs();
@@ -114,21 +114,21 @@ public class ElementGraph extends AbstractXmlGraph {
 		getGraph().insertVertex(cell, cell.getId() + "Size", value, width, 0, anchura, height,
 				GraphTools.getStyle(false));
 		value = "";
-		String icon = Constants.SUFFIX_TYPE.toLowerCase();
+		String icon = DitaConstants.SUFFIX_TYPE.toLowerCase();
 		if (element.getType() != null) {
 			value = element.getType().getLocalPart();
-			icon = Constants.SUFFIX_TYPE.toLowerCase();
+			icon = DitaConstants.SUFFIX_TYPE.toLowerCase();
 		} else if (element.getSimpleType() != null) {
-			icon = Constants.SUFFIX_SIMPLETYPE.toLowerCase();
+			icon = DitaConstants.SUFFIX_SIMPLETYPE.toLowerCase();
 			value = element.getSimpleType().getName();
 			if (value == null || value.isEmpty()) {
-				value = element.getName() + Constants.SUFFIX_SIMPLETYPE;
+				value = element.getName() + DitaConstants.SUFFIX_SIMPLETYPE;
 			}
 		} else if (element.getComplexType() != null) {
-			icon = Constants.SUFFIX_COMPLEXTYPE.toLowerCase();
+			icon = DitaConstants.SUFFIX_COMPLEXTYPE.toLowerCase();
 			value = element.getComplexType().getName();
 			if (value == null || value.isEmpty()) {
-				value = element.getName() + Constants.SUFFIX_COMPLEXTYPE;
+				value = element.getName() + DitaConstants.SUFFIX_COMPLEXTYPE;
 			}
 		}
 		titulo = getGraph().insertVertex(cell, cell.getId() + value, value, width + anchura, 0, widthType, height,

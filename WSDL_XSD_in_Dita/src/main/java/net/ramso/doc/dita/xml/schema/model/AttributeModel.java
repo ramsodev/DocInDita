@@ -6,6 +6,7 @@ import com.predic8.schema.Attribute;
 import com.predic8.schema.SchemaComponent;
 
 import groovy.xml.QName;
+import net.ramso.doc.dita.xml.schema.model.graph.AttributeGraph;
 
 public class AttributeModel extends AbstractComponentModel {
 
@@ -20,6 +21,8 @@ public class AttributeModel extends AbstractComponentModel {
 	private String form;
 
 	private String usage;
+
+	private String diagram;
 
 	public AttributeModel(Attribute attribute) {
 		super();
@@ -89,8 +92,12 @@ public class AttributeModel extends AbstractComponentModel {
 
 	@Override
 	public String getDiagram() {
-		// TODO Auto-generated method stub
-		return null;
+		if(this.diagram == null) {
+			AttributeGraph graph = new AttributeGraph(this);
+			diagram = graph.generate();
+			setScaleDiagram(graph.scale());
+		}
+		return diagram;
 	}
 
 }

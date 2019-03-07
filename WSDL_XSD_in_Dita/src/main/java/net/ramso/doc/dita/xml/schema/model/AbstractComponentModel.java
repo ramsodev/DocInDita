@@ -1,30 +1,25 @@
 package net.ramso.doc.dita.xml.schema.model;
 
 import java.net.MalformedURLException;
-import groovy.xml.QName;
-import net.ramso.doc.dita.tools.Constants;
-import net.ramso.doc.dita.tools.Tools;
 
 import com.predic8.schema.Documentation;
 import com.predic8.schema.SchemaComponent;
+
+import groovy.xml.QName;
+import net.ramso.doc.dita.tools.DitaTools;
 
 public abstract class AbstractComponentModel implements iComponentModel {
 
 	public abstract SchemaComponent getComponent();
 
-	public String getHrefType() throws MalformedURLException {
-		if (getType().getNamespaceURI().equalsIgnoreCase(Constants.XSD_NAMESPACE)) {
-			return Constants.XSD_DOC_URI + getType().getLocalPart();
-		}
+	private boolean scaleDiagram = false;
 
-		return Tools.getHrefType(getType());
+	public String getHrefType() throws MalformedURLException {
+		return DitaTools.getHrefType(getType());
 	}
 
 	public String getExternalHref() {
-		if (getType().getNamespaceURI().equalsIgnoreCase(Constants.XSD_NAMESPACE)) {
-			return "format=\"html\" scope=\"external\"";
-		}
-		return "";
+		return DitaTools.getExternalHref(getType());
 	}
 
 	public String getCode() {
@@ -53,6 +48,14 @@ public abstract class AbstractComponentModel implements iComponentModel {
 			}
 		}
 		return value;
+	}
+
+	public boolean isScaleDiagram() {
+		return scaleDiagram;
+	}
+
+	protected void setScaleDiagram(boolean scaleDiagram) {
+		this.scaleDiagram = scaleDiagram;
 	}
 
 }

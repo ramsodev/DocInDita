@@ -5,10 +5,9 @@ import java.awt.geom.Rectangle2D;
 import com.mxgraph.layout.mxStackLayout;
 import com.mxgraph.model.mxCell;
 import com.mxgraph.swing.mxGraphComponent;
-import com.mxgraph.util.mxConstants;
 import com.mxgraph.view.mxGraph;
 
-import net.ramso.doc.dita.tools.Constants;
+import net.ramso.doc.dita.tools.DitaConstants;
 import net.ramso.doc.dita.xml.schema.model.SimpleTypeModel;
 import net.ramso.tools.graph.GraphTools;
 
@@ -19,7 +18,7 @@ public class SimpleTypeGraph extends AbstractXmlGraph {
 	public SimpleTypeGraph(SimpleTypeModel simpleType) {
 		super();
 		this.simpleType = simpleType;
-		SUFFIX = Constants.SUFFIX_SIMPLETYPE;
+		SUFFIX = DitaConstants.SUFFIX_SIMPLETYPE;
 		setFileName(simpleType.getName());
 	}
 
@@ -33,17 +32,13 @@ public class SimpleTypeGraph extends AbstractXmlGraph {
 		setGraph(new mxGraph());
 		getGraph().setAutoSizeCells(true);
 		getGraph().setCellsResizable(true);
-
 		mxCell parent = (mxCell) getGraph().getDefaultParent();
 		mxCell simpleTypeCell = createSimpleType(parent);
 		mxCell type = null;
-
 		if (simpleType.getDataType() != null) {
 			type = createType(parent, simpleType.getDataType());
 		}
-
-		getGraph().insertEdge(parent, "", "", simpleTypeCell, type, mxConstants.STYLE_EDGE + "="
-				+ mxConstants.EDGESTYLE_ELBOW + ";" + mxConstants.STYLE_ENDARROW + "=" + mxConstants.ARROW_OPEN);
+		getGraph().insertEdge(parent, "", "", simpleTypeCell, type, GraphTools.getExtendEdgeStyle());
 		getGraph().addCell(simpleTypeCell);
 		getGraph().addCell(type);
 		process(getGraph());
@@ -70,16 +65,16 @@ public class SimpleTypeGraph extends AbstractXmlGraph {
 	}
 
 	public mxCell createSimpleType(mxCell parent, String name, int x, int y, int width, int height) {
-		mxCell cell = (mxCell) getGraph().createVertex(parent, name + Constants.SUFFIX_SIMPLETYPE, "", x, y, width,
+		mxCell cell = (mxCell) getGraph().createVertex(parent, name + DitaConstants.SUFFIX_SIMPLETYPE, "", x, y, width,
 				height, GraphTools.getStyle(false, true));
 		String color = "BLUE";
-		if(name.startsWith("(")) {
+		if (name.startsWith("(")) {
 			color = "LIGHTGRAY";
 		}
-		Object titulo = getGraph().insertVertex(cell, "Title" + name + Constants.SUFFIX_SIMPLETYPE, name, 0, 0, width,
+		Object titulo = getGraph().insertVertex(cell, "Title" + name + DitaConstants.SUFFIX_SIMPLETYPE, name, 0, 0, width,
 				height, GraphTools.getStyle(true, true, color, height));
-		
-		insertIcon((mxCell) titulo, Constants.SUFFIX_SIMPLETYPE.toLowerCase(), height);
+
+		insertIcon((mxCell) titulo, DitaConstants.SUFFIX_SIMPLETYPE.toLowerCase(), height);
 		return cell;
 	}
 

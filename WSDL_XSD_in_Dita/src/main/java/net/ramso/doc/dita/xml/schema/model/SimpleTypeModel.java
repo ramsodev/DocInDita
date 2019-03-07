@@ -22,8 +22,8 @@ import com.predic8.schema.restriction.facet.TotalDigitsFacet;
 import com.predic8.schema.restriction.facet.WhiteSpaceFacet;
 
 import groovy.xml.QName;
-import net.ramso.doc.dita.tools.Constants;
-import net.ramso.doc.dita.tools.Tools;
+import net.ramso.doc.dita.tools.DitaConstants;
+import net.ramso.doc.dita.tools.DitaTools;
 import net.ramso.doc.dita.xml.schema.model.graph.SimpleTypeGraph;
 
 public class SimpleTypeModel extends AbstractComponentModel {
@@ -137,14 +137,14 @@ public class SimpleTypeModel extends AbstractComponentModel {
 	}
 
 	public String getHrefType() throws MalformedURLException {
-		if (restriction.getBase().getNamespaceURI().equalsIgnoreCase(Constants.XSD_NAMESPACE)) {
-			return Constants.XSD_DOC_URI + restriction.getBase().getLocalPart();
+		if (restriction.getBase().getNamespaceURI().equalsIgnoreCase(DitaConstants.XSD_NAMESPACE)) {
+			return DitaConstants.XSD_DOC_URI + restriction.getBase().getLocalPart();
 		}
-		return Tools.getHrefType(restriction.getBase());
+		return DitaTools.getHrefType(restriction.getBase());
 	}
 
 	public String getExternalHref() {
-		if (restriction.getBase().getNamespaceURI().equalsIgnoreCase(Constants.XSD_NAMESPACE)) {
+		if (restriction.getBase().getNamespaceURI().equalsIgnoreCase(DitaConstants.XSD_NAMESPACE)) {
 			return "format=\"html\" scope=\"external\"";
 		}
 		return "";
@@ -247,9 +247,9 @@ public class SimpleTypeModel extends AbstractComponentModel {
 	@Override
 	public String getDiagram() {
 		if (this.diagram == null) {
-			SimpleTypeGraph stg = new SimpleTypeGraph(this);
-			diagram = stg.generate();
-			stg = null;
+			SimpleTypeGraph graph = new SimpleTypeGraph(this);
+			diagram = graph.generate();
+			setScaleDiagram(graph.scale());
 		}
 		return diagram;
 	}

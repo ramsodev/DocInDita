@@ -13,7 +13,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
 import net.ramso.doc.Config;
-import net.ramso.doc.dita.tools.Constants;
+import net.ramso.doc.dita.tools.DitaConstants;
 
 public class CommandLineProcessor {
 
@@ -31,11 +31,11 @@ public class CommandLineProcessor {
 
 	private void init() {
 		options = new Options();
-		names = getProperties(Constants.PREFIX_CMD_NAME);
-		desc = getProperties(Constants.PREFIX_CMD_DESCRIPTION);
-		reqs = toBoolean(getProperties(Constants.PREFIX_CMD_REQUIERED));
-		hasArgs = toBoolean(getProperties(Constants.PREFIX_CMD_ARGUMENT));
-		clas = getProperties(Constants.PREFIX_CMD_TYPE);
+		names = getProperties(DitaConstants.PREFIX_CMD_NAME);
+		desc = getProperties(DitaConstants.PREFIX_CMD_DESCRIPTION);
+		reqs = toBoolean(getProperties(DitaConstants.PREFIX_CMD_REQUIERED));
+		hasArgs = toBoolean(getProperties(DitaConstants.PREFIX_CMD_ARGUMENT));
+		clas = getProperties(DitaConstants.PREFIX_CMD_TYPE);
 		for (int i = 0; i < names.length; i++) {
 			Option o = new Option(names[i], hasArgs[i], desc[i]);
 			o.setRequired(reqs[i]);

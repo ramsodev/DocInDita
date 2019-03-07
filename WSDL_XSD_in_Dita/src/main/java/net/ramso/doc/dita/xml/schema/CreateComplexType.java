@@ -5,8 +5,8 @@ import java.io.IOException;
 import com.predic8.schema.ComplexType;
 
 import net.ramso.doc.dita.BasicCreate;
-import net.ramso.doc.dita.tools.Constants;
-import net.ramso.doc.dita.tools.Tools;
+import net.ramso.doc.dita.tools.DitaConstants;
+import net.ramso.doc.dita.tools.DitaTools;
 import net.ramso.doc.dita.xml.schema.model.ComplexTypeModel;
 
 public class CreateComplexType extends BasicCreate {
@@ -23,13 +23,13 @@ public class CreateComplexType extends BasicCreate {
 	
 
 	public String create(ComplexType type) throws IOException {
-		setId(idSchema+"_"+type.getName() + Constants.SUFFIX_COMPLEXTYPE);
+		setId(idSchema+"_"+type.getName() + DitaConstants.SUFFIX_COMPLEXTYPE);
 		setTitle("Complex Type " + type.getName());
 		loadContent(type.getAnnotation());
 		init();		
 		getContext().put("content", getContent());
 		getContext().put("complexType", new ComplexTypeModel(type));
-		getContext().put("tools", Tools.class);
+		getContext().put("tools", DitaTools.class);
 		run(getContext());
 		return getFile_name();
 	}

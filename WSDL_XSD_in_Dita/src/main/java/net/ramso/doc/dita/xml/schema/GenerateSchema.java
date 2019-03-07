@@ -20,8 +20,8 @@ import com.predic8.schema.SimpleType;
 import net.ramso.doc.dita.CreateBookMap;
 import net.ramso.doc.dita.CreatePortada;
 import net.ramso.doc.dita.References;
-import net.ramso.doc.dita.tools.Constants;
-import net.ramso.doc.dita.tools.Tools;
+import net.ramso.doc.dita.tools.DitaConstants;
+import net.ramso.doc.dita.tools.DitaTools;
 
 public class GenerateSchema {
 
@@ -50,10 +50,10 @@ public class GenerateSchema {
 	}
 
 	public List<References> generateSchema(Schema schema, boolean portada) throws IOException {
-		Tools.setSchema(schema);
+		DitaTools.setSchema(schema);
 		references = new ArrayList<References>();
-		String idSchema = Tools.getSchemaId(schema.getTargetNamespace());
-		CreatePortada cc = new CreatePortada(idSchema + Constants.SUFFIX_ELEMENT, "Elementos del esquema ",
+		String idSchema = DitaTools.getSchemaId(schema.getTargetNamespace());
+		CreatePortada cc = new CreatePortada(idSchema + DitaConstants.SUFFIX_ELEMENT, "Elementos del esquema ",
 				"Elements del esquema XML");
 		References cover = new References(cc.create());
 
@@ -63,7 +63,7 @@ public class GenerateSchema {
 		}
 
 		references.add(cover);
-		cc = new CreatePortada(idSchema + Constants.SUFFIX_SIMPLETYPE, "Simple Types del esquema ",
+		cc = new CreatePortada(idSchema + DitaConstants.SUFFIX_SIMPLETYPE, "Simple Types del esquema ",
 				"Tipos simples del esquema XML");
 		cover = new References(cc.create());
 
@@ -72,7 +72,7 @@ public class GenerateSchema {
 			cover.addChild(new References(cs.create(type)));
 		}
 		references.add(cover);
-		cc = new CreatePortada(idSchema + Constants.SUFFIX_COMPLEXTYPE, "Complex Types del esquema ",
+		cc = new CreatePortada(idSchema + DitaConstants.SUFFIX_COMPLEXTYPE, "Complex Types del esquema ",
 				"Tipos complejos del esquema XML");
 		cover = new References(cc.create());
 
@@ -81,7 +81,7 @@ public class GenerateSchema {
 			cover.addChild(new References(ct.create(type)));
 		}
 		references.add(cover);
-		cc = new CreatePortada(idSchema + Constants.SUFFIX_ATTRIBUTE + "s", "Attributes del esquema ",
+		cc = new CreatePortada(idSchema + DitaConstants.SUFFIX_ATTRIBUTE + "s", "Attributes del esquema ",
 				"Atributos del esquema XML");
 		cover = new References(cc.create());
 		for (Attribute attribute : schema.getAttributes()) {
@@ -93,7 +93,7 @@ public class GenerateSchema {
 			cover.addChild(new References(cag.create(attributeGroup)));
 		}
 		references.add(cover);
-		cc = new CreatePortada(idSchema + Constants.SUFFIX_GROUP, "Grupos del esquema ", "Grupos del esquema XML");
+		cc = new CreatePortada(idSchema + DitaConstants.SUFFIX_GROUP, "Grupos del esquema ", "Grupos del esquema XML");
 		cover = new References(cc.create());
 
 		for (Group group : schema.getGroups()) {
@@ -102,7 +102,7 @@ public class GenerateSchema {
 		}
 		references.add(cover);
 		if (portada) {
-			cc = new CreatePortada(idSchema + Constants.SUFFIX_SERVICE, "Schema XML",
+			cc = new CreatePortada(idSchema + DitaConstants.SUFFIX_SERVICE, "Schema XML",
 					"NameSpace:" + schema.getTargetNamespace());
 			cover = new References(cc.create());
 			cover.getChilds().addAll(references);

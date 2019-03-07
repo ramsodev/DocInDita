@@ -15,6 +15,15 @@
    	</section>
    #end
    #set($child = $childg)
+    #if(!$child)
+        <section id="section_diagram">
+            <title>Diagrama</title>            
+        		<fig id="${id}Diagram">
+            		<title>Diagrama para ${title}</title>
+           			<image placement="break" href="${attributeGroup.getDiagram()}" align="center" id="${id}Image" #if(${attributeGroup.isScaleDiagram()})scalefit="yes"#end/>
+        		</fig>
+        </section>  
+     #end  
    #if(!$child)
         <section id="section_code">
             <title>Codigo</title>            

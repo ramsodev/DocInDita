@@ -7,7 +7,7 @@ import com.predic8.schema.GroupRef;
 import com.predic8.schema.SchemaComponent;
 
 import groovy.xml.QName;
-import net.ramso.doc.dita.tools.Constants;
+import net.ramso.doc.dita.tools.DitaConstants;
 import net.ramso.doc.dita.xml.schema.model.graph.GroupGraph;
 
 public class GroupModel extends AbstractComplexContentModel {
@@ -28,7 +28,7 @@ public class GroupModel extends AbstractComplexContentModel {
 	}
 
 	private void init() {
-		this.contentType = Constants.SUFFIX_GROUP;
+		this.contentType = DitaConstants.SUFFIX_GROUP;
 		if (component instanceof Group) {
 			procesGroup((Group) component);
 		} else {
@@ -87,7 +87,7 @@ public class GroupModel extends AbstractComplexContentModel {
 
 	@Override
 	public String getComponentName() {
-		return Constants.NAME_GROUP;
+		return DitaConstants.NAME_GROUP;
 	}
 
 	@Override
@@ -95,6 +95,7 @@ public class GroupModel extends AbstractComplexContentModel {
 		if (this.diagram == null) {
 			GroupGraph graph = new GroupGraph(this);
 			diagram = graph.generate();
+			setScaleDiagram(graph.scale());
 		}
 		return diagram;
 	}

@@ -5,7 +5,7 @@ import java.io.IOException;
 import com.predic8.schema.AttributeGroup;
 
 import net.ramso.doc.dita.BasicCreate;
-import net.ramso.doc.dita.tools.Constants;
+import net.ramso.doc.dita.tools.DitaConstants;
 import net.ramso.doc.dita.xml.schema.model.AttributeGroupModel;
 
 public class CreateAttributeGroup extends BasicCreate {
@@ -22,7 +22,7 @@ public class CreateAttributeGroup extends BasicCreate {
 	
 
 	public String create(AttributeGroup attributeGroup) throws IOException {
-		setId(idSchema+"_"+attributeGroup.getName() + Constants.SUFFIX_ATTRIBUTEGROUP);
+		setId(idSchema+"_"+attributeGroup.getName() + DitaConstants.SUFFIX_ATTRIBUTEGROUP);
 		setTitle("Attribute Group" + attributeGroup.getName());
 		loadContent(attributeGroup.getAnnotation());
 		init();

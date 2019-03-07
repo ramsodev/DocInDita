@@ -19,7 +19,7 @@ import com.predic8.wsdl.WSDLParserContext;
 import net.ramso.doc.dita.CreateBookMap;
 import net.ramso.doc.dita.CreatePortada;
 import net.ramso.doc.dita.References;
-import net.ramso.doc.dita.tools.Constants;
+import net.ramso.doc.dita.tools.DitaConstants;
 import net.ramso.doc.dita.xml.schema.GenerateSchema;
 import net.ramso.doc.dita.xml.wsdl.graph.WSDLGraph;
 
@@ -64,7 +64,7 @@ public class GenerateWsdl {
 				content = service.getDocumentation().getContent().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 			}
 			WSDLGraph graph = new WSDLGraph(service);
-			CreatePortada cc = new CreatePortada(service.getName() + Constants.SUFFIX_SERVICE,
+			CreatePortada cc = new CreatePortada(service.getName() + DitaConstants.SUFFIX_SERVICE,
 					"Documentacion del Servicio " + service.getName(), content);
 			cc.setDiagram(graph.generate());
 			References partService = new References(cc.create());
@@ -74,7 +74,7 @@ public class GenerateWsdl {
 			ce = null;
 			content = "Operaciones del servicio " + service.getName();
 
-			cc = new CreatePortada(service.getName() + Constants.SUFFIX_OPERATION,
+			cc = new CreatePortada(service.getName() + DitaConstants.SUFFIX_OPERATION,
 					"Operaciones de " + service.getName(), content);
 			References chapter = new References(cc.create());
 			cc = null;
@@ -83,7 +83,7 @@ public class GenerateWsdl {
 				if (operation.getDocumentation() != null) {
 					content = operation.getDocumentation().getContent().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 				}
-				CreateOperation co = new CreateOperation(operation.getName() + Constants.SUFFIX_OPERATION,
+				CreateOperation co = new CreateOperation(operation.getName() + DitaConstants.SUFFIX_OPERATION,
 						"Operation " + operation.getName(), content);
 				chapter.addChild(new References(co.create(operation)));
 			}

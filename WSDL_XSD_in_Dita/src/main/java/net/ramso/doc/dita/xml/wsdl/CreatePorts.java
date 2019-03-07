@@ -7,18 +7,18 @@ import com.predic8.wsdl.BindingOperation;
 import com.predic8.wsdl.Port;
 
 import net.ramso.doc.dita.BasicCreate;
-import net.ramso.doc.dita.tools.Constants;
-import net.ramso.doc.dita.tools.Tools;
+import net.ramso.doc.dita.tools.DitaConstants;
+import net.ramso.doc.dita.tools.DitaTools;
 
 public class CreatePorts extends BasicCreate {
 	public CreatePorts(String serviceName) {
-		super(serviceName+Constants.SUFFIX_PORT,"Ports del servicio " + serviceName);
+		super(serviceName+DitaConstants.SUFFIX_PORT,"Ports del servicio " + serviceName);
 		setTemplateFile("template/ports.vm");
 	}
 
 	public String create(List<Port> ports) throws IOException {
 		getContext().put("ports", ports);
-		getContext().put("tools", Tools.class);
+		getContext().put("tools", DitaTools.class);
 		run(getContext());
 		return getFile_name();
 	}

@@ -4,52 +4,30 @@
     <title>${title}</title>
     <shortdesc>ports del servicio</shortdesc>
     <refbody>
-        <table frame="all"  id="${id}_table">
-            <tgroup cols="3">
-                <colspec colname="c1" colnum="1" colwidth="1*"/>
-                <colspec colname="c2" colnum="2" colwidth="5*"/>
-                <colspec colname="c3" colnum="3" colwidth="2*"/>
-                <thead>
-                    <row>
-                        <entry>Nombre </entry>
-                        <entry>Endpoint</entry>
-                        <entry>Binding</entry>
-                    </row>
-                </thead>
-                <tbody>
-                #foreach( ${port} in ${ports} )
-                    <row>
-                        <entry>${port.getName()}</entry>
-                        <entry>${port.getAddress().getLocation()}</entry>
-                        <entry>
-                        	<dl>
-                        		<dlentry>
-                        			<dt>${port.getBinding().getName()}</dt>
-                        			<dd>
-                        			#if(${port.getBinding().getOperations().size()} > 0)
-                        				<ul>
-                        				#foreach($op in ${port.getBinding().getOperations()})
-                            				<li><xref href="${tools.getHref($op)}">${op.getName()}</xref></li>
-                            			#end
-                        				</ul>
-                        				
-                        			#end
-                        			</dd>
-                        		</dlentry>
-                        	</dl>
-                        </entry>
-                    </row>
-                	#if(${port.getDocumentation()}) 
-                    <row>
-                        <entry namest="c1" nameend="c3">
-                        <b>Descripción: </b> ${port.getDocumentation().getContent()}
-                        </entry>
-                    </row>
-                    #end
-               #end
-                  
-                </tbody>
-            </tgroup>
-        </table>
+        
+#foreach( ${port} in ${ports} )
+        <section>
+            <title>${port.getName()}</title>           
+            <ul>
+                <li><b>Endpoint:</b> ${port.getAddress().getLocation()}</li>
+                <li><b>Binding:</b> ${port.getBinding().getName()} 
+	#if(${port.getBinding().getOperations().size()} > 0)
+                <p>
+                    <b>Binding Operations:</b>
+                    <ol>
+		#foreach($op in ${port.getBinding().getOperations()})
+                    	<li><xref href="${tools.getHref($op)}">${op.getName()}</xref></li>
+        #end
+                    </ol>
+                 </p>       				
+	#end
+                 </li> 
+    #if(${port.getDocumentation()}) 
+                 <li><b>Description: </b><lines> ${port.getDocumentation().getContent()}</lines>
+                 </li>
+    #end              
+            </ul>    
+        </section>                	
+#end
     </refbody>
 </reference>
