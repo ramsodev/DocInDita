@@ -74,7 +74,7 @@ public class GenerateWsdl {
 			ce = null;
 			content = "Operaciones del servicio " + service.getName();
 
-			cc = new CreatePortada(service.getName() + DitaConstants.SUFFIX_OPERATION,
+			cc = new CreatePortada(service.getName() + DitaConstants.SUFFIX_OPERATION+"s",
 					"Operaciones de " + service.getName(), content);
 			References chapter = new References(cc.create());
 			cc = null;

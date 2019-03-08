@@ -13,8 +13,8 @@
         #end
         
           #if(${group.getElements()})
-        	#set($sl = false)
-        	#set($i =0)
+        	#set($j = 0)
+        	#set($i = 0)
         	#set($childs = ${group.getElements()})
         	#parse("complexContentRefs.vm")
         #end

@@ -1,8 +1,5 @@
-
       #foreach($element in ${childs})
-       		
        		#if(${element.isElement()})
-       		
             	#set($childc = $child)
             	#set($child = true)
        			#if(!${element.getRef()})

@@ -87,10 +87,10 @@ public class AttributeGroupGraph extends AbstractXmlGraph {
 		if (!isAddType()) {
 			setMaxWidth(width);
 		}
-		mxCell cell = (mxCell) getGraph().createVertex(parent, name + DitaConstants.SUFFIX_ATTRIBUTEGROUP, "", x, y, width,
-				height, GraphTools.getStyle(false, true, color));
-		mxCell titulo = (mxCell) getGraph().insertVertex(cell, "Title" + name + DitaConstants.SUFFIX_ATTRIBUTEGROUP, name,
-				x, y, width, height, GraphTools.getStyle(true, true, color, height));
+		mxCell cell = (mxCell) getGraph().createVertex(parent, name + DitaConstants.SUFFIX_ATTRIBUTEGROUP, "", x, y,
+				width, height, GraphTools.getStyle(false, true, color));
+		mxCell titulo = (mxCell) getGraph().insertVertex(cell, "Title" + name + DitaConstants.SUFFIX_ATTRIBUTEGROUP,
+				name, x, y, width, height, GraphTools.getStyle(true, true, color, height));
 		super.insertIcon((mxCell) titulo, DitaConstants.SUFFIX_ATTRIBUTEGROUP.toLowerCase(), height);
 		y += height;
 		width -= 6;
@@ -107,6 +107,7 @@ public class AttributeGroupGraph extends AbstractXmlGraph {
 
 			apppendContent(subCell, null, attributeGroup.getAttributes(), sizes, height);
 			width = (int) resize(subCell, sizes);
+			subCell.getGeometry().setWidth(width);
 
 		}
 		cell.getGeometry().setWidth(width);
@@ -115,20 +116,8 @@ public class AttributeGroupGraph extends AbstractXmlGraph {
 	}
 
 	private double resize(mxCell cell, int[] sizes) {
-		List<Integer> icons = new ArrayList<Integer>();
-		double heigth = 0;
 		double width = 0;
-		double iWidth = 0;
-		for (int i = 0; i < cell.getChildCount(); i++) {
-			mxCell child = (mxCell) cell.getChildAt(i);
-			if (child.getId().startsWith(GraphConstants.EXCLUDE_PREFIX_ICON)) {
-				if (icons.size() == 0) {
-					iWidth = child.getGeometry().getWidth();
-				}
-				icons.add(i);
-			}
-		}
-		double x = (iWidth * icons.size()) + ((iWidth / 3) * icons.size()) + (iWidth / 3);
+		double x = 0;
 		if (isAddType()) {
 			width = sizes[0] + 100 + sizes[1] + x;
 		} else {
@@ -138,30 +127,9 @@ public class AttributeGroupGraph extends AbstractXmlGraph {
 			mxCell child = (mxCell) cell.getChildAt(i);
 			if (!child.getId().startsWith(GraphConstants.EXCLUDE_PREFIX_ICON)) {
 				child.getGeometry().setX(x);
-				heigth += child.getGeometry().getHeight();
 				child.getGeometry().setWidth(width - x);
 			}
 		}
-		cell.getGeometry().setWidth(width);
-		cell.getGeometry().setHeight(heigth);
-		x = cell.getGeometry().getCenterX();
-		double y = (heigth / 2) - (iWidth / 2);
-		int j = 0;
-		for (Integer i : icons) {
-			mxCell child = (mxCell) cell.getChildAt(i);
-			if (j == 0) {
-
-				x = (iWidth / 3);
-				child.getGeometry().setY(y);
-				child.getGeometry().setX(x);
-				x += (iWidth + (iWidth / 3));
-			} else {
-				child.getGeometry().setX(x);
-				x += (iWidth + (iWidth / 3));
-			}
-			j++;
-		}
-
 		return width;
 
 	}

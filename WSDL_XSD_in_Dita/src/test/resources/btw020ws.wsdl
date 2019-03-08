@@ -832,6 +832,8 @@
 							<xsd:element ref="tns:BTW020WSFault"></xsd:element>
 						</xsd:choice>
 					</xsd:sequence>
+					<xsd:element maxOccurs="20" minOccurs="0"
+						name="asegurados2" type="tns:DATOSASEGURADOType" />
 				</xsd:sequence>
 			</xsd:complexType>
 			<xsd:complexType name="CallReferenceType">

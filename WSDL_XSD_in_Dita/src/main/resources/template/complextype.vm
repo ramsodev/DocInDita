@@ -38,8 +38,8 @@
         </dlentry>
         #end 
         #if(${complexType.getElements()})
-        	#set($sl = false)
-        	#set($i =0)
+        	#set($i = 0)
+        	#set($j = 0)
         	#set($childs = ${complexType.getElements()})
         	#parse("complexContentRefs.vm")
         #end

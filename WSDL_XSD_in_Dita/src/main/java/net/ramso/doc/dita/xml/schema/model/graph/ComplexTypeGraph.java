@@ -17,6 +17,8 @@ import net.ramso.doc.dita.xml.schema.model.ComplexTypeModel;
 import net.ramso.doc.dita.xml.schema.model.ElementModel;
 import net.ramso.doc.dita.xml.schema.model.GroupModel;
 import net.ramso.doc.dita.xml.schema.model.IComplexContentModel;
+import net.ramso.doc.dita.xml.schema.model.SimpleTypeModel;
+import net.ramso.doc.dita.xml.schema.model.iComponentModel;
 import net.ramso.tools.graph.GraphConstants;
 import net.ramso.tools.graph.GraphTools;
 
@@ -89,8 +91,8 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 			color = "LIGHTGRAY";
 		mxCell cell = (mxCell) getGraph().createVertex(parent, name + DitaConstants.SUFFIX_COMPLEXTYPE, "", x, y, width,
 				height, GraphTools.getStyle(false, true));
-		mxCell titulo = (mxCell) getGraph().insertVertex(cell, "Title" + name + DitaConstants.SUFFIX_COMPLEXTYPE, name, 0,
-				0, width, height, GraphTools.getStyle(true, true, color, height));
+		mxCell titulo = (mxCell) getGraph().insertVertex(cell, "Title" + name + DitaConstants.SUFFIX_COMPLEXTYPE, name,
+				0, 0, width, height, GraphTools.getStyle(true, true, color, height));
 		super.insertIcon((mxCell) titulo, DitaConstants.SUFFIX_COMPLEXTYPE.toLowerCase(), height);
 		y += height;
 		width -= 6;
@@ -128,7 +130,7 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 				icons.add(i);
 			}
 		}
-		double x = (iWidth * icons.size()) + ((iWidth / 3) * icons.size()) + (iWidth / 3);
+		double x = (iWidth * icons.size()) + (iWidth * (icons.size() + 1));
 		width = sizes[0] + 100 + sizes[1] + x;
 		for (int i = 0; i < cell.getChildCount(); i++) {
 			mxCell child = (mxCell) cell.getChildAt(i);
@@ -150,10 +152,10 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 				x = (iWidth / 3);
 				child.getGeometry().setY(y);
 				child.getGeometry().setX(x);
-				x += (iWidth + (iWidth / 3));
+				x += (iWidth + (iWidth / 2));
 			} else {
 				child.getGeometry().setX(x);
-				x += (iWidth + (iWidth / 3));
+				x += (iWidth + (iWidth / 2));
 			}
 			j++;
 		}
@@ -278,24 +280,37 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 			y += 21;
 
 			if (element.getSimpleType() != null) {
-				String value = element.getSimpleType().getName();
-				if (value == null || value.isEmpty()) {
-					value = "(" + element.getName() + DitaConstants.SUFFIX_SIMPLETYPE + ")";
-				}
-				type = new SimpleTypeGraph(element.getSimpleType(), getGraph()).createSimpleType(parent, value, x, y);
+				type = insertType(parent, element.getSimpleType(), element.getName(), x, y);
 			} else if (element.getComplexType() != null) {
-				String value = element.getComplexType().getName();
-				if (value == null || value.isEmpty()) {
-					value = "(" + element.getName() + DitaConstants.SUFFIX_COMPLEXTYPE + ")";
-				}
-				type = new ComplexTypeGraph(element.getComplexType(), getGraph()).createComplexTypeCell(parent, value,
-						x, y);
+				type = insertType(parent, element.getComplexType(), element.getName(), x, y);
+			} else if (element.getRefType() != null) {
+				type = insertType(parent, element.getRefType(), element.getName(), x, y);
 			} else if (element.getType() != null) {
 				type = createType(parent, element.getType().getLocalPart(), x, y);
 			}
 			if (type != null) {
 				typeGroup.getGeometry().setHeight(y + type.getGeometry().getHeight());
 			}
+		}
+		return type;
+	}
+
+	private mxCell insertType(mxCell parent, iComponentModel model, String name, int x, int y) {
+		mxCell type = null;
+		if (model instanceof SimpleTypeModel) {
+			SimpleTypeModel st = (SimpleTypeModel) model;
+			String value = st.getName();
+			if (value == null || value.isEmpty()) {
+				value = "(" + name + DitaConstants.SUFFIX_SIMPLETYPE + ")";
+			}
+			type = new SimpleTypeGraph(st, getGraph()).createSimpleType(parent, value, x, y);
+		} else if (model instanceof ComplexTypeModel) {
+			ComplexTypeModel ct = (ComplexTypeModel) model;
+			String value = ct.getName();
+			if (value == null || value.isEmpty()) {
+				value = "(" + name + DitaConstants.SUFFIX_COMPLEXTYPE + ")";
+			}
+			type = new ComplexTypeGraph(ct, getGraph()).createComplexTypeCell(parent, value, x, y);
 		}
 		return type;
 	}

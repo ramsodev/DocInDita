@@ -53,7 +53,7 @@ public class DitaTools {
 	}
 
 	public static String getHref(QName qname) throws MalformedURLException {
-		if(qname.getNamespaceURI().equalsIgnoreCase(DitaConstants.XSD_NAMESPACE)) {
+		if (qname.getNamespaceURI().equalsIgnoreCase(DitaConstants.XSD_NAMESPACE)) {
 			return DitaConstants.XSD_DOC_URI + qname.getLocalPart();
 		}
 		String idSchema = DitaTools.getSchemaId(qname.getNamespaceURI());
@@ -71,6 +71,7 @@ public class DitaTools {
 		String href = getHref(true, operation.getName() + DitaConstants.SUFFIX_OPERATION);
 		return href;
 	}
+
 	public static String getExternalHref(QName type) {
 		if (type.getNamespaceURI().equalsIgnoreCase(DitaConstants.XSD_NAMESPACE)) {
 			return "format=\"html\" scope=\"external\"";
@@ -114,6 +115,7 @@ public class DitaTools {
 				} else if (td != null && td instanceof ComplexType) {
 					return DitaConstants.SUFFIX_COMPLEXTYPE;
 				} else {
+
 					Attribute a = SCHEMA.getAttribute(type);
 					if (a != null) {
 						return DitaConstants.SUFFIX_ATTRIBUTE;
@@ -125,6 +127,15 @@ public class DitaTools {
 							Group gr = SCHEMA.getGroup(type);
 							if (gr != null) {
 								return DitaConstants.SUFFIX_GROUP;
+							} else {
+								Element el = null;
+								try {
+									el = SCHEMA.getElement(type);
+								} catch (Exception e) {
+								}
+								if (el != null) {
+									return DitaConstants.SUFFIX_ELEMENT;
+								}
 							}
 						}
 					}
@@ -132,14 +143,22 @@ public class DitaTools {
 			}
 		}
 		return DitaConstants.SUFFIX_TYPE;
+
 	}
 
 	public static TypeDefinition getType(QName type) {
-		return SCHEMA.getType(type);
+		TypeDefinition td = null;
+		if (SCHEMA != null) {
+			try {
+				td = SCHEMA.getType(type);
+			} catch (Exception e) {
+			}
+		}
+		return td;
 	}
 
 	public static String getFileType(URL url) {
-		try {			
+		try {
 			Document doc = FileTools.parseXML(url);
 			switch (doc.getDocumentElement().getNodeName()) {
 			case DitaConstants.WSDL_ELEMENTNAME:
@@ -155,5 +174,10 @@ public class DitaTools {
 			LogManager.error("Error al buscar el tipo de definición", e);
 		}
 		return null;
+	}
+
+	public static QName getAnyType() {
+		QName q = new QName(DitaConstants.XSD_NAMESPACE, "anyType");
+		return q;
 	}
 }

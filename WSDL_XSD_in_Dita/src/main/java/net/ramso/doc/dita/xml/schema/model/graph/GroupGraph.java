@@ -109,6 +109,7 @@ public class GroupGraph extends AbstractXmlGraph {
 			}
 			apppendContent(subCell, null, group.getElements(), sizes, height);
 			width = (int) resize(subCell, sizes);
+			subCell.getGeometry().setWidth(width);
 			cell.getGeometry().setHeight(height + subCell.getGeometry().getHeight());
 		}
 		cell.getGeometry().setWidth(width);
@@ -130,7 +131,7 @@ public class GroupGraph extends AbstractXmlGraph {
 				icons.add(i);
 			}
 		}
-		double x = (iWidth * icons.size()) + ((iWidth / 3) * icons.size()) + (iWidth / 3);
+		double x = (iWidth * icons.size()) + ((iWidth ) * (icons.size()+1));
 		if (isAddType()) {
 			width = sizes[0] + 100 + sizes[1] + x;
 		} else {
@@ -156,10 +157,10 @@ public class GroupGraph extends AbstractXmlGraph {
 				x = (iWidth / 3);
 				child.getGeometry().setY(y);
 				child.getGeometry().setX(x);
-				x += (iWidth + (iWidth / 3));
+				x += (iWidth + (iWidth / 2));
 			} else {
 				child.getGeometry().setX(x);
-				x += (iWidth + (iWidth / 3));
+				x += (iWidth + (iWidth / 2));
 			}
 			j++;
 		}

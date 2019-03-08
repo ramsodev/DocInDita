@@ -8,6 +8,7 @@ import com.predic8.schema.TypeDefinition;
 
 import groovy.xml.QName;
 import net.ramso.doc.dita.tools.DitaConstants;
+import net.ramso.doc.dita.tools.DitaTools;
 import net.ramso.doc.dita.xml.schema.model.graph.ElementGraph;
 
 public class ElementModel extends AbstractComplexContentModel {
@@ -19,7 +20,6 @@ public class ElementModel extends AbstractComplexContentModel {
 	private ComplexTypeModel complexType = null;
 	private Element element;
 	private String diagram;
-	
 
 	public ElementModel(Element element) {
 		super();
@@ -89,8 +89,11 @@ public class ElementModel extends AbstractComplexContentModel {
 
 	@Override
 	public QName getType() {
-		if(element.getRef() != null) {
+		if (element.getRef() != null) {
 			return element.getRef();
+		}
+		if (element.getType() == null && getSimpleType() == null && getComplexType() == null) {
+			return DitaTools.getAnyType();
 		}
 		return element.getType();
 	}
@@ -99,9 +102,22 @@ public class ElementModel extends AbstractComplexContentModel {
 	public SchemaComponent getComponent() {
 		return element;
 	}
-	
+
 	public QName getRef() {
 		return element.getRef();
+	}
+
+	public iComponentModel getRefType() {
+		TypeDefinition t = DitaTools.getType(getRef());
+		iComponentModel m = null;
+		if (t != null) {
+			if (t instanceof SimpleType) {
+				m = new SimpleTypeModel((SimpleType) t);
+			} else if (t instanceof ComplexType) {
+				m = new ComplexTypeModel((ComplexType) t);
+			}
+		}
+		return m;
 	}
 
 	@Override
@@ -111,7 +127,7 @@ public class ElementModel extends AbstractComplexContentModel {
 
 	@Override
 	public String getDiagram() {
-		if(this.diagram == null) {
+		if (this.diagram == null) {
 			ElementGraph graph = new ElementGraph(this);
 			diagram = graph.generate();
 			setScaleDiagram(graph.scale());

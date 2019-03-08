@@ -91,7 +91,7 @@ public class AttributeGraph extends AbstractXmlGraph {
 
 	public mxCell createAttributeLine(mxCell parent, int x, int y, int width, int height, int widthType) {
 		mxCell cell = (mxCell) getGraph().insertVertex(parent,
-				GraphConstants.EXCLUDE_PREFIX_GROUP + parent.getId() + attribute.getName() + DitaConstants.SUFFIX_ATTRIBUTE,
+				GraphConstants.EXCLUDE_PREFIX_LINE + parent.getId() + attribute.getName() + DitaConstants.SUFFIX_ATTRIBUTE,
 				"", x, y, width + 100-6 + widthType, height, GraphTools.getStyle(false, true));
 
 		Object titulo = getGraph().insertVertex(cell, cell.getId() + "Name", attribute.getName(), 0, 0, width, height,

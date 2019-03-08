@@ -130,6 +130,8 @@ public class GraphTools {
 		style += mxConstants.STYLE_ENTRY_Y + "=0.5;";
 		if (arrow) {
 			style += mxConstants.STYLE_ENDARROW + "=" + mxConstants.ARROW_BLOCK + ";";
+		}else {
+			style += mxConstants.STYLE_ENDARROW + "=" + "NONE;";
 		}
 		return style;
 	}

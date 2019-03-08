@@ -42,19 +42,19 @@ public class ElementGraph extends AbstractXmlGraph {
 		if (element.getType() != null) {
 			type = createType(parent, element.getType().getLocalPart());
 		} else if (element.getSimpleType() != null) {
-
 			String value = element.getSimpleType().getName();
 			if (value == null || value.isEmpty()) {
 				value = "(" + element.getName() + DitaConstants.SUFFIX_SIMPLETYPE + ")";
 			}
-
-			type = createType(parent, value, DitaConstants.SUFFIX_SIMPLETYPE);
+//			type = createType(parent, value, DitaConstants.SUFFIX_SIMPLETYPE);
+			type = new SimpleTypeGraph(element.getSimpleType(), getGraph()).createSimpleType(parent, value);
 		} else if (element.getComplexType() != null) {
 			String value = element.getComplexType().getName();
 			if (value == null || value.isEmpty()) {
 				value = "(" + element.getName() + DitaConstants.SUFFIX_COMPLEXTYPE + ")";
 			}
-			type = createType(parent, value);
+//			type = createType(parent, value );
+			type =new ComplexTypeGraph(element.getComplexType(), getGraph()).createComplexTypeCell(parent, value);
 		}
 
 		getGraph().insertEdge(parent, "", "", elementCell, type,
@@ -97,7 +97,7 @@ public class ElementGraph extends AbstractXmlGraph {
 		Object titulo = getGraph().insertVertex(cell, cell.getId() + "Name", element.getName(), 0, 0, width, height,
 				GraphTools.getStyle(false, false, height));
 		insertIcon((mxCell) titulo, DitaConstants.SUFFIX_ELEMENT.toLowerCase(), height);
-		int anchura = 100 - 6;
+		int anchura = 100;
 		String value = "";
 		if (element.getMinOccurs() >= 0) {
 			value += "[" + element.getMinOccurs();
