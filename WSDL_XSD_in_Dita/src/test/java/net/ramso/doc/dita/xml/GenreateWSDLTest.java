@@ -75,30 +75,13 @@ class GenreateWSDLTest {
 //	 assertTrue(true);
 //	 }
 //	
-	// @Test
-	// @DisplayName("Procesar Sepa")
-	// void testGenerateWSDL4() {
-	//
-	// try {
-	// URL echo = Thread.currentThread().getContextClassLoader()
-	// .getResource("Entities/WSDLs/Exposed_WS_ENVIO_TRANSFERENCIA.wsdl");
-	//
-	// generate.generateWSDL(echo);
-	// } catch (Exception e) {
-	//
-	// e.printStackTrace();
-	// fail(e.getLocalizedMessage());
-	// }
-	// assertTrue(true);
-	// }
-	//
 	 @Test
-	 @DisplayName("Procesar as400")
-	 void testGenerateWSDL5() {
+	 @DisplayName("Procesar Sepa")
+	 void testGenerateWSDL4() {
 	
 	 try {
-	 URL echo =
-	 Thread.currentThread().getContextClassLoader().getResource("btw020ws.wsdl");
+	 URL echo = Thread.currentThread().getContextClassLoader()
+	 .getResource("Entities/WSDLs/Exposed_WS_ENVIO_TRANSFERENCIA.wsdl");
 	
 	 generate.generateWSDL(echo);
 	 } catch (Exception e) {
@@ -108,5 +91,22 @@ class GenreateWSDLTest {
 	 }
 	 assertTrue(true);
 	 }
+	
+//	 @Test
+//	 @DisplayName("Procesar as400")
+//	 void testGenerateWSDL5() {
+//	
+//	 try {
+//	 URL echo =
+//	 Thread.currentThread().getContextClassLoader().getResource("btw020ws.wsdl");
+//	
+//	 generate.generateWSDL(echo);
+//	 } catch (Exception e) {
+//	
+//	 e.printStackTrace();
+//	 fail(e.getLocalizedMessage());
+//	 }
+//	 assertTrue(true);
+//	 }
 
 }

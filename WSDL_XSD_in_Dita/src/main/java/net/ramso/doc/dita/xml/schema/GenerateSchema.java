@@ -102,7 +102,11 @@ public class GenerateSchema {
 		}
 		references.add(cover);
 		if (portada) {
-			cc = new CreatePortada(idSchema + DitaConstants.SUFFIX_SERVICE, "Schema XML",
+			String name = schema.getName();
+			if (name == null || name.isEmpty()) {
+				name = DitaTools.getName(schema.getTargetNamespace());
+			}
+			cc = new CreatePortada(idSchema + DitaConstants.SUFFIX_SERVICE, "Schema XML " + name ,
 					"NameSpace:" + schema.getTargetNamespace());
 			cover = new References(cc.create());
 			cover.getChilds().addAll(references);

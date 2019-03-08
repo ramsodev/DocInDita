@@ -99,6 +99,25 @@ public class DitaTools {
 		return idSchema;
 	}
 
+	public static String getName(String uri) throws MalformedURLException {
+		String name = "";
+		if (uri == null || uri.isEmpty()) {
+			name = "No Name";
+		} else if (uri.startsWith("urn")) {
+			URI urn = URI.create(uri);
+			name = urn.getSchemeSpecificPart().substring(urn.getSchemeSpecificPart().lastIndexOf(":") + 1);
+		} else {
+			URL url = new URL(uri);
+			name = url.getPath().substring(url.getPath().lastIndexOf('/') + 1);
+			if (name.contains("?")) {
+				name = name.substring(0, name.lastIndexOf('?'));
+			} else if (name.contains(".")) {
+				name = name.substring(0, name.lastIndexOf('.'));
+			}
+		}
+		return name;
+	}
+
 	public static void setSchema(Schema schema) {
 		SCHEMA = schema;
 	}

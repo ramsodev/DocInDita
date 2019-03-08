@@ -20,6 +20,7 @@ import net.ramso.doc.dita.CreateBookMap;
 import net.ramso.doc.dita.CreatePortada;
 import net.ramso.doc.dita.References;
 import net.ramso.doc.dita.tools.DitaConstants;
+import net.ramso.doc.dita.tools.DitaTools;
 import net.ramso.doc.dita.xml.schema.GenerateSchema;
 import net.ramso.doc.dita.xml.wsdl.graph.WSDLGraph;
 
@@ -35,12 +36,7 @@ public class GenerateWsdl {
 	}
 
 	public void generateWSDL(URL url) throws IOException, URISyntaxException {
-		String fileName = url.getPath().substring(url.getPath().lastIndexOf('/') + 1);
-		if (fileName.contains("?")) {
-			fileName = fileName.substring(0, fileName.lastIndexOf('?'));
-		} else if (fileName.contains(".")) {
-			fileName = fileName.substring(0, fileName.lastIndexOf('.'));
-		}
+		String fileName = DitaTools.getName(url.toExternalForm());
 		WSDLParser parser = new WSDLParser();
 		WSDLParserContext ctx = new WSDLParserContext();
 		if (url.getProtocol().startsWith("file")) {
@@ -74,7 +70,7 @@ public class GenerateWsdl {
 			ce = null;
 			content = "Operaciones del servicio " + service.getName();
 
-			cc = new CreatePortada(service.getName() + DitaConstants.SUFFIX_OPERATION+"s",
+			cc = new CreatePortada(service.getName() + DitaConstants.SUFFIX_OPERATION + "s",
 					"Operaciones de " + service.getName(), content);
 			References chapter = new References(cc.create());
 			cc = null;
