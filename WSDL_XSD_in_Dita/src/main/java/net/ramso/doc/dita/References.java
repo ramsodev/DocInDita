@@ -46,4 +46,17 @@ public class References {
 		childs.add(child);
 	}
 
+	public References searchChild(String id) {
+		for(References child:getChilds()) {
+			if(child.getId().equalsIgnoreCase(id)) {
+				return child;
+			}else if(!child.getChilds().isEmpty()) {
+				References c = child.searchChild(id);
+				if(c!= null) {
+					return c;
+				}
+			}
+		}
+		return null;
+	}
 }

@@ -25,8 +25,6 @@ import net.ramso.doc.dita.tools.DitaTools;
 
 public class GenerateSchema {
 
-	private ArrayList<References> references;
-
 	public GenerateSchema() {
 		super();
 
@@ -49,10 +47,48 @@ public class GenerateSchema {
 		generateSchema(schema, false);
 	}
 
-	public List<References> generateSchema(Schema schema, boolean portada) throws IOException {
-		DitaTools.setSchema(schema);
-		references = new ArrayList<References>();
+	public References generateSchema(Schema schema, boolean portada) throws IOException {
+		List<References> references = generate(schema);
 		String idSchema = DitaTools.getSchemaId(schema.getTargetNamespace());
+		if (portada) {
+			String name = schema.getName();
+			if (name == null || name.isEmpty()) {
+				name = DitaTools.getName(schema.getTargetNamespace());
+			}
+			CreatePortada cc = new CreatePortada(idSchema + DitaConstants.SUFFIX_SERVICE, "Schema XML " + name,
+					"NameSpace:" + schema.getTargetNamespace());
+			References cover = new References(cc.create());
+			cover.getChilds().addAll(references);
+			return cover;
+		} else {
+			CreateBookMap cb = new CreateBookMap(idSchema, "Documentación  del XSD " + "", "");
+			cb.create(references);
+		}
+		return null;
+	}
+
+	public void append2Schema(References cover, Schema schema) throws IOException {
+		List<References> references = generate(schema);
+		for (References ref : references) {
+			References child = cover.searchChild(ref.getId());
+			if (child != null) {
+				for (References c1 : ref.getChilds()) {
+					if (child.searchChild(c1.getId()) == null) {
+						child.addChild(c1);
+					}
+				}
+			} else {
+				cover.addChild(ref);
+			}
+		}
+
+	}
+
+	public List<References> generate(Schema schema) throws IOException {
+		DitaTools.setSchema(schema);
+		ArrayList<References> references = new ArrayList<References>();
+		String idSchema = DitaTools.getSchemaId(schema.getTargetNamespace());
+
 		CreatePortada cc = new CreatePortada(idSchema + DitaConstants.SUFFIX_ELEMENT, "Elementos del esquema ",
 				"Elements del esquema XML");
 		References cover = new References(cc.create());
@@ -101,22 +137,6 @@ public class GenerateSchema {
 			cover.addChild(new References(cg.create(group)));
 		}
 		references.add(cover);
-		if (portada) {
-			String name = schema.getName();
-			if (name == null || name.isEmpty()) {
-				name = DitaTools.getName(schema.getTargetNamespace());
-			}
-			cc = new CreatePortada(idSchema + DitaConstants.SUFFIX_SERVICE, "Schema XML " + name ,
-					"NameSpace:" + schema.getTargetNamespace());
-			cover = new References(cc.create());
-			cover.getChilds().addAll(references);
-			references = new ArrayList<References>();
-			references.add(cover);
-		} else {
-			CreateBookMap cb = new CreateBookMap(idSchema, "Documentación  del XSD " + "", "");
-			cb.create(references);
-		}
 		return references;
 	}
-
 }

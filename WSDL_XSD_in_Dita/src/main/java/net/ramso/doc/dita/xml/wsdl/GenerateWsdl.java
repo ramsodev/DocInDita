@@ -63,10 +63,10 @@ public class GenerateWsdl {
 			CreatePortada cc = new CreatePortada(service.getName() + DitaConstants.SUFFIX_SERVICE,
 					"Documentacion del Servicio " + service.getName(), content);
 			cc.setDiagram(graph.generate());
-			References partService = new References(cc.create());
+			References chapterService = new References(cc.create());
 			cc = null;
 			CreatePorts ce = new CreatePorts(service.getName());
-			partService.addChild(new References(ce.create(service.getPorts())));
+			chapterService.addChild(new References(ce.create(service.getPorts())));
 			ce = null;
 			content = "Operaciones del servicio " + service.getName();
 
@@ -81,16 +81,28 @@ public class GenerateWsdl {
 				}
 				CreateOperation co = new CreateOperation(operation.getName() + DitaConstants.SUFFIX_OPERATION,
 						"Operation " + operation.getName(), content);
-				chapter.addChild(new References(co.create(operation)));
+				if (chapter.searchChild(co.getId()) == null) {
+					chapter.addChild(new References(co.create(operation)));
+				}
 			}
 
-			partService.addChild(chapter);
-			index.add(partService);
+			chapterService.addChild(chapter);
+			index.add(chapterService);
 		}
 		List<Schema> schemas = desc.getSchemas();
 		for (Schema schema : schemas) {
+			String idSchema = (DitaTools.getSchemaId(schema.getTargetNamespace()) + 
+					DitaConstants.SUFFIX_SERVICE)
+					.replaceAll("\\s+", "_");
+			;
+			References cover = findRef(idSchema, index);
 			GenerateSchema gs = new GenerateSchema();
-			index.addAll(gs.generateSchema(schema, true));
+			if (cover == null) {
+				References ref = gs.generateSchema(schema, true);
+				index.add(ref);
+			} else {
+				gs.append2Schema(cover, schema);
+			}
 		}
 		content = "";
 		if (desc.getDocumentation() != null) {
@@ -98,5 +110,14 @@ public class GenerateWsdl {
 		}
 		CreateBookMap cb = new CreateBookMap(fileName, "Documentación  del WSDL " + fileName, content);
 		cb.create(index);
+	}
+
+	private References findRef(String idSchema, ArrayList<References> index) {
+		for (References ref : index) {
+			if (ref.getId().equalsIgnoreCase(idSchema)) {
+				return ref;
+			}
+		}
+		return null;
 	}
 }

@@ -2,6 +2,7 @@ package net.ramso.doc.dita;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CreateBookMap extends BasicCreate {
 
@@ -19,7 +20,7 @@ public class CreateBookMap extends BasicCreate {
 
 	
 
-	public String create(ArrayList<References> references) throws IOException {		
+	public String create(List<References> references) throws IOException {		
 		getContext().put("content", getContent());
 		getContext().put("references", references);
 		run(getContext());
