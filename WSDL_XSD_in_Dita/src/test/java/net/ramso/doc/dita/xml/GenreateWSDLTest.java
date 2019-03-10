@@ -100,7 +100,7 @@ class GenreateWSDLTest {
 	 URL echo =
 	 Thread.currentThread().getContextClassLoader().getResource("btw020ws.wsdl");
 	
-	 generate.generateWSDL(echo);
+	 generate.generateWSDL(echo, false);
 	 } catch (Exception e) {
 	
 	 e.printStackTrace();

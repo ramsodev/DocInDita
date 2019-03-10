@@ -9,7 +9,9 @@ import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -92,23 +94,32 @@ public class FileTools {
 	}
 
 	public static boolean checkPath(String filename, boolean mkparentDirs) {
-		
+
 		return checkPath(new File(filename), mkparentDirs);
-		
+
 	}
+
 	public static boolean checkPath(File file, boolean mkparentDirs) {
-		if(!file.exists()) {
+		if (!file.exists()) {
 			File parent = file.getParentFile();
-			if(!parent.exists() ) {
-				if(mkparentDirs) {
+			if (!parent.exists()) {
+				if (mkparentDirs) {
 					parent.mkdirs();
-				}else {
+				} else {
 					return false;
 				}
-			}else if(!parent.isDirectory()) {
+			} else if (!parent.isDirectory()) {
 				return false;
 			}
 		}
 		return true;
+	}
+
+	public static List<String> toString(File[] files) {
+		List<String> strings = new ArrayList<String>();
+		for (File file : files) {
+			strings.add(file.getAbsolutePath());
+		}
+		return strings;
 	}
 }

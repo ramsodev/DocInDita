@@ -30,12 +30,15 @@ public class GenerateWsdl {
 		super();
 	}
 
-	public void generateWSDL(String url) throws MalformedURLException, IOException, URISyntaxException {
-		generateWSDL(new URL(url));
-
+	public References generateWSDL(String url) throws MalformedURLException, IOException, URISyntaxException {
+		return generateWSDL(new URL(url), false);
 	}
 
-	public void generateWSDL(URL url) throws IOException, URISyntaxException {
+	public References generateWSDL(URL url) throws IOException, URISyntaxException {
+		return generateWSDL(url, false);
+	}
+
+	public References generateWSDL(URL url, boolean multi) throws IOException, URISyntaxException {
 		String fileName = DitaTools.getName(url.toExternalForm());
 		WSDLParser parser = new WSDLParser();
 		WSDLParserContext ctx = new WSDLParserContext();
@@ -91,8 +94,7 @@ public class GenerateWsdl {
 		}
 		List<Schema> schemas = desc.getSchemas();
 		for (Schema schema : schemas) {
-			String idSchema = (DitaTools.getSchemaId(schema.getTargetNamespace()) + 
-					DitaConstants.SUFFIX_SERVICE)
+			String idSchema = (DitaTools.getSchemaId(schema.getTargetNamespace()) + DitaConstants.SUFFIX_SERVICE)
 					.replaceAll("\\s+", "_");
 			;
 			References cover = findRef(idSchema, index);
@@ -108,8 +110,16 @@ public class GenerateWsdl {
 		if (desc.getDocumentation() != null) {
 			content = desc.getDocumentation().getContent().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 		}
-		CreateBookMap cb = new CreateBookMap(fileName, "Documentación  del WSDL " + fileName, content);
-		cb.create(index);
+		if (!multi) {
+			CreateBookMap cb = new CreateBookMap(fileName, "Documentación  del WSDL " + fileName, content);
+			cb.create(index);
+			return null;
+		} else {
+			CreatePortada cc = new CreatePortada(fileName + DitaConstants.SUFFIX_WSDL,
+					"Documentación  del WSDL " + fileName, content);
+			return new References(cc.create());
+		}
+
 	}
 
 	private References findRef(String idSchema, ArrayList<References> index) {

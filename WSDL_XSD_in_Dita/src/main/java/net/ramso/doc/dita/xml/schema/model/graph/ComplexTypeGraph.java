@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.mxgraph.model.mxCell;
 import com.mxgraph.model.mxGeometry;
-import com.mxgraph.util.mxConstants;
 import com.mxgraph.util.mxPoint;
 import com.mxgraph.view.mxGraph;
 import com.predic8.schema.ComplexType;
@@ -24,6 +23,7 @@ import net.ramso.doc.dita.xml.schema.model.GroupModel;
 import net.ramso.doc.dita.xml.schema.model.IComplexContentModel;
 import net.ramso.doc.dita.xml.schema.model.SimpleTypeModel;
 import net.ramso.doc.dita.xml.schema.model.iComponentModel;
+import net.ramso.tools.LogManager;
 import net.ramso.tools.graph.GraphConstants;
 import net.ramso.tools.graph.GraphTools;
 
@@ -101,7 +101,7 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 				GraphTools.getStyleTransparent(true));
 		mxCell cell = (mxCell) getGraph().insertVertex(superGroup, name + DitaConstants.SUFFIX_COMPLEXTYPE, "", x, y,
 				width, height, GraphTools.getStyle(false, true));
-		if (isAddType() && (complexType.getSupers() != null || !complexType.getSupers().isEmpty())) {
+		if (isAddType() && (complexType.getSupers() != null && !complexType.getSupers().isEmpty())) {
 
 			int h = 0;
 			for (QName s : complexType.getSupers()) {
@@ -335,6 +335,9 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 				model = new SimpleTypeModel((SimpleType) t);
 			} else if (t instanceof ComplexType) {
 				model = new ComplexTypeModel((ComplexType) t);
+			} else {
+				LogManager.warn("No se encuentra el tipo " + extend.getLocalPart() + " del que hereda", null);
+				return createType(parent, extend.getLocalPart());
 			}
 		}
 		String name = "(" + extend.getLocalPart() + ")";

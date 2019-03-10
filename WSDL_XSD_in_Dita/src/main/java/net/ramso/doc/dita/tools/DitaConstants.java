@@ -41,5 +41,7 @@ public class DitaConstants {
 	public static final String SUFFIX_PORT_TYPE = "PortType";
 	public static final String UNBOUNDED = "unbounded";
 	public static final String EXTENDED = "Extended";
+	public static final String RECURSIVE = "r";
+	public static final String SUFFIX_WSDL = "WSDL";
 
 }

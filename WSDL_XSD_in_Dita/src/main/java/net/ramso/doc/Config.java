@@ -18,6 +18,7 @@ import net.ramso.tools.graph.GraphConfig;
 
 public class Config extends ConfigurationManager {
 	private static String outputDir;
+	private static boolean r = false;
 
 	public static void start() {
 		try {
@@ -73,10 +74,19 @@ public class Config extends ConfigurationManager {
 				throw new ConfigurationException("El directorio de salida existe y no es un directorio");
 			}
 			break;
+		case DitaConstants.RECURSIVE:
+			r = Boolean.parseBoolean(value);
 		default:
 			break;
 		}
 
+	}
+
+	/**
+	 * @return the r
+	 */
+	protected static boolean isR() {
+		return r;
 	}
 
 }
