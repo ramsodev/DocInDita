@@ -82,9 +82,8 @@ public class AttributeGroupGraph extends AbstractXmlGraph {
 	public mxCell crateAttributeGroupCell(mxCell parent, String name, int x, int y, int width, int height,
 			int[] sizes) {
 		String color = "GREEN";
-		if (name.startsWith("("))
-			color = "LIGHTGRAY";
 		if (!isAddType()) {
+			color = "LIGHTGRAY";
 			setMaxWidth(width);
 		}
 		mxCell cell = (mxCell) getGraph().createVertex(parent, name + DitaConstants.SUFFIX_ATTRIBUTEGROUP, "", x, y,

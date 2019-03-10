@@ -40,5 +40,6 @@ public class DitaConstants {
 	public static final String SUFFIX_RESTRICTION = "Restricccion";
 	public static final String SUFFIX_PORT_TYPE = "PortType";
 	public static final String UNBOUNDED = "unbounded";
+	public static final String EXTENDED = "Extended";
 
 }

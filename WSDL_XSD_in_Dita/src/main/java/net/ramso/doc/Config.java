@@ -14,6 +14,7 @@ import net.ramso.tools.CommandLineProcessor;
 import net.ramso.tools.ConfigurationException;
 import net.ramso.tools.ConfigurationManager;
 import net.ramso.tools.LogManager;
+import net.ramso.tools.graph.GraphConfig;
 
 public class Config extends ConfigurationManager {
 	private static String outputDir;
@@ -31,6 +32,8 @@ public class Config extends ConfigurationManager {
 	}
 
 	private static void load() {
+		GraphConfig.loadIcons();
+		GraphConfig.loadShapes();
 		outputDir = getProperty(DitaConstants.OUTDIR_PROPERTY, DitaConstants.OUTDIR_DEFAULT);
 
 	}
@@ -66,7 +69,7 @@ public class Config extends ConfigurationManager {
 		case DitaConstants.OUTDIR_NAME:
 			outputDir = value;
 			File f = new File(outputDir);
-			if(f.exists() && !f.isDirectory()) {
+			if (f.exists() && !f.isDirectory()) {
 				throw new ConfigurationException("El directorio de salida existe y no es un directorio");
 			}
 			break;

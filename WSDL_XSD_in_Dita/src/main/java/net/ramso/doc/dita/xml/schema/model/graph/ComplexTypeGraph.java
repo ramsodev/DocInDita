@@ -9,8 +9,13 @@ import com.mxgraph.model.mxGeometry;
 import com.mxgraph.util.mxConstants;
 import com.mxgraph.util.mxPoint;
 import com.mxgraph.view.mxGraph;
+import com.predic8.schema.ComplexType;
+import com.predic8.schema.SimpleType;
+import com.predic8.schema.TypeDefinition;
 
+import groovy.xml.QName;
 import net.ramso.doc.dita.tools.DitaConstants;
+import net.ramso.doc.dita.tools.DitaTools;
 import net.ramso.doc.dita.xml.schema.model.AttributeGroupModel;
 import net.ramso.doc.dita.xml.schema.model.AttributeModel;
 import net.ramso.doc.dita.xml.schema.model.ComplexTypeModel;
@@ -87,13 +92,32 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 
 	public mxCell createComplexTypeCell(mxCell parent, String name, int x, int y, int width, int height, int[] sizes) {
 		String color = "BLUE";
-		if (name.startsWith("("))
+		if (!isAddType()) {
 			color = "LIGHTGRAY";
-		mxCell cell = (mxCell) getGraph().createVertex(parent, name + DitaConstants.SUFFIX_COMPLEXTYPE, "", x, y, width,
-				height, GraphTools.getStyle(false, true));
+		}
+
+		mxCell superGroup = (mxCell) getGraph().createVertex(parent,
+				GraphConstants.EXCLUDE_PREFIX_GROUP + DitaConstants.EXTENDED, "", x, y, width, height,
+				GraphTools.getStyleTransparent(true));
+		mxCell cell = (mxCell) getGraph().insertVertex(superGroup, name + DitaConstants.SUFFIX_COMPLEXTYPE, "", x, y,
+				width, height, GraphTools.getStyle(false, true));
+		if (isAddType() && (complexType.getSupers() != null || !complexType.getSupers().isEmpty())) {
+
+			int h = 0;
+			for (QName s : complexType.getSupers()) {
+				mxCell sc = insertSupers(superGroup, s);
+				superGroup.insert(sc);
+				getGraph().insertEdge(getGraph().getDefaultParent(), "", "", cell, sc, GraphTools.getExtendEdgeStyle());
+				h += sc.getGeometry().getHeight();
+				superGroup.getGeometry().setWidth(sc.getGeometry().getWidth() + 100);
+			}
+			cell.getGeometry().setY(h + (height * 3));
+
+		}
 		mxCell titulo = (mxCell) getGraph().insertVertex(cell, "Title" + name + DitaConstants.SUFFIX_COMPLEXTYPE, name,
 				0, 0, width, height, GraphTools.getStyle(true, true, color, height));
 		super.insertIcon((mxCell) titulo, DitaConstants.SUFFIX_COMPLEXTYPE.toLowerCase(), height);
+
 		y += height;
 		width -= 6;
 		if (complexType.getElements().size() > 0 || complexType.getAttributes().size() > 0) {
@@ -103,17 +127,25 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 
 			contentPosition = 0;
 			typeGroup = (mxCell) getGraph().createVertex(parent,
-					GraphConstants.EXCLUDE_PREFIX_GROUP + DitaConstants.SUFFIX_TYPE, "", 100, 100, 300, 0,
-					mxConstants.STYLE_AUTOSIZE + "=1;" + mxConstants.STYLE_RESIZABLE + "=1;"
-							+ mxConstants.STYLE_STROKE_OPACITY + "=0;" + mxConstants.STYLE_FILL_OPACITY + "=0;");
+					GraphConstants.EXCLUDE_PREFIX_GROUP + DitaConstants.SUFFIX_TYPE, "",
+					superGroup.getGeometry().getWidth() + 100, cell.getGeometry().getY() + 100, 300, 0,
+					GraphTools.getStyleTransparent(false));
 			apppendContentAttributeGroup(subCell, null, complexType.getAttributeGroups(), sizes, height);
 			apppendContent(subCell, null, complexType.getAttributes(), sizes, height);
 			apppendContent(subCell, null, complexType.getElements(), sizes, height);
 			width = (int) resize(subCell, sizes);
 		}
+
 		cell.getGeometry().setWidth(width);
 		titulo.getGeometry().setWidth(width);
-		return cell;
+		if (superGroup.getGeometry().getWidth() < width) {
+			superGroup.getGeometry().setWidth(width);
+		}
+		if (typeGroup != null) {
+			typeGroup.getGeometry().setX(superGroup.getGeometry().getWidth() + 100);
+			typeGroup.getGeometry().setY(cell.getGeometry().getY() + height);
+		}
+		return superGroup;
 	}
 
 	private double resize(mxCell cell, int[] sizes) {
@@ -293,6 +325,23 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 			}
 		}
 		return type;
+	}
+
+	private mxCell insertSupers(mxCell parent, QName extend) {
+		TypeDefinition t = DitaTools.getType(extend);
+		iComponentModel model = null;
+		if (t != null) {
+			if (t instanceof SimpleType) {
+				model = new SimpleTypeModel((SimpleType) t);
+			} else if (t instanceof ComplexType) {
+				model = new ComplexTypeModel((ComplexType) t);
+			}
+		}
+		String name = "(" + extend.getLocalPart() + ")";
+		if (model.getName() != null && !model.getName().isEmpty()) {
+			name = model.getName();
+		}
+		return insertType(parent, model, name, 0, 0);
 	}
 
 	private mxCell insertType(mxCell parent, iComponentModel model, String name, int x, int y) {

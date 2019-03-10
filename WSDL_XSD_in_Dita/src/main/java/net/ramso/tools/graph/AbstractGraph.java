@@ -83,7 +83,7 @@ public abstract class AbstractGraph {
 		if (FileTools.checkPath(filename, true)) {
 			mxSvgCanvas canvas = (mxSvgCanvas) mxCellRenderer.drawCells(graph, null, 1, null, new CanvasFactory() {
 				public mxICanvas createCanvas(int width, int height) {
-					mxSvgCanvas canvas = new mxSvgCanvas(mxDomUtils.createSvgDocument(width, height));
+					CustomSvgCanvas canvas = new CustomSvgCanvas(mxDomUtils.createSvgDocument(width, height));
 					canvas.setEmbedded(true);
 					return canvas;
 				}

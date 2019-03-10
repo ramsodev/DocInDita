@@ -84,10 +84,8 @@ public class GroupGraph extends AbstractXmlGraph {
 
 	public mxCell createGroupCell(mxCell parent, String name, int x, int y, int width, int height, int[] sizes) {
 		String color = "BLUE";
-		if (name.startsWith("(")) {
+		if (!isAddType()) { 
 			color = "LIGHTGRAY";
-		}
-		if (!isAddType()) {
 			setMaxWidth(width);
 		}
 		mxCell cell = (mxCell) getGraph().createVertex(parent, name + DitaConstants.SUFFIX_GROUP, "", x, y, width, height,

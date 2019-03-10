@@ -86,6 +86,19 @@ public class GraphTools {
 		return style;
 	}
 
+	public static String getStyleTransparent(boolean center) {
+		String style = mxConstants.STYLE_AUTOSIZE + "=1;";
+		style += mxConstants.STYLE_RESIZABLE + "=1;";
+		style += mxConstants.STYLE_STROKE_OPACITY + "=0;";
+		style += mxConstants.STYLE_FILL_OPACITY + "=0;";
+		if (center) {
+			style += mxConstants.STYLE_ALIGN + "=" + mxConstants.ALIGN_CENTER + ";";
+		} else {
+			style += mxConstants.STYLE_ALIGN + "=" + mxConstants.ALIGN_LEFT + ";";
+		}
+		return style;
+	}
+
 	public static String getStyleImage(boolean border, int height, int witdth, String icon) {
 
 		String style = mxConstants.STYLE_SHAPE + "=" + mxConstants.SHAPE_IMAGE + ";";
@@ -130,15 +143,21 @@ public class GraphTools {
 		style += mxConstants.STYLE_ENTRY_Y + "=0.5;";
 		if (arrow) {
 			style += mxConstants.STYLE_ENDARROW + "=" + mxConstants.ARROW_BLOCK + ";";
-		}else {
+		} else {
 			style += mxConstants.STYLE_ENDARROW + "=" + "NONE;";
 		}
 		return style;
 	}
 
 	public static String getExtendEdgeStyle() {
+		// TODO: mxMarkerRegistry
 		String style = mxConstants.STYLE_EDGE + "=" + mxConstants.EDGESTYLE_ELBOW + ";";
-		style += mxConstants.STYLE_ENDARROW + "=" + mxConstants.ARROW_OPEN + ";";
+		style += mxConstants.STYLE_ENDARROW + "=" + GraphConstants.ARROW_EXTENDS + ";";
+//				+ mxConstants.ARROW_BLOCK + ";";
+		style += mxConstants.STYLE_ENDFILL + "=" + "RED;";
+		style += mxConstants.STYLE_ENDSIZE + "=25;";
+
 		return style;
 	}
+
 }
