@@ -1,32 +1,30 @@
 package net.ramso.doc.dita;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CreateBookMap extends BasicCreate {
 
-	
 	private String content;
-	
-	
 
-	public CreateBookMap(String id,String title, String content) {
-		super(id,title);
+	public CreateBookMap(String id, String title, String content) {
+		super(id, title);
 		setTemplateFile("template/bookmap.vm");
 		setContent(content);
-		setFile_name(id+".ditamap");
+		setFile_name(id + ".ditamap");
 	}
 
-	
+	public String create(List<References> references) throws IOException {
+		return create(references, false);
+	}
 
-	public String create(List<References> references) throws IOException {		
+	public String create(List<References> references, boolean parts) throws IOException {
 		getContext().put("content", getContent());
 		getContext().put("references", references);
+		getContext().put("parts", parts);
 		run(getContext());
 		return getFile_name();
 	}
-
 
 	public String getContent() {
 		return content;
@@ -36,15 +34,10 @@ public class CreateBookMap extends BasicCreate {
 		this.content = content;
 	}
 
-
-
 	@Override
 	protected void setId(String id) {
-		id="net.ramso.doc."+id;
+		id = "net.ramso.doc." + id;
 		super.setId(id);
 	}
 
-	
-
-	
 }

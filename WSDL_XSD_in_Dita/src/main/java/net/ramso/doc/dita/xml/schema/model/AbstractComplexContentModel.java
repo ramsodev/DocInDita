@@ -40,7 +40,7 @@ public abstract class AbstractComplexContentModel extends AbstractComponentModel
 
 		processParticles(choice.getParticles());
 		if (choice.getMinOccurs() != null) {
-			setMinOccurs(((Integer) choice.getMinOccurs()));
+			setMinOccurs( choice.getMinOccurs());
 		}
 		if (choice.getMaxOccurs() != null) {
 			setMaxOccurs(choice.getMaxOccurs());
@@ -52,7 +52,7 @@ public abstract class AbstractComplexContentModel extends AbstractComponentModel
 
 		processParticles(all.getParticles());
 		if (all.getMinOccurs() != null) {
-			setMinOccurs(((Integer) all.getMinOccurs()));
+			setMinOccurs(all.getMinOccurs());
 		}
 		if (all.getMaxOccurs() != null) {
 			setMaxOccurs(all.getMaxOccurs());
@@ -64,7 +64,7 @@ public abstract class AbstractComplexContentModel extends AbstractComponentModel
 
 		processParticles(sequence.getParticles());
 		if (sequence.getMinOccurs() != null) {
-			setMinOccurs(((Integer) sequence.getMinOccurs()));
+			setMinOccurs(sequence.getMinOccurs());
 		}
 		if (sequence.getMaxOccurs() != null) {
 			setMaxOccurs(sequence.getMaxOccurs());
@@ -100,9 +100,19 @@ public abstract class AbstractComplexContentModel extends AbstractComponentModel
 	 * @param minOccurs
 	 *            the minOccurs to set
 	 */
-	public void setMinOccurs(int minOccurs) {
-		this.minOccurs = minOccurs;
-		if (minOccurs > 0)
+	public void setMinOccurs(Object minOccurs) {
+		if (minOccurs instanceof Integer) {
+			this.minOccurs = ((Integer) minOccurs).intValue();
+		} else if (minOccurs instanceof String) {
+			try {
+				this.minOccurs = Integer.parseInt((String) minOccurs);
+			} catch (Exception e) {
+				this.minOccurs = -1;
+			}
+		} else {
+			this.minOccurs = -1;
+		}
+		if (this.minOccurs > 0)
 			requiered = true;
 	}
 

@@ -10,6 +10,7 @@ import groovy.xml.QName;
 import net.ramso.doc.dita.tools.DitaConstants;
 import net.ramso.doc.dita.tools.DitaTools;
 import net.ramso.doc.dita.xml.schema.model.graph.ElementGraph;
+import net.ramso.tools.LogManager;
 
 public class ElementModel extends AbstractComplexContentModel {
 
@@ -25,6 +26,7 @@ public class ElementModel extends AbstractComplexContentModel {
 		super();
 		this.element = element;
 		init();
+		LogManager.debug("Carga de Element " + getName());
 	}
 
 	private void init() {

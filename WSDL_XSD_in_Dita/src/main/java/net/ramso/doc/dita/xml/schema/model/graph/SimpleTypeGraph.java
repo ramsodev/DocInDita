@@ -14,6 +14,7 @@ import net.ramso.tools.graph.GraphTools;
 public class SimpleTypeGraph extends AbstractXmlGraph {
 
 	SimpleTypeModel simpleType;
+	private boolean addType;
 
 	public SimpleTypeGraph(SimpleTypeModel simpleType) {
 		super();
@@ -29,6 +30,7 @@ public class SimpleTypeGraph extends AbstractXmlGraph {
 
 	@Override
 	public String generate() {
+		this.addType = true;
 		setGraph(new mxGraph());
 		getGraph().setAutoSizeCells(true);
 		getGraph().setCellsResizable(true);
@@ -40,7 +42,9 @@ public class SimpleTypeGraph extends AbstractXmlGraph {
 		}
 		getGraph().insertEdge(parent, "", "", simpleTypeCell, type, GraphTools.getExtendEdgeStyle());
 		getGraph().addCell(simpleTypeCell);
-		getGraph().addCell(type);
+		if (isAddType()) {
+			getGraph().addCell(type);
+		}
 		process(getGraph());
 		return getFileName();
 	}
@@ -71,8 +75,8 @@ public class SimpleTypeGraph extends AbstractXmlGraph {
 		if (name.startsWith("(")) {
 			color = "LIGHTGRAY";
 		}
-		Object titulo = getGraph().insertVertex(cell, "Title" + name + DitaConstants.SUFFIX_SIMPLETYPE, name, 0, 0, width,
-				height, GraphTools.getStyle(true, true, color, height));
+		Object titulo = getGraph().insertVertex(cell, "Title" + name + DitaConstants.SUFFIX_SIMPLETYPE, name, 0, 0,
+				width, height, GraphTools.getStyle(true, true, color, height));
 
 		insertIcon((mxCell) titulo, DitaConstants.SUFFIX_SIMPLETYPE.toLowerCase(), height);
 		return cell;
@@ -82,6 +86,10 @@ public class SimpleTypeGraph extends AbstractXmlGraph {
 	protected void morphGraph(mxGraph graph, mxGraphComponent graphComponent) {
 		mxStackLayout layout = new mxStackLayout(graph, false, 50);
 		layout.execute(graph.getDefaultParent());
+	}
+
+	protected boolean isAddType() {
+		return addType;
 	}
 
 }

@@ -11,6 +11,7 @@ import com.predic8.schema.SchemaComponent;
 import groovy.xml.QName;
 import net.ramso.doc.dita.xml.schema.model.graph.AttributeGroupGraph;
 import net.ramso.doc.dita.xml.schema.model.graph.ElementGraph;
+import net.ramso.tools.LogManager;
 
 public class AttributeGroupModel extends AbstractComponentModel {
 
@@ -26,6 +27,7 @@ public class AttributeGroupModel extends AbstractComponentModel {
 		super();
 		this.attributeGroup = attribute;
 		init();
+		LogManager.debug("Carga de AttributeGroup " + getName());
 	}
 
 	private void init() {

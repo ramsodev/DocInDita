@@ -7,8 +7,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.velocity.app.Velocity;
-
 import com.predic8.schema.Schema;
 import com.predic8.wsdl.Definitions;
 import com.predic8.wsdl.Operation;
@@ -16,6 +14,7 @@ import com.predic8.wsdl.Service;
 import com.predic8.wsdl.WSDLParser;
 import com.predic8.wsdl.WSDLParserContext;
 
+import net.ramso.doc.Config;
 import net.ramso.doc.dita.CreateBookMap;
 import net.ramso.doc.dita.CreatePortada;
 import net.ramso.doc.dita.References;
@@ -23,6 +22,7 @@ import net.ramso.doc.dita.tools.DitaConstants;
 import net.ramso.doc.dita.tools.DitaTools;
 import net.ramso.doc.dita.xml.schema.GenerateSchema;
 import net.ramso.doc.dita.xml.wsdl.graph.WSDLGraph;
+import net.ramso.tools.LogManager;
 
 public class GenerateWsdl {
 
@@ -38,8 +38,9 @@ public class GenerateWsdl {
 		return generateWSDL(url, false);
 	}
 
-	public References generateWSDL(URL url, boolean multi) throws IOException, URISyntaxException {
+	public References generateWSDL(URL url, boolean one) throws IOException, URISyntaxException {
 		String fileName = DitaTools.getName(url.toExternalForm());
+		LogManager.info("Inicio de Procesado de " + url);
 		WSDLParser parser = new WSDLParser();
 		WSDLParserContext ctx = new WSDLParserContext();
 		if (url.getProtocol().startsWith("file")) {
@@ -100,7 +101,7 @@ public class GenerateWsdl {
 			References cover = findRef(idSchema, index);
 			GenerateSchema gs = new GenerateSchema();
 			if (cover == null) {
-				References ref = gs.generateSchema(schema, true);
+				References ref = gs.generateSchema(schema, fileName, false);
 				index.add(ref);
 			} else {
 				gs.append2Schema(cover, schema);
@@ -110,16 +111,31 @@ public class GenerateWsdl {
 		if (desc.getDocumentation() != null) {
 			content = desc.getDocumentation().getContent().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 		}
-		if (!multi) {
-			CreateBookMap cb = new CreateBookMap(fileName, "Documentación  del WSDL " + fileName, content);
+		LogManager.info("Fin procesado " + url);
+		if (!one) {
+			String id = Config.getId();
+			if (id == null || id.isEmpty()) {
+				id = fileName;
+			}
+			String title = Config.getTitle();
+			if (title == null || title.isEmpty()) {
+				title = "Documentación  del WSDL " + fileName;
+			}
+			String description = Config.getDescription();
+			if (description == null || description.isEmpty()) {
+				description = content;
+			}
+			CreateBookMap cb = new CreateBookMap(id, title, description);
 			cb.create(index);
 			return null;
 		} else {
 			CreatePortada cc = new CreatePortada(fileName + DitaConstants.SUFFIX_WSDL,
 					"Documentación  del WSDL " + fileName, content);
-			return new References(cc.create());
-		}
 
+			References ref = new References(cc.create());
+			ref.getChilds().addAll(index);
+			return ref;
+		}
 	}
 
 	private References findRef(String idSchema, ArrayList<References> index) {

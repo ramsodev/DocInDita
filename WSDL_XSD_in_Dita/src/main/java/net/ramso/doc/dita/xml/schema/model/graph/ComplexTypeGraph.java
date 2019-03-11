@@ -101,16 +101,13 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 				GraphTools.getStyleTransparent(true));
 		mxCell cell = (mxCell) getGraph().insertVertex(superGroup, name + DitaConstants.SUFFIX_COMPLEXTYPE, "", x, y,
 				width, height, GraphTools.getStyle(false, true));
-		if (isAddType() && (complexType.getSupers() != null && !complexType.getSupers().isEmpty())) {
-
+		if (isAddType() && (complexType.getSuper() != null)) {
 			int h = 0;
-			for (QName s : complexType.getSupers()) {
-				mxCell sc = insertSupers(superGroup, s);
-				superGroup.insert(sc);
-				getGraph().insertEdge(getGraph().getDefaultParent(), "", "", cell, sc, GraphTools.getExtendEdgeStyle());
-				h += sc.getGeometry().getHeight();
-				superGroup.getGeometry().setWidth(sc.getGeometry().getWidth() + 100);
-			}
+			mxCell sc = insertSupers(superGroup, complexType.getSuper());
+			superGroup.insert(sc);
+			getGraph().insertEdge(getGraph().getDefaultParent(), "", "", cell, sc, GraphTools.getExtendEdgeStyle());
+			h += sc.getGeometry().getHeight();
+			superGroup.getGeometry().setWidth(sc.getGeometry().getWidth() + 100);
 			cell.getGeometry().setY(h + (height * 3));
 
 		}

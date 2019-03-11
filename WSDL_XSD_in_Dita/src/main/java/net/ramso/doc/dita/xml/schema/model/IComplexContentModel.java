@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import groovy.xml.QName;
 
 public interface IComplexContentModel extends iComponentModel {
-	public void setMinOccurs(int minOccurs);
+	public void setMinOccurs(Object minOccurs);
 
 	public int getMinOccurs();
 

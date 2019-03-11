@@ -25,6 +25,7 @@ import groovy.xml.QName;
 import net.ramso.doc.dita.tools.DitaConstants;
 import net.ramso.doc.dita.tools.DitaTools;
 import net.ramso.doc.dita.xml.schema.model.graph.SimpleTypeGraph;
+import net.ramso.tools.LogManager;
 
 public class SimpleTypeModel extends AbstractComponentModel {
 
@@ -52,6 +53,7 @@ public class SimpleTypeModel extends AbstractComponentModel {
 		this.simpleType = type;
 		this.restriction = type.getRestriction();
 		init();
+		LogManager.debug("Carga de SimpleType " + getName());
 	}
 
 	private void init() {

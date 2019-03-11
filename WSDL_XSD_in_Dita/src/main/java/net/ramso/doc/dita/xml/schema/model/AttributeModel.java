@@ -7,6 +7,7 @@ import com.predic8.schema.SchemaComponent;
 
 import groovy.xml.QName;
 import net.ramso.doc.dita.xml.schema.model.graph.AttributeGraph;
+import net.ramso.tools.LogManager;
 
 public class AttributeModel extends AbstractComponentModel {
 
@@ -28,6 +29,7 @@ public class AttributeModel extends AbstractComponentModel {
 		super();
 		this.attribute = attribute;
 		init();
+		LogManager.debug("Carga de Attribute " + getName());
 	}
 
 	private void init() {

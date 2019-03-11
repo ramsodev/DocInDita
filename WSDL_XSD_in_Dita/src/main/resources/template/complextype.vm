@@ -1,12 +1,11 @@
 
    <dl>
-   		#if(${complexType.getSupers()})
+   		#if(${complexType.getSuper()})
    		<dlentry>
        		<dt>Extended</dt>
             <dd><sl>
-            		#foreach($super in ${complexType.getSupers()})
-            			<sli><xref href="${tools.getHref(${super})}" ${tools.getExternalHref(${super})} >${super.getLocalPart()} </xref></sli>
-            		#end
+            		<sli><xref href="${tools.getHref(${complexType.getSuper()})}" ${tools.getExternalHref(${complexType.getSuper()})} >${complexType.getSuper().getLocalPart()} </xref></sli>
+            		
             </sl></dd>
         </dlentry>
    		#end 

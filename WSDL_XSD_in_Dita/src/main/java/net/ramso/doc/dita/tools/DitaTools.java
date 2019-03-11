@@ -185,6 +185,7 @@ public class DitaTools {
 			case DitaConstants.WADL_ELEMENTNAME:
 				return DitaConstants.WADL;
 			case DitaConstants.XSD_ELEMENTNAME:
+			case DitaConstants.XSD_ELEMENTNAME2:
 				return DitaConstants.XSD;
 			default:
 				return "";

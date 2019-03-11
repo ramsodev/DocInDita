@@ -23,6 +23,7 @@ public class DitaConstants {
 	public static final String WSDL_ELEMENTNAME = "wsdl:definitions";
 	public static final String XSD = "XSD";
 	public static final String XSD_ELEMENTNAME = "xsd:schema";
+	public static final String XSD_ELEMENTNAME2 = "schema";
 	public static final String WADL = "WADL";
 	public static final String WADL_ELEMENTNAME = "application";
 	public static final String VELOCITY_PREFIX = "velocity";
@@ -43,5 +44,9 @@ public class DitaConstants {
 	public static final String EXTENDED = "Extended";
 	public static final String RECURSIVE = "r";
 	public static final String SUFFIX_WSDL = "WSDL";
+	public static final String ONE = "one";
+	public static final String ID = "id";
+	public static final String TITLE = "title";
+	public static final String DESCRIPTION = "description";
 
 }

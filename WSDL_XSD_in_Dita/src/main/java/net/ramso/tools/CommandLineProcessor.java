@@ -86,6 +86,7 @@ public class CommandLineProcessor {
 		CommandLine cmdLine = parser.parse(options, args);
 		if (cmdLine.hasOption("h")) {
 			printHelp();
+			return null;
 		}
 		try {
 			for (int i = 0; i < names.length; i++) {
@@ -100,9 +101,10 @@ public class CommandLineProcessor {
 						if (reqs[i]) {
 							throw new org.apache.commons.cli.ParseException(desc[i] + " es obligatorio");
 						}
-					} else {
-						Config.set(names[i], "false");
 					}
+//					else {
+//						Config.set(names[i], "false");
+//					}
 				}
 			}
 		} catch (ConfigurationException e) {

@@ -6,9 +6,9 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+import net.ramso.doc.dita.CreateBookMap;
 import net.ramso.doc.dita.References;
 import net.ramso.doc.dita.tools.DitaConstants;
 import net.ramso.doc.dita.tools.DitaTools;
@@ -26,6 +26,9 @@ public class GenDoc {
 		List<String> files;
 		try {
 			files = Config.getParmeters(args, 1, 1);
+			if (files == null) {
+				System.exit(0);
+			}
 			GenDoc g = new GenDoc();
 			List<URL> urls = g.processFiles(files);
 			g.processUrls(urls);
@@ -70,18 +73,35 @@ public class GenDoc {
 	protected void processUrls(List<URL> urls) throws IOException, URISyntaxException {
 		List<References> parts = new ArrayList<References>();
 		for (URL url : urls) {
+			LogManager.info("Procesando url " + url.toExternalForm());
 			switch (DitaTools.getFileType(url)) {
 			case DitaConstants.WSDL:
 				GenerateWsdl gen = new GenerateWsdl();
-				parts.add(gen.generateWSDL(url, false));
+				parts.add(gen.generateWSDL(url, Config.isOne()));
 				break;
 			case DitaConstants.XSD:
 				GenerateSchema xsd = new GenerateSchema();
-				xsd.generateSchema(url);
+				parts.add(xsd.generateSchema(url, Config.isOne()));
 				break;
 			default:
 				break;
 			}
+		}
+		if (Config.isOne()) {
+			String id = Config.getId();
+			if (id == null || id.isEmpty()) {
+				id = "XMLDocInDita";
+			}
+			String title = Config.getTitle();
+			if (title == null || title.isEmpty()) {
+				title = "Documentación XML";
+			}
+			String description = Config.getDescription();
+			if (description == null || description.isEmpty()) {
+				description = "";
+			}
+			CreateBookMap cb = new CreateBookMap(id, title, description);
+			cb.create(parts);
 		}
 	}
 }

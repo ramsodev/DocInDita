@@ -17,6 +17,7 @@ import com.predic8.schema.SchemaParser;
 import com.predic8.schema.SchemaParserContext;
 import com.predic8.schema.SimpleType;
 
+import net.ramso.doc.Config;
 import net.ramso.doc.dita.CreateBookMap;
 import net.ramso.doc.dita.CreatePortada;
 import net.ramso.doc.dita.References;
@@ -25,16 +26,22 @@ import net.ramso.doc.dita.tools.DitaTools;
 
 public class GenerateSchema {
 
+	private String idWSDL;
+
 	public GenerateSchema() {
 		super();
 
 	}
 
-	public void generateSchema(String url) throws MalformedURLException, IOException, URISyntaxException {
-		generateSchema(new URL(url));
+	public References generateSchema(String url) throws MalformedURLException, IOException, URISyntaxException {
+		return generateSchema(new URL(url), false);
 	}
 
-	public void generateSchema(URL url) throws IOException, URISyntaxException {
+	public References generateSchema(URL url) throws IOException, URISyntaxException {
+		return generateSchema(url, false);
+	}
+
+	public References generateSchema(URL url, boolean one) throws IOException, URISyntaxException {
 		SchemaParser parser = new SchemaParser();
 		SchemaParserContext ctx = new SchemaParserContext();
 		if (url.getProtocol().startsWith("file")) {
@@ -44,25 +51,51 @@ public class GenerateSchema {
 			ctx.setInput(url.toExternalForm());
 		}
 		Schema schema = parser.parse(ctx);
-		generateSchema(schema, false);
+		return generateSchema(schema, null, one);
 	}
 
-	public References generateSchema(Schema schema, boolean portada) throws IOException {
+	public References generateSchema(Schema schema, String idWsdl, boolean one) throws IOException {
 		List<References> references = generate(schema);
-		String idSchema = DitaTools.getSchemaId(schema.getTargetNamespace());
-		if (portada) {
-			String name = schema.getName();
-			if (name == null || name.isEmpty()) {
-				name = DitaTools.getName(schema.getTargetNamespace());
-			}
+
+		if (idWsdl != null) {
+			this.idWSDL = idWsdl.trim() + "_";
+
+		} else {
+			this.idWSDL = "";
+		}
+		String idSchema = getIdWSDL() + DitaTools.getSchemaId(schema.getTargetNamespace());
+		String name = schema.getName();
+		if (name == null || name.isEmpty()) {
+			name = DitaTools.getName(schema.getTargetNamespace());
+		}
+		if (idWsdl != null) {
+
 			CreatePortada cc = new CreatePortada(idSchema + DitaConstants.SUFFIX_SERVICE, "Schema XML " + name,
 					"NameSpace:" + schema.getTargetNamespace());
 			References cover = new References(cc.create());
 			cover.getChilds().addAll(references);
 			return cover;
 		} else {
-			CreateBookMap cb = new CreateBookMap(idSchema, "Documentación  del XSD " + "", "");
-			cb.create(references);
+			if (!one) {
+				String id = Config.getId();
+				if (id == null || id.isEmpty()) {
+					id = idSchema;
+				}
+				String title = Config.getTitle();
+				if (title == null || title.isEmpty()) {
+					title = "Documentación  del XSD " + name;
+				}
+				String description = Config.getDescription();
+				if (description == null || description.isEmpty()) {
+					description = "NameSpace:" + schema.getTargetNamespace();
+				}
+				CreateBookMap cb = new CreateBookMap(id, title, description);
+				cb.create(references);
+			} else {
+				CreatePortada cc = new CreatePortada(idSchema, "Documentación  del XSD " + name,
+						"NameSpace:" + schema.getTargetNamespace());
+				return new References(cc.create());
+			}
 		}
 		return null;
 	}
@@ -87,7 +120,7 @@ public class GenerateSchema {
 	public List<References> generate(Schema schema) throws IOException {
 		DitaTools.setSchema(schema);
 		ArrayList<References> references = new ArrayList<References>();
-		String idSchema = DitaTools.getSchemaId(schema.getTargetNamespace());
+		String idSchema = getIdWSDL() + DitaTools.getSchemaId(schema.getTargetNamespace());
 
 		CreatePortada cc = new CreatePortada(idSchema + DitaConstants.SUFFIX_ELEMENT, "Elementos del esquema ",
 				"Elements del esquema XML");
@@ -138,5 +171,9 @@ public class GenerateSchema {
 		}
 		references.add(cover);
 		return references;
+	}
+
+	protected String getIdWSDL() {
+		return idWSDL;
 	}
 }

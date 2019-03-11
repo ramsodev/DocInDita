@@ -17,39 +17,43 @@ import com.predic8.schema.SimpleContent;
 import groovy.xml.QName;
 import net.ramso.doc.dita.tools.DitaConstants;
 import net.ramso.doc.dita.xml.schema.model.graph.ComplexTypeGraph;
+import net.ramso.tools.LogManager;
 
 public class ComplexTypeModel extends AbstractComplexContentModel {
 
 	private ComplexType complexType;
 	private List<AttributeModel> attributes = new ArrayList<AttributeModel>();
 	private ArrayList<AttributeGroupModel> attributeGroups = new ArrayList<AttributeGroupModel>();
-	private List<QName> supers;
+	private QName superType;
 	private String diagram;
 
 	public ComplexTypeModel(ComplexType type) {
 		super();
 		this.complexType = type;
 		init();
+		LogManager.debug("Carga de ComplexType " + getName());
 	}
 
 	private void init() {
 		this.contentType = DitaConstants.SUFFIX_COMPLEXTYPE;
 		Sequence s = complexType.getSequence();
 		try {
-			supers = complexType.getSuperTypes();
+			setSuper(complexType.getSuperTypes());
 			addAttributes(complexType.getAttributes());
 			addAttributeGroups(complexType.getAttributeGroups());
 		} catch (Exception e) {
-			supers = null;
+			superType = null;
 		}
 
-		if ((supers != null && supers.size() > 0) || s == null) {
+		if (superType != null  || s == null) {
 			procesContent(complexType.getModel());
 		}
 		if (s != null) {
 			procesModel(complexType.getModel());
 		}
 	}
+
+	
 
 	private void procesContent(SchemaComponent model) {
 		Derivation derivation = null;
@@ -144,8 +148,15 @@ public class ComplexTypeModel extends AbstractComplexContentModel {
 		return attributeGroups;
 	}
 
-	public List<QName> getSupers() {
-		return supers;
+	public QName getSuper() {
+		return superType;
+	}
+	
+	private void setSuper(List<QName> supers) {
+		this.superType = null;
+		if(supers != null && supers.size()>0) {
+			this.superType = supers.get(0);
+		}
 	}
 
 	@Override

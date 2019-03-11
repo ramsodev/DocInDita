@@ -19,6 +19,10 @@ import net.ramso.tools.graph.GraphConfig;
 public class Config extends ConfigurationManager {
 	private static String outputDir;
 	private static boolean r = false;
+	private static boolean one = false;
+	private static String id;
+	private static String title;
+	private static String description;
 
 	public static void start() {
 		try {
@@ -42,10 +46,18 @@ public class Config extends ConfigurationManager {
 	public static List<String> getParmeters(String[] args, int pmin, int pmax) throws ConfigurationException {
 		CommandLineProcessor cmd = new CommandLineProcessor();
 		try {
-			return cmd.parse(args, pmin, pmax);
+			List<String> parameters = cmd.parse(args, pmin, pmax);
+			if ((getId() != null || getTitle() != null || getDescription() != null) && !isOne()) {
+				LogManager.error("The options id, title or description are only available with the option one", null);
+				System.err.println("The options id, title or description are only available with the option one");
+				cmd.printHelp();
+				throw new ConfigurationException(
+						"The options id, title or description are only available with the option one");
+			}
+			return parameters;
 		} catch (ParseException e) {
 			LogManager.error("Error de parametros de entrada", e);
-			System.out.println("Error en la llamada\n" + e.getMessage());
+			System.err.println("Error de parametros de entrada");
 			cmd.printHelp();
 			throw new ConfigurationException(e);
 		}
@@ -61,10 +73,6 @@ public class Config extends ConfigurationManager {
 		return velocityConfig;
 	}
 
-	public static String getOutputDir() {
-		return outputDir;
-	}
-
 	public static void set(String property, String value) throws ConfigurationException {
 		switch (property) {
 		case DitaConstants.OUTDIR_NAME:
@@ -76,17 +84,45 @@ public class Config extends ConfigurationManager {
 			break;
 		case DitaConstants.RECURSIVE:
 			r = Boolean.parseBoolean(value);
+		case DitaConstants.ONE:
+			one = Boolean.parseBoolean(value);
+		case DitaConstants.ID:
+			id = value;
+		case DitaConstants.TITLE:
+			title = value;
+		case DitaConstants.DESCRIPTION:
+			description = value;
 		default:
 			break;
 		}
+	}
 
+	public static String getOutputDir() {
+		return outputDir;
 	}
 
 	/**
 	 * @return the r
 	 */
-	protected static boolean isR() {
+	public static boolean isR() {
 		return r;
+	}
+
+	public static boolean isOne() {
+		return one;
+	}
+
+	public static String getId() {
+
+		return id;
+	}
+
+	public static String getTitle() {
+		return title;
+	}
+
+	public static String getDescription() {
+		return description;
 	}
 
 }

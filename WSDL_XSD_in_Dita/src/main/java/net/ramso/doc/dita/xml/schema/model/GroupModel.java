@@ -9,6 +9,7 @@ import com.predic8.schema.SchemaComponent;
 import groovy.xml.QName;
 import net.ramso.doc.dita.tools.DitaConstants;
 import net.ramso.doc.dita.xml.schema.model.graph.GroupGraph;
+import net.ramso.tools.LogManager;
 
 public class GroupModel extends AbstractComplexContentModel {
 	private SchemaComponent component;
@@ -19,6 +20,7 @@ public class GroupModel extends AbstractComplexContentModel {
 		super();
 		this.component = group;
 		init();
+		LogManager.debug("Carga de Grupo " + getName());
 	}
 
 	public GroupModel(GroupRef group) {
@@ -55,7 +57,7 @@ public class GroupModel extends AbstractComplexContentModel {
 		procesModel(group.getModel());
 
 		if (group.getMinOccurs() != null) {
-			setMinOccurs(((Integer) group.getMinOccurs()));
+			setMinOccurs(group.getMinOccurs());
 
 		}
 		if (group.getMaxOccurs() != null) {
