@@ -1,0 +1,10 @@
+net.ramso.doc
+net.ramso.doc.dita
+net.ramso.doc.dita.tools
+net.ramso.doc.dita.xml.schema
+net.ramso.doc.dita.xml.schema.model
+net.ramso.doc.dita.xml.schema.model.graph
+net.ramso.doc.dita.xml.wsdl
+net.ramso.doc.dita.xml.wsdl.graph
+net.ramso.tools
+net.ramso.tools.graph
