@@ -55,14 +55,12 @@ public class GenerateSchema {
 	}
 
 	public References generateSchema(Schema schema, String idWsdl, boolean one) throws IOException {
-		List<References> references = generate(schema);
-
 		if (idWsdl != null) {
 			this.idWSDL = idWsdl.trim() + "_";
-
 		} else {
 			this.idWSDL = "";
 		}
+		List<References> references = generate(schema);		
 		String idSchema = getIdWSDL() + DitaTools.getSchemaId(schema.getTargetNamespace());
 		String name = schema.getName();
 		if (name == null || name.isEmpty()) {

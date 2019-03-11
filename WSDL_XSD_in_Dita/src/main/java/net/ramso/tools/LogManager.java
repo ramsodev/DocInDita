@@ -1,5 +1,10 @@
 package net.ramso.tools;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,6 +23,7 @@ public class LogManager {
 	public static void init(Logger externalLogger) {
 		logger = externalLogger;
 	}
+
 	/**
 	 * Configura el logger con el nombre el tipo y las configuraciones recibidas
 	 * 
@@ -31,9 +37,9 @@ public class LogManager {
 	 *            true si debe busacar en el Calsspath el fichero de configuración
 	 */
 	public static void init(String name, LOG_TYPES logtype, String file, boolean inCP) {
-		if (inCP) {
-			file = FileTools.getPath(file);
-		}
+		// if (inCP) {
+		// file = FileTools.getPath(file);
+		// }
 		switch (logtype) {
 		case jdk:
 			System.setProperty("java.util.logging.config.file", file);
@@ -46,7 +52,12 @@ public class LogManager {
 			JoranConfigurator configurator = new JoranConfigurator();
 			configurator.setContext(context);
 			try {
-				configurator.doConfigure(file);
+				if (inCP) {
+					InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(file);
+					configurator.doConfigure(in);
+				} else {
+					configurator.doConfigure(file);
+				}
 			} catch (JoranException e) {
 				e.printStackTrace();
 			}
