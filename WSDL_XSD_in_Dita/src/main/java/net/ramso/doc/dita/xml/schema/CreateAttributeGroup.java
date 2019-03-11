@@ -10,7 +10,7 @@ import net.ramso.doc.dita.xml.schema.model.AttributeGroupModel;
 
 public class CreateAttributeGroup extends BasicCreate {
 
-	private String idSchema;
+	private final String idSchema;
 
 	public CreateAttributeGroup(String idSchema) {
 		super("", "");
@@ -19,10 +19,8 @@ public class CreateAttributeGroup extends BasicCreate {
 		this.idSchema = idSchema;
 	}
 
-	
-
 	public String create(AttributeGroup attributeGroup) throws IOException {
-		setId(idSchema+"_"+attributeGroup.getName() + DitaConstants.SUFFIX_ATTRIBUTEGROUP);
+		setId(idSchema + "_" + attributeGroup.getName() + DitaConstants.SUFFIX_ATTRIBUTEGROUP);
 		setTitle("Attribute Group" + attributeGroup.getName());
 		loadContent(attributeGroup.getAnnotation());
 		init();
@@ -31,5 +29,5 @@ public class CreateAttributeGroup extends BasicCreate {
 		run(getContext());
 		return getFile_name();
 	}
-	
+
 }

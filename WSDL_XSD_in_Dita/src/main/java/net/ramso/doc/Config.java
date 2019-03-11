@@ -24,16 +24,62 @@ public class Config extends ConfigurationManager {
 	private static String title;
 	private static String description;
 
-	public static void start() {
+	public static String getDescription() {
+		return description;
+	}
+
+	public static String getId() {
+
+		return id;
+	}
+
+	public static String getOutputDir() {
+		return outputDir;
+	}
+
+	public static List<String> getParmeters(String[] args, int pmin, int pmax) throws ConfigurationException {
+		final CommandLineProcessor cmd = new CommandLineProcessor();
 		try {
-			init();
-			load();
-			Properties p = getVelocityConfig();
-			Velocity.setProperty(RuntimeConstants.RUNTIME_LOG_INSTANCE, LogManager.getLogger());
-			Velocity.init(p);
-		} catch (ConfigurationException e) {
-			LogManager.error("Error en configuración", e);
+			final List<String> parameters = cmd.parse(args, pmin, pmax);
+			if (((getId() != null) || (getTitle() != null) || (getDescription() != null)) && !isOne()) {
+				LogManager.error("The options id, title or description are only available with the option one", null);
+				System.err.println("The options id, title or description are only available with the option one");
+				cmd.printHelp();
+				throw new ConfigurationException(
+						"The options id, title or description are only available with the option one");
+			}
+			return parameters;
+		} catch (final ParseException e) {
+			LogManager.error("Error de parametros de entrada", e);
+			System.err.println("Error de parametros de entrada");
+			cmd.printHelp();
+			throw new ConfigurationException(e);
 		}
+	}
+
+	public static String getTitle() {
+		return title;
+	}
+
+	protected static Properties getVelocityConfig() {
+		final Properties p = getProperties(DitaConstants.VELOCITY_PREFIX);
+		final Properties velocityConfig = new Properties();
+		for (final Entry<Object, Object> entry : p.entrySet()) {
+			final String key = (String) entry.getKey();
+			velocityConfig.put(key.substring(key.indexOf(".") + 1, key.length()), entry.getValue());
+		}
+		return velocityConfig;
+	}
+
+	public static boolean isOne() {
+		return one;
+	}
+
+	/**
+	 * @return the r
+	 */
+	public static boolean isR() {
+		return r;
 	}
 
 	private static void load() {
@@ -43,44 +89,13 @@ public class Config extends ConfigurationManager {
 
 	}
 
-	public static List<String> getParmeters(String[] args, int pmin, int pmax) throws ConfigurationException {
-		CommandLineProcessor cmd = new CommandLineProcessor();
-		try {
-			List<String> parameters = cmd.parse(args, pmin, pmax);
-			if ((getId() != null || getTitle() != null || getDescription() != null) && !isOne()) {
-				LogManager.error("The options id, title or description are only available with the option one", null);
-				System.err.println("The options id, title or description are only available with the option one");
-				cmd.printHelp();
-				throw new ConfigurationException(
-						"The options id, title or description are only available with the option one");
-			}
-			return parameters;
-		} catch (ParseException e) {
-			LogManager.error("Error de parametros de entrada", e);
-			System.err.println("Error de parametros de entrada");
-			cmd.printHelp();
-			throw new ConfigurationException(e);
-		}
-	}
-
-	protected static Properties getVelocityConfig() {
-		Properties p = getProperties(DitaConstants.VELOCITY_PREFIX);
-		Properties velocityConfig = new Properties();
-		for (Entry<Object, Object> entry : p.entrySet()) {
-			String key = (String) entry.getKey();
-			velocityConfig.put(key.substring(key.indexOf(".") + 1, key.length()), entry.getValue());
-		}
-		return velocityConfig;
-	}
-
 	public static void set(String property, String value) throws ConfigurationException {
 		switch (property) {
 		case DitaConstants.OUTDIR_NAME:
 			outputDir = value;
-			File f = new File(outputDir);
-			if (f.exists() && !f.isDirectory()) {
+			final File f = new File(outputDir);
+			if (f.exists() && !f.isDirectory())
 				throw new ConfigurationException("El directorio de salida existe y no es un directorio");
-			}
 			break;
 		case DitaConstants.RECURSIVE:
 			r = Boolean.parseBoolean(value);
@@ -97,32 +112,16 @@ public class Config extends ConfigurationManager {
 		}
 	}
 
-	public static String getOutputDir() {
-		return outputDir;
-	}
-
-	/**
-	 * @return the r
-	 */
-	public static boolean isR() {
-		return r;
-	}
-
-	public static boolean isOne() {
-		return one;
-	}
-
-	public static String getId() {
-
-		return id;
-	}
-
-	public static String getTitle() {
-		return title;
-	}
-
-	public static String getDescription() {
-		return description;
+	public static void start() {
+		try {
+			init();
+			load();
+			final Properties p = getVelocityConfig();
+			Velocity.setProperty(RuntimeConstants.RUNTIME_LOG_INSTANCE, LogManager.getLogger());
+			Velocity.init(p);
+		} catch (final ConfigurationException e) {
+			LogManager.error("Error en configuración", e);
+		}
 	}
 
 }

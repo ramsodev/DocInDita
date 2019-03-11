@@ -1,6 +1,6 @@
 package net.ramso.doc.dita.xml;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,14 +20,14 @@ class ToolsTest {
 	@Test
 	void testCommandLineProcessor() {
 		try {
-		cmd = new CommandLineProcessor();
-		}catch (Exception e) {
+			cmd = new CommandLineProcessor();
+		} catch (final Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	@Test
-	void testPrintHelp() {
+	void testGetValue() {
 		fail("Not yet implemented");
 	}
 
@@ -37,7 +37,7 @@ class ToolsTest {
 	}
 
 	@Test
-	void testGetValue() {
+	void testPrintHelp() {
 		fail("Not yet implemented");
 	}
 

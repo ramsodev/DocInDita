@@ -1,8 +1,5 @@
 package net.ramso.tools;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import org.slf4j.Logger;
@@ -14,11 +11,39 @@ import ch.qos.logback.core.joran.spi.JoranException;
 import net.ramso.tools.ConfigurationManager.LOG_TYPES;
 
 public class LogManager {
-	public static Logger logger = null;
-
 	public enum LEVELS {
 		info, warn, error, debug
-	};
+	}
+
+	public static Logger logger = null;;
+
+	public static void debug(String message) {
+		if (logger == null) {
+			init("LogManager", LOG_TYPES.simple, "", false);
+		}
+		logger.debug(message);
+	}
+
+	public static void error(String message, Throwable cause) {
+		if (logger == null) {
+			init("LogManager", LOG_TYPES.simple, "", false);
+		}
+		logger.error(message, cause);
+	}
+
+	public static Logger getLogger() {
+		if (logger == null) {
+			init("LogManager", LOG_TYPES.simple, "", false);
+		}
+		return logger;
+	}
+
+	public static void info(String message) {
+		if (logger == null) {
+			init("LogManager", LOG_TYPES.simple, "", false);
+		}
+		logger.info(message);
+	}
 
 	public static void init(Logger externalLogger) {
 		logger = externalLogger;
@@ -26,7 +51,7 @@ public class LogManager {
 
 	/**
 	 * Configura el logger con el nombre el tipo y las configuraciones recibidas
-	 * 
+	 *
 	 * @param name
 	 *            Nombre del log
 	 * @param logtype
@@ -45,20 +70,20 @@ public class LogManager {
 			System.setProperty("java.util.logging.config.file", file);
 			break;
 		case logback:
-			LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
+			final LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
 			if (logger != null) {
 				context.reset();
 			}
-			JoranConfigurator configurator = new JoranConfigurator();
+			final JoranConfigurator configurator = new JoranConfigurator();
 			configurator.setContext(context);
 			try {
 				if (inCP) {
-					InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(file);
+					final InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(file);
 					configurator.doConfigure(in);
 				} else {
 					configurator.doConfigure(file);
 				}
-			} catch (JoranException e) {
+			} catch (final JoranException e) {
 				e.printStackTrace();
 			}
 		default:
@@ -69,39 +94,10 @@ public class LogManager {
 
 	}
 
-	public static void info(String message) {
-		if (logger == null)
-			init("LogManager", LOG_TYPES.simple, "", false);
-		logger.info(message);
-	}
-
-	public static void warn(String message, Throwable cause) {
-		if (logger == null)
-			init("LogManager", LOG_TYPES.simple, "", false);
-		logger.warn(message, cause);
-	}
-
-	public static void error(String message, Throwable cause) {
-		if (logger == null)
-			init("LogManager", LOG_TYPES.simple, "", false);
-		logger.error(message, cause);
-	}
-
-	public static void debug(String message) {
-		if (logger == null)
-			init("LogManager", LOG_TYPES.simple, "", false);
-		logger.debug(message);
-	}
-
-	public static Logger getLogger() {
-		if (logger == null)
-			init("LogManager", LOG_TYPES.simple, "", false);
-		return logger;
-	}
-
 	public static void log(LEVELS level, String string) {
-		if (logger == null)
+		if (logger == null) {
 			init("LogManager", LOG_TYPES.simple, "", false);
+		}
 		switch (level) {
 		case info:
 			info(string);
@@ -119,5 +115,12 @@ public class LogManager {
 			info(string);
 			break;
 		}
+	}
+
+	public static void warn(String message, Throwable cause) {
+		if (logger == null) {
+			init("LogManager", LOG_TYPES.simple, "", false);
+		}
+		logger.warn(message, cause);
 	}
 }

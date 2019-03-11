@@ -1,6 +1,5 @@
 package net.ramso.doc.dita.xml.schema.model;
 
-
 import com.predic8.schema.All;
 import com.predic8.schema.SchemaComponent;
 
@@ -8,19 +7,12 @@ import groovy.xml.QName;
 import net.ramso.doc.dita.tools.DitaConstants;
 
 public class AllModel extends AbstractComplexContentModel {
-	private All all;
-	
+	private final All all;
 
 	public AllModel(All all) {
 		super();
 		this.all = all;
 		init();
-	}
-
-	private void init() {
-		this.contentType = DitaConstants.ALL;
-		procesAll(all);
-		
 	}
 
 	@Override
@@ -30,29 +22,7 @@ public class AllModel extends AbstractComplexContentModel {
 	}
 
 	@Override
-	public QName getType() {
-
-		return null;
-	}
-
-	/**
-	 * @return the ref
-	 */
-	public QName getRef() {
-		return null;
-	}
-
-	@Override
 	public String getComponentName() {
-		return DitaConstants.CHOICE;
-	}
-
-	/* (non-Javadoc)
-	 * @see net.ramso.doc.dita.xml.schema.model.AbstractComponentModel#getName()
-	 */
-	@Override
-	public String getName() {
-		
 		return DitaConstants.CHOICE;
 	}
 
@@ -61,5 +31,36 @@ public class AllModel extends AbstractComplexContentModel {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.ramso.doc.dita.xml.schema.model.AbstractComponentModel#getName()
+	 */
+	@Override
+	public String getName() {
+
+		return DitaConstants.CHOICE;
+	}
+
+	/**
+	 * @return the ref
+	 */
+	@Override
+	public QName getRef() {
+		return null;
+	}
+
+	@Override
+	public QName getType() {
+
+		return null;
+	}
+
+	private void init() {
+		contentType = DitaConstants.ALL;
+		procesAll(all);
+
+	}
+
 }

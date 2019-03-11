@@ -21,17 +21,9 @@ public class CreatePortada extends BasicCreate {
 		return getFile_name();
 	}
 
+	@Override
 	public String getContent() {
 		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
-
-	public void setDiagram(String diagram) {
-		this.diagram = diagram;
-
 	}
 
 	/**
@@ -39,6 +31,16 @@ public class CreatePortada extends BasicCreate {
 	 */
 	public String getDiagram() {
 		return diagram;
+	}
+
+	@Override
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public void setDiagram(String diagram) {
+		this.diagram = diagram;
+
 	}
 
 }

@@ -3,7 +3,6 @@ package net.ramso.doc.dita.xml.wsdl;
 import java.io.IOException;
 import java.util.List;
 
-import com.predic8.wsdl.BindingOperation;
 import com.predic8.wsdl.Port;
 
 import net.ramso.doc.dita.BasicCreate;
@@ -12,7 +11,7 @@ import net.ramso.doc.dita.tools.DitaTools;
 
 public class CreatePorts extends BasicCreate {
 	public CreatePorts(String serviceName) {
-		super(serviceName+DitaConstants.SUFFIX_PORT,"Ports del servicio " + serviceName);
+		super(serviceName + DitaConstants.SUFFIX_PORT, "Ports del servicio " + serviceName);
 		setTemplateFile("template/ports.vm");
 	}
 

@@ -9,6 +9,7 @@ import net.ramso.doc.dita.tools.DitaTools;
 
 public class CreateOperation extends BasicCreate {
 	private String content;
+
 	public CreateOperation(String id, String title, String content) {
 		super(id, title);
 		setTemplateFile("template/operation.vm");
@@ -26,13 +27,16 @@ public class CreateOperation extends BasicCreate {
 	/**
 	 * @return the content
 	 */
+	@Override
 	public String getContent() {
 		return content;
 	}
 
 	/**
-	 * @param content the content to set
+	 * @param content
+	 *            the content to set
 	 */
+	@Override
 	public void setContent(String content) {
 		this.content = content;
 	}

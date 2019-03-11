@@ -10,8 +10,7 @@ import net.ramso.doc.dita.xml.schema.model.AttributeModel;
 
 public class CreateAttribute extends BasicCreate {
 
-	
-	private String idSchema;
+	private final String idSchema;
 
 	public CreateAttribute(String idSchema) {
 		super("", "");
@@ -20,10 +19,8 @@ public class CreateAttribute extends BasicCreate {
 		this.idSchema = idSchema;
 	}
 
-	
-
 	public String create(Attribute attribute) throws IOException {
-		setId(idSchema+"_"+attribute.getName() + DitaConstants.SUFFIX_ATTRIBUTE);
+		setId(idSchema + "_" + attribute.getName() + DitaConstants.SUFFIX_ATTRIBUTE);
 		setTitle("Attribute " + attribute.getName());
 		loadContent(attribute.getAnnotation());
 		init();
@@ -32,7 +29,5 @@ public class CreateAttribute extends BasicCreate {
 		run(getContext());
 		return getFile_name();
 	}
-	
-	
 
 }

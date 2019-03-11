@@ -30,6 +30,14 @@ public class GenerateWsdl {
 		super();
 	}
 
+	private References findRef(String idSchema, ArrayList<References> index) {
+		for (final References ref : index) {
+			if (ref.getId().equalsIgnoreCase(idSchema))
+				return ref;
+		}
+		return null;
+	}
+
 	public References generateWSDL(String url) throws MalformedURLException, IOException, URISyntaxException {
 		return generateWSDL(new URL(url), false);
 	}
@@ -39,35 +47,35 @@ public class GenerateWsdl {
 	}
 
 	public References generateWSDL(URL url, boolean one) throws IOException, URISyntaxException {
-		String fileName = DitaTools.getName(url.toExternalForm());
+		final String fileName = DitaTools.getName(url.toExternalForm());
 		LogManager.info("Inicio de Procesado de " + url);
-		WSDLParser parser = new WSDLParser();
-		WSDLParserContext ctx = new WSDLParserContext();
+		final WSDLParser parser = new WSDLParser();
+		final WSDLParserContext ctx = new WSDLParserContext();
 		if (url.getProtocol().startsWith("file")) {
-			String p = url.getPath();
+			final String p = url.getPath();
 			ctx.setInput(p);
 		} else {
 			ctx.setInput(url.toExternalForm());
 		}
-		Definitions desc = parser.parse(ctx);
+		final Definitions desc = parser.parse(ctx);
 		String content = "Definición del Servicio Web " + fileName;
 		if (desc.getDocumentation() != null) {
 			if (!desc.getDocumentation().getContent().isEmpty()) {
 				content = desc.getDocumentation().getContent().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 			}
 		}
-		ArrayList<References> index = new ArrayList<References>();
-		List<Service> services = desc.getServices();
-		for (Service service : services) {
+		final ArrayList<References> index = new ArrayList<>();
+		final List<Service> services = desc.getServices();
+		for (final Service service : services) {
 			content = "Definiciones del servicio " + service.getName();
 			if (service.getDocumentation() != null) {
 				content = service.getDocumentation().getContent().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 			}
-			WSDLGraph graph = new WSDLGraph(service);
+			final WSDLGraph graph = new WSDLGraph(service);
 			CreatePortada cc = new CreatePortada(service.getName() + DitaConstants.SUFFIX_SERVICE,
 					"Documentacion del Servicio " + service.getName(), content);
 			cc.setDiagram(graph.generate());
-			References chapterService = new References(cc.create());
+			final References chapterService = new References(cc.create());
 			cc = null;
 			CreatePorts ce = new CreatePorts(service.getName());
 			chapterService.addChild(new References(ce.create(service.getPorts())));
@@ -76,14 +84,14 @@ public class GenerateWsdl {
 
 			cc = new CreatePortada(service.getName() + DitaConstants.SUFFIX_OPERATION + "s",
 					"Operaciones de " + service.getName(), content);
-			References chapter = new References(cc.create());
+			final References chapter = new References(cc.create());
 			cc = null;
-			for (Operation operation : desc.getOperations()) {
+			for (final Operation operation : desc.getOperations()) {
 				content = "Metodos de la operación " + operation.getName();
 				if (operation.getDocumentation() != null) {
 					content = operation.getDocumentation().getContent().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 				}
-				CreateOperation co = new CreateOperation(operation.getName() + DitaConstants.SUFFIX_OPERATION,
+				final CreateOperation co = new CreateOperation(operation.getName() + DitaConstants.SUFFIX_OPERATION,
 						"Operation " + operation.getName(), content);
 				if (chapter.searchChild(co.getId()) == null) {
 					chapter.addChild(new References(co.create(operation)));
@@ -93,15 +101,15 @@ public class GenerateWsdl {
 			chapterService.addChild(chapter);
 			index.add(chapterService);
 		}
-		List<Schema> schemas = desc.getSchemas();
-		for (Schema schema : schemas) {
-			String idSchema = (DitaTools.getSchemaId(schema.getTargetNamespace()) + DitaConstants.SUFFIX_SERVICE)
+		final List<Schema> schemas = desc.getSchemas();
+		for (final Schema schema : schemas) {
+			final String idSchema = (DitaTools.getSchemaId(schema.getTargetNamespace()) + DitaConstants.SUFFIX_SERVICE)
 					.replaceAll("\\s+", "_");
 			;
-			References cover = findRef(idSchema, index);
-			GenerateSchema gs = new GenerateSchema();
+			final References cover = findRef(idSchema, index);
+			final GenerateSchema gs = new GenerateSchema();
 			if (cover == null) {
-				References ref = gs.generateSchema(schema, fileName, false);
+				final References ref = gs.generateSchema(schema, fileName, false);
 				index.add(ref);
 			} else {
 				gs.append2Schema(cover, schema);
@@ -114,36 +122,27 @@ public class GenerateWsdl {
 		LogManager.info("Fin procesado " + url);
 		if (!one) {
 			String id = Config.getId();
-			if (id == null || id.isEmpty()) {
+			if ((id == null) || id.isEmpty()) {
 				id = fileName;
 			}
 			String title = Config.getTitle();
-			if (title == null || title.isEmpty()) {
+			if ((title == null) || title.isEmpty()) {
 				title = "Documentación  del WSDL " + fileName;
 			}
 			String description = Config.getDescription();
-			if (description == null || description.isEmpty()) {
+			if ((description == null) || description.isEmpty()) {
 				description = content;
 			}
-			CreateBookMap cb = new CreateBookMap(id, title, description);
+			final CreateBookMap cb = new CreateBookMap(id, title, description);
 			cb.create(index);
 			return null;
 		} else {
-			CreatePortada cc = new CreatePortada(fileName + DitaConstants.SUFFIX_WSDL,
+			final CreatePortada cc = new CreatePortada(fileName + DitaConstants.SUFFIX_WSDL,
 					"Documentación  del WSDL " + fileName, content);
 
-			References ref = new References(cc.create());
+			final References ref = new References(cc.create());
 			ref.getChilds().addAll(index);
 			return ref;
 		}
-	}
-
-	private References findRef(String idSchema, ArrayList<References> index) {
-		for (References ref : index) {
-			if (ref.getId().equalsIgnoreCase(idSchema)) {
-				return ref;
-			}
-		}
-		return null;
 	}
 }

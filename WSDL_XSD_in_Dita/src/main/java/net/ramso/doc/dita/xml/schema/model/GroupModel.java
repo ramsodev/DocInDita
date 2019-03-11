@@ -12,25 +12,68 @@ import net.ramso.doc.dita.xml.schema.model.graph.GroupGraph;
 import net.ramso.tools.LogManager;
 
 public class GroupModel extends AbstractComplexContentModel {
-	private SchemaComponent component;
+	private final SchemaComponent component;
 	private QName ref;
 	private String diagram;
 
 	public GroupModel(Group group) {
 		super();
-		this.component = group;
+		component = group;
 		init();
 		LogManager.debug("Carga de Grupo " + getName());
 	}
 
 	public GroupModel(GroupRef group) {
 		super();
-		this.component = group;
+		component = group;
 		init();
 	}
 
+	@Override
+	public SchemaComponent getComponent() {
+
+		return component;
+	}
+
+	@Override
+	public String getComponentName() {
+		return DitaConstants.NAME_GROUP;
+	}
+
+	@Override
+	public String getDiagram() {
+		if (diagram == null) {
+			final GroupGraph graph = new GroupGraph(this);
+			diagram = graph.generate();
+			setScaleDiagram(graph.scale());
+		}
+		return diagram;
+	}
+
+	public GroupModel getModel() {
+		if (getRef() == null)
+			return this;
+		else
+			return new GroupModel(getComponent().getSchema().getGroup(getRef()));
+	}
+
+	/**
+	 * @return the ref
+	 */
+	@Override
+	public QName getRef() {
+		return ref;
+	}
+
+	@Override
+	public QName getType() {
+		if (getRef() != null)
+			return getRef();
+		return ((Group) component).getQname();
+	}
+
 	private void init() {
-		this.contentType = DitaConstants.SUFFIX_GROUP;
+		contentType = DitaConstants.SUFFIX_GROUP;
 		if (component instanceof Group) {
 			procesGroup((Group) component);
 		} else {
@@ -39,18 +82,9 @@ public class GroupModel extends AbstractComplexContentModel {
 
 	}
 
-	public GroupModel getModel() {
-		if (getRef() == null) {
-			return this;
-		} else {
-			return new GroupModel(getComponent().getSchema().getGroup(getRef()));
-		}
-	}
-
-	private void procesRef(GroupRef group) {
-		ref = group.getRef();
-		setElements(new ArrayList<IComplexContentModel>());
-
+	@Override
+	public boolean isElement() {
+		return component instanceof GroupRef;
 	}
 
 	private void procesGroup(Group group) {
@@ -66,45 +100,10 @@ public class GroupModel extends AbstractComplexContentModel {
 
 	}
 
-	@Override
-	public SchemaComponent getComponent() {
+	private void procesRef(GroupRef group) {
+		ref = group.getRef();
+		setElements(new ArrayList<IComplexContentModel>());
 
-		return component;
-	}
-
-	@Override
-	public QName getType() {
-		if (getRef() != null) {
-			return getRef();
-		}
-		return ((Group) component).getQname();
-	}
-
-	/**
-	 * @return the ref
-	 */
-	public QName getRef() {
-		return ref;
-	}
-
-	@Override
-	public String getComponentName() {
-		return DitaConstants.NAME_GROUP;
-	}
-
-	@Override
-	public String getDiagram() {
-		if (this.diagram == null) {
-			GroupGraph graph = new GroupGraph(this);
-			diagram = graph.generate();
-			setScaleDiagram(graph.scale());
-		}
-		return diagram;
-	}
-
-	@Override
-	public boolean isElement() {
-		return component instanceof GroupRef;
 	}
 
 }

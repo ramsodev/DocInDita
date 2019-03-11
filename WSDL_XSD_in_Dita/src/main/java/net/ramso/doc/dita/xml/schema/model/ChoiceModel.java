@@ -1,27 +1,18 @@
 package net.ramso.doc.dita.xml.schema.model;
 
 import com.predic8.schema.Choice;
-import com.predic8.schema.Group;
-import com.predic8.schema.GroupRef;
 import com.predic8.schema.SchemaComponent;
 
 import groovy.xml.QName;
 import net.ramso.doc.dita.tools.DitaConstants;
 
 public class ChoiceModel extends AbstractComplexContentModel {
-	private Choice choice;
-	
+	private final Choice choice;
 
 	public ChoiceModel(Choice choice) {
 		super();
 		this.choice = choice;
 		init();
-	}
-
-	private void init() {
-		this.contentType = DitaConstants.CHOICE;
-		procesChoice(choice);
-		
 	}
 
 	@Override
@@ -31,29 +22,7 @@ public class ChoiceModel extends AbstractComplexContentModel {
 	}
 
 	@Override
-	public QName getType() {
-
-		return null;
-	}
-
-	/**
-	 * @return the ref
-	 */
-	public QName getRef() {
-		return null;
-	}
-
-	@Override
 	public String getComponentName() {
-		return DitaConstants.CHOICE;
-	}
-
-	/* (non-Javadoc)
-	 * @see net.ramso.doc.dita.xml.schema.model.AbstractComponentModel#getName()
-	 */
-	@Override
-	public String getName() {
-		
 		return DitaConstants.CHOICE;
 	}
 
@@ -62,5 +31,36 @@ public class ChoiceModel extends AbstractComplexContentModel {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.ramso.doc.dita.xml.schema.model.AbstractComponentModel#getName()
+	 */
+	@Override
+	public String getName() {
+
+		return DitaConstants.CHOICE;
+	}
+
+	/**
+	 * @return the ref
+	 */
+	@Override
+	public QName getRef() {
+		return null;
+	}
+
+	@Override
+	public QName getType() {
+
+		return null;
+	}
+
+	private void init() {
+		contentType = DitaConstants.CHOICE;
+		procesChoice(choice);
+
+	}
+
 }

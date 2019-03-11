@@ -13,50 +13,50 @@ public class References {
 		setHref(href);
 	}
 
-	public String getId() {
-		return id;
+	public void addChild(References child) {
+		if (childs == null) {
+			childs = new ArrayList<>();
+		}
+		childs.add(child);
 	}
 
-	public void setId(String id) {
-		this.id = id.toLowerCase().replaceAll("\\s+", "_").substring(0, id.lastIndexOf('.'));
+	public ArrayList<References> getChilds() {
+		if (childs == null) {
+			childs = new ArrayList<>();
+		}
+		return childs;
 	}
 
 	public String getHref() {
 		return href;
 	}
 
-	public void setHref(String href) {
-		this.href = href;
+	public String getId() {
+		return id;
 	}
 
-	public ArrayList<References> getChilds() {
-		if (childs == null)
-			childs = new ArrayList<References>();
-		return childs;
+	public References searchChild(String id) {
+		for (final References child : getChilds()) {
+			if (child.getId().equalsIgnoreCase(id))
+				return child;
+			else if (!child.getChilds().isEmpty()) {
+				final References c = child.searchChild(id);
+				if (c != null)
+					return c;
+			}
+		}
+		return null;
 	}
 
 	public void setChilds(ArrayList<References> childs) {
 		this.childs = childs;
 	}
 
-	public void addChild(References child) {
-		if (childs == null) {
-			childs = new ArrayList<References>();
-		}
-		childs.add(child);
+	public void setHref(String href) {
+		this.href = href;
 	}
 
-	public References searchChild(String id) {
-		for(References child:getChilds()) {
-			if(child.getId().equalsIgnoreCase(id)) {
-				return child;
-			}else if(!child.getChilds().isEmpty()) {
-				References c = child.searchChild(id);
-				if(c!= null) {
-					return c;
-				}
-			}
-		}
-		return null;
+	public void setId(String id) {
+		this.id = id.toLowerCase().replaceAll("\\s+", "_").substring(0, id.lastIndexOf('.'));
 	}
 }

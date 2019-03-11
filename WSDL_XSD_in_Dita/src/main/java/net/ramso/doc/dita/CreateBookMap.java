@@ -26,10 +26,12 @@ public class CreateBookMap extends BasicCreate {
 		return getFile_name();
 	}
 
+	@Override
 	public String getContent() {
 		return content;
 	}
 
+	@Override
 	public void setContent(String content) {
 		this.content = content;
 	}

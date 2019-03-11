@@ -5,22 +5,23 @@ import java.util.ArrayList;
 import groovy.xml.QName;
 
 public interface IComplexContentModel extends iComponentModel {
-	public void setMinOccurs(Object minOccurs);
-
-	public int getMinOccurs();
-
-	public boolean isRequiered();
-
-	public String getMaxOccurs();
+	public String getComponentName();
 
 	public String getContentType();
 
 	public ArrayList<IComplexContentModel> getElements();
 
-	public void setElements(ArrayList<IComplexContentModel> elements);
-	
+	public String getMaxOccurs();
+
+	public int getMinOccurs();
+
 	public QName getRef();
-	
-	public String getComponentName();
+
 	public boolean isElement();
+
+	public boolean isRequiered();
+
+	public void setElements(ArrayList<IComplexContentModel> elements);
+
+	public void setMinOccurs(Object minOccurs);
 }

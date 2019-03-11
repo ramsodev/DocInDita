@@ -18,7 +18,7 @@ import net.ramso.tools.graph.GraphTools;
 
 public class AttributeGroupGraph extends AbstractXmlGraph {
 
-	private AttributeGroupModel attributeGroup;
+	private final AttributeGroupModel attributeGroup;
 	private List<mxCell> cellTypes;
 	private int contentPosition = 0;
 	private mxCell typeGroup;
@@ -37,24 +37,51 @@ public class AttributeGroupGraph extends AbstractXmlGraph {
 		setGraph(graph);
 	}
 
-	@Override
-	public String generate() {
-		this.addType = true;
-		setGraph(new mxGraph());
-		getGraph().setAutoSizeCells(true);
-		getGraph().setCellsResizable(true);
-		mxCell parent = (mxCell) getGraph().getDefaultParent();
-		mxCell complexTypeCell = crateAttributeGroupCell(parent);
-		getGraph().addCell(complexTypeCell);
-		if (isAddType()) {
-			getGraph().addCell(typeGroup);
+	protected void addCellType(mxCell cell) {
+		if (getCellTypes() == null) {
+			cellTypes = new ArrayList<>();
 		}
-		process(getGraph());
-		return getFileName();
+		typeGroup.insert(cell);
+		getCellTypes().add(cell);
+	}
+
+	private void apppendContent(mxCell parent, Object iconParent, List<AttributeModel> attributes, int[] widths,
+			int height) {
+		final int x = height + (height / 2);
+		for (final AttributeModel element : attributes) {
+			final AttributeModel ele = element;
+			final AttributeGraph eg = new AttributeGraph(ele, getGraph());
+			final mxCell cellLine = eg.createAttributeLine(parent, x, getContentPosition(), widths[0], height,
+					widths[1]);
+			final mxCell cellType = inserType(ele);
+			if (iconParent != null) {
+				getGraph().insertEdge(getGraph().getDefaultParent(), "", "", iconParent, cellLine,
+						GraphTools.getOrtogonalEdgeStyle());
+			}
+			if (isAddType()) {
+				addCellType(cellType);
+				getGraph().insertEdge(getGraph().getDefaultParent(), "", "", cellLine, cellType,
+						GraphTools.getOrtogonalEdgeStyle(true));
+			}
+			contentPosition += height;
+			final mxGeometry g = cellLine.getGeometry();
+			g.setTerminalPoint(new mxPoint(0, g.getHeight() / 2), false);
+			g.setTerminalPoint(new mxPoint(g.getWidth(), g.getHeight() / 2), true);
+			cellLine.setGeometry(g);
+		}
 	}
 
 	public mxCell crateAttributeGroupCell(mxCell parent) {
 		return crateAttributeGroupCell(parent, attributeGroup.getName());
+	}
+
+	public mxCell crateAttributeGroupCell(mxCell parent, int x, int y, int width, int height) {
+		final int[] sizes = getSizes();
+		return crateAttributeGroupCell(parent, attributeGroup.getName(), x, y, width, height, sizes);
+	}
+
+	public mxCell crateAttributeGroupCell(mxCell parent, int x, int y, int width, int height, int[] sizes) {
+		return crateAttributeGroupCell(parent, attributeGroup.getName(), x, y, width, height, sizes);
 	}
 
 	public mxCell crateAttributeGroupCell(mxCell parent, String name) {
@@ -62,21 +89,12 @@ public class AttributeGroupGraph extends AbstractXmlGraph {
 	}
 
 	public mxCell crateAttributeGroupCell(mxCell parent, String name, int x, int y) {
-		Rectangle2D base = GraphTools.getTextSize(name);
-		int height = (int) (base.getHeight() + (base.getHeight() / 2));
+		final Rectangle2D base = GraphTools.getTextSize(name);
+		final int height = (int) (base.getHeight() + (base.getHeight() / 2));
 
-		int[] sizes = getSizes();
-		int width = sizes[0] + 100 + sizes[1] + (height + (height / 2));
+		final int[] sizes = getSizes();
+		final int width = sizes[0] + 100 + sizes[1] + (height + (height / 2));
 		return crateAttributeGroupCell(parent, name, x, y, width, height, sizes);
-	}
-
-	public mxCell crateAttributeGroupCell(mxCell parent, int x, int y, int width, int height) {
-		int[] sizes = getSizes();
-		return crateAttributeGroupCell(parent, attributeGroup.getName(), x, y, width, height, sizes);
-	}
-
-	public mxCell crateAttributeGroupCell(mxCell parent, int x, int y, int width, int height, int[] sizes) {
-		return crateAttributeGroupCell(parent, attributeGroup.getName(), x, y, width, height, sizes);
 	}
 
 	public mxCell crateAttributeGroupCell(mxCell parent, String name, int x, int y, int width, int height,
@@ -86,15 +104,16 @@ public class AttributeGroupGraph extends AbstractXmlGraph {
 			color = "LIGHTGRAY";
 			setMaxWidth(width);
 		}
-		mxCell cell = (mxCell) getGraph().createVertex(parent, name + DitaConstants.SUFFIX_ATTRIBUTEGROUP, "", x, y,
-				width, height, GraphTools.getStyle(false, true, color));
-		mxCell titulo = (mxCell) getGraph().insertVertex(cell, "Title" + name + DitaConstants.SUFFIX_ATTRIBUTEGROUP,
-				name, x, y, width, height, GraphTools.getStyle(true, true, color, height));
-		super.insertIcon((mxCell) titulo, DitaConstants.SUFFIX_ATTRIBUTEGROUP.toLowerCase(), height);
+		final mxCell cell = (mxCell) getGraph().createVertex(parent, name + DitaConstants.SUFFIX_ATTRIBUTEGROUP, "", x,
+				y, width, height, GraphTools.getStyle(false, true, color));
+		final mxCell titulo = (mxCell) getGraph().insertVertex(cell,
+				"Title" + name + DitaConstants.SUFFIX_ATTRIBUTEGROUP, name, x, y, width, height,
+				GraphTools.getStyle(true, true, color, height));
+		super.insertIcon(titulo, DitaConstants.SUFFIX_ATTRIBUTEGROUP.toLowerCase(), height);
 		y += height;
 		width -= 6;
 		if (attributeGroup.getAttributes().size() > 0) {
-			mxCell subCell = (mxCell) getGraph().insertVertex(cell,
+			final mxCell subCell = (mxCell) getGraph().insertVertex(cell,
 					attributeGroup.getName() + DitaConstants.SUFFIX_ATTRIBUTEGROUP, "", x, y, width, height,
 					GraphTools.getStyle(false, true));
 			y = 0;
@@ -114,61 +133,116 @@ public class AttributeGroupGraph extends AbstractXmlGraph {
 		return cell;
 	}
 
-	private double resize(mxCell cell, int[] sizes) {
-		double width = 0;
-		double x = 0;
+	@Override
+	public String generate() {
+		addType = true;
+		setGraph(new mxGraph());
+		getGraph().setAutoSizeCells(true);
+		getGraph().setCellsResizable(true);
+		final mxCell parent = (mxCell) getGraph().getDefaultParent();
+		final mxCell complexTypeCell = crateAttributeGroupCell(parent);
+		getGraph().addCell(complexTypeCell);
 		if (isAddType()) {
-			width = sizes[0] + 100 + sizes[1] + x;
-		} else {
-			width = getMaxWidth();
+			getGraph().addCell(typeGroup);
 		}
-		for (int i = 0; i < cell.getChildCount(); i++) {
-			mxCell child = (mxCell) cell.getChildAt(i);
-			if (!child.getId().startsWith(GraphConstants.EXCLUDE_PREFIX_ICON)) {
-				child.getGeometry().setX(x);
-				child.getGeometry().setWidth(width - x);
-			}
-		}
-		return width;
-
+		process(getGraph());
+		return getFileName();
 	}
 
-	private void apppendContent(mxCell parent, Object iconParent, List<AttributeModel> attributes, int[] widths,
-			int height) {
-		int x = height + (height / 2);
-		for (AttributeModel element : attributes) {
-			AttributeModel ele = (AttributeModel) element;
-			AttributeGraph eg = new AttributeGraph(ele, getGraph());
-			mxCell cellLine = eg.createAttributeLine(parent, x, getContentPosition(), widths[0], height, widths[1]);
-			mxCell cellType = inserType(ele);
-			if (iconParent != null) {
-				getGraph().insertEdge(getGraph().getDefaultParent(), "", "", iconParent, cellLine,
-						GraphTools.getOrtogonalEdgeStyle());
-			}
-			if (isAddType()) {
-				addCellType(cellType);
-				getGraph().insertEdge(getGraph().getDefaultParent(), "", "", cellLine, cellType,
-						GraphTools.getOrtogonalEdgeStyle(true));
-			}
-			contentPosition += height;
-			mxGeometry g = cellLine.getGeometry();
-			g.setTerminalPoint(new mxPoint(0, g.getHeight() / 2), false);
-			g.setTerminalPoint(new mxPoint(g.getWidth(), g.getHeight() / 2), true);
-			cellLine.setGeometry(g);
+	protected List<mxCell> getCellTypes() {
+		return cellTypes;
+	}
+
+	protected Object[] getCellTypesArray() {
+		if (cellTypes == null) {
+			cellTypes = new ArrayList<>();
 		}
+		return cellTypes.toArray();
+	}
+
+	protected int getContentPosition() {
+		return contentPosition;
+	}
+
+	protected int getMaxWidth() {
+		return maxWidth;
+	}
+
+	private int[] getSizes() {
+		final int[] sizes = { 0, 0 };
+		final int[] tempSizes = getSizes(attributeGroup.getAttributes());
+		if (tempSizes[0] > sizes[0]) {
+			sizes[0] = tempSizes[0];
+		}
+		if (tempSizes[1] > sizes[1]) {
+			sizes[1] = tempSizes[1];
+		}
+		return sizes;
+	}
+
+	private int[] getSizes(AttributeModel atr) {
+		final int[] sizes = { 0, 0 };
+		final int iconSize = (int) GraphTools.getTextSize(atr.getName()).getHeight();
+		sizes[0] = (int) GraphTools.getTextSize(atr.getName()).getWidth() + iconSize + (iconSize / 2);
+		String value = "";
+		if (atr.getType() != null) {
+			value = atr.getType().getLocalPart();
+		} else if (atr.getSimpleType() != null) {
+			value = atr.getSimpleType().getName();
+			if ((value == null) || value.isEmpty()) {
+				value = "(" + atr.getName() + DitaConstants.SUFFIX_SIMPLETYPE + ")";
+			}
+		}
+		sizes[1] = (int) GraphTools.getTextSize(value).getWidth() + iconSize + (iconSize / 2);
+		return sizes;
+	}
+
+	private int[] getSizes(List<AttributeModel> attributes) {
+		final int[] sizes = { 0, 0 };
+		if (attributes != null) {
+			for (final AttributeModel atr : attributes) {
+				final int[] tempSizes = getSizes(atr);
+				if (tempSizes[0] > sizes[0]) {
+					sizes[0] = tempSizes[0];
+				}
+				if (tempSizes[1] > sizes[1]) {
+					sizes[1] = tempSizes[1];
+				}
+			}
+		}
+		return sizes;
+	}
+
+	@Override
+	protected mxCell insertIcon(mxCell parent, String icon, int size) {
+		return insertIcon(parent, icon, size, 0);
+	}
+
+	private mxCell insertIcon(mxCell parent, String icon, int size, int move) {
+		final mxCell icono = super.insertIcon(parent, icon, size);
+		final mxGeometry g = icono.getGeometry();
+		if (move > 0) {
+			g.setX(size + move);
+			icono.setId(GraphConstants.EXCLUDE_PREFIX_ICON + parent.getId() + move);
+		}
+		g.setTerminalPoint(new mxPoint(0, g.getHeight() / 2), false);
+		g.setTerminalPoint(new mxPoint(g.getWidth(), g.getHeight() / 2), true);
+		icono.setGeometry(g);
+		return icono;
+
 	}
 
 	private mxCell inserType(AttributeModel attribute) {
 		mxCell type = null;
 		if (isAddType()) {
-			mxCell parent = typeGroup;
-			int x = 0;
+			final mxCell parent = typeGroup;
+			final int x = 0;
 			int y = (int) typeGroup.getGeometry().getHeight();
 			y += 21;
 
 			if (attribute.getSimpleType() != null) {
 				String value = attribute.getSimpleType().getName();
-				if (value == null || value.isEmpty()) {
+				if ((value == null) || value.isEmpty()) {
 					value = "(" + attribute.getName() + DitaConstants.SUFFIX_SIMPLETYPE + ")";
 				}
 				type = new SimpleTypeGraph(attribute.getSimpleType(), getGraph()).createSimpleType(parent, value, x, y);
@@ -183,97 +257,27 @@ public class AttributeGroupGraph extends AbstractXmlGraph {
 		return type;
 	}
 
-	private int[] getSizes() {
-		int[] sizes = { 0, 0 };
-		int[] tempSizes = getSizes(attributeGroup.getAttributes());
-		if (tempSizes[0] > sizes[0]) {
-			sizes[0] = tempSizes[0];
-		}
-		if (tempSizes[1] > sizes[1]) {
-			sizes[1] = tempSizes[1];
-		}
-		return sizes;
-	}
-
-	private int[] getSizes(List<AttributeModel> attributes) {
-		int[] sizes = { 0, 0 };
-		if (attributes != null) {
-			for (AttributeModel atr : attributes) {
-				int[] tempSizes = getSizes(atr);
-				if (tempSizes[0] > sizes[0]) {
-					sizes[0] = tempSizes[0];
-				}
-				if (tempSizes[1] > sizes[1]) {
-					sizes[1] = tempSizes[1];
-				}
-			}
-		}
-		return sizes;
-	}
-
-	private int[] getSizes(AttributeModel atr) {
-		int[] sizes = { 0, 0 };
-		int iconSize = (int) GraphTools.getTextSize(atr.getName()).getHeight();
-		sizes[0] = (int) GraphTools.getTextSize(atr.getName()).getWidth() + iconSize + (iconSize / 2);
-		String value = "";
-		if (atr.getType() != null) {
-			value = atr.getType().getLocalPart();
-		} else if (atr.getSimpleType() != null) {
-			value = atr.getSimpleType().getName();
-			if (value == null || value.isEmpty()) {
-				value = "(" + atr.getName() + DitaConstants.SUFFIX_SIMPLETYPE + ")";
-			}
-		}
-		sizes[1] = (int) GraphTools.getTextSize(value).getWidth() + iconSize + (iconSize / 2);
-		return sizes;
-	}
-
-	protected List<mxCell> getCellTypes() {
-		return cellTypes;
-	}
-
-	protected Object[] getCellTypesArray() {
-		if (cellTypes == null)
-			cellTypes = new ArrayList<mxCell>();
-		return cellTypes.toArray();
-	}
-
-	protected void addCellType(mxCell cell) {
-		if (getCellTypes() == null)
-			cellTypes = new ArrayList<mxCell>();
-		typeGroup.insert(cell);
-		getCellTypes().add(cell);
-	}
-
-	@Override
-	protected mxCell insertIcon(mxCell parent, String icon, int size) {
-		return insertIcon(parent, icon, size, 0);
-	}
-
-	private mxCell insertIcon(mxCell parent, String icon, int size, int move) {
-		mxCell icono = super.insertIcon(parent, icon, size);
-		mxGeometry g = icono.getGeometry();
-		if (move > 0) {
-			g.setX(size + move);
-			icono.setId(GraphConstants.EXCLUDE_PREFIX_ICON + parent.getId() + move);
-		}
-		g.setTerminalPoint(new mxPoint(0, g.getHeight() / 2), false);
-		g.setTerminalPoint(new mxPoint(g.getWidth(), g.getHeight() / 2), true);
-		icono.setGeometry(g);
-		return icono;
-
-	}
-
-	protected int getContentPosition() {
-		return contentPosition;
-	}
-
 	protected boolean isAddType() {
 		return addType;
 	}
 
-	protected int getMaxWidth() {
-		return maxWidth;
+	private double resize(mxCell cell, int[] sizes) {
+		double width = 0;
+		final double x = 0;
+		if (isAddType()) {
+			width = sizes[0] + 100 + sizes[1] + x;
+		} else {
+			width = getMaxWidth();
+		}
+		for (int i = 0; i < cell.getChildCount(); i++) {
+			final mxCell child = (mxCell) cell.getChildAt(i);
+			if (!child.getId().startsWith(GraphConstants.EXCLUDE_PREFIX_ICON)) {
+				child.getGeometry().setX(x);
+				child.getGeometry().setWidth(width - x);
+			}
+		}
+		return width;
+
 	}
 
 	protected void setMaxWidth(int maxWidth) {

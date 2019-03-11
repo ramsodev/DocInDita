@@ -28,74 +28,24 @@ public abstract class AbstractGraph {
 	private String fileName;
 	private mxGraph graph;
 
-	public abstract String generate();
-
-	protected mxCell insertIcon(mxCell parent, String icon, int size) {
-		return (mxCell) getGraph().insertVertex(parent, GraphConstants.EXCLUDE_PREFIX_ICON + parent.getId(), "", 0, 0,
-				size, size, GraphTools.getStyleImage(true, size - 2, size - 2, icon));
-	}
-
-	protected void resizeCell(mxCell cell, int maxWith) {
-		if (!cell.getId().startsWith(GraphConstants.EXCLUDE_PREFIX_ICON)) {
-			mxGeometry g = cell.getGeometry();
-			if (cell.getId().endsWith(DitaConstants.SUFFIX_ADDRESS)) {
-				maxWith -= 20;
-			}
-			g.setWidth(maxWith);
-			int e = cell.getChildCount();
-			if (!cell.getId().startsWith(GraphConstants.EXCLUDE_PREFIX_GROUP)) {
-				for (int i = 0; i < e; i++) {
-					if (!cell.getId().startsWith(GraphConstants.EXCLUDE_PREFIX_GROUP)) {
-						resizeCell((mxCell) cell.getChildAt(i), maxWith);
-					} else {
-
-					}
-				}
-			}
-		}
-	}
-
-	protected void process(mxGraph graph) {
-		JFrame f = new JFrame();
-		f.setSize(800, 800);
-		f.setLocation(300, 200);
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		mxGraphComponent graphComponent = new mxGraphComponent(graph);
-		f.getContentPane().add(graphComponent, BorderLayout.CENTER);
-		f.setVisible(false);
-		morphGraph(graph, graphComponent);
-		try {
-			export(graph);
-		} catch (Exception e) {
-			net.ramso.tools.LogManager.warn("Error al exportar el diagrama " + getFileName(), e);
-		}
-	}
-
-	protected void morphGraph(mxGraph graph, mxGraphComponent graphComponent) {
-		mxStackLayout layout = new mxStackLayout(graph, true, 50);
-	
-//		mxPartitionLayout layout = new mxPartitionLayout(graph,true, 50, 100);
-		layout.execute(graph.getDefaultParent());
-	}
-
 	protected void export(mxGraph graph) throws IOException {
-		String filename = Config.getOutputDir() + File.separator + getFileName();
+		final String filename = Config.getOutputDir() + File.separator + getFileName();
 		if (FileTools.checkPath(filename, true)) {
-			mxSvgCanvas canvas = (mxSvgCanvas) mxCellRenderer.drawCells(graph, null, 1, null, new CanvasFactory() {
-				public mxICanvas createCanvas(int width, int height) {
-					CustomSvgCanvas canvas = new CustomSvgCanvas(mxDomUtils.createSvgDocument(width, height));
-					canvas.setEmbedded(true);
-					return canvas;
-				}
-			});
+			final mxSvgCanvas canvas = (mxSvgCanvas) mxCellRenderer.drawCells(graph, null, 1, null,
+					new CanvasFactory() {
+						@Override
+						public mxICanvas createCanvas(int width, int height) {
+							final CustomSvgCanvas canvas = new CustomSvgCanvas(
+									mxDomUtils.createSvgDocument(width, height));
+							canvas.setEmbedded(true);
+							return canvas;
+						}
+					});
 			mxUtils.writeFile(mxXmlUtils.getXml(canvas.getDocument()), filename);
 		}
 	}
 
-	protected void setFileName(String file_name) {
-		this.fileName = (GraphConstants.IMAGE_PATH + File.separator + file_name + SUFFIX + "."
-				+ GraphConstants.SVG_EXTENSION).replaceAll("\\s+", "_");
-	}
+	public abstract String generate();
 
 	public String getFileName() {
 		return fileName;
@@ -108,14 +58,66 @@ public abstract class AbstractGraph {
 		return graph;
 	}
 
+	protected mxCell insertIcon(mxCell parent, String icon, int size) {
+		return (mxCell) getGraph().insertVertex(parent, GraphConstants.EXCLUDE_PREFIX_ICON + parent.getId(), "", 0, 0,
+				size, size, GraphTools.getStyleImage(true, size - 2, size - 2, icon));
+	}
+
+	protected void morphGraph(mxGraph graph, mxGraphComponent graphComponent) {
+		final mxStackLayout layout = new mxStackLayout(graph, true, 50);
+
+		// mxPartitionLayout layout = new mxPartitionLayout(graph,true, 50, 100);
+		layout.execute(graph.getDefaultParent());
+	}
+
+	protected void process(mxGraph graph) {
+		final JFrame f = new JFrame();
+		f.setSize(800, 800);
+		f.setLocation(300, 200);
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		final mxGraphComponent graphComponent = new mxGraphComponent(graph);
+		f.getContentPane().add(graphComponent, BorderLayout.CENTER);
+		f.setVisible(false);
+		morphGraph(graph, graphComponent);
+		try {
+			export(graph);
+		} catch (final Exception e) {
+			net.ramso.tools.LogManager.warn("Error al exportar el diagrama " + getFileName(), e);
+		}
+	}
+
+	protected void resizeCell(mxCell cell, int maxWith) {
+		if (!cell.getId().startsWith(GraphConstants.EXCLUDE_PREFIX_ICON)) {
+			final mxGeometry g = cell.getGeometry();
+			if (cell.getId().endsWith(DitaConstants.SUFFIX_ADDRESS)) {
+				maxWith -= 20;
+			}
+			g.setWidth(maxWith);
+			final int e = cell.getChildCount();
+			if (!cell.getId().startsWith(GraphConstants.EXCLUDE_PREFIX_GROUP)) {
+				for (int i = 0; i < e; i++) {
+					if (!cell.getId().startsWith(GraphConstants.EXCLUDE_PREFIX_GROUP)) {
+						resizeCell((mxCell) cell.getChildAt(i), maxWith);
+					} else {
+
+					}
+				}
+			}
+		}
+	}
+
+	public boolean scale() {
+		if (getGraph().getGraphBounds().getWidth() > 500)
+			return true;
+		return false;
+	}
+
+	protected void setFileName(String file_name) {
+		fileName = (GraphConstants.IMAGE_PATH + File.separator + file_name + SUFFIX + "."
+				+ GraphConstants.SVG_EXTENSION).replaceAll("\\s+", "_");
+	}
+
 	protected void setGraph(mxGraph graph) {
 		this.graph = graph;
-	}
-	
-	public boolean scale() {
-		if(getGraph().getGraphBounds().getWidth()>500) {
-			return true;
-		}
-		return false;
 	}
 }

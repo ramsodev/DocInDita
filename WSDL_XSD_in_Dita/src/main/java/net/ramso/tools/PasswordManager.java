@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package net.ramso.tools;
 
@@ -19,49 +19,46 @@ import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
  */
 public class PasswordManager {
 
-	
 	protected static String KEY = "zs^S#2hsSUF*=PPpsAkG+Rp52Cfe=LVJ";
 	protected static String ALGORITHM = "PBEWithMD5AndDES";
 	private static StandardPBEStringEncryptor encryptor;
-	private static final String PREFIX="ENC:";
-	
+	private static final String PREFIX = "ENC:";
 
 	static {
 		try {
 			init();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LogManager.error("Error al configurar encryptación", e);
 		}
+	}
+
+	public static String decrypt(String pass) throws InvalidKeyException, InvalidAlgorithmParameterException,
+			ShortBufferException, IllegalBlockSizeException, BadPaddingException {
+		if (IsEncrypted(pass)) {
+			pass = pass.substring(4);
+		}
+		final String result = encryptor.decrypt(pass);
+		return result;
+	}
+
+	public static String encrypt(String pass) throws InvalidKeyException, InvalidAlgorithmParameterException,
+			ShortBufferException, IllegalBlockSizeException, BadPaddingException {
+
+		String result = encryptor.encrypt(pass);
+		result = PREFIX + result;
+		return result;
 	}
 
 	protected static void init() throws IOException {
 		encryptor = new StandardPBEStringEncryptor();
 		encryptor.setAlgorithm(ALGORITHM);
 		encryptor.setPassword(KEY);
-		
-	}
 
-	public static String encrypt(String pass) throws InvalidKeyException, InvalidAlgorithmParameterException,
-			ShortBufferException, IllegalBlockSizeException, BadPaddingException {
-		
-		String result = encryptor.encrypt(pass);
-		result=PREFIX+result;
-		return result;
-	}
-
-	public static String decrypt(String pass) throws InvalidKeyException, InvalidAlgorithmParameterException,
-			ShortBufferException, IllegalBlockSizeException, BadPaddingException {
-		if(IsEncrypted(pass)){
-			pass = pass.substring(4);
-		}
-		String result = encryptor.decrypt(pass);
-		return result;
 	}
 
 	public static boolean IsEncrypted(String pass) {
-		if(pass.startsWith(PREFIX)){
+		if (pass.startsWith(PREFIX))
 			return true;
-		}
 		return false;
 	}
 

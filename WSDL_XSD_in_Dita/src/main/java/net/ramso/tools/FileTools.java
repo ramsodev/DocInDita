@@ -22,12 +22,38 @@ import org.xml.sax.SAXException;
 
 public class FileTools {
 
-	public static InputStream getStream(String name) {
-		return Thread.currentThread().getContextClassLoader().getResourceAsStream(name);
+	public static void backup(String origen, String pathOrigen, String pathDestino) throws FileException {
+		String destino = pathDestino;
+		if (!destino.endsWith(File.separator)) {
+			destino += File.separator;
+		}
+		final String extension = origen.substring(origen.indexOf("."));
+		destino += origen.substring(0, origen.indexOf("."));
+		destino += "-";
+		destino += new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(new Date());
+		destino += extension;
+		origen = pathOrigen + File.separator + origen;
+		copy(origen, destino);
 	}
 
-	public static String getPath(String name) {
-		return Thread.currentThread().getContextClassLoader().getResource(name).getPath();
+	public static boolean checkPath(File file, boolean mkparentDirs) {
+		if (!file.exists()) {
+			final File parent = file.getParentFile();
+			if (!parent.exists()) {
+				if (mkparentDirs) {
+					parent.mkdirs();
+				} else
+					return false;
+			} else if (!parent.isDirectory())
+				return false;
+		}
+		return true;
+	}
+
+	public static boolean checkPath(String filename, boolean mkparentDirs) {
+
+		return checkPath(new File(filename), mkparentDirs);
+
 	}
 
 	public static void copy(String origen, String destino) throws FileException {
@@ -38,13 +64,13 @@ public class FileTools {
 		int c;
 		try {
 			_FDes = new FileOutputStream(destino);
-		} catch (FileNotFoundException e1) {
-			File f = new File(destino);
+		} catch (final FileNotFoundException e1) {
+			final File f = new File(destino);
 			f.getParentFile().mkdirs();
 
 			try {
 				f.createNewFile();
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				throw new FileException("Error al crear archivo " + f.getAbsolutePath(), e);
 			}
 		}
@@ -56,29 +82,27 @@ public class FileTools {
 			}
 			_FOri.close();
 			_FDes.close();
-		} catch (FileNotFoundException e) {
+		} catch (final FileNotFoundException e) {
 			throw new FileException("Error Fichero no encontrado " + origen, e);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new FileException("Error Entrada/Salida al copiar" + origen + " en " + destino, e);
 		}
 	}
 
-	public static void backup(String origen, String pathOrigen, String pathDestino) throws FileException {
-		String destino = pathDestino;
-		if (!destino.endsWith(File.separator)) {
-			destino += File.separator;
-		}
-		String extension = origen.substring(origen.indexOf("."));
-		destino += origen.substring(0, origen.indexOf("."));
-		destino += "-";
-		destino += new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(new Date());
-		destino += extension;
-		origen = pathOrigen + File.separator + origen;
-		copy(origen, destino);
+	public static String getPath(String name) {
+		return Thread.currentThread().getContextClassLoader().getResource(name).getPath();
+	}
+
+	public static InputStream getStream(String name) {
+		return Thread.currentThread().getContextClassLoader().getResourceAsStream(name);
+	}
+
+	public static Document parseXML(File file) throws ParserConfigurationException, SAXException, IOException {
+		return parseXML(file.getAbsolutePath());
 	}
 
 	public static Document parseXML(String file) throws ParserConfigurationException, SAXException, IOException {
-		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		final DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dBuilder;
 		dBuilder = dbFactory.newDocumentBuilder();
 		return dBuilder.parse(file);
@@ -89,35 +113,9 @@ public class FileTools {
 		return parseXML(url.toURI().toString());
 	}
 
-	public static Document parseXML(File file) throws ParserConfigurationException, SAXException, IOException {
-		return parseXML(file.getAbsolutePath());
-	}
-
-	public static boolean checkPath(String filename, boolean mkparentDirs) {
-
-		return checkPath(new File(filename), mkparentDirs);
-
-	}
-
-	public static boolean checkPath(File file, boolean mkparentDirs) {
-		if (!file.exists()) {
-			File parent = file.getParentFile();
-			if (!parent.exists()) {
-				if (mkparentDirs) {
-					parent.mkdirs();
-				} else {
-					return false;
-				}
-			} else if (!parent.isDirectory()) {
-				return false;
-			}
-		}
-		return true;
-	}
-
 	public static List<String> toString(File[] files) {
-		List<String> strings = new ArrayList<String>();
-		for (File file : files) {
+		final List<String> strings = new ArrayList<>();
+		for (final File file : files) {
 			strings.add(file.getAbsolutePath());
 		}
 		return strings;

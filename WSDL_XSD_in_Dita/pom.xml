@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.ramso.doc.dita.xml</groupId>
 	<artifactId>XMLDocInDita</artifactId>
-	<version>1.0.0-rc1</version>
+	<version>1.0.0</version>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
@@ -79,9 +79,6 @@
 			<version>3.9.8.1</version>
 		</dependency>
 
-		<!-- <dependency> <groupId>com.mxgraph</groupId> <artifactId>jgraphx</artifactId> 
-			<version>3.9.12</version> <scope>system</scope> <systemPath>${project.basedir}/libs/jgraphx-3.9.12.jar</systemPath> 
-			</dependency> -->
 	</dependencies>
 	<build>
 		<plugins>
@@ -127,7 +124,17 @@
 				</executions>
 
 			</plugin>
+			
 		</plugins>
 
 	</build>
+	<name>DocInDita</name>
+	<url>http://dev.ramso.net/XMLDocInDita</url>
+	<scm>
+		<url>https://github.com/ramsodev/XMLDocInDita.git</url>
+	</scm>
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/ramsodev/XMLDocInDita/issues</url>
+	</issueManagement>
 </project>

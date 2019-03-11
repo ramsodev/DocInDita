@@ -10,14 +10,13 @@ import com.predic8.schema.SchemaComponent;
 
 import groovy.xml.QName;
 import net.ramso.doc.dita.xml.schema.model.graph.AttributeGroupGraph;
-import net.ramso.doc.dita.xml.schema.model.graph.ElementGraph;
 import net.ramso.tools.LogManager;
 
 public class AttributeGroupModel extends AbstractComponentModel {
 
-	private SimpleTypeModel simpleType = null;
+	private final SimpleTypeModel simpleType = null;
 
-	private AttributeGroup attributeGroup;
+	private final AttributeGroup attributeGroup;
 
 	private List<AttributeModel> attributes;
 
@@ -25,17 +24,39 @@ public class AttributeGroupModel extends AbstractComponentModel {
 
 	public AttributeGroupModel(AttributeGroup attribute) {
 		super();
-		this.attributeGroup = attribute;
+		attributeGroup = attribute;
 		init();
 		LogManager.debug("Carga de AttributeGroup " + getName());
 	}
 
-	private void init() {
-		for (Attribute attribute : attributeGroup.getAllAttributes()) {
-			if (attributes == null)
-				attributes = new ArrayList<AttributeModel>();
-			attributes.add(new AttributeModel(attribute));
+	public List<AttributeModel> getAttributes() {
+		return attributes;
+	}
+
+	@Override
+	public SchemaComponent getComponent() {
+		return attributeGroup;
+	}
+
+	@Override
+	public String getDiagram() {
+		if (diagram == null) {
+			final AttributeGroupGraph graph = new AttributeGroupGraph(this);
+			diagram = graph.generate();
+			setScaleDiagram(graph.scale());
 		}
+		return diagram;
+	}
+
+	public String getHref() throws MalformedURLException {
+		if (getRef() != null)
+			return getHrefType();
+		return null;
+
+	}
+
+	public QName getRef() {
+		return attributeGroup.getRef();
 	}
 
 	/**
@@ -48,38 +69,17 @@ public class AttributeGroupModel extends AbstractComponentModel {
 	/**
 	 * @return the type
 	 */
+	@Override
 	public QName getType() {
 		return attributeGroup.getRef();
 	}
 
-	@Override
-	public SchemaComponent getComponent() {
-		return attributeGroup;
-	}
-
-	public List<AttributeModel> getAttributes() {
-		return attributes;
-	}
-
-	public QName getRef() {
-		return attributeGroup.getRef();
-	}
-
-	public String getHref() throws MalformedURLException {
-		if (getRef() != null) {
-			return getHrefType();
+	private void init() {
+		for (final Attribute attribute : attributeGroup.getAllAttributes()) {
+			if (attributes == null) {
+				attributes = new ArrayList<>();
+			}
+			attributes.add(new AttributeModel(attribute));
 		}
-		return null;
-
-	}
-
-	@Override
-	public String getDiagram() {
-		if (this.diagram == null) {
-			AttributeGroupGraph graph = new AttributeGroupGraph(this);
-			diagram = graph.generate();
-			setScaleDiagram(graph.scale());
-		}
-		return diagram;
 	}
 }

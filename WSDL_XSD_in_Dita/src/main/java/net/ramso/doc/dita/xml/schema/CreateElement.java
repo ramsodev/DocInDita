@@ -2,17 +2,14 @@ package net.ramso.doc.dita.xml.schema;
 
 import java.io.IOException;
 
-import com.predic8.schema.Annotation;
-import com.predic8.schema.Documentation;
 import com.predic8.schema.Element;
 
 import net.ramso.doc.dita.BasicCreate;
-import net.ramso.doc.dita.tools.DitaTools;
 import net.ramso.doc.dita.xml.schema.model.ElementModel;
 
 public class CreateElement extends BasicCreate {
 
-	private String idSchema;
+	private final String idSchema;
 
 	public CreateElement(String idSchema) {
 		super("", "");

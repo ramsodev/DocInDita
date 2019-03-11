@@ -19,8 +19,6 @@ import net.ramso.tools.FileTools;
 import net.ramso.tools.LogManager;
 
 public class GenDoc {
-	private boolean first = true;
-
 	public static void main(String[] args) {
 		Config.start();
 		List<String> files;
@@ -29,10 +27,10 @@ public class GenDoc {
 			if (files == null) {
 				System.exit(0);
 			}
-			GenDoc g = new GenDoc();
-			List<URL> urls = g.processFiles(files);
+			final GenDoc g = new GenDoc();
+			final List<URL> urls = g.processFiles(files);
 			g.processUrls(urls);
-		} catch (ConfigurationException e) {
+		} catch (final ConfigurationException e) {
 			System.exit(1);
 		} catch (IOException | URISyntaxException e) {
 			LogManager.error("El parametro no es una url valida", e);
@@ -42,11 +40,13 @@ public class GenDoc {
 		System.exit(0);
 	}
 
+	private boolean first = true;
+
 	protected List<URL> processFiles(List<String> list) throws IOException, URISyntaxException {
-		List<URL> urls = new ArrayList<URL>();
-		for (String file : list) {
+		final List<URL> urls = new ArrayList<>();
+		for (final String file : list) {
 			URL url = null;
-			File f = new File(file);
+			final File f = new File(file);
 			if (f.isDirectory()) {
 				if (first || Config.isR()) {
 					urls.addAll(processFiles(FileTools.toString(f.listFiles())));
@@ -54,7 +54,7 @@ public class GenDoc {
 			} else {
 				try {
 					url = new URL(file);
-				} catch (MalformedURLException e1) {
+				} catch (final MalformedURLException e1) {
 					if (!f.exists()) {
 						LogManager.error("El parametro no es una fichero existente", null);
 						System.out.println("El parametro no corresponde a un fichero valido");
@@ -71,16 +71,16 @@ public class GenDoc {
 	}
 
 	protected void processUrls(List<URL> urls) throws IOException, URISyntaxException {
-		List<References> parts = new ArrayList<References>();
-		for (URL url : urls) {
+		final List<References> parts = new ArrayList<>();
+		for (final URL url : urls) {
 			LogManager.info("Procesando url " + url.toExternalForm());
 			switch (DitaTools.getFileType(url)) {
 			case DitaConstants.WSDL:
-				GenerateWsdl gen = new GenerateWsdl();
+				final GenerateWsdl gen = new GenerateWsdl();
 				parts.add(gen.generateWSDL(url, Config.isOne()));
 				break;
 			case DitaConstants.XSD:
-				GenerateSchema xsd = new GenerateSchema();
+				final GenerateSchema xsd = new GenerateSchema();
 				parts.add(xsd.generateSchema(url, Config.isOne()));
 				break;
 			default:
@@ -89,18 +89,18 @@ public class GenDoc {
 		}
 		if (Config.isOne()) {
 			String id = Config.getId();
-			if (id == null || id.isEmpty()) {
+			if ((id == null) || id.isEmpty()) {
 				id = "XMLDocInDita";
 			}
 			String title = Config.getTitle();
-			if (title == null || title.isEmpty()) {
+			if ((title == null) || title.isEmpty()) {
 				title = "Documentación XML";
 			}
 			String description = Config.getDescription();
-			if (description == null || description.isEmpty()) {
+			if ((description == null) || description.isEmpty()) {
 				description = "";
 			}
-			CreateBookMap cb = new CreateBookMap(id, title, description);
+			final CreateBookMap cb = new CreateBookMap(id, title, description);
 			cb.create(parts);
 		}
 	}

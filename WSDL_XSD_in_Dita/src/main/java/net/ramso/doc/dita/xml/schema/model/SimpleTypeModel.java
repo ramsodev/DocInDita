@@ -29,7 +29,7 @@ import net.ramso.tools.LogManager;
 
 public class SimpleTypeModel extends AbstractComponentModel {
 
-	private BaseRestriction restriction;
+	private final BaseRestriction restriction;
 
 	private String dataType = null;
 	private int maxLength = -1;
@@ -44,22 +44,127 @@ public class SimpleTypeModel extends AbstractComponentModel {
 	private String pattern = null;
 	private List<String> values;
 
-	private SimpleType simpleType;
+	private final SimpleType simpleType;
 
 	private String diagram;
 
 	public SimpleTypeModel(SimpleType type) {
 		super();
-		this.simpleType = type;
-		this.restriction = type.getRestriction();
+		simpleType = type;
+		restriction = type.getRestriction();
 		init();
 		LogManager.debug("Carga de SimpleType " + getName());
+	}
+
+	private void addValue(String value) {
+		if (getValues() == null) {
+			values = new ArrayList<>();
+		}
+		values.add(value);
+
+	}
+
+	@Override
+	public SchemaComponent getComponent() {
+		return simpleType;
+	}
+
+	/**
+	 * @return the dataType
+	 */
+	public String getDataType() {
+		return dataType;
+	}
+
+	/**
+	 * @return the decimals
+	 */
+	public int getDecimals() {
+		return decimals;
+	}
+
+	@Override
+	public String getDiagram() {
+		if (diagram == null) {
+			final SimpleTypeGraph graph = new SimpleTypeGraph(this);
+			diagram = graph.generate();
+			setScaleDiagram(graph.scale());
+		}
+		return diagram;
+	}
+
+	@Override
+	public String getExternalHref() {
+		if (restriction.getBase().getNamespaceURI().equalsIgnoreCase(DitaConstants.XSD_NAMESPACE))
+			return "format=\"html\" scope=\"external\"";
+		return "";
+	}
+
+	@Override
+	public String getHrefType() throws MalformedURLException {
+		if (restriction.getBase().getNamespaceURI().equalsIgnoreCase(DitaConstants.XSD_NAMESPACE))
+			return DitaConstants.XSD_DOC_URI + restriction.getBase().getLocalPart();
+		return DitaTools.getHrefType(restriction.getBase());
+	}
+
+	/**
+	 * @return the maxLength
+	 */
+	public int getMaxLength() {
+		return maxLength;
+	}
+
+	/**
+	 * @return the maxValue
+	 */
+	public String getMaxValue() {
+		return maxValue;
+	}
+
+	/**
+	 * @return the minLenght
+	 */
+	public int getMinLength() {
+		return minLength;
+	}
+
+	/**
+	 * @return the minValue
+	 */
+	public String getMinValue() {
+		return minValue;
+	}
+
+	/**
+	 * @return the pattern
+	 */
+	public String getPattern() {
+		return pattern;
+	}
+
+	/**
+	 * @return the size
+	 */
+	public int getSize() {
+		return size;
+	}
+
+	@Override
+	public QName getType() {
+		return restriction.getBase();
+	}
+
+	/**
+	 * @return the values
+	 */
+	public List<String> getValues() {
+		return values;
 	}
 
 	private void init() {
 		dataType = restriction.getBase().getLocalPart();
 
-		for (Facet facet : restriction.getFacets()) {
+		for (final Facet facet : restriction.getFacets()) {
 			if (facet instanceof EnumerationFacet) {
 				addValue(facet.getValue());
 			} else if (facet instanceof FractionDigits) {
@@ -104,12 +209,26 @@ public class SimpleTypeModel extends AbstractComponentModel {
 	}
 
 	/**
-	 * Retorna el tamaño de un campo numerico en base a la mascara de maxValue
-	 *
-	 * @param mask
-	 *            la mascara a traducir
-	 * @return un array con dos elementos longitud, decimales
+	 * @return the maxInclusive
 	 */
+	public boolean isMaxInclusive() {
+		return maxInclusive;
+	}
+
+	/**
+	 * @return the minInclusive
+	 */
+	public boolean isMinInclusive() {
+		return minInclusive;
+	}
+
+	/**
+	 * @return the whiteSpaces
+	 */
+	public boolean isWhiteSpaces() {
+		return whiteSpaces;
+	}
+
 	protected void setSizeFromMask(final String mask) {
 		final String[] cuts = mask.split("\\.");
 		final int[] sizes = new int[2];
@@ -129,131 +248,6 @@ public class SimpleTypeModel extends AbstractComponentModel {
 		if (sizes[1] > decimals) {
 			decimals = sizes[1];
 		}
-	}
-
-	/**
-	 * @return the dataType
-	 */
-	public String getDataType() {
-		return dataType;
-	}
-
-	public String getHrefType() throws MalformedURLException {
-		if (restriction.getBase().getNamespaceURI().equalsIgnoreCase(DitaConstants.XSD_NAMESPACE)) {
-			return DitaConstants.XSD_DOC_URI + restriction.getBase().getLocalPart();
-		}
-		return DitaTools.getHrefType(restriction.getBase());
-	}
-
-	public String getExternalHref() {
-		if (restriction.getBase().getNamespaceURI().equalsIgnoreCase(DitaConstants.XSD_NAMESPACE)) {
-			return "format=\"html\" scope=\"external\"";
-		}
-		return "";
-	}
-
-	/**
-	 * @return the maxLength
-	 */
-	public int getMaxLength() {
-		return maxLength;
-	}
-
-	/**
-	 * @return the minLenght
-	 */
-	public int getMinLength() {
-		return minLength;
-	}
-
-	/**
-	 * @return the maxValue
-	 */
-	public String getMaxValue() {
-		return maxValue;
-	}
-
-	/**
-	 * @return the minValue
-	 */
-	public String getMinValue() {
-		return minValue;
-	}
-
-	/**
-	 * @return the maxInclusive
-	 */
-	public boolean isMaxInclusive() {
-		return maxInclusive;
-	}
-
-	/**
-	 * @return the minInclusive
-	 */
-	public boolean isMinInclusive() {
-		return minInclusive;
-	}
-
-	/**
-	 * @return the size
-	 */
-	public int getSize() {
-		return size;
-	}
-
-	/**
-	 * @return the decimals
-	 */
-	public int getDecimals() {
-		return decimals;
-	}
-
-	/**
-	 * @return the pattern
-	 */
-	public String getPattern() {
-		return pattern;
-	}
-
-	private void addValue(String value) {
-		if (getValues() == null)
-			values = new ArrayList<String>();
-		values.add(value);
-
-	}
-
-	/**
-	 * @return the values
-	 */
-	public List<String> getValues() {
-		return values;
-	}
-
-	/**
-	 * @return the whiteSpaces
-	 */
-	public boolean isWhiteSpaces() {
-		return whiteSpaces;
-	}
-
-	@Override
-	public SchemaComponent getComponent() {
-		return simpleType;
-	}
-
-	@Override
-	public QName getType() {
-		return restriction.getBase();
-	}
-
-	@Override
-	public String getDiagram() {
-		if (this.diagram == null) {
-			SimpleTypeGraph graph = new SimpleTypeGraph(this);
-			diagram = graph.generate();
-			setScaleDiagram(graph.scale());
-		}
-		return diagram;
 	}
 
 }

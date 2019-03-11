@@ -15,10 +15,10 @@ import com.predic8.schema.Documentation;
 import net.ramso.doc.Config;
 
 public abstract class BasicCreate implements iCreate {
+	private static String TEMPLATE = "template/basic.vm";
 	private String file_name;
 	private String id;
 	private String title;
-	private static String TEMPLATE = "template/basic.vm";
 	private Template template;
 	private VelocityContext context;
 	private String content;
@@ -27,7 +27,34 @@ public abstract class BasicCreate implements iCreate {
 		super();
 		setId(id);
 		setTitle(title);
-	
+
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	protected VelocityContext getContext() {
+		return context;
+	}
+
+	@Override
+	public String getFile_name() {
+		return file_name;
+	}
+
+	@Override
+	public String getId() {
+		return id;
+	}
+
+	protected Template getTemplate() {
+		return template;
+	}
+
+	@Override
+	public String getTitle() {
+		return title;
 	}
 
 	protected void init() {
@@ -37,71 +64,54 @@ public abstract class BasicCreate implements iCreate {
 		context.put("title", getTitle());
 	}
 
-	protected void run(VelocityContext context) throws IOException {
-		File file = new File(Config.getOutputDir() + File.separator + getFile_name());
-		file.getParentFile().mkdirs();
-		BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-		if (getTemplate() != null)
-			getTemplate().merge(context, writer);
-		writer.flush();
-		writer.close();
-	}
 	public void loadContent(Annotation annotation) {
 		String value = "";
-		if(annotation!=null) {
-			if(annotation.getDocumentations()!=null) {
-				for(Documentation doc:annotation.getDocumentations()) {
-					if (doc.getSource() != null)
+		if (annotation != null) {
+			if (annotation.getDocumentations() != null) {
+				for (final Documentation doc : annotation.getDocumentations()) {
+					if (doc.getSource() != null) {
 						value += doc.getSource() + ": ";
+					}
 					value += doc.getContent().replaceAll("<", "&lt;").replaceAll(">", "&gt;") + ". \n";
 				}
 			}
 		}
-		if(!value.isEmpty()) setContent(value);
+		if (!value.isEmpty()) {
+			setContent(value);
+		}
 	}
 
-	public String getContent() {
-		return content;
+	protected void run(VelocityContext context) throws IOException {
+		final File file = new File(Config.getOutputDir() + File.separator + getFile_name());
+		file.getParentFile().mkdirs();
+		final BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+		if (getTemplate() != null) {
+			getTemplate().merge(context, writer);
+		}
+		writer.flush();
+		writer.close();
 	}
 
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public String getFile_name() {
-		return file_name;
-	}
 
 	protected void setFile_name(String file_name) {
-		this.file_name = file_name.replaceAll("\\s+","_");
-	}
-
-	public String getId() {
-		return id;
+		this.file_name = file_name.replaceAll("\\s+", "_");
 	}
 
 	protected void setId(String id) {
-		this.id = id.replaceAll("\\s+","_");
+		this.id = id.replaceAll("\\s+", "_");
 		setFile_name(id + ".dita");
 	}
 
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {		
-		this.title = title;
-	}
-
-	protected Template getTemplate() {
-		return template;
-	}
-	
 	protected void setTemplateFile(String template) {
 		TEMPLATE = template;
 		init();
 	}
 
-	protected VelocityContext getContext() {
-		return context;
+	@Override
+	public void setTitle(String title) {
+		this.title = title;
 	}
 }

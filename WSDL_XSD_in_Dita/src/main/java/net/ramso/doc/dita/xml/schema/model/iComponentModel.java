@@ -7,21 +7,22 @@ import com.predic8.schema.SchemaComponent;
 import groovy.xml.QName;
 
 public interface iComponentModel {
-	public String getHrefType() throws MalformedURLException;
+	public String getCode();
+
+	SchemaComponent getComponent();
+
+	String getDiagram();
+
+	public String getDoc();
 
 	public String getExternalHref();
 
-	public String getCode();
-
-	public QName getType();
+	public String getHrefType() throws MalformedURLException;
 
 	public String getName();
 
-	public String getDoc();
-	
-	SchemaComponent getComponent();
-	
-	String getDiagram();
+	public QName getType();
+
 	boolean isScaleDiagram();
 
 }

@@ -11,7 +11,7 @@ import net.ramso.doc.dita.xml.schema.model.ComplexTypeModel;
 
 public class CreateComplexType extends BasicCreate {
 
-	private String idSchema;
+	private final String idSchema;
 
 	public CreateComplexType(String idSchema) {
 		super("", "");
@@ -20,19 +20,16 @@ public class CreateComplexType extends BasicCreate {
 		this.idSchema = idSchema;
 	}
 
-	
-
 	public String create(ComplexType type) throws IOException {
-		setId(idSchema+"_"+type.getName() + DitaConstants.SUFFIX_COMPLEXTYPE);
+		setId(idSchema + "_" + type.getName() + DitaConstants.SUFFIX_COMPLEXTYPE);
 		setTitle("Complex Type " + type.getName());
 		loadContent(type.getAnnotation());
-		init();		
+		init();
 		getContext().put("content", getContent());
 		getContext().put("complexType", new ComplexTypeModel(type));
 		getContext().put("tools", DitaTools.class);
 		run(getContext());
 		return getFile_name();
 	}
-	
-	
+
 }

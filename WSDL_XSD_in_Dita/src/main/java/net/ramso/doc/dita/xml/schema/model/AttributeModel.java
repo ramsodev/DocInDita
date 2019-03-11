@@ -13,7 +13,7 @@ public class AttributeModel extends AbstractComponentModel {
 
 	private SimpleTypeModel simpleType = null;
 
-	private Attribute attribute;
+	private final Attribute attribute;
 
 	private String defaultValue;
 
@@ -32,14 +32,38 @@ public class AttributeModel extends AbstractComponentModel {
 		LogManager.debug("Carga de Attribute " + getName());
 	}
 
-	private void init() {
-		defaultValue = attribute.getDefaultValue();
-		fixedValue = attribute.getFixedValue();
-		form = attribute.getForm();
-		usage = attribute.getUse();
-		if (attribute.getSimpleType() != null) {
-			simpleType = new SimpleTypeModel(attribute.getSimpleType());
+	@Override
+	public SchemaComponent getComponent() {
+		return attribute;
+	}
+
+	public String getDefaultValue() {
+		return defaultValue;
+	}
+
+	@Override
+	public String getDiagram() {
+		if (diagram == null) {
+			final AttributeGraph graph = new AttributeGraph(this);
+			diagram = graph.generate();
+			setScaleDiagram(graph.scale());
 		}
+		return diagram;
+	}
+
+	public String getFixedValue() {
+		return fixedValue;
+	}
+
+	public String getForm() {
+		return form;
+	}
+
+	public String getHref() throws MalformedURLException {
+		if (getRef() != null)
+			return getHrefType();
+		return null;
+
 	}
 
 	public QName getRef() {
@@ -56,50 +80,25 @@ public class AttributeModel extends AbstractComponentModel {
 	/**
 	 * @return the type
 	 */
-	public QName getType() {
-		if (attribute.getType() != null) {
-			return attribute.getType();
-		}
-		return attribute.getRef();
-	}
-
 	@Override
-	public SchemaComponent getComponent() {
-		return attribute;
-	}
-
-	public String getDefaultValue() {
-		return defaultValue;
-	}
-
-	public String getFixedValue() {
-		return fixedValue;
-	}
-
-	public String getForm() {
-		return form;
+	public QName getType() {
+		if (attribute.getType() != null)
+			return attribute.getType();
+		return attribute.getRef();
 	}
 
 	public String getUsage() {
 		return usage;
 	}
 
-	public String getHref() throws MalformedURLException {
-		if (getRef() != null) {
-			return getHrefType();
+	private void init() {
+		defaultValue = attribute.getDefaultValue();
+		fixedValue = attribute.getFixedValue();
+		form = attribute.getForm();
+		usage = attribute.getUse();
+		if (attribute.getSimpleType() != null) {
+			simpleType = new SimpleTypeModel(attribute.getSimpleType());
 		}
-		return null;
-
-	}
-
-	@Override
-	public String getDiagram() {
-		if(this.diagram == null) {
-			AttributeGraph graph = new AttributeGraph(this);
-			diagram = graph.generate();
-			setScaleDiagram(graph.scale());
-		}
-		return diagram;
 	}
 
 }
