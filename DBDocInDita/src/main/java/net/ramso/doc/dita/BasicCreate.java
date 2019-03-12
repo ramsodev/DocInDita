@@ -9,10 +9,7 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 
-import com.predic8.schema.Annotation;
-import com.predic8.schema.Documentation;
-
-import net.ramso.doc.dita.xml.Config;
+import net.ramso.doc.Config;
 
 public abstract class BasicCreate implements iCreate {
 	private static String TEMPLATE = "template/basic.vm";
@@ -64,22 +61,7 @@ public abstract class BasicCreate implements iCreate {
 		context.put("title", getTitle());
 	}
 
-	public void loadContent(Annotation annotation) {
-		String value = "";
-		if (annotation != null) {
-			if (annotation.getDocumentations() != null) {
-				for (final Documentation doc : annotation.getDocumentations()) {
-					if (doc.getSource() != null) {
-						value += doc.getSource() + ": ";
-					}
-					value += doc.getContent().replaceAll("<", "&lt;").replaceAll(">", "&gt;") + ". \n";
-				}
-			}
-		}
-		if (!value.isEmpty()) {
-			setContent(value);
-		}
-	}
+	
 
 	protected void run(VelocityContext context) throws IOException {
 		final File file = new File(Config.getOutputDir() + File.separator + getFile_name());

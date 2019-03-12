@@ -17,12 +17,12 @@ import com.predic8.schema.SchemaParser;
 import com.predic8.schema.SchemaParserContext;
 import com.predic8.schema.SimpleType;
 
-import net.ramso.doc.Config;
 import net.ramso.doc.dita.CreateBookMap;
 import net.ramso.doc.dita.CreatePortada;
 import net.ramso.doc.dita.References;
 import net.ramso.doc.dita.tools.DitaConstants;
 import net.ramso.doc.dita.tools.DitaTools;
+import net.ramso.doc.dita.xml.Config;
 
 public class GenerateSchema {
 

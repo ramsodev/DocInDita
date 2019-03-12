@@ -14,12 +14,12 @@ import com.predic8.wsdl.Service;
 import com.predic8.wsdl.WSDLParser;
 import com.predic8.wsdl.WSDLParserContext;
 
-import net.ramso.doc.Config;
 import net.ramso.doc.dita.CreateBookMap;
 import net.ramso.doc.dita.CreatePortada;
 import net.ramso.doc.dita.References;
 import net.ramso.doc.dita.tools.DitaConstants;
 import net.ramso.doc.dita.tools.DitaTools;
+import net.ramso.doc.dita.xml.Config;
 import net.ramso.doc.dita.xml.schema.GenerateSchema;
 import net.ramso.doc.dita.xml.wsdl.graph.WSDLGraph;
 import net.ramso.tools.LogManager;

@@ -19,4 +19,3 @@ addons:
     organization: "ramsodev-github"
     token:
       secure: 3f3281e09f7a9d8c8386c53401ca2e3d61b586c9
-script: ./build.sh

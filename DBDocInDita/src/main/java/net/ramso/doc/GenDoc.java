@@ -9,11 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.ramso.doc.dita.CreateBookMap;
-import net.ramso.doc.dita.References;
-import net.ramso.doc.dita.tools.DitaConstants;
-import net.ramso.doc.dita.tools.DitaTools;
-import net.ramso.doc.dita.xml.schema.GenerateSchema;
-import net.ramso.doc.dita.xml.wsdl.GenerateWsdl;
 import net.ramso.tools.ConfigurationException;
 import net.ramso.tools.FileTools;
 import net.ramso.tools.LogManager;
@@ -71,21 +66,10 @@ public class GenDoc {
 	}
 
 	protected void processUrls(List<URL> urls) throws IOException, URISyntaxException {
-		final List<References> parts = new ArrayList<>();
+		
 		for (final URL url : urls) {
 			LogManager.info("Procesando url " + url.toExternalForm());
-			switch (DitaTools.getFileType(url)) {
-			case DitaConstants.WSDL:
-				final GenerateWsdl gen = new GenerateWsdl();
-				parts.add(gen.generateWSDL(url, Config.isOne()));
-				break;
-			case DitaConstants.XSD:
-				final GenerateSchema xsd = new GenerateSchema();
-				parts.add(xsd.generateSchema(url, Config.isOne()));
-				break;
-			default:
-				break;
-			}
+			
 		}
 		if (Config.isOne()) {
 			String id = Config.getId();
@@ -101,7 +85,7 @@ public class GenDoc {
 				description = "";
 			}
 			final CreateBookMap cb = new CreateBookMap(id, title, description);
-			cb.create(parts);
+//			cb.create(parts);
 		}
 	}
 }

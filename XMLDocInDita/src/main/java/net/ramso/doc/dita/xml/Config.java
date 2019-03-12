@@ -1,4 +1,4 @@
-package net.ramso.doc;
+package net.ramso.doc.dita.xml;
 
 import java.io.File;
 import java.util.List;
