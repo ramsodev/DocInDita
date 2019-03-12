@@ -18,4 +18,4 @@ addons:
   sonarcloud:
     organization: "ramsodev-github"
     token:
-      secure: 3f3281e09f7a9d8c8386c53401ca2e3d61b586c9
+      secure: 44552d00fbdabbf6f19398e8627ac2edc6b102fa
