@@ -12,7 +12,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
-import net.ramso.doc.Config;
+import net.ramso.docindita.db.Config;
 
 public class CommandLineProcessor {
 

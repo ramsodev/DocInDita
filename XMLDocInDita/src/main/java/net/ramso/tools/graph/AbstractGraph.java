@@ -19,8 +19,8 @@ import com.mxgraph.util.mxUtils;
 import com.mxgraph.util.mxXmlUtils;
 import com.mxgraph.view.mxGraph;
 
-import net.ramso.doc.dita.tools.DitaConstants;
-import net.ramso.doc.dita.xml.Config;
+import net.ramso.docindita.xml.Config;
+import net.ramso.docindita.xml.DitaConstants;
 import net.ramso.tools.FileTools;
 
 public abstract class AbstractGraph {

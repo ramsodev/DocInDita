@@ -12,8 +12,8 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
-import net.ramso.doc.dita.tools.DitaConstants;
-import net.ramso.doc.dita.xml.Config;
+import net.ramso.docindita.xml.Config;
+import net.ramso.docindita.xml.DitaConstants;
 
 public class CommandLineProcessor {
 

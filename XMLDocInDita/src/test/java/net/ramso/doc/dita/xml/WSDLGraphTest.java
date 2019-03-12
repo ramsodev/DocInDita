@@ -15,8 +15,8 @@ import com.predic8.wsdl.Service;
 import com.predic8.wsdl.WSDLParser;
 import com.predic8.wsdl.WSDLParserContext;
 
-import net.ramso.doc.dita.xml.Config;
-import net.ramso.doc.dita.xml.wsdl.graph.WSDLGraph;
+import net.ramso.docindita.xml.Config;
+import net.ramso.docindita.xml.wsdl.graph.WSDLGraph;
 
 class WSDLGraphTest {
 
