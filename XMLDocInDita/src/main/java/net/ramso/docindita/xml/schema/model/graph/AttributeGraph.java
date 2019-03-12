@@ -7,6 +7,7 @@ import com.mxgraph.model.mxCell;
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.view.mxGraph;
 
+import net.ramso.docindita.xml.Config;
 import net.ramso.docindita.xml.DitaConstants;
 import net.ramso.docindita.xml.schema.model.AttributeModel;
 import net.ramso.tools.graph.GraphConstants;
@@ -115,7 +116,7 @@ public class AttributeGraph extends AbstractXmlGraph {
 		getGraph().insertEdge(parent, "", "", simpleTypeCell, type, GraphTools.getExtendEdgeStyle());
 		getGraph().addCell(simpleTypeCell);
 		getGraph().addCell(type);
-		process(getGraph());
+		process(getGraph(), Config.getOutputDir());
 		return getFileName();
 	}
 

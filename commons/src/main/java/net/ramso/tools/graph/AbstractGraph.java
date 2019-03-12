@@ -19,8 +19,6 @@ import com.mxgraph.util.mxUtils;
 import com.mxgraph.util.mxXmlUtils;
 import com.mxgraph.view.mxGraph;
 
-import net.ramso.docindita.xml.Config;
-import net.ramso.docindita.xml.DitaConstants;
 import net.ramso.tools.FileTools;
 
 public abstract class AbstractGraph {
@@ -28,8 +26,8 @@ public abstract class AbstractGraph {
 	private String fileName;
 	private mxGraph graph;
 
-	protected void export(mxGraph graph) throws IOException {
-		final String filename = Config.getOutputDir() + File.separator + getFileName();
+	protected void export(mxGraph graph, String outdir) throws IOException {
+		final String filename = outdir + File.separator + getFileName();
 		if (FileTools.checkPath(filename, true)) {
 			final mxSvgCanvas canvas = (mxSvgCanvas) mxCellRenderer.drawCells(graph, null, 1, null,
 					new CanvasFactory() {
@@ -70,7 +68,7 @@ public abstract class AbstractGraph {
 		layout.execute(graph.getDefaultParent());
 	}
 
-	protected void process(mxGraph graph) {
+	protected void process(mxGraph graph, String outdir) {
 		final JFrame f = new JFrame();
 		f.setSize(800, 800);
 		f.setLocation(300, 200);
@@ -80,7 +78,7 @@ public abstract class AbstractGraph {
 		f.setVisible(false);
 		morphGraph(graph, graphComponent);
 		try {
-			export(graph);
+			export(graph, outdir);
 		} catch (final Exception e) {
 			net.ramso.tools.LogManager.warn("Error al exportar el diagrama " + getFileName(), e);
 		}
@@ -89,9 +87,6 @@ public abstract class AbstractGraph {
 	protected void resizeCell(mxCell cell, int maxWith) {
 		if (!cell.getId().startsWith(GraphConstants.EXCLUDE_PREFIX_ICON)) {
 			final mxGeometry g = cell.getGeometry();
-			if (cell.getId().endsWith(DitaConstants.SUFFIX_ADDRESS)) {
-				maxWith -= 20;
-			}
 			g.setWidth(maxWith);
 			final int e = cell.getChildCount();
 			if (!cell.getId().startsWith(GraphConstants.EXCLUDE_PREFIX_GROUP)) {

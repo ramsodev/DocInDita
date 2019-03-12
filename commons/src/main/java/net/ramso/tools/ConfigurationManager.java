@@ -14,11 +14,10 @@ import java.util.Properties;
  * Gestion la configuración de una aplicación
  *
  * @author jescudero
- * @author cjrequena
  *
  */
 
-public class ConfigurationManager {
+public abstract class ConfigurationManager {
 	/**
 	 * Tipos admitido de log para configurar
 	 *
@@ -406,5 +405,9 @@ public class ConfigurationManager {
 	final static public void setProperty(String propName, String value) {
 		properties.setProperty(propName, value);
 
+	}
+	public static void set(String property, String value) throws ConfigurationException {
+		// TODO Auto-generated method stub
+		
 	}
 }

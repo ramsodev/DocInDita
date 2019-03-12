@@ -10,6 +10,7 @@ import com.mxgraph.util.mxConstants;
 import com.mxgraph.util.mxPoint;
 import com.mxgraph.view.mxGraph;
 
+import net.ramso.docindita.xml.Config;
 import net.ramso.docindita.xml.DitaConstants;
 import net.ramso.docindita.xml.schema.model.AttributeGroupModel;
 import net.ramso.docindita.xml.schema.model.AttributeModel;
@@ -186,7 +187,7 @@ public class GroupGraph extends AbstractXmlGraph {
 		if (isAddType()) {
 			getGraph().addCell(typeGroup);
 		}
-		process(getGraph());
+		process(getGraph(), Config.getOutputDir());
 		return getFileName();
 	}
 

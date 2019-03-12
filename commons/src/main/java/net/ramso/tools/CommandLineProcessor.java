@@ -12,9 +12,6 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
-import net.ramso.docindita.xml.Config;
-import net.ramso.docindita.xml.DitaConstants;
-
 public class CommandLineProcessor {
 
 	private Options options;
@@ -44,11 +41,11 @@ public class CommandLineProcessor {
 
 	private void init() {
 		options = new Options();
-		names = getProperties(DitaConstants.PREFIX_CMD_NAME);
-		desc = getProperties(DitaConstants.PREFIX_CMD_DESCRIPTION);
-		reqs = toBoolean(getProperties(DitaConstants.PREFIX_CMD_REQUIERED));
-		hasArgs = toBoolean(getProperties(DitaConstants.PREFIX_CMD_ARGUMENT));
-		clas = getProperties(DitaConstants.PREFIX_CMD_TYPE);
+		names = getProperties(Constants.PREFIX_CMD_NAME);
+		desc = getProperties(Constants.PREFIX_CMD_DESCRIPTION);
+		reqs = toBoolean(getProperties(Constants.PREFIX_CMD_REQUIERED));
+		hasArgs = toBoolean(getProperties(Constants.PREFIX_CMD_ARGUMENT));
+		clas = getProperties(Constants.PREFIX_CMD_TYPE);
 		for (int i = 0; i < names.length; i++) {
 			final Option o = new Option(names[i], hasArgs[i], desc[i]);
 			o.setRequired(reqs[i]);
@@ -75,9 +72,9 @@ public class CommandLineProcessor {
 			for (int i = 0; i < names.length; i++) {
 				if (cmdLine.hasOption(names[i])) {
 					if (hasArgs[i]) {
-						Config.set(names[i], cmdLine.getOptionValue(names[i]));
+						ConfigurationManager.set(names[i], cmdLine.getOptionValue(names[i]));
 					} else {
-						Config.set(names[i], "true");
+						ConfigurationManager.set(names[i], "true");
 					}
 				} else {
 					if (hasArgs[i]) {

@@ -13,6 +13,7 @@ import com.predic8.schema.SimpleType;
 import com.predic8.schema.TypeDefinition;
 
 import groovy.xml.QName;
+import net.ramso.docindita.xml.Config;
 import net.ramso.docindita.xml.DitaConstants;
 import net.ramso.docindita.xml.DitaTools;
 import net.ramso.docindita.xml.schema.model.AttributeGroupModel;
@@ -264,7 +265,7 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 		if (isAddType()) {
 			getGraph().addCell(typeGroup);
 		}
-		process(getGraph());
+		process(getGraph(), Config.getOutputDir());
 		return getFileName();
 	}
 

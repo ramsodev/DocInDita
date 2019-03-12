@@ -9,6 +9,7 @@
 	<modules>
 		<module>XMLDocInDita</module>
         <module>DBDocInDita</module>
+        <module>commons</module>
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

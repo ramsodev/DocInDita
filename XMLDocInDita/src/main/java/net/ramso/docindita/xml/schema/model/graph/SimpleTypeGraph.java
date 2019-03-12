@@ -7,6 +7,7 @@ import com.mxgraph.model.mxCell;
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.view.mxGraph;
 
+import net.ramso.docindita.xml.Config;
 import net.ramso.docindita.xml.DitaConstants;
 import net.ramso.docindita.xml.schema.model.SimpleTypeModel;
 import net.ramso.tools.graph.GraphTools;
@@ -78,7 +79,7 @@ public class SimpleTypeGraph extends AbstractXmlGraph {
 		if (isAddType()) {
 			getGraph().addCell(type);
 		}
-		process(getGraph());
+		process(getGraph(), Config.getOutputDir());
 		return getFileName();
 	}
 

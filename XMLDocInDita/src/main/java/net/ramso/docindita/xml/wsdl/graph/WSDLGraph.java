@@ -18,6 +18,7 @@ import com.predic8.wsdl.Port;
 import com.predic8.wsdl.PortType;
 import com.predic8.wsdl.Service;
 
+import net.ramso.docindita.xml.Config;
 import net.ramso.docindita.xml.DitaConstants;
 import net.ramso.tools.graph.AbstractGraph;
 import net.ramso.tools.graph.GraphConstants;
@@ -243,7 +244,8 @@ public class WSDLGraph extends AbstractGraph {
 				resizeCell((mxCell) entry.getValue(), getMaxWith2());
 			}
 		}
-		process(getGraph());
+	
+		process(getGraph(), Config.getOutputDir());
 		return getFileName();
 
 	}
