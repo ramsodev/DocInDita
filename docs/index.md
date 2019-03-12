@@ -1,8 +1,11 @@
 # XMLDocInDita
 
 The objective of this project is to generate documentation of various types of XML definitions (XSD, WSDL and WADL) in [DITA][a3775041].
-##Downloads
-- [Latest realease][ff4f0333]
+## Downloads
+  - [Releases][b368db8e]
+
+  [b368db8e]: {{ site.github.releases_url }} "Releases"
+
 ## Usage
 `java -jar XMLDocInDita-1.0.0-jar-with-dependencies.jar [path]`
 ### Options
@@ -22,4 +25,3 @@ usage: XMLDocInDiata [-description \<arg\>] [-h] [-id \<arg\>] [-one] [-outDir  
 
   [a3775041]: https://www.dita-ot.org/ "dita-ot"
   [c036cfd1]: apidocs/index.html "JavaDoc"
-  [ff4f0333]: {{ site.github.releases_url }} "releases"
