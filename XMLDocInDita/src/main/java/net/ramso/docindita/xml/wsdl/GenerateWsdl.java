@@ -48,6 +48,7 @@ public class GenerateWsdl {
 
 	public References generateWSDL(URL url, boolean one) throws IOException, URISyntaxException {
 		final String fileName = DitaTools.getName(url.toExternalForm());
+		DitaTools.setIdPrefix(fileName);
 		LogManager.info("Inicio de Procesado de " + url);
 		final WSDLParser parser = new WSDLParser();
 		final WSDLParserContext ctx = new WSDLParserContext();
@@ -76,16 +77,13 @@ public class GenerateWsdl {
 					"Documentacion del Servicio " + service.getName(), content);
 			cc.setDiagram(graph.generate());
 			final References chapterService = new References(cc.create());
-			cc = null;
 			CreatePorts ce = new CreatePorts(service.getName());
 			chapterService.addChild(new References(ce.create(service.getPorts())));
-			ce = null;
 			content = "Operaciones del servicio " + service.getName();
 
 			cc = new CreatePortada(service.getName() + DitaConstants.SUFFIX_OPERATION + "s",
 					"Operaciones de " + service.getName(), content);
 			final References chapter = new References(cc.create());
-			cc = null;
 			for (final Operation operation : desc.getOperations()) {
 				content = "Metodos de la operación " + operation.getName();
 				if (operation.getDocumentation() != null) {

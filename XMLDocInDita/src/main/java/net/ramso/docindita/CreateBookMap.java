@@ -11,7 +11,7 @@ public class CreateBookMap extends BasicCreate {
 		super(id, title);
 		setTemplateFile("template/bookmap.vm");
 		setContent(content);
-		setFile_name(id + ".ditamap");
+		setFileName(id + ".ditamap");
 	}
 
 	public String create(List<References> references) throws IOException {

@@ -26,11 +26,16 @@ import net.ramso.tools.FileTools;
 import net.ramso.tools.LogManager;
 
 public class DitaTools {
-	public static Schema SCHEMA = null;
+
+	private DitaTools() {
+		super();
+	}
+
+	private static Schema schema = null;
+	private static String idPrefix = "";
 
 	public static QName getAnyType() {
-		final QName q = new QName(DitaConstants.XSD_NAMESPACE, "anyType");
-		return q;
+		return new QName(DitaConstants.XSD_NAMESPACE, "anyType");
 	}
 
 	public static String getExternalHref(QName type) {
@@ -59,9 +64,9 @@ public class DitaTools {
 		return null;
 	}
 
-	public static String getHref(BindingOperation operation) throws MalformedURLException {
-		final String href = getHref(true, operation.getName() + DitaConstants.SUFFIX_OPERATION);
-		return href;
+	public static String getHref(BindingOperation operation) {
+
+		return getHref(true, operation.getName() + DitaConstants.SUFFIX_OPERATION);
 	}
 
 	public static String getHref(boolean file, String id) {
@@ -78,16 +83,15 @@ public class DitaTools {
 
 	public static String getHref(Element element) throws MalformedURLException {
 		final String idSchema = DitaTools.getSchemaId(element.getNamespaceUri());
-		final String href = idSchema + "_" + getHref(true, element.getName() + DitaConstants.SUFFIX_ELEMENT);
-		return href;
+		return idPrefix.trim() + idSchema + "_" + getHref(true, element.getName() + DitaConstants.SUFFIX_ELEMENT);
 	}
 
 	public static String getHref(QName qname) throws MalformedURLException {
 		if (qname.getNamespaceURI().equalsIgnoreCase(DitaConstants.XSD_NAMESPACE))
 			return DitaConstants.XSD_DOC_URI + qname.getLocalPart();
 		final String idSchema = DitaTools.getSchemaId(qname.getNamespaceURI());
-		final String href = idSchema + "_" + getHref(true, qname.getLocalPart() + getSuffixType(qname));
-		return href;
+		return idPrefix.trim() + idSchema + "_" + getHref(true, qname.getLocalPart() + getSuffixType(qname));
+
 	}
 
 	public static String getHref(String id, String idSection) {
@@ -96,8 +100,7 @@ public class DitaTools {
 
 	public static String getHrefType(QName type) throws MalformedURLException {
 		final String idSchema = DitaTools.getSchemaId(type.getNamespaceURI());
-		final String href = idSchema + "_" + type.getLocalPart() + getSuffixType(type) + ".dita";
-		return href;
+		return idPrefix.trim() + idSchema + "_" + type.getLocalPart() + getSuffixType(type) + ".dita";
 	}
 
 	public static String getName(String uri) throws MalformedURLException {
@@ -106,7 +109,7 @@ public class DitaTools {
 			name = "No Name";
 		} else if (uri.startsWith("urn")) {
 			final URI urn = URI.create(uri);
-			name = urn.getSchemeSpecificPart().substring(urn.getSchemeSpecificPart().lastIndexOf(":") + 1);
+			name = urn.getSchemeSpecificPart().substring(urn.getSchemeSpecificPart().lastIndexOf(':') + 1);
 		} else {
 			final URL url = new URL(uri);
 			name = url.getPath().substring(url.getPath().lastIndexOf('/') + 1);
@@ -125,8 +128,7 @@ public class DitaTools {
 			return "noNamespace";
 		else if (uri.startsWith("urn")) {
 			final URI urn = URI.create(uri);
-			final String a = urn.getSchemeSpecificPart().replaceAll("\\.", "").replaceAll("\\:", "");
-			return a;
+			return urn.getSchemeSpecificPart().replaceAll("\\.", "").replaceAll("\\:", "");
 		} else {
 			url = new URL(uri);
 		}
@@ -141,59 +143,69 @@ public class DitaTools {
 	}
 
 	public static String getSuffixType(QName type) {
-		if (SCHEMA != null) {
+		String value = DitaConstants.SUFFIX_TYPE;
+		if (schema != null) {
 			TypeDefinition td = null;
 			try {
-				td = SCHEMA.getType(type);
+				td = schema.getType(type);
 			} catch (final Exception e) {
+				LogManager.debug("No Encuentra el tipo");
 			} finally {
-				if ((td != null) && (td instanceof SimpleType))
-					return DitaConstants.SUFFIX_SIMPLETYPE;
-				else if ((td != null) && (td instanceof ComplexType))
-					return DitaConstants.SUFFIX_COMPLEXTYPE;
+				if (td instanceof SimpleType)
+					value = DitaConstants.SUFFIX_SIMPLETYPE;
+				else if (td instanceof ComplexType)
+					value = DitaConstants.SUFFIX_COMPLEXTYPE;
 				else {
 
-					final Attribute a = SCHEMA.getAttribute(type);
+					final Attribute a = schema.getAttribute(type);
 					if (a != null)
-						return DitaConstants.SUFFIX_ATTRIBUTE;
+						value = DitaConstants.SUFFIX_ATTRIBUTE;
 					else {
-						final AttributeGroup g = SCHEMA.getAttributeGroup(type);
+						final AttributeGroup g = schema.getAttributeGroup(type);
 						if (g != null)
-							return DitaConstants.SUFFIX_ATTRIBUTEGROUP;
+							value = DitaConstants.SUFFIX_ATTRIBUTEGROUP;
 						else {
-							final Group gr = SCHEMA.getGroup(type);
+							final Group gr = schema.getGroup(type);
 							if (gr != null)
-								return DitaConstants.SUFFIX_GROUP;
+								value = DitaConstants.SUFFIX_GROUP;
 							else {
 								Element el = null;
 								try {
-									el = SCHEMA.getElement(type);
+									el = schema.getElement(type);
 								} catch (final Exception e) {
+									LogManager.debug("No encuentra el elemento");
 								}
 								if (el != null)
-									return DitaConstants.SUFFIX_ELEMENT;
+									value = DitaConstants.SUFFIX_ELEMENT;
 							}
 						}
 					}
 				}
 			}
 		}
-		return DitaConstants.SUFFIX_TYPE;
+		return value;
 
 	}
 
 	public static TypeDefinition getType(QName type) {
 		TypeDefinition td = null;
-		if (SCHEMA != null) {
+		if (schema != null) {
 			try {
-				td = SCHEMA.getType(type);
+				td = schema.getType(type);
 			} catch (final Exception e) {
+				LogManager.debug("No encuentra el tipo");
 			}
 		}
 		return td;
 	}
 
 	public static void setSchema(Schema schema) {
-		SCHEMA = schema;
+		DitaTools.schema = schema;
+	}
+
+	public static void setIdPrefix(String idPrefix) {
+		if (!idPrefix.endsWith("_"))
+			idPrefix = idPrefix.trim() + "_";
+		DitaTools.idPrefix = idPrefix;
 	}
 }

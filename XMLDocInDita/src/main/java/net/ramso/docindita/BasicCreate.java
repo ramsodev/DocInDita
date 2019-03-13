@@ -13,10 +13,11 @@ import com.predic8.schema.Annotation;
 import com.predic8.schema.Documentation;
 
 import net.ramso.docindita.xml.Config;
+import net.ramso.tools.LogManager;
 
 public abstract class BasicCreate implements iCreate {
-	private static String TEMPLATE = "template/basic.vm";
-	private String file_name;
+	private String templateFile = "template/basic.vm";
+	private String fileName;
 	private String id;
 	private String title;
 	private Template template;
@@ -40,7 +41,7 @@ public abstract class BasicCreate implements iCreate {
 
 	@Override
 	public String getFile_name() {
-		return file_name;
+		return fileName;
 	}
 
 	@Override
@@ -58,55 +59,63 @@ public abstract class BasicCreate implements iCreate {
 	}
 
 	protected void init() {
-		template = Velocity.getTemplate(TEMPLATE);
+		template = Velocity.getTemplate(templateFile);
 		context = new VelocityContext();
 		context.put("id", getId());
 		context.put("title", getTitle());
 	}
 
 	public void loadContent(Annotation annotation) {
-		String value = "";
-		if (annotation != null) {
-			if (annotation.getDocumentations() != null) {
-				for (final Documentation doc : annotation.getDocumentations()) {
-					if (doc.getSource() != null) {
-						value += doc.getSource() + ": ";
-					}
-					value += doc.getContent().replaceAll("<", "&lt;").replaceAll(">", "&gt;") + ". \n";
+		StringBuilder value = new StringBuilder();
+		if (annotation != null && annotation.getDocumentations() != null) {
+			for (final Documentation doc : annotation.getDocumentations()) {
+				if (doc.getSource() != null) {
+					value.append(doc.getSource() + ": ");
 				}
+				value.append(doc.getContent().replaceAll("<", "&lt;").replaceAll(">", "&gt;") + ". \n");
 			}
+
 		}
-		if (!value.isEmpty()) {
-			setContent(value);
+		if (value.length() > 0) {
+			setContent(value.toString());
 		}
 	}
 
 	protected void run(VelocityContext context) throws IOException {
 		final File file = new File(Config.getOutputDir() + File.separator + getFile_name());
 		file.getParentFile().mkdirs();
-		final BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-		if (getTemplate() != null) {
-			getTemplate().merge(context, writer);
+		FileWriter fw = new FileWriter(file);
+		BufferedWriter writer = null;
+		try {
+			writer = new BufferedWriter(fw);
+			if (getTemplate() != null) {
+				getTemplate().merge(context, writer);
+			}
+			writer.flush();
+		} catch (Exception e) {
+			LogManager.warn("Problemas al crear el fichero", e);
+		} finally {
+			if (writer != null)
+				writer.close();
 		}
-		writer.flush();
-		writer.close();
+
 	}
 
 	public void setContent(String content) {
 		this.content = content;
 	}
 
-	protected void setFile_name(String file_name) {
-		this.file_name = file_name.replaceAll("\\s+", "_");
+	protected void setFileName(String fileName) {
+		this.fileName = fileName.replaceAll("\\s+", "_");
 	}
 
 	protected void setId(String id) {
 		this.id = id.replaceAll("\\s+", "_");
-		setFile_name(id + ".dita");
+		setFileName(id + ".dita");
 	}
 
 	protected void setTemplateFile(String template) {
-		TEMPLATE = template;
+		this.templateFile = template;
 		init();
 	}
 
