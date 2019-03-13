@@ -7,8 +7,9 @@ deploy:
   api_key:
     secure: WoXk9OgM0WB5KgBcUUvKvfKzjZDIV5ykWWJXmHEJkRFLkhZD1OcHAFfcm/PTe6VPOxm7AjNa8bCCrw/j3295iRsNM8VFqPO17mKinsM9mbiZwb3c8ab8SED1UfvMAAZnWWd0gjh0k/BEkQxY8Y4jGceyj3rBdfsJXYa2v5YgSijCSiX38B0N6TIBSiXvwew/OaOABaxsYi/H9B4CrDtK3q+XUegFT2KGdlGJv+rlsKmW6MWDuC8Opwt5xFB+0qrX2ufRmpunrrGLjPMt0A+O7CtOndUjC2J2GlSXpTxG8E/x+tuAOdpDGs+TB5ngAjmhOOWxbvN1EEYOQkTjwmzHivJjApIDktQWDyyZJkykihqzUyo7aOzxxAsuXMpwOYx5J0tdHGs1u78gfkg9quTFGEWZ8elnr9N/7Ps3TkPDHRWyRelUF1e0XK7gPOv/2MmDE0OqwwKEo2OSjQdIboKH+okqLsY/0AeMBm5Hl2KKPLJSBvovDOZ82PcHs3AfL/zEvyqR06hNWmCjxgXYJcWKKApTTlNMIoHKzDPoqxQx3ZeIxISRlVAIOj3Oc++ZvSooIxjelYIkwDMm7ITYcktGuzNrJBo+YkHNOJOVwyndiQx571K6tLhiBxfDlOybIv/0Gl6K2j1Mu2bh5LVH1ySxAphD5QP1B6jzxA4P1P0ObdI=
   file:
-    - WSDL_XSD_in_Dita/target/XMLDocInDita-$project_version.jar
-    - WSDL_XSD_in_Dita/target/XMLDocInDita-$project_version-jar-with-dependencies.jar
+    - XMLDocInDita/target/*.jar
+    - DBDocInDita/target/*.jar
+    - commons/target/*.jar
   skip_cleanup: true
   on:
     repo: ramsodev/XMLDocInDita
@@ -19,3 +20,5 @@ addons:
     organization: "ramsodev-github"
     token:
       secure: 44552d00fbdabbf6f19398e8627ac2edc6b102fa
+script:
+  - mvn clean install sonar:sonar
