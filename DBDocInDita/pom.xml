@@ -5,7 +5,7 @@
     <parent>
         <groupId>net.ramso</groupId>
         <artifactId>DocInDita</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
         <relativePath>../</relativePath>
     </parent>
     <artifactId>DBDocInDita</artifactId>
@@ -50,11 +50,12 @@
         
     </build>
     
+   
     <dependencies>
     	<dependency>
     		<groupId>net.ramso</groupId>
     		<artifactId>commons</artifactId>
-    		<version>1.0.1-SNAPSHOT</version>
+    		<version>1.0.1</version>
     	</dependency>
     </dependencies>
 </project>
