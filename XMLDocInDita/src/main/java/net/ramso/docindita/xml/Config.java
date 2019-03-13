@@ -9,6 +9,7 @@ import org.apache.commons.cli.ParseException;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.runtime.RuntimeConstants;
 
+import net.ramso.docindita.tools.DitaConstants;
 import net.ramso.tools.CommandLineProcessor;
 import net.ramso.tools.ConfigurationException;
 import net.ramso.tools.ConfigurationManager;
@@ -23,23 +24,11 @@ public class Config extends ConfigurationManager {
 	private static String title;
 	private static String description;
 
-	public static String getDescription() {
-		return description;
-	}
-
-	public static String getId() {
-
-		return id;
-	}
-
-	public static String getOutputDir() {
-		return outputDir;
-	}
-
 	public static List<String> getParmeters(String[] args, int pmin, int pmax) throws ConfigurationException {
 		final CommandLineProcessor cmd = new CommandLineProcessor();
 		try {
 			final List<String> parameters = cmd.parse(args, pmin, pmax);
+			getCmdValues();
 			if (((getId() != null) || (getTitle() != null) || (getDescription() != null)) && !isOne()) {
 				LogManager.error("The options id, title or description are only available with the option one", null);
 				System.err.println("The options id, title or description are only available with the option one");
@@ -65,7 +54,7 @@ public class Config extends ConfigurationManager {
 		final Properties velocityConfig = new Properties();
 		for (final Entry<Object, Object> entry : p.entrySet()) {
 			final String key = (String) entry.getKey();
-			velocityConfig.put(key.substring(key.indexOf(".") + 1, key.length()), entry.getValue());
+			velocityConfig.put(key.substring(key.indexOf('.') + 1, key.length()), entry.getValue());
 		}
 		return velocityConfig;
 	}
@@ -88,27 +77,20 @@ public class Config extends ConfigurationManager {
 
 	}
 
-	public static void set(String property, String value) throws ConfigurationException {
-		switch (property) {
-		case DitaConstants.OUTDIR_NAME:
-			outputDir = value;
+	public static void getCmdValues() throws ConfigurationException {
+		outputDir = getProperty(DitaConstants.CMD_OUTDIR);
+		if (outputDir != null) {
 			final File f = new File(outputDir);
 			if (f.exists() && !f.isDirectory())
 				throw new ConfigurationException("El directorio de salida existe y no es un directorio");
-			break;
-		case DitaConstants.RECURSIVE:
-			r = Boolean.parseBoolean(value);
-		case DitaConstants.ONE:
-			one = Boolean.parseBoolean(value);
-		case DitaConstants.ID:
-			id = value;
-		case DitaConstants.TITLE:
-			title = value;
-		case DitaConstants.DESCRIPTION:
-			description = value;
-		default:
-			break;
+		} else {
+			outputDir = getProperty(DitaConstants.OUTDIR_PROPERTY, DitaConstants.OUTDIR_DEFAULT);
 		}
+		r = getBooleanProperty(DitaConstants.CMD_RECURSIVE, false);
+		one = getBooleanProperty(DitaConstants.CMD_ONE, false);
+		id = getProperty(DitaConstants.CMD_ID);
+		title = getProperty(DitaConstants.CMD_TITLE);
+		description = getProperty(DitaConstants.CMD_DESCRIPTION);
 	}
 
 	public static void start() {
@@ -122,6 +104,18 @@ public class Config extends ConfigurationManager {
 		} catch (final ConfigurationException e) {
 			LogManager.error("Error en configuración", e);
 		}
+	}
+
+	public static String getDescription() {
+		return description;
+	}
+
+	public static String getId() {
+		return id;
+	}
+
+	public static String getOutputDir() {
+		return outputDir;
 	}
 
 }

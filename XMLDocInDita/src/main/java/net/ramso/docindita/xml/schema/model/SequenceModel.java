@@ -4,7 +4,7 @@ import com.predic8.schema.SchemaComponent;
 import com.predic8.schema.Sequence;
 
 import groovy.xml.QName;
-import net.ramso.docindita.xml.DitaConstants;
+import net.ramso.docindita.tools.DitaConstants;
 
 public class SequenceModel extends AbstractComplexContentModel {
 	private final Sequence sequence;

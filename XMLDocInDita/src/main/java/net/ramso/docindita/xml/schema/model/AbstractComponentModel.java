@@ -6,7 +6,7 @@ import com.predic8.schema.Documentation;
 import com.predic8.schema.SchemaComponent;
 
 import groovy.xml.QName;
-import net.ramso.docindita.xml.DitaTools;
+import net.ramso.docindita.tools.DitaTools;
 
 public abstract class AbstractComponentModel implements iComponentModel {
 

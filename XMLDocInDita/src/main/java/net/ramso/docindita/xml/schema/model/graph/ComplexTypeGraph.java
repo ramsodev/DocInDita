@@ -13,9 +13,9 @@ import com.predic8.schema.SimpleType;
 import com.predic8.schema.TypeDefinition;
 
 import groovy.xml.QName;
+import net.ramso.docindita.tools.DitaConstants;
+import net.ramso.docindita.tools.DitaTools;
 import net.ramso.docindita.xml.Config;
-import net.ramso.docindita.xml.DitaConstants;
-import net.ramso.docindita.xml.DitaTools;
 import net.ramso.docindita.xml.schema.model.AttributeGroupModel;
 import net.ramso.docindita.xml.schema.model.AttributeModel;
 import net.ramso.docindita.xml.schema.model.ComplexTypeModel;

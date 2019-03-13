@@ -15,7 +15,7 @@ import com.predic8.schema.Sequence;
 import com.predic8.schema.SimpleContent;
 
 import groovy.xml.QName;
-import net.ramso.docindita.xml.DitaConstants;
+import net.ramso.docindita.tools.DitaConstants;
 import net.ramso.docindita.xml.schema.model.graph.ComplexTypeGraph;
 import net.ramso.tools.LogManager;
 

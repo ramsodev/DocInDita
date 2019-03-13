@@ -4,7 +4,7 @@ import com.predic8.schema.All;
 import com.predic8.schema.SchemaComponent;
 
 import groovy.xml.QName;
-import net.ramso.docindita.xml.DitaConstants;
+import net.ramso.docindita.tools.DitaConstants;
 
 public class AllModel extends AbstractComplexContentModel {
 	private final All all;

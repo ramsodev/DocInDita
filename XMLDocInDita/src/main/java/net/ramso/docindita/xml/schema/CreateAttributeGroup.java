@@ -5,7 +5,7 @@ import java.io.IOException;
 import com.predic8.schema.AttributeGroup;
 
 import net.ramso.docindita.BasicCreate;
-import net.ramso.docindita.xml.DitaConstants;
+import net.ramso.docindita.tools.DitaConstants;
 import net.ramso.docindita.xml.schema.model.AttributeGroupModel;
 
 public class CreateAttributeGroup extends BasicCreate {

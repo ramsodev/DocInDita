@@ -6,8 +6,8 @@ import java.util.List;
 import com.predic8.wsdl.Port;
 
 import net.ramso.docindita.BasicCreate;
-import net.ramso.docindita.xml.DitaConstants;
-import net.ramso.docindita.xml.DitaTools;
+import net.ramso.docindita.tools.DitaConstants;
+import net.ramso.docindita.tools.DitaTools;
 
 public class CreatePorts extends BasicCreate {
 	public CreatePorts(String serviceName) {

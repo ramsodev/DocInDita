@@ -22,8 +22,8 @@ import com.predic8.schema.restriction.facet.TotalDigitsFacet;
 import com.predic8.schema.restriction.facet.WhiteSpaceFacet;
 
 import groovy.xml.QName;
-import net.ramso.docindita.xml.DitaConstants;
-import net.ramso.docindita.xml.DitaTools;
+import net.ramso.docindita.tools.DitaConstants;
+import net.ramso.docindita.tools.DitaTools;
 import net.ramso.docindita.xml.schema.model.graph.SimpleTypeGraph;
 import net.ramso.tools.LogManager;
 

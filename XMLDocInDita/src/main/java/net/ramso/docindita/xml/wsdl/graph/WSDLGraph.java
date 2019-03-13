@@ -18,8 +18,8 @@ import com.predic8.wsdl.Port;
 import com.predic8.wsdl.PortType;
 import com.predic8.wsdl.Service;
 
+import net.ramso.docindita.tools.DitaConstants;
 import net.ramso.docindita.xml.Config;
-import net.ramso.docindita.xml.DitaConstants;
 import net.ramso.tools.graph.AbstractGraph;
 import net.ramso.tools.graph.GraphConstants;
 import net.ramso.tools.graph.GraphTools;

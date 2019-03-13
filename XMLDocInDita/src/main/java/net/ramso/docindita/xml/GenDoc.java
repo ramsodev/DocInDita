@@ -10,6 +10,8 @@ import java.util.List;
 
 import net.ramso.docindita.CreateBookMap;
 import net.ramso.docindita.References;
+import net.ramso.docindita.tools.DitaConstants;
+import net.ramso.docindita.tools.DitaTools;
 import net.ramso.docindita.xml.schema.GenerateSchema;
 import net.ramso.docindita.xml.wsdl.GenerateWsdl;
 import net.ramso.tools.ConfigurationException;

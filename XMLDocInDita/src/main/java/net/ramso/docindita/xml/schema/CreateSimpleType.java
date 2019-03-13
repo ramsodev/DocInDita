@@ -5,8 +5,8 @@ import java.io.IOException;
 import com.predic8.schema.SimpleType;
 
 import net.ramso.docindita.BasicCreate;
-import net.ramso.docindita.xml.DitaConstants;
-import net.ramso.docindita.xml.DitaTools;
+import net.ramso.docindita.tools.DitaConstants;
+import net.ramso.docindita.tools.DitaTools;
 import net.ramso.docindita.xml.schema.model.SimpleTypeModel;
 
 public class CreateSimpleType extends BasicCreate {

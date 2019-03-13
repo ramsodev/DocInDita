@@ -7,7 +7,7 @@ import com.predic8.schema.GroupRef;
 import com.predic8.schema.SchemaComponent;
 
 import groovy.xml.QName;
-import net.ramso.docindita.xml.DitaConstants;
+import net.ramso.docindita.tools.DitaConstants;
 import net.ramso.docindita.xml.schema.model.graph.GroupGraph;
 import net.ramso.tools.LogManager;
 

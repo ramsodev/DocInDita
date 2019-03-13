@@ -1,4 +1,4 @@
-package net.ramso.docindita.xml;
+package net.ramso.docindita.tools;
 
 import java.io.IOException;
 import java.net.MalformedURLException;

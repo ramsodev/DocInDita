@@ -1,5 +1,6 @@
 package net.ramso.tools;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -31,8 +32,8 @@ public class CommandLineProcessor {
 		final String[] values = new String[p.size()];
 		for (final Entry<Object, Object> entry : p.entrySet()) {
 			final String key = (String) entry.getKey();
-			final int ini = key.indexOf("[") + 1;
-			final int end = key.indexOf("]");
+			final int ini = key.indexOf('[') + 1;
+			final int end = key.indexOf(']');
 			final int i = Integer.parseInt(key.substring(ini, end));
 			values[i] = (String) entry.getValue();
 		}
@@ -66,29 +67,21 @@ public class CommandLineProcessor {
 		final CommandLine cmdLine = parser.parse(options, args);
 		if (cmdLine.hasOption("h")) {
 			printHelp();
-			return null;
+			return new ArrayList<>();
 		}
-		try {
-			for (int i = 0; i < names.length; i++) {
-				if (cmdLine.hasOption(names[i])) {
-					if (hasArgs[i]) {
-						ConfigurationManager.set(names[i], cmdLine.getOptionValue(names[i]));
-					} else {
-						ConfigurationManager.set(names[i], "true");
+		for (int i = 0; i < names.length; i++) {
+			if (cmdLine.hasOption(names[i])) {
+				if (hasArgs[i]) {
+					if (!clas[i].isEmpty()) {
+						LogManager.debug("Recide el tipo" + clas[i]);
 					}
+					ConfigurationManager.set(names[i], cmdLine.getOptionValue(names[i]));
 				} else {
-					if (hasArgs[i]) {
-						if (reqs[i])
-							throw new org.apache.commons.cli.ParseException(desc[i] + " es obligatorio");
-					}
-					// else {
-					// Config.set(names[i], "false");
-					// }
+					ConfigurationManager.set(names[i], "true");
 				}
+			} else if (hasArgs[i] && reqs[i]) {
+				throw new org.apache.commons.cli.ParseException(desc[i] + " es obligatorio");
 			}
-		} catch (final ConfigurationException e) {
-			LogManager.error("Parametro erroneo", e);
-			throw new org.apache.commons.cli.ParseException(e.getMessage());
 		}
 		final List<String> ps = cmdLine.getArgList();
 		if ((ps.size() < pMin) || (ps.size() > pMax))

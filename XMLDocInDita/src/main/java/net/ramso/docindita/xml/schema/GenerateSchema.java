@@ -20,9 +20,9 @@ import com.predic8.schema.SimpleType;
 import net.ramso.docindita.CreateBookMap;
 import net.ramso.docindita.CreatePortada;
 import net.ramso.docindita.References;
+import net.ramso.docindita.tools.DitaConstants;
+import net.ramso.docindita.tools.DitaTools;
 import net.ramso.docindita.xml.Config;
-import net.ramso.docindita.xml.DitaConstants;
-import net.ramso.docindita.xml.DitaTools;
 
 public class GenerateSchema {
 

@@ -7,8 +7,8 @@ import com.predic8.schema.SimpleType;
 import com.predic8.schema.TypeDefinition;
 
 import groovy.xml.QName;
-import net.ramso.docindita.xml.DitaConstants;
-import net.ramso.docindita.xml.DitaTools;
+import net.ramso.docindita.tools.DitaConstants;
+import net.ramso.docindita.tools.DitaTools;
 import net.ramso.docindita.xml.schema.model.graph.ElementGraph;
 import net.ramso.tools.LogManager;
 

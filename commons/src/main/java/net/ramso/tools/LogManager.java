@@ -12,35 +12,37 @@ import net.ramso.tools.ConfigurationManager.LOG_TYPES;
 
 public class LogManager {
 	public enum LEVELS {
-		info, warn, error, debug
+		INFO, WARN, ERROR, DEBUG
 	}
 
-	public static Logger logger = null;;
+	private static final String NAME = "LogManager";
+
+	protected static Logger logger = null;
 
 	public static void debug(String message) {
 		if (logger == null) {
-			init("LogManager", LOG_TYPES.simple, "", false);
+			init(NAME, LOG_TYPES.SIMPLE, "", false);
 		}
 		logger.debug(message);
 	}
 
 	public static void error(String message, Throwable cause) {
 		if (logger == null) {
-			init("LogManager", LOG_TYPES.simple, "", false);
+			init(NAME, LOG_TYPES.SIMPLE, "", false);
 		}
 		logger.error(message, cause);
 	}
 
 	public static Logger getLogger() {
 		if (logger == null) {
-			init("LogManager", LOG_TYPES.simple, "", false);
+			init(NAME, LOG_TYPES.SIMPLE, "", false);
 		}
 		return logger;
 	}
 
 	public static void info(String message) {
 		if (logger == null) {
-			init("LogManager", LOG_TYPES.simple, "", false);
+			init(NAME, LOG_TYPES.SIMPLE, "", false);
 		}
 		logger.info(message);
 	}
@@ -62,14 +64,11 @@ public class LogManager {
 	 *            true si debe busacar en el Calsspath el fichero de configuración
 	 */
 	public static void init(String name, LOG_TYPES logtype, String file, boolean inCP) {
-		// if (inCP) {
-		// file = FileTools.getPath(file);
-		// }
 		switch (logtype) {
-		case jdk:
+		case JDK:
 			System.setProperty("java.util.logging.config.file", file);
 			break;
-		case logback:
+		case LOGBACK:
 			final LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
 			if (logger != null) {
 				context.reset();
@@ -84,8 +83,9 @@ public class LogManager {
 					configurator.doConfigure(file);
 				}
 			} catch (final JoranException e) {
-				e.printStackTrace();
+				error("Configurando el log", e);
 			}
+			break;
 		default:
 			break;
 		}
@@ -96,19 +96,19 @@ public class LogManager {
 
 	public static void log(LEVELS level, String string) {
 		if (logger == null) {
-			init("LogManager", LOG_TYPES.simple, "", false);
+			init(NAME, LOG_TYPES.SIMPLE, "", false);
 		}
 		switch (level) {
-		case info:
+		case INFO:
 			info(string);
 			break;
-		case debug:
+		case DEBUG:
 			debug(string);
 			break;
-		case warn:
+		case WARN:
 			warn(string, null);
 			break;
-		case error:
+		case ERROR:
 			error(string, null);
 			break;
 		default:
@@ -119,7 +119,7 @@ public class LogManager {
 
 	public static void warn(String message, Throwable cause) {
 		if (logger == null) {
-			init("LogManager", LOG_TYPES.simple, "", false);
+			init(NAME, LOG_TYPES.SIMPLE, "", false);
 		}
 		logger.warn(message, cause);
 	}

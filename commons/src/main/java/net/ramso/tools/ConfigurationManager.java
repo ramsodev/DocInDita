@@ -25,62 +25,64 @@ public abstract class ConfigurationManager {
 	 *
 	 */
 	public enum LOG_TYPES {
-		jdk, log4j, logback, simple
+		JDK, LOG4J, LOGBACK, SIMPLE
 	}
 
 	/**
 	 * Nombre del fichero de configuración
 	 */
-	public static String PROPERTIESNAME = "configuration.properties";
+	protected static String propertiesName = "configuration.properties";
 	/**
 	 * Propiedad del fichero de configuración del log
 	 */
-	public static String FILE_CONF_LOG = "file.conf.log";
+	protected static String fileConfLog = "file.conf.log";
 
 	/**
 	 * Propiedad con el nombre del log
 	 */
-	public static String LOG_NAME = "log.name";
+	protected static String logName = "log.name";
 
 	/**
 	 * Tipo de log a usar en la aplicación
 	 */
-	public static String LOG_TYPE = "log.type";
+	protected static String logType = "log.type";
 
 	/**
 	 * Propieda con el path del directorio de configuración
 	 */
-	public static String CONF_DIR = null;;
+	protected static String confDir = null;
 
 	/**
 	 * 
 	 */
-	final static protected Properties defaults = new Properties();
+	protected static final Properties defaults = new Properties();
 	/**
 	 * 
 	 */
-	final static protected Properties properties = new Properties(defaults);
+	protected static final Properties properties = new Properties(defaults);
 
 	/**
 	 * Obtiene la propiedad y la convierte a boolean si la propiedad no existe
 	 * retorna false
+	 * 
 	 * @param propName
 	 * @return
 	 */
-	final static public boolean getBooleanProperty(String propName) {
+	public static final boolean getBooleanProperty(String propName) {
 		return getBooleanProperty(propName, false);
 	}
 
 	/**
 	 * Obtiene la propiedad y la convierte a boolean si la propiedad no existe
 	 * retorna defaultValue
+	 * 
 	 * @param propName
 	 * @param defaultValue
 	 * @return
 	 */
-	final static public boolean getBooleanProperty(String propName, boolean defaultValue) {
+	public static final boolean getBooleanProperty(String propName, boolean defaultValue) {
 		try {
-			return Boolean.valueOf(properties.getProperty(propName, Boolean.toString(defaultValue))).booleanValue();
+			return Boolean.parseBoolean(properties.getProperty(propName, Boolean.toString(defaultValue)));
 		} catch (final Exception ex) {
 			return defaultValue;
 		}
@@ -89,21 +91,23 @@ public abstract class ConfigurationManager {
 	/**
 	 * Obtiene la propiedad y la convierte a byte si la propiedad no existe retorna
 	 * (byte)0
+	 * 
 	 * @param propName
 	 * @return
 	 */
-	final static public byte getByteProperty(String propName) {
+	public static final byte getByteProperty(String propName) {
 		return getByteProperty(propName, (byte) 0);
 	}
 
 	/**
 	 * Obtiene la propiedad y la convierte a byte si la propiedad no existe retorna
 	 * defaultValue
+	 * 
 	 * @param propName
 	 * @param defaultValue
 	 * @return
 	 */
-	final static public byte getByteProperty(String propName, byte defaultValue) {
+	public static final byte getByteProperty(String propName, byte defaultValue) {
 		try {
 			return Byte.parseByte(properties.getProperty(propName));
 		} catch (final Exception ex) {
@@ -114,21 +118,23 @@ public abstract class ConfigurationManager {
 	/**
 	 * Obtiene la propiedad y la convierte a double si la propiedad no existe
 	 * retorna (short)0
+	 * 
 	 * @param propName
 	 * @return
 	 */
-	final static public double getDoubleProperty(String propName) {
+	public static final double getDoubleProperty(String propName) {
 		return getDoubleProperty(propName, 0.0);
 	}
 
 	/**
 	 * Obtiene la propiedad y la convierte a double si la propiedad no existe
 	 * retorna defaultValue
+	 * 
 	 * @param propName
 	 * @param defaultValue
 	 * @return
 	 */
-	final static public double getDoubleProperty(String propName, double defaultValue) {
+	public static final double getDoubleProperty(String propName, double defaultValue) {
 		try {
 			return Double.parseDouble(properties.getProperty(propName));
 		} catch (final Exception ex) {
@@ -139,21 +145,23 @@ public abstract class ConfigurationManager {
 	/**
 	 * Obtiene la propiedad y la convierte a double si la propiedad no existe
 	 * retorna (short)0
+	 * 
 	 * @param propName
 	 * @return
 	 */
-	final static public float getFloatProperty(String propName) {
+	public static final float getFloatProperty(String propName) {
 		return getFloatProperty(propName, (float) 0.0);
 	}
 
 	/**
 	 * Obtiene la propiedad y la convierte a double si la propiedad no existe
 	 * retorna defaultValue
+	 * 
 	 * @param propName
 	 * @param defaultValue
 	 * @return
 	 */
-	final static public float getFloatProperty(String propName, float defaultValue) {
+	public static final float getFloatProperty(String propName, float defaultValue) {
 		try {
 			return Float.parseFloat(properties.getProperty(propName));
 		} catch (final Exception ex) {
@@ -164,21 +172,23 @@ public abstract class ConfigurationManager {
 	/**
 	 * Obtiene la propiedad y la convierte a int si la propiedad no existe retorna
 	 * (int)0
+	 * 
 	 * @param propName
 	 * @return
 	 */
-	final static public int getIntProperty(String propName) {
+	public static final int getIntProperty(String propName) {
 		return getIntProperty(propName, 0);
 	}
 
 	/**
 	 * Obtiene la propiedad y la convierte a int si la propiedad no existe retorna
 	 * defaultValue
+	 * 
 	 * @param propName
 	 * @param defaultValue
 	 * @return
 	 */
-	final static public int getIntProperty(String propName, int defaultValue) {
+	public static final int getIntProperty(String propName, int defaultValue) {
 		try {
 			return Integer.parseInt(properties.getProperty(propName));
 		} catch (final Exception ex) {
@@ -189,21 +199,23 @@ public abstract class ConfigurationManager {
 	/**
 	 * Obtiene la propiedad y la convierte a long si la propiedad no existe retorna
 	 * (long)0
+	 * 
 	 * @param propName
 	 * @return
 	 */
-	final static public long getLongProperty(String propName) {
+	public static final long getLongProperty(String propName) {
 		return getLongProperty(propName, 0L);
 	}
 
 	/**
 	 * Obtiene la propiedad y la convierte a short si la propiedad no existe retorna
 	 * defaultValue
+	 * 
 	 * @param propName
 	 * @param defaultValue
 	 * @return
 	 */
-	final static public long getLongProperty(String propName, long defaultValue) {
+	public static final long getLongProperty(String propName, long defaultValue) {
 		try {
 			return Long.parseLong(properties.getProperty(propName));
 		} catch (final Exception ex) {
@@ -215,7 +227,7 @@ public abstract class ConfigurationManager {
 	 * @param propName
 	 * @return
 	 */
-	final static public String getPassword(String propName) {
+	public static final String getPassword(String propName) {
 		String pass = properties.getProperty(propName);
 		if (PasswordManager.IsEncrypted(pass)) {
 			try {
@@ -239,7 +251,7 @@ public abstract class ConfigurationManager {
 	 * @param prefix
 	 * @return
 	 */
-	final static public Properties getProperties(String prefix) {
+	public static final Properties getProperties(String prefix) {
 		final Properties prop = new Properties();
 		for (final Enumeration<?> e = properties.propertyNames(); e.hasMoreElements();) {
 			final String name = (String) e.nextElement();
@@ -250,31 +262,35 @@ public abstract class ConfigurationManager {
 		return prop;
 	}
 
-	/** Obtiene una Propiedad como un String si no Existe devuelve "" 
+	/**
+	 * Obtiene una Propiedad como un String si no Existe devuelve ""
+	 * 
 	 * @param key
 	 * @return
 	 */
-	final public static String getProperty(String key) {
+	public static final String getProperty(String key) {
 		return properties.getProperty(key);
 	}
 
-	/** Obtiene una Propiedad como un String sino su valor por defecto 
+	/**
+	 * Obtiene una Propiedad como un String sino su valor por defecto
+	 * 
 	 * @param key
 	 * @param defaultValue
 	 * @return
 	 */
-	final public static String getProperty(String key, String defaultValue) {
+	public static final String getProperty(String key, String defaultValue) {
 		return properties.getProperty(key, defaultValue);
 	}
 
 	/**
 	 * Obtiene la propiedad y la convierte a short si la propiedad no existe retorna
 	 * (short)0
-	 
+	 * 
 	 * @param propName
 	 * @return
 	 */
-	final static public short getShortProperty(String propName) {
+	public static final short getShortProperty(String propName) {
 		return getShortProperty(propName, (short) 0);
 	}
 
@@ -286,7 +302,7 @@ public abstract class ConfigurationManager {
 	 * @param defaultValue
 	 * @return
 	 */
-	final static public short getShortProperty(String propName, short defaultValue) {
+	public static final short getShortProperty(String propName, short defaultValue) {
 		try {
 			return Short.parseShort(properties.getProperty(propName));
 		} catch (final Exception ex) {
@@ -303,18 +319,18 @@ public abstract class ConfigurationManager {
 	public static void init() throws ConfigurationException {
 		String path = "";
 		boolean inCP = true;
-		if (CONF_DIR != null) {
-			path = CONF_DIR;
+		if (confDir != null) {
+			path = confDir;
 			if (!path.endsWith(File.separator)) {
 				path += File.separator;
 			}
 			inCP = false;
 		}
-		if (!load(inCP, path + PROPERTIESNAME))
-			throw new ConfigurationException("Configuration properties " + path + PROPERTIESNAME + " not found");
-		final String name = getProperty(LOG_NAME);
-		final LOG_TYPES logtype = LOG_TYPES.valueOf(getProperty(LOG_TYPE));
-		LogManager.init(name, logtype, path + getProperty(FILE_CONF_LOG), inCP);
+		if (!load(inCP, path + propertiesName))
+			throw new ConfigurationException("Configuration properties " + path + propertiesName + " not found");
+		final String name = getProperty(logName);
+		final LOG_TYPES logtype = LOG_TYPES.valueOf(getProperty(logType).toUpperCase());
+		LogManager.init(name, logtype, path + getProperty(fileConfLog), inCP);
 		LogManager.info("Configuration roperties loaded correctly");
 		LogManager.info("Aplication initialized");
 	}
@@ -329,7 +345,8 @@ public abstract class ConfigurationManager {
 		return result;
 	}
 
-	final static boolean load(File file) {
+	@SuppressWarnings("null")
+	static final boolean load(File file) {
 		boolean result = true;
 		FileInputStream propsFile = null;
 		try {
@@ -337,77 +354,72 @@ public abstract class ConfigurationManager {
 			properties.load(propsFile);
 		} catch (final Exception e) {
 			result = false;
-			// Ignoramos las
 		} finally {
 			try {
 				propsFile.close();
 			} catch (final Exception e) {
-				// ignoramos
+				LogManager.debug("fallo al cerrar el  fichero de propiedades");
 			}
 		}
 		return result;
 	}
 
 	@SuppressWarnings("null")
-	final static boolean load(FileReader file) {
+	static final boolean load(FileReader file) {
 		boolean result = true;
 		final FileInputStream propsFile = null;
 		try {
 			properties.load(file);
 		} catch (final Exception e) {
 			result = false;
-			// Ignoramos las
 		} finally {
 			try {
 				propsFile.close();
 			} catch (final Exception e) {
-				// ignoramos
+				LogManager.debug("fallo al cerrar el  fichero de propiedades");
 			}
 		}
 		return result;
 	}
 
-	final static boolean load(InputStream propsFile) {
+	@SuppressWarnings("null")
+	static final boolean load(InputStream propsFile) {
 		boolean result = true;
-		// FileInputStream propsFile = null;
 		try {
-			// propsFile = new FileInputStream(file);
 			properties.load(propsFile);
 		} catch (final Exception e) {
 			result = false;
-			// Ignoramos las
 		} finally {
 			try {
 				propsFile.close();
 			} catch (final Exception e) {
-				// ignoramos
+				LogManager.debug("fallo al cerrar el  fichero de propiedades");
 			}
 		}
 		return result;
 	}
 
-	final static public void putdefault(Object key, Object value) {
+	public static final void putdefault(Object key, Object value) {
 		defaults.put(key, value);
 	}
 
-	final static public void save() throws FileNotFoundException, IOException {
+	public static final void save() throws IOException {
 		String path = "";
-		if (CONF_DIR != null) {
-			path = CONF_DIR;
+		if (confDir != null) {
+			path = confDir;
 			if (!path.endsWith(File.separator)) {
 				path += File.separator;
 			}
 		}
-		properties.store(new FileOutputStream(path + PROPERTIESNAME), "Modificado ");
-
+		properties.store(new FileOutputStream(path + propertiesName), "Modificado ");
 	}
 
-	final static public void setProperty(String propName, String value) {
+	public static final void setProperty(String propName, String value) {
 		properties.setProperty(propName, value);
 
 	}
-	public static void set(String property, String value) throws ConfigurationException {
-		// TODO Auto-generated method stub
-		
+
+	public static void set(String key, String value) {
+		properties.setProperty(key, value);
 	}
 }

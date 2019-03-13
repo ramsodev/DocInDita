@@ -4,7 +4,7 @@ import java.awt.geom.Rectangle2D;
 
 import com.mxgraph.model.mxCell;
 
-import net.ramso.docindita.xml.DitaConstants;
+import net.ramso.docindita.tools.DitaConstants;
 import net.ramso.tools.graph.AbstractGraph;
 import net.ramso.tools.graph.GraphTools;
 
