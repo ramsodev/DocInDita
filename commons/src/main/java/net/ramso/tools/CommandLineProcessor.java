@@ -41,60 +41,62 @@ public class CommandLineProcessor {
 	}
 
 	private void init() {
-		options = new Options();
-		names = getProperties(Constants.PREFIX_CMD_NAME);
-		desc = getProperties(Constants.PREFIX_CMD_DESCRIPTION);
-		reqs = toBoolean(getProperties(Constants.PREFIX_CMD_REQUIERED));
-		hasArgs = toBoolean(getProperties(Constants.PREFIX_CMD_ARGUMENT));
-		clas = getProperties(Constants.PREFIX_CMD_TYPE);
-		for (int i = 0; i < names.length; i++) {
-			final Option o = new Option(names[i], hasArgs[i], desc[i]);
-			o.setRequired(reqs[i]);
+		this.options = new Options();
+		this.names = getProperties(Constants.PREFIX_CMD_NAME);
+		this.desc = getProperties(Constants.PREFIX_CMD_DESCRIPTION);
+		this.reqs = toBoolean(getProperties(Constants.PREFIX_CMD_REQUIERED));
+		this.hasArgs = toBoolean(getProperties(Constants.PREFIX_CMD_ARGUMENT));
+		this.clas = getProperties(Constants.PREFIX_CMD_TYPE);
+		for (int i = 0; i < this.names.length; i++) {
+			final Option o = new Option(this.names[i], this.hasArgs[i], this.desc[i]);
+			o.setRequired(this.reqs[i]);
 			try {
-				if (!clas[i].isEmpty()) {
-					o.setType(Class.forName(clas[i]));
+				if (!this.clas[i].isEmpty()) {
+					o.setType(Class.forName(this.clas[i]));
 				}
 			} catch (final ClassNotFoundException e) {
-				LogManager.warn("No se pudo instaciar el tipo para la opcion " + names[i] + " de la linea de mandatos",
-						e);
+				LogManager.warn(BundleManager.getString("commons.CommandLineProcessor.cmd_instance_fail", this.names[i]), e); //$NON-NLS-1$ //$NON-NLS-2$
 			}
-			options.addOption(o);
+			this.options.addOption(o);
 		}
 	}
 
 	public List<String> parse(String[] args, int pMin, int pMax) throws ParseException {
 		final CommandLineParser parser = new DefaultParser();
-		final CommandLine cmdLine = parser.parse(options, args);
-		if (cmdLine.hasOption("h")) {
+		final CommandLine cmdLine = parser.parse(this.options, args);
+		if (cmdLine.hasOption("h")) { //$NON-NLS-1$
 			printHelp();
 			return new ArrayList<>();
 		}
-		for (int i = 0; i < names.length; i++) {
-			if (cmdLine.hasOption(names[i])) {
-				if (hasArgs[i]) {
-					if (!clas[i].isEmpty()) {
-						LogManager.debug("Recide el tipo" + clas[i]);
+		for (int i = 0; i < this.names.length; i++) {
+			if (cmdLine.hasOption(this.names[i])) {
+				if (this.hasArgs[i]) {
+					if (!this.clas[i].isEmpty()) {
+						LogManager.debug(BundleManager.getString("commons.CommandLineProcessor.type_get", this.clas[i])); //$NON-NLS-1$
 					}
-					ConfigurationManager.set(names[i], cmdLine.getOptionValue(names[i]));
+					ConfigurationManager.set(this.names[i], cmdLine.getOptionValue(this.names[i]));
 				} else {
-					ConfigurationManager.set(names[i], "true");
+					ConfigurationManager.set(this.names[i], "true"); //$NON-NLS-1$
 				}
-			} else if (hasArgs[i] && reqs[i]) {
-				throw new org.apache.commons.cli.ParseException(desc[i] + " es obligatorio");
+			} else if (this.hasArgs[i] && this.reqs[i]) {
+				throw new org.apache.commons.cli.ParseException(
+						  BundleManager.getString("commons.CommandLineProcessor.type_requiered",this.desc[i])); //$NON-NLS-1$
 			}
 		}
 		final List<String> ps = cmdLine.getArgList();
-		if ((ps.size() < pMin) || (ps.size() > pMax))
-			throw new org.apache.commons.cli.ParseException("Numero de parametros no opcionales erroneo");
+		if ((ps.size() < pMin) || (ps.size() > pMax)) {
+			throw new org.apache.commons.cli.ParseException(
+					BundleManager.getString("commons.CommandLineProcessor.parameter_numer_error")); //$NON-NLS-1$
+		}
 		return ps;
 	}
 
 	public void printHelp() {
-		final String header = "Genera la documentación de un WSDL, XSD o WADL indicado en la entrada\n\n";
-		final String footer = "\n";
+		final String header = BundleManager.getString("commons.CommandLineProcessor.help_header"); //$NON-NLS-1$
+		final String footer = "\n"; //$NON-NLS-1$
 
 		final HelpFormatter formatter = new HelpFormatter();
-		formatter.printHelp("XMLDocInDiata", header, options, footer, true);
+		formatter.printHelp(LogManager.getLogger().getName(), header, this.options, footer, true); //$NON-NLS-1$
 
 	}
 

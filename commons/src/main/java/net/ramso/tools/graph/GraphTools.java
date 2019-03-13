@@ -11,6 +11,9 @@ import com.mxgraph.util.mxConstants;
 import net.ramso.tools.LogManager;
 
 public class GraphTools {
+	private GraphTools() {
+		super();
+	}
 
 	public static String getDefaultColor(boolean title) {
 		String color = "BLACK";
@@ -21,10 +24,8 @@ public class GraphTools {
 	}
 
 	public static String getExtendEdgeStyle() {
-		// TODO: mxMarkerRegistry
 		String style = mxConstants.STYLE_EDGE + "=" + mxConstants.EDGESTYLE_ELBOW + ";";
 		style += mxConstants.STYLE_ENDARROW + "=" + GraphConstants.ARROW_EXTENDS + ";";
-		// + mxConstants.ARROW_BLOCK + ";";
 		style += mxConstants.STYLE_ENDFILL + "=" + "RED;";
 		style += mxConstants.STYLE_ENDSIZE + "=25;";
 
@@ -107,7 +108,7 @@ public class GraphTools {
 	}
 
 	public static String getStyle(boolean title, String color, int space) {
-		return getStyle(title, false, color, -1);
+		return getStyle(title, false, color, space);
 	}
 
 	public static String getStyleImage(boolean border, int height, int witdth, String icon) {

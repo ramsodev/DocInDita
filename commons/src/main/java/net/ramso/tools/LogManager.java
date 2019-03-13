@@ -15,34 +15,34 @@ public class LogManager {
 		INFO, WARN, ERROR, DEBUG
 	}
 
-	private static final String NAME = "LogManager";
+	private static final String NAME = "LogManager"; //$NON-NLS-1$
 
 	protected static Logger logger = null;
 
 	public static void debug(String message) {
 		if (logger == null) {
-			init(NAME, LOG_TYPES.SIMPLE, "", false);
+			init(NAME, LOG_TYPES.SIMPLE, "", false); //$NON-NLS-1$
 		}
 		logger.debug(message);
 	}
 
 	public static void error(String message, Throwable cause) {
 		if (logger == null) {
-			init(NAME, LOG_TYPES.SIMPLE, "", false);
+			init(NAME, LOG_TYPES.SIMPLE, "", false); //$NON-NLS-1$
 		}
 		logger.error(message, cause);
 	}
 
 	public static Logger getLogger() {
 		if (logger == null) {
-			init(NAME, LOG_TYPES.SIMPLE, "", false);
+			init(NAME, LOG_TYPES.SIMPLE, "", false); //$NON-NLS-1$
 		}
 		return logger;
 	}
 
 	public static void info(String message) {
 		if (logger == null) {
-			init(NAME, LOG_TYPES.SIMPLE, "", false);
+			init(NAME, LOG_TYPES.SIMPLE, "", false); //$NON-NLS-1$
 		}
 		logger.info(message);
 	}
@@ -66,7 +66,7 @@ public class LogManager {
 	public static void init(String name, LOG_TYPES logtype, String file, boolean inCP) {
 		switch (logtype) {
 		case JDK:
-			System.setProperty("java.util.logging.config.file", file);
+			System.setProperty("java.util.logging.config.file", file); //$NON-NLS-1$
 			break;
 		case LOGBACK:
 			final LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
@@ -83,20 +83,20 @@ public class LogManager {
 					configurator.doConfigure(file);
 				}
 			} catch (final JoranException e) {
-				error("Configurando el log", e);
+				error(BundleManager.getString("commons.LogManager.log_setup_progress"), e); //$NON-NLS-1$
 			}
 			break;
 		default:
 			break;
 		}
 		logger = LoggerFactory.getLogger(name);
-		logger.info("Logger configuration ending");
+		logger.info(BundleManager.getString("commons.LogManager.log_setup_end")); //$NON-NLS-1$
 
 	}
 
 	public static void log(LEVELS level, String string) {
 		if (logger == null) {
-			init(NAME, LOG_TYPES.SIMPLE, "", false);
+			init(NAME, LOG_TYPES.SIMPLE, "", false); //$NON-NLS-1$
 		}
 		switch (level) {
 		case INFO:
@@ -119,7 +119,7 @@ public class LogManager {
 
 	public static void warn(String message, Throwable cause) {
 		if (logger == null) {
-			init(NAME, LOG_TYPES.SIMPLE, "", false);
+			init(NAME, LOG_TYPES.SIMPLE, "", false); //$NON-NLS-1$
 		}
 		logger.warn(message, cause);
 	}

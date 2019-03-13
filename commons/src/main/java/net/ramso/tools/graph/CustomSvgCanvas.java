@@ -10,19 +10,18 @@ public class CustomSvgCanvas extends mxSvgCanvas {
 
 	public CustomSvgCanvas() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public CustomSvgCanvas(Document document) {
 		super(document);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public mxPoint drawMarker(Element parent, Object type, mxPoint p0, mxPoint pe, float size, float strokeWidth,
 			String color) {
-		if (!type.equals(GraphConstants.ARROW_EXTENDS))
+		if (!type.equals(GraphConstants.ARROW_EXTENDS)) {
 			return super.drawMarker(parent, type, p0, pe, size, strokeWidth, color);
+		}
 		mxPoint offset = null;
 
 		// Computes the norm and the inverse norm
@@ -30,7 +29,7 @@ public class CustomSvgCanvas extends mxSvgCanvas {
 		final double dy = pe.getY() - p0.getY();
 
 		final double dist = Math.max(1, Math.sqrt((dx * dx) + (dy * dy)));
-		final double absSize = size * scale;
+		final double absSize = size * this.scale;
 		double nx = (dx * absSize) / dist;
 		double ny = (dy * absSize) / dist;
 
@@ -41,21 +40,15 @@ public class CustomSvgCanvas extends mxSvgCanvas {
 		nx *= 0.5 + (strokeWidth / 2);
 		ny *= 0.5 + (strokeWidth / 2);
 
-		final Element path = document.createElement("path");
-		path.setAttribute("stroke-width", String.valueOf(strokeWidth * scale));
+		final Element path = this.document.createElement("path");
+		path.setAttribute("stroke-width", String.valueOf(strokeWidth * this.scale));
 		path.setAttribute("stroke", color);
 		path.setAttribute("fill", "#FFFFFF");
-
-		String d = null;
-
-		d = "M " + pe.getX() + " " + pe.getY() + " L " + (pe.getX() - nx - (ny / 2)) + " "
+		final String d = "M " + pe.getX() + " " + pe.getY() + " L " + (pe.getX() - nx - (ny / 2)) + " "
 				+ ((pe.getY() - (ny * 1.25)) + (nx / 2)) + " L " + ((pe.getX() + (ny / 2)) - nx) + " "
 				+ (pe.getY() - (ny * 1.25) - (nx / 2)) + " z";
-
-		if (d != null) {
-			path.setAttribute("d", d);
-			parent.appendChild(path);
-		}
+		path.setAttribute("d", d);
+		parent.appendChild(path);
 		offset = new mxPoint();
 		offset.setX(0);
 		offset.setY((ny * 1.25) * -1);

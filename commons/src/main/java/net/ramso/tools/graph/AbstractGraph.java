@@ -16,9 +16,10 @@ import com.mxgraph.util.mxXmlUtils;
 import com.mxgraph.view.mxGraph;
 
 import net.ramso.tools.FileTools;
+import net.ramso.tools.BundleManager;
 
 public abstract class AbstractGraph {
-	protected static String suffix = "";
+	protected static String suffix = ""; //$NON-NLS-1$
 	private String fileName;
 	private mxGraph graph;
 
@@ -42,18 +43,18 @@ public abstract class AbstractGraph {
 	public abstract String generate();
 
 	public String getFileName() {
-		return fileName;
+		return this.fileName;
 	}
 
 	/**
 	 * @return the graph
 	 */
 	protected mxGraph getGraph() {
-		return graph;
+		return this.graph;
 	}
 
 	protected mxCell insertIcon(mxCell parent, String icon, int size) {
-		return (mxCell) getGraph().insertVertex(parent, GraphConstants.EXCLUDE_PREFIX_ICON + parent.getId(), "", 0, 0,
+		return (mxCell) getGraph().insertVertex(parent, GraphConstants.EXCLUDE_PREFIX_ICON + parent.getId(), "", 0, 0, //$NON-NLS-1$
 				size, size, GraphTools.getStyleImage(true, size - 2, size - 2, icon));
 	}
 
@@ -67,7 +68,7 @@ public abstract class AbstractGraph {
 		try {
 			export(graph, outdir);
 		} catch (final Exception e) {
-			net.ramso.tools.LogManager.warn("Error al exportar el diagrama " + getFileName(), e);
+			net.ramso.tools.LogManager.warn(BundleManager.getString("commons.AbstractGraph.export_error") + getFileName(), e); //$NON-NLS-1$
 		}
 	}
 
@@ -88,14 +89,15 @@ public abstract class AbstractGraph {
 
 	public boolean scale() {
 		boolean scale = false;
-		if (getGraph().getGraphBounds().getWidth() > 500)
+		if (getGraph().getGraphBounds().getWidth() > 500) {
 			scale = true;
+		}
 		return scale;
 	}
 
 	protected void setFileName(String fileName) {
-		this.fileName = (GraphConstants.IMAGE_PATH + File.separator + fileName + suffix + "."
-				+ GraphConstants.SVG_EXTENSION).replaceAll("\\s+", "_");
+		this.fileName = (GraphConstants.IMAGE_PATH + File.separator + fileName + suffix + "." //$NON-NLS-1$
+				+ GraphConstants.SVG_EXTENSION).replaceAll("\\s+", "_"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	protected void setGraph(mxGraph graph) {

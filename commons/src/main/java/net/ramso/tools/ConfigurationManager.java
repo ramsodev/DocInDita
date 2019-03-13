@@ -2,7 +2,6 @@ package net.ramso.tools;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -31,40 +30,42 @@ public abstract class ConfigurationManager {
 	/**
 	 * Nombre del fichero de configuración
 	 */
-	protected static String propertiesName = "configuration.properties";
+	protected static String propertiesName = Constants.PROPERTIES_NAME;
 	/**
 	 * Propiedad del fichero de configuración del log
 	 */
-	protected static String fileConfLog = "file.conf.log";
+	protected static String fileConfLog = Constants.FILE_CONF_LOG;
 
 	/**
 	 * Propiedad con el nombre del log
 	 */
-	protected static String logName = "log.name";
+	protected static String logName = Constants.LOG_NAME;
 
 	/**
 	 * Tipo de log a usar en la aplicación
 	 */
-	protected static String logType = "log.type";
+	protected static String logType = Constants.LOG_TYPE;
 
 	/**
 	 * Propieda con el path del directorio de configuración
 	 */
 	protected static String confDir = null;
 
+	protected static String bundleName = Constants.BUNDLENAME;
+
 	/**
-	 * 
+	 *
 	 */
 	protected static final Properties defaults = new Properties();
 	/**
-	 * 
+	 *
 	 */
 	protected static final Properties properties = new Properties(defaults);
 
 	/**
 	 * Obtiene la propiedad y la convierte a boolean si la propiedad no existe
 	 * retorna false
-	 * 
+	 *
 	 * @param propName
 	 * @return
 	 */
@@ -75,7 +76,7 @@ public abstract class ConfigurationManager {
 	/**
 	 * Obtiene la propiedad y la convierte a boolean si la propiedad no existe
 	 * retorna defaultValue
-	 * 
+	 *
 	 * @param propName
 	 * @param defaultValue
 	 * @return
@@ -91,7 +92,7 @@ public abstract class ConfigurationManager {
 	/**
 	 * Obtiene la propiedad y la convierte a byte si la propiedad no existe retorna
 	 * (byte)0
-	 * 
+	 *
 	 * @param propName
 	 * @return
 	 */
@@ -102,7 +103,7 @@ public abstract class ConfigurationManager {
 	/**
 	 * Obtiene la propiedad y la convierte a byte si la propiedad no existe retorna
 	 * defaultValue
-	 * 
+	 *
 	 * @param propName
 	 * @param defaultValue
 	 * @return
@@ -118,7 +119,7 @@ public abstract class ConfigurationManager {
 	/**
 	 * Obtiene la propiedad y la convierte a double si la propiedad no existe
 	 * retorna (short)0
-	 * 
+	 *
 	 * @param propName
 	 * @return
 	 */
@@ -129,7 +130,7 @@ public abstract class ConfigurationManager {
 	/**
 	 * Obtiene la propiedad y la convierte a double si la propiedad no existe
 	 * retorna defaultValue
-	 * 
+	 *
 	 * @param propName
 	 * @param defaultValue
 	 * @return
@@ -145,7 +146,7 @@ public abstract class ConfigurationManager {
 	/**
 	 * Obtiene la propiedad y la convierte a double si la propiedad no existe
 	 * retorna (short)0
-	 * 
+	 *
 	 * @param propName
 	 * @return
 	 */
@@ -156,7 +157,7 @@ public abstract class ConfigurationManager {
 	/**
 	 * Obtiene la propiedad y la convierte a double si la propiedad no existe
 	 * retorna defaultValue
-	 * 
+	 *
 	 * @param propName
 	 * @param defaultValue
 	 * @return
@@ -172,7 +173,7 @@ public abstract class ConfigurationManager {
 	/**
 	 * Obtiene la propiedad y la convierte a int si la propiedad no existe retorna
 	 * (int)0
-	 * 
+	 *
 	 * @param propName
 	 * @return
 	 */
@@ -183,7 +184,7 @@ public abstract class ConfigurationManager {
 	/**
 	 * Obtiene la propiedad y la convierte a int si la propiedad no existe retorna
 	 * defaultValue
-	 * 
+	 *
 	 * @param propName
 	 * @param defaultValue
 	 * @return
@@ -199,7 +200,7 @@ public abstract class ConfigurationManager {
 	/**
 	 * Obtiene la propiedad y la convierte a long si la propiedad no existe retorna
 	 * (long)0
-	 * 
+	 *
 	 * @param propName
 	 * @return
 	 */
@@ -210,7 +211,7 @@ public abstract class ConfigurationManager {
 	/**
 	 * Obtiene la propiedad y la convierte a short si la propiedad no existe retorna
 	 * defaultValue
-	 * 
+	 *
 	 * @param propName
 	 * @param defaultValue
 	 * @return
@@ -229,19 +230,19 @@ public abstract class ConfigurationManager {
 	 */
 	public static final String getPassword(String propName) {
 		String pass = properties.getProperty(propName);
-		if (PasswordManager.IsEncrypted(pass)) {
+		if (PasswordManager.isEncrypted(pass)) {
 			try {
 				return PasswordManager.decrypt(pass);
 			} catch (final Exception e) {
-				LogManager.error("Error al desencriptar password", e);
-				pass = "";
+				LogManager.error(BundleManager.getString("commons.ConfigurationManager.error_decrypt_password"), e); //$NON-NLS-1$
+				pass = ""; //$NON-NLS-1$
 			}
 		} else {
 			try {
 				setProperty(propName, PasswordManager.encrypt(pass));
 				save();
 			} catch (final Exception e) {
-				LogManager.error("Error al encriptar password", e);
+				LogManager.error(BundleManager.getString("commons.ConfigurationManager.error_crypt_password"), e); //$NON-NLS-1$
 			}
 		}
 		return pass;
@@ -264,7 +265,7 @@ public abstract class ConfigurationManager {
 
 	/**
 	 * Obtiene una Propiedad como un String si no Existe devuelve ""
-	 * 
+	 *
 	 * @param key
 	 * @return
 	 */
@@ -274,7 +275,7 @@ public abstract class ConfigurationManager {
 
 	/**
 	 * Obtiene una Propiedad como un String sino su valor por defecto
-	 * 
+	 *
 	 * @param key
 	 * @param defaultValue
 	 * @return
@@ -286,7 +287,7 @@ public abstract class ConfigurationManager {
 	/**
 	 * Obtiene la propiedad y la convierte a short si la propiedad no existe retorna
 	 * (short)0
-	 * 
+	 *
 	 * @param propName
 	 * @return
 	 */
@@ -297,7 +298,7 @@ public abstract class ConfigurationManager {
 	/**
 	 * Obtiene la propiedad y la convierte a short si la propiedad no existe retorna
 	 * defaultValue
-	 * 
+	 *
 	 * @param propName
 	 * @param defaultValue
 	 * @return
@@ -317,7 +318,7 @@ public abstract class ConfigurationManager {
 	 * @throws ConfigurationException
 	 */
 	public static void init() throws ConfigurationException {
-		String path = "";
+		String path = ""; //$NON-NLS-1$
 		boolean inCP = true;
 		if (confDir != null) {
 			path = confDir;
@@ -326,13 +327,17 @@ public abstract class ConfigurationManager {
 			}
 			inCP = false;
 		}
-		if (!load(inCP, path + propertiesName))
-			throw new ConfigurationException("Configuration properties " + path + propertiesName + " not found");
+		if (!load(inCP, path + propertiesName)) {
+			throw new ConfigurationException(
+					BundleManager.getString("commons.ConfigurationManager.conf_not_found", path + propertiesName)); //$NON-NLS-1$
+		}
+		BundleManager.init(getProperty(bundleName));
 		final String name = getProperty(logName);
 		final LOG_TYPES logtype = LOG_TYPES.valueOf(getProperty(logType).toUpperCase());
+
 		LogManager.init(name, logtype, path + getProperty(fileConfLog), inCP);
-		LogManager.info("Configuration roperties loaded correctly");
-		LogManager.info("Aplication initialized");
+		LogManager.info(BundleManager.getString("commons.ConfigurationManager.conf_load_ok")); //$NON-NLS-1$
+		LogManager.info(BundleManager.getString("commons.ConfigurationManager.app_init_ok")); //$NON-NLS-1$
 	}
 
 	public static boolean load(boolean inCp, String file) {
@@ -358,7 +363,7 @@ public abstract class ConfigurationManager {
 			try {
 				propsFile.close();
 			} catch (final Exception e) {
-				LogManager.debug("fallo al cerrar el  fichero de propiedades");
+				LogManager.debug(BundleManager.getString("commons.ConfigurationManager.fail_close_prop")); //$NON-NLS-1$
 			}
 		}
 		return result;
@@ -376,7 +381,7 @@ public abstract class ConfigurationManager {
 			try {
 				propsFile.close();
 			} catch (final Exception e) {
-				LogManager.debug("fallo al cerrar el  fichero de propiedades");
+				LogManager.debug(BundleManager.getString("commons.ConfigurationManager.fail_close_prop")); //$NON-NLS-1$
 			}
 		}
 		return result;
@@ -393,7 +398,7 @@ public abstract class ConfigurationManager {
 			try {
 				propsFile.close();
 			} catch (final Exception e) {
-				LogManager.debug("fallo al cerrar el  fichero de propiedades");
+				LogManager.debug(BundleManager.getString("commons.ConfigurationManager.fail_close_prop")); //$NON-NLS-1$
 			}
 		}
 		return result;
@@ -404,14 +409,15 @@ public abstract class ConfigurationManager {
 	}
 
 	public static final void save() throws IOException {
-		String path = "";
+		String path = ""; //$NON-NLS-1$
 		if (confDir != null) {
 			path = confDir;
 			if (!path.endsWith(File.separator)) {
 				path += File.separator;
 			}
 		}
-		properties.store(new FileOutputStream(path + propertiesName), "Modificado ");
+		properties.store(new FileOutputStream(path + propertiesName),
+				BundleManager.getString("commons.ConfigurationManager.prop_mod", propertiesName)); //$NON-NLS-1$
 	}
 
 	public static final void setProperty(String propName, String value) {

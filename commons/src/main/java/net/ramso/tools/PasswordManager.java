@@ -3,14 +3,6 @@
  */
 package net.ramso.tools;
 
-import java.io.IOException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.ShortBufferException;
-
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 
 /**
@@ -18,48 +10,43 @@ import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
  *
  */
 public class PasswordManager {
+	private PasswordManager() {
+		super();
+	}
 
-	protected static String KEY = "zs^S#2hsSUF*=PPpsAkG+Rp52Cfe=LVJ";
-	protected static String ALGORITHM = "PBEWithMD5AndDES";
+	protected static String key = "zs^S#2hsSUF*=PPpsAkG+Rp52Cfe=LVJ"; //$NON-NLS-1$
+	protected static String algorithm = "PBEWithMD5AndDES"; //$NON-NLS-1$
 	private static StandardPBEStringEncryptor encryptor;
-	private static final String PREFIX = "ENC:";
+	private static final String PREFIX = "ENC:"; //$NON-NLS-1$
 
 	static {
 		try {
 			init();
 		} catch (final Exception e) {
-			LogManager.error("Error al configurar encryptación", e);
+			LogManager.error(BundleManager.getString("commons.PasswordManager.crypt_config_error"), e); //$NON-NLS-1$
 		}
 	}
 
-	public static String decrypt(String pass) throws InvalidKeyException, InvalidAlgorithmParameterException,
-			ShortBufferException, IllegalBlockSizeException, BadPaddingException {
-		if (IsEncrypted(pass)) {
+	public static String decrypt(String pass)  {
+		if (isEncrypted(pass)) {
 			pass = pass.substring(4);
 		}
-		final String result = encryptor.decrypt(pass);
-		return result;
+		return encryptor.decrypt(pass);
 	}
 
-	public static String encrypt(String pass) throws InvalidKeyException, InvalidAlgorithmParameterException,
-			ShortBufferException, IllegalBlockSizeException, BadPaddingException {
-
+	public static String encrypt(String pass) {
 		String result = encryptor.encrypt(pass);
-		result = PREFIX + result;
-		return result;
+		return PREFIX + result;
 	}
 
-	protected static void init() throws IOException {
+	protected static void init()  {
 		encryptor = new StandardPBEStringEncryptor();
-		encryptor.setAlgorithm(ALGORITHM);
-		encryptor.setPassword(KEY);
-
+		encryptor.setAlgorithm(algorithm);
+		encryptor.setPassword(key);
 	}
 
-	public static boolean IsEncrypted(String pass) {
-		if (pass.startsWith(PREFIX))
-			return true;
-		return false;
+	public static boolean isEncrypted(String pass) {
+		return pass.startsWith(PREFIX);
 	}
 
 }
