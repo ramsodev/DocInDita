@@ -154,8 +154,10 @@ public class FileTools {
 			walk = Files.walk(myPath, 1);
 			for (Iterator<Path> it = walk.iterator(); it.hasNext();) {
 				Path i = it.next();
-				files.add(new File(Thread.currentThread().getContextClassLoader()
-						.getResource(folder + File.separator + i.getFileName()).toURI()));
+				if (!i.getFileName().toString().equals(folder)) {
+					files.add(new File(Thread.currentThread().getContextClassLoader()
+							.getResource(folder + File.separator + i.getFileName()).toURI()));
+				}
 			}
 		} catch (IOException | URISyntaxException e) {
 			LogManager.warn(BundleManager.getString("commons.folder.error", folder), e);

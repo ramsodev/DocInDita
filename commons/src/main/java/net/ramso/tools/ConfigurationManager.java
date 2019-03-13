@@ -331,6 +331,7 @@ public abstract class ConfigurationManager {
 			throw new ConfigurationException(
 					BundleManager.getString("commons.ConfigurationManager.conf_not_found", path + propertiesName)); //$NON-NLS-1$
 		}
+		
 		BundleManager.init(getProperty(bundleName));
 		final String name = getProperty(logName);
 		final LOG_TYPES logtype = LOG_TYPES.valueOf(getProperty(logType).toUpperCase());

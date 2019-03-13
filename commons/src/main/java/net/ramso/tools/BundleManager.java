@@ -8,10 +8,11 @@ public class BundleManager {
 		super();
 	}
 
-	private static ResourceBundle commonsBundle = ResourceBundle.getBundle("messages"); //$NON-NLS-1$
+	private static ResourceBundle commonsBundle = null;
 	private static ResourceBundle bundle = null;
 
 	public static String getString(String key) {
+		if(commonsBundle==null) init();
 		String value = "";
 		if (key.startsWith(Constants.COMMONS)) {
 			value = commonsBundle.getString(key);
@@ -24,6 +25,7 @@ public class BundleManager {
 	}
 
 	public static String getString(String key, Object... param) {
+		if(commonsBundle==null) init();
 		String pattern = "";
 		if (key.startsWith(Constants.COMMONS)) {
 			pattern = commonsBundle.getString(key);
@@ -35,7 +37,11 @@ public class BundleManager {
 		return MessageFormat.format(pattern, param);
 	}
 
+	protected static void init() {
+		commonsBundle = ResourceBundle.getBundle("commonsBundle"); //$NON-NLS-1$
+	}
 	public static void init(String bundleName) {
+		
 		if (bundleName != null) {
 			BundleManager.bundle = ResourceBundle.getBundle(bundleName);
 		}
