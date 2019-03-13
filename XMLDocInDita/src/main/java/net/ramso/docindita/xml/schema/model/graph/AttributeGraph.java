@@ -4,7 +4,6 @@ import java.awt.geom.Rectangle2D;
 
 import com.mxgraph.layout.mxStackLayout;
 import com.mxgraph.model.mxCell;
-import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.view.mxGraph;
 
 import net.ramso.docindita.xml.Config;
@@ -20,7 +19,7 @@ public class AttributeGraph extends AbstractXmlGraph {
 	public AttributeGraph(AttributeModel attribute) {
 		super();
 		this.attribute = attribute;
-		SUFFIX = DitaConstants.SUFFIX_ATTRIBUTE;
+		suffix = DitaConstants.SUFFIX_ATTRIBUTE;
 		setFileName(attribute.getName());
 	}
 
@@ -66,7 +65,7 @@ public class AttributeGraph extends AbstractXmlGraph {
 		final mxCell cell = (mxCell) getGraph().insertVertex(parent,
 				GraphConstants.EXCLUDE_PREFIX_LINE + parent.getId() + attribute.getName()
 						+ DitaConstants.SUFFIX_ATTRIBUTE,
-				"", x, y, ((width + 100) - 6) + widthType, height, GraphTools.getStyle(false, true));
+				"", x, y,((double) ((width + 100) - 6) + widthType), height, GraphTools.getStyle(false, true));
 
 		Object titulo = getGraph().insertVertex(cell, cell.getId() + "Name", attribute.getName(), 0, 0, width, height,
 				GraphTools.getStyle(false, false, height));
@@ -87,7 +86,7 @@ public class AttributeGraph extends AbstractXmlGraph {
 			value = attribute.getType().getLocalPart();
 			icon = DitaConstants.SUFFIX_TYPE.toLowerCase();
 		}
-		titulo = getGraph().insertVertex(cell, cell.getId() + value, value, width + anchura, 0, widthType, height,
+		titulo = getGraph().insertVertex(cell, cell.getId() + value, value, ((double) width + anchura), 0, widthType, height,
 				GraphTools.getStyle(false, false, height));
 		insertIcon((mxCell) titulo, icon, height);
 		return cell;
@@ -121,7 +120,7 @@ public class AttributeGraph extends AbstractXmlGraph {
 	}
 
 	@Override
-	protected void morphGraph(mxGraph graph, mxGraphComponent graphComponent) {
+	protected void morphGraph(mxGraph graph) {
 		final mxStackLayout layout = new mxStackLayout(graph, false, 50);
 		layout.execute(graph.getDefaultParent());
 	}

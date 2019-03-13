@@ -1,17 +1,13 @@
 package net.ramso.tools.graph;
 
-import java.awt.BorderLayout;
 import java.io.File;
 import java.io.IOException;
-
-import javax.swing.JFrame;
 
 import com.mxgraph.canvas.mxICanvas;
 import com.mxgraph.canvas.mxSvgCanvas;
 import com.mxgraph.layout.mxStackLayout;
 import com.mxgraph.model.mxCell;
 import com.mxgraph.model.mxGeometry;
-import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.util.mxCellRenderer;
 import com.mxgraph.util.mxCellRenderer.CanvasFactory;
 import com.mxgraph.util.mxDomUtils;
@@ -22,7 +18,7 @@ import com.mxgraph.view.mxGraph;
 import net.ramso.tools.FileTools;
 
 public abstract class AbstractGraph {
-	protected static String SUFFIX = "";
+	protected static String suffix = "";
 	private String fileName;
 	private mxGraph graph;
 
@@ -61,22 +57,13 @@ public abstract class AbstractGraph {
 				size, size, GraphTools.getStyleImage(true, size - 2, size - 2, icon));
 	}
 
-	protected void morphGraph(mxGraph graph, mxGraphComponent graphComponent) {
+	protected void morphGraph(mxGraph graph) {
 		final mxStackLayout layout = new mxStackLayout(graph, true, 50);
-
-		// mxPartitionLayout layout = new mxPartitionLayout(graph,true, 50, 100);
 		layout.execute(graph.getDefaultParent());
 	}
 
 	protected void process(mxGraph graph, String outdir) {
-		final JFrame f = new JFrame();
-		f.setSize(800, 800);
-		f.setLocation(300, 200);
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		final mxGraphComponent graphComponent = new mxGraphComponent(graph);
-		f.getContentPane().add(graphComponent, BorderLayout.CENTER);
-		f.setVisible(false);
-		morphGraph(graph, graphComponent);
+		morphGraph(graph);
 		try {
 			export(graph, outdir);
 		} catch (final Exception e) {
@@ -93,8 +80,6 @@ public abstract class AbstractGraph {
 				for (int i = 0; i < e; i++) {
 					if (!cell.getId().startsWith(GraphConstants.EXCLUDE_PREFIX_GROUP)) {
 						resizeCell((mxCell) cell.getChildAt(i), maxWith);
-					} else {
-
 					}
 				}
 			}
@@ -102,13 +87,14 @@ public abstract class AbstractGraph {
 	}
 
 	public boolean scale() {
+		boolean scale = false;
 		if (getGraph().getGraphBounds().getWidth() > 500)
-			return true;
-		return false;
+			scale = true;
+		return scale;
 	}
 
-	protected void setFileName(String file_name) {
-		fileName = (GraphConstants.IMAGE_PATH + File.separator + file_name + SUFFIX + "."
+	protected void setFileName(String fileName) {
+		this.fileName = (GraphConstants.IMAGE_PATH + File.separator + fileName + suffix + "."
 				+ GraphConstants.SVG_EXTENSION).replaceAll("\\s+", "_");
 	}
 

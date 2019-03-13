@@ -4,7 +4,6 @@ import java.awt.geom.Rectangle2D;
 
 import com.mxgraph.layout.mxStackLayout;
 import com.mxgraph.model.mxCell;
-import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.view.mxGraph;
 
 import net.ramso.docindita.xml.Config;
@@ -20,7 +19,7 @@ public class SimpleTypeGraph extends AbstractXmlGraph {
 	public SimpleTypeGraph(SimpleTypeModel simpleType) {
 		super();
 		this.simpleType = simpleType;
-		SUFFIX = DitaConstants.SUFFIX_SIMPLETYPE;
+		suffix = DitaConstants.SUFFIX_SIMPLETYPE;
 		setFileName(simpleType.getName());
 	}
 
@@ -88,7 +87,7 @@ public class SimpleTypeGraph extends AbstractXmlGraph {
 	}
 
 	@Override
-	protected void morphGraph(mxGraph graph, mxGraphComponent graphComponent) {
+	protected void morphGraph(mxGraph graph) {
 		final mxStackLayout layout = new mxStackLayout(graph, false, 50);
 		layout.execute(graph.getDefaultParent());
 	}

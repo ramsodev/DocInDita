@@ -4,7 +4,6 @@ import java.awt.geom.Rectangle2D;
 
 import com.mxgraph.layout.mxStackLayout;
 import com.mxgraph.model.mxCell;
-import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.view.mxGraph;
 
 import net.ramso.docindita.xml.Config;
@@ -19,7 +18,7 @@ public class ElementGraph extends AbstractXmlGraph {
 
 	public ElementGraph(ElementModel element) {
 		this.element = element;
-		SUFFIX = DitaConstants.SUFFIX_ELEMENT;
+		suffix = DitaConstants.SUFFIX_ELEMENT;
 		setFileName(element.getName());
 	}
 
@@ -55,7 +54,7 @@ public class ElementGraph extends AbstractXmlGraph {
 	public mxCell createElementLine(mxCell parent, int x, int y, int width, int height, int widthType) {
 		final mxCell cell = (mxCell) getGraph().insertVertex(parent,
 				GraphConstants.EXCLUDE_PREFIX_GROUP + parent.getId() + element.getName() + DitaConstants.SUFFIX_ELEMENT,
-				"", x, y, width + (100 - 6) + widthType, height, GraphTools.getStyle(false, true));
+				"", x, y, ((double) width + (100 - 6) + widthType), height, GraphTools.getStyle(false, true));
 
 		Object titulo = getGraph().insertVertex(cell, cell.getId() + "Name", element.getName(), 0, 0, width, height,
 				GraphTools.getStyle(false, false, height));
@@ -94,8 +93,8 @@ public class ElementGraph extends AbstractXmlGraph {
 				value = element.getName() + DitaConstants.SUFFIX_COMPLEXTYPE;
 			}
 		}
-		titulo = getGraph().insertVertex(cell, cell.getId() + value, value, width + anchura, 0, widthType, height,
-				GraphTools.getStyle(false, false, height));
+		titulo = getGraph().insertVertex(cell, cell.getId() + value, value, ((double) width + anchura), 0, widthType,
+				height, GraphTools.getStyle(false, false, height));
 		insertIcon((mxCell) titulo, icon, height);
 		return cell;
 	}
@@ -119,14 +118,12 @@ public class ElementGraph extends AbstractXmlGraph {
 			if ((value == null) || value.isEmpty()) {
 				value = "(" + element.getName() + DitaConstants.SUFFIX_SIMPLETYPE + ")";
 			}
-			// type = createType(parent, value, DitaConstants.SUFFIX_SIMPLETYPE);
 			type = new SimpleTypeGraph(element.getSimpleType(), getGraph()).createSimpleType(parent, value);
 		} else if (element.getComplexType() != null) {
 			String value = element.getComplexType().getName();
 			if ((value == null) || value.isEmpty()) {
 				value = "(" + element.getName() + DitaConstants.SUFFIX_COMPLEXTYPE + ")";
 			}
-			// type = createType(parent, value );
 			type = new ComplexTypeGraph(element.getComplexType(), getGraph()).createComplexTypeCell(parent, value);
 		}
 
@@ -138,7 +135,7 @@ public class ElementGraph extends AbstractXmlGraph {
 	}
 
 	@Override
-	protected void morphGraph(mxGraph graph, mxGraphComponent graphComponent) {
+	protected void morphGraph(mxGraph graph) {
 		final mxStackLayout layout = new mxStackLayout(graph, false, 50);
 		layout.execute(graph.getDefaultParent());
 	}

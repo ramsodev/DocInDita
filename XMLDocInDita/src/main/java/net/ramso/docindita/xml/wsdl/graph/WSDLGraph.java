@@ -36,7 +36,7 @@ public class WSDLGraph extends AbstractGraph {
 
 	public WSDLGraph(Service service) {
 		this.service = service;
-		SUFFIX = DitaConstants.SUFFIX_SERVICE;
+		suffix = DitaConstants.SUFFIX_SERVICE;
 		setFileName(service.getName());
 	}
 

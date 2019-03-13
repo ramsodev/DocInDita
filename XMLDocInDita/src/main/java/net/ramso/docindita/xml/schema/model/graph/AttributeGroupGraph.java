@@ -29,7 +29,7 @@ public class AttributeGroupGraph extends AbstractXmlGraph {
 	public AttributeGroupGraph(AttributeGroupModel attributeGroup) {
 		super();
 		this.attributeGroup = attributeGroup;
-		SUFFIX = DitaConstants.SUFFIX_ATTRIBUTEGROUP;
+		suffix = DitaConstants.SUFFIX_ATTRIBUTEGROUP;
 		setFileName(attributeGroup.getName());
 	}
 

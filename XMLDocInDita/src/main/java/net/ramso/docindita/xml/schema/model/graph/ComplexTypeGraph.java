@@ -40,7 +40,7 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 	public ComplexTypeGraph(ComplexTypeModel complexType) {
 		super();
 		this.complexType = complexType;
-		SUFFIX = DitaConstants.SUFFIX_COMPLEXTYPE;
+		suffix = DitaConstants.SUFFIX_COMPLEXTYPE;
 		setFileName(complexType.getName());
 	}
 

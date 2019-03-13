@@ -33,7 +33,7 @@ public class GroupGraph extends AbstractXmlGraph {
 	public GroupGraph(GroupModel group) {
 		super();
 		this.group = group.getModel();
-		SUFFIX = DitaConstants.SUFFIX_GROUP;
+		suffix = DitaConstants.SUFFIX_GROUP;
 		setFileName(group.getName());
 	}
 
