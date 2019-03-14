@@ -2,7 +2,7 @@
 
 > Code Generation project to dita
 
-[![Build Status](https://travis-ci.org/ramsodev/XMLDocInDita.svg?branch=master)](https://travis-ci.org/ramsodev/XMLDocInDita)
+[![Build Status](https://travis-ci.org/ramsodev/DocInDita.svg?branch=master)](https://travis-ci.org/ramsodev/DocInDita)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=net.ramso%3ADocInDita&metric=alert_status)](https://sonarcloud.io/dashboard?id=net.ramso%3ADocInDita)
 [![License](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/ramsodev/DocInDita/master/LICENSE)
 ***
