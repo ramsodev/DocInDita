@@ -111,11 +111,12 @@ public abstract class BasicCreate implements ICreate {
 	}
 
 	protected void setId(String id) {
-		if (!Character.isAlphabetic(id.charAt(0))) {
+		if (!id.isEmpty() && Character.isDigit(id.charAt(0))) {
 			id = "id" + id;
 		}
-		this.id =id.replaceAll("\\s+", "_");
-		setFileName(id + ".dita");
+		this.id = TextTools.cleanNonAlfaNumeric(id, "_");
+//				id.replaceAll("\\s+", "_").replaceAll("{", "_").replaceAll("}", replacement);
+		setFileName(this.id + ".dita");
 	}
 
 	protected void setTemplateFile(String template) {

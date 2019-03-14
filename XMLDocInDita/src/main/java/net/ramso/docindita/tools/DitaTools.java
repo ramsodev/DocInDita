@@ -24,6 +24,7 @@ import com.predic8.wsdl.BindingOperation;
 import groovy.xml.QName;
 import net.ramso.tools.FileTools;
 import net.ramso.tools.LogManager;
+import net.ramso.tools.TextTools;
 
 public class DitaTools {
 
@@ -100,7 +101,7 @@ public class DitaTools {
 
 	public static String getHrefType(QName type) throws MalformedURLException {
 		final String idSchema = DitaTools.getSchemaId(type.getNamespaceURI());
-		return idPrefix.trim() + idSchema + "_" + type.getLocalPart() + getSuffixType(type) + ".dita";
+		return TextTools.cleanNonAlfaNumeric(idPrefix.trim() + idSchema + "_" + type.getLocalPart() + getSuffixType(type),"_") + ".dita";
 	}
 
 	public static String getName(String uri) {

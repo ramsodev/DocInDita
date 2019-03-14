@@ -26,9 +26,35 @@ class GenreateWADLTest {
 	@Test
 	@DisplayName("Procesar storage")
 	void testGenerateWADL() {
-		URL storage = Thread.currentThread().getContextClassLoader().getResource("storage.wadl");
+		URL wadl = Thread.currentThread().getContextClassLoader().getResource("storage.wadl");
 		try {
-			generate.generateWADL(storage);
+			generate.generateWADL(wadl);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail(e.getLocalizedMessage());
+		}
+		assertTrue(true);
+	}
+	
+	@Test
+	@DisplayName("Procesar options")
+	void testGenerateWADL1() {
+		URL wadl = Thread.currentThread().getContextClassLoader().getResource("options.wadl");
+		try {
+			generate.generateWADL(wadl);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail(e.getLocalizedMessage());
+		}
+		assertTrue(true);
+	}
+	
+	@Test
+	@DisplayName("Procesar sample")
+	void testGenerateWADL2() {
+		URL wadl = Thread.currentThread().getContextClassLoader().getResource("sample1.wadl");
+		try {
+			generate.generateWADL(wadl);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail(e.getLocalizedMessage());
