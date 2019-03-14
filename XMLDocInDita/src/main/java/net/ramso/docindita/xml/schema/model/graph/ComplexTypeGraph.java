@@ -22,8 +22,8 @@ import net.ramso.docindita.xml.schema.model.ComplexTypeModel;
 import net.ramso.docindita.xml.schema.model.ElementModel;
 import net.ramso.docindita.xml.schema.model.GroupModel;
 import net.ramso.docindita.xml.schema.model.IComplexContentModel;
+import net.ramso.docindita.xml.schema.model.IComponentModel;
 import net.ramso.docindita.xml.schema.model.SimpleTypeModel;
-import net.ramso.docindita.xml.schema.model.iComponentModel;
 import net.ramso.tools.LogManager;
 import net.ramso.tools.graph.GraphConstants;
 import net.ramso.tools.graph.GraphTools;
@@ -63,8 +63,8 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 		iconsColumn++;
 	}
 
-	private void apppendContent(mxCell parent, mxCell iconParent, ArrayList<IComplexContentModel> elements,
-			int[] widths, int height) {
+	private void apppendContent(mxCell parent, mxCell iconParent, List<IComplexContentModel> elements, int[] widths,
+			int height) {
 		final int x = height + (height / 2);
 		for (final IComplexContentModel element : elements) {
 			if (element.isElement()) {
@@ -123,8 +123,7 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 		}
 	}
 
-	private void apppendContent(mxCell parent, Object iconParent, List<AttributeModel> attributes, int[] widths,
-			int height) {
+	private void apppendContent(mxCell parent, List<AttributeModel> attributes, int[] widths, int height) {
 		final int x = height + (height / 2);
 		for (final AttributeModel attribute : attributes) {
 			final AttributeGraph eg = new AttributeGraph(attribute, getGraph());
@@ -142,13 +141,13 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 			g.setTerminalPoint(new mxPoint(g.getWidth(), g.getHeight() / 2), true);
 			cellLine.setGeometry(g);
 		}
-		if (attributes.size() > 0) {
+		if (!attributes.isEmpty()) {
 			contentPosition += 3;
 		}
 	}
 
-	private void apppendContentAttributeGroup(mxCell parent, Object iconParent, List<AttributeGroupModel> attributes,
-			int[] widths, int height) {
+	private void apppendContentAttributeGroup(mxCell parent, List<AttributeGroupModel> attributes, int[] widths,
+			int height) {
 		final int x = height + (height / 2);
 		for (final AttributeGroupModel attribute : attributes) {
 			String name = attribute.getName();
@@ -166,7 +165,7 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 			cellLine.setGeometry(g);
 			parent.insert(cellLine);
 		}
-		if (attributes.size() > 0) {
+		if (!attributes.isEmpty()) {
 			contentPosition += 3;
 		}
 
@@ -216,7 +215,7 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 			getGraph().insertEdge(getGraph().getDefaultParent(), "", "", cell, sc, GraphTools.getExtendEdgeStyle());
 			h += sc.getGeometry().getHeight();
 			superGroup.getGeometry().setWidth(sc.getGeometry().getWidth() + 100);
-			cell.getGeometry().setY(h + (height * 3));
+			cell.getGeometry().setY((double) h + (height * 3));
 
 		}
 		final mxCell titulo = (mxCell) getGraph().insertVertex(cell, "Title" + name + DitaConstants.SUFFIX_COMPLEXTYPE,
@@ -225,7 +224,7 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 
 		y += height;
 		width -= 6;
-		if ((complexType.getElements().size() > 0) || (complexType.getAttributes().size() > 0)) {
+		if ((!complexType.getElements().isEmpty()) || (!complexType.getAttributes().isEmpty())) {
 			final mxCell subCell = (mxCell) getGraph().insertVertex(cell,
 					complexType.getName() + DitaConstants.SUFFIX_COMPLEXTYPE, "", x, y, width, height,
 					GraphTools.getStyle(false, false));
@@ -235,8 +234,8 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 					GraphConstants.EXCLUDE_PREFIX_GROUP + DitaConstants.SUFFIX_TYPE, "",
 					superGroup.getGeometry().getWidth() + 100, cell.getGeometry().getY() + 100, 300, 0,
 					GraphTools.getStyleTransparent(false));
-			apppendContentAttributeGroup(subCell, null, complexType.getAttributeGroups(), sizes, height);
-			apppendContent(subCell, null, complexType.getAttributes(), sizes, height);
+			apppendContentAttributeGroup(subCell, complexType.getAttributeGroups(), sizes, height);
+			apppendContent(subCell, complexType.getAttributes(), sizes, height);
 			apppendContent(subCell, null, complexType.getElements(), sizes, height);
 			width = (int) resize(subCell, sizes);
 		}
@@ -320,7 +319,7 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 		if (tempSizes[1] > sizes[1]) {
 			sizes[1] = tempSizes[1];
 		}
-		tempSizes = getSizes(complexType.getAttributes());
+		tempSizes = getSizesAttr(complexType.getAttributes());
 		if (tempSizes[0] > sizes[0]) {
 			sizes[0] = tempSizes[0];
 		}
@@ -337,7 +336,7 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 		return sizes;
 	}
 
-	private int[] getSizes(ArrayList<IComplexContentModel> elements) {
+	private int[] getSizes(List<IComplexContentModel> elements) {
 		final int[] sizes = { 0, 0 };
 		if (elements != null) {
 			for (final IComplexContentModel element : elements) {
@@ -363,7 +362,7 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 
 	private int[] getSizes(AttributeGroupModel attributeGroup) {
 		final int[] sizes = { 0, 0 };
-		final int[] tempSizes = getSizes(attributeGroup.getAttributes());
+		final int[] tempSizes = getSizesAttr(attributeGroup.getAttributes());
 		if (tempSizes[0] > sizes[0]) {
 			sizes[0] = tempSizes[0];
 		}
@@ -390,7 +389,7 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 		return sizes;
 	}
 
-	private int[] getSizes(List<AttributeModel> attributes) {
+	private int[] getSizesAttr(List<AttributeModel> attributes) {
 		final int[] sizes = { 0, 0 };
 		if (attributes != null) {
 			for (final AttributeModel atr : attributes) {
@@ -406,7 +405,7 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 		return sizes;
 	}
 
-	private int[] getSizesG(ArrayList<AttributeGroupModel> elements) {
+	private int[] getSizesG(List<AttributeGroupModel> elements) {
 		final int[] sizes = { 0, 0 };
 		if (elements != null) {
 			for (final AttributeGroupModel element : elements) {
@@ -433,7 +432,7 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 		final mxCell icono = super.insertIcon(parent, icon, size);
 		final mxGeometry g = icono.getGeometry();
 		if (move > 0) {
-			g.setX(size + move);
+			g.setX((double) size + move);
 			g.setY(getContentPosition());
 			icono.setId(GraphConstants.EXCLUDE_PREFIX_ICON + parent.getId() + move);
 		}
@@ -448,7 +447,7 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 
 	private mxCell insertSupers(mxCell parent, QName extend) {
 		final TypeDefinition t = DitaTools.getType(extend);
-		iComponentModel model = null;
+		IComponentModel model = null;
 		if (t != null) {
 			if (t instanceof SimpleType) {
 				model = new SimpleTypeModel((SimpleType) t);
@@ -466,7 +465,7 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 		return insertType(parent, model, name, 0, 0);
 	}
 
-	private mxCell insertType(mxCell parent, iComponentModel model, String name, int x, int y) {
+	private mxCell insertType(mxCell parent, IComponentModel model, String name, int x, int y) {
 		mxCell type = null;
 		if (model instanceof SimpleTypeModel) {
 			final SimpleTypeModel st = (SimpleTypeModel) model;
@@ -547,7 +546,7 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 		for (int i = 0; i < cell.getChildCount(); i++) {
 			final mxCell child = (mxCell) cell.getChildAt(i);
 			if (child.getId().startsWith(GraphConstants.EXCLUDE_PREFIX_ICON)) {
-				if (icons.size() == 0) {
+				if (icons.isEmpty()) {
 					iWidth = child.getGeometry().getWidth();
 				}
 				icons.add(i);

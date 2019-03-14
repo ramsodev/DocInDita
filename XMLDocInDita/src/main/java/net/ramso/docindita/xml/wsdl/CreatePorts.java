@@ -19,7 +19,7 @@ public class CreatePorts extends BasicCreate {
 		getContext().put("ports", ports);
 		getContext().put("tools", DitaTools.class);
 		run(getContext());
-		return getFile_name();
+		return getFileName();
 	}
 
 }

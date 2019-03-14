@@ -61,7 +61,7 @@ public class ComplexTypeModel extends AbstractComplexContentModel {
 	/**
 	 * @return the attributeGroups
 	 */
-	public ArrayList<AttributeGroupModel> getAttributeGroups() {
+	public List<AttributeGroupModel> getAttributeGroups() {
 		return attributeGroups;
 	}
 
@@ -176,7 +176,7 @@ public class ComplexTypeModel extends AbstractComplexContentModel {
 
 	private void setSuper(List<QName> supers) {
 		superType = null;
-		if ((supers != null) && (supers.size() > 0)) {
+		if ((supers != null) && (!supers.isEmpty())) {
 			superType = supers.get(0);
 		}
 	}

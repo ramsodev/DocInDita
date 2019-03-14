@@ -17,9 +17,11 @@ public class TextTools {
 		return str;
 	}
 
-	public static String stripDiacritics(String str) {
+	public static String clean(String str) {
 		str = Normalizer.normalize(str, Normalizer.Form.NFD);
 		str = DIACRITICS_AND_FRIENDS.matcher(str).replaceAll(""); //$NON-NLS-1$
 		return str;
 	}
+	
+	
 }

@@ -29,7 +29,7 @@ public class CreateSimpleType extends BasicCreate {
 		getContext().put("simpleType", new SimpleTypeModel(type));
 		getContext().put("tools", DitaTools.class);
 		run(getContext());
-		return getFile_name();
+		return getFileName();
 	}
 
 }

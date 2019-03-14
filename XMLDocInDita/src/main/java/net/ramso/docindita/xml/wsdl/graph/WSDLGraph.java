@@ -32,7 +32,7 @@ public class WSDLGraph extends AbstractGraph {
 	private HashMap<String, Object> binds;
 	private int maxWith2;
 	private HashMap<String, Object> pts;
-	private int anchura;
+	
 
 	public WSDLGraph(Service service) {
 		this.service = service;
@@ -57,15 +57,15 @@ public class WSDLGraph extends AbstractGraph {
 	private int createOperation(mxCell parent, Operation operation, int y, int altura) {
 		final int alt = (altura * 2) + (altura * operation.getFaults().size());
 		final Rectangle2D base = GraphTools.getTextSize(operation.getName());
-		final int anchura = (int) (base.getWidth() + ((base.getWidth() * 25) / 100));
-		if (anchura > getMaxWith2()) {
-			setMaxWith2(anchura);
+		final int width = (int) (base.getWidth() + ((base.getWidth() * 25) / 100));
+		if (width > getMaxWith2()) {
+			setMaxWith2(width);
 		}
 		final Object oprg = getGraph().insertVertex(parent, operation.getName() + DitaConstants.SUFFIX_OPERATION,
-				operation.getName(), 0, y, anchura, alt, GraphTools.getStyle(false, true));
+				operation.getName(), 0, y, width, alt, GraphTools.getStyle(false, true));
 
 		final Object titulo = getGraph().insertVertex(oprg, operation.getName() + DitaConstants.SUFFIX_OPERATION,
-				operation.getName(), 0, 0, anchura, altura, GraphTools.getStyle(true, true, "GREEN"));
+				operation.getName(), 0, 0, width, altura, GraphTools.getStyle(true, true, "GREEN"));
 		insertIcon((mxCell) titulo, DitaConstants.SUFFIX_OPERATION.toLowerCase(), altura);
 		int alturaTotal = altura;
 		alturaTotal = createOperationLine(oprg, operation.getName(), "Input",
@@ -86,7 +86,7 @@ public class WSDLGraph extends AbstractGraph {
 	private int createOperationLine(Object oprg, String operation, String title, List<Part> parts, int posicion,
 			int altura) {
 		Rectangle2D base = GraphTools.getTextSize(title, Font.BOLD);
-		anchura = 50 + altura;
+		int anchura = 50 + altura;
 		final Object input = getGraph().insertVertex(oprg,
 				GraphConstants.EXCLUDE_PREFIX_GROUP + title + operation + DitaConstants.SUFFIX_OPERATION, "", 0,
 				posicion, 200, altura, GraphTools.getStyle(false, true));
@@ -139,28 +139,26 @@ public class WSDLGraph extends AbstractGraph {
 			y -= altura;
 		}
 		Rectangle2D base = GraphTools.getTextSize(port.getName());
-		int anchura = (int) (base.getWidth() + ((base.getWidth() * 25) / 100));
-		if (anchura > getMaxWith()) {
-			setMaxWith(anchura);
+		int width = (int) (base.getWidth() + ((base.getWidth() * 25) / 100));
+		if (width > getMaxWith()) {
+			setMaxWith(width);
 		}
-		final Object p = getGraph().insertVertex(parent, port.getName() + DitaConstants.SUFFIX_PORT, "", 0, y, anchura,
-				altura * 2, GraphTools.getStyle(false, true));
+		final Object p = getGraph().insertVertex(parent, port.getName() + DitaConstants.SUFFIX_PORT, "", 0, y, width,
+				(double) altura * 2, GraphTools.getStyle(false, true));
 		getGraph().insertVertex(p, port.getName() + "Title" + DitaConstants.SUFFIX_ADDRESS, port.getName(), 0, 0,
-				anchura, altura, GraphTools.getStyle(false));
+				width, altura, GraphTools.getStyle(false));
 		y += altura;
 		String url = port.getAddress().getLocation();
 		if (port.getAddress().getLocation().length() > 30) {
 			url = port.getAddress().getLocation().substring(0, 30);
 		}
 		base = GraphTools.getTextSize(url);
-		anchura = (int) (base.getWidth() + ((base.getWidth() * 25) / 100));
-		if ((anchura + 20) > getMaxWith()) {
-			setMaxWith(anchura + 20);
+		width = (int) (base.getWidth() + ((base.getWidth() * 25) / 100));
+		if ((width + 20) > getMaxWith()) {
+			setMaxWith(width + 20);
 		}
-		final mxCell adrs = (mxCell) getGraph().insertVertex(p, port.getName() + DitaConstants.SUFFIX_ADDRESS, url, 10,
-				altura, anchura, altura, GraphTools.getStyle(false, true));
-
-		return adrs;
+		return (mxCell) getGraph().insertVertex(p, port.getName() + DitaConstants.SUFFIX_ADDRESS, url, 10,
+				altura, width, altura, GraphTools.getStyle(false, true));
 	}
 
 	private mxCell createPortType(Object parent, PortType portType, int altura) {
@@ -170,13 +168,13 @@ public class WSDLGraph extends AbstractGraph {
 
 		if (portTypeCell == null) {
 			final Rectangle2D base = GraphTools.getTextSize(portType.getName());
-			final int anchura = (int) (base.getWidth() + ((base.getWidth() * 25) / 100));
-			setMaxWith2(anchura);
-			portTypeCell = (mxCell) getGraph().createVertex(parent, portType.getName(), "", 500, 100, anchura, alt,
+			final int width = (int) (base.getWidth() + ((base.getWidth() * 25) / 100));
+			setMaxWith2(width);
+			portTypeCell = (mxCell) getGraph().createVertex(parent, portType.getName(), "", 500, 100, width, alt,
 					GraphTools.getStyle(false, true));
 			int y = 0;
 			final Object titulo = getGraph().insertVertex(portTypeCell, "Title" + portType.getName(),
-					portType.getName(), 0, y, anchura, altura, GraphTools.getStyle(true, true, "BLUE"));
+					portType.getName(), 0, y, width, altura, GraphTools.getStyle(true, true, "BLUE"));
 			insertIcon((mxCell) titulo, DitaConstants.SUFFIX_PORT_TYPE.toLowerCase(), altura);
 			y += altura;
 			for (final Operation operation : portType.getOperations()) {
@@ -196,13 +194,13 @@ public class WSDLGraph extends AbstractGraph {
 		final Object parent = getGraph().getDefaultParent();
 		final Rectangle2D base = GraphTools.getTextSize(service.getName());
 		final int altura = (int) (base.getHeight() + (base.getHeight() / 2));
-		final int anchura = (int) (base.getWidth() + ((base.getWidth() * 25) / 100));
-		setMaxWith(anchura);
-		setMaxWith2(anchura);
+		final int width = (int) (base.getWidth() + ((base.getWidth() * 25) / 100));
+		setMaxWith(width);
+		setMaxWith2(width);
 		final int alt = (service.getPorts().size() * altura);
 		binds = new HashMap<>();
 		pts = new HashMap<>();
-		final mxCell ports = (mxCell) getGraph().insertVertex(parent, service.getName(), "", 100, 100, anchura, alt,
+		final mxCell ports = (mxCell) getGraph().insertVertex(parent, service.getName(), "", 100, 100, width, alt,
 				GraphTools.getStyle(false, true));
 
 		final mxCell bindingGroup = (mxCell) getGraph().createVertex(parent,
@@ -210,7 +208,7 @@ public class WSDLGraph extends AbstractGraph {
 				mxConstants.STYLE_AUTOSIZE + "=1;" + mxConstants.STYLE_RESIZABLE + "=1;"
 						+ mxConstants.STYLE_STROKE_OPACITY + "=0;" + mxConstants.STYLE_FILL_OPACITY + "=0;");
 		int y = 0;
-		final Object titulo = getGraph().insertVertex(ports, "title", service.getName(), 0, y, anchura, altura,
+		final Object titulo = getGraph().insertVertex(ports, "title", service.getName(), 0, y, width, altura,
 				GraphTools.getStyle(true, true, "BLUE"));
 		insertIcon((mxCell) titulo, DitaConstants.SUFFIX_SERVICE.toLowerCase(), altura);
 

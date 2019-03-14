@@ -6,7 +6,7 @@ import com.predic8.schema.SchemaComponent;
 
 import groovy.xml.QName;
 
-public interface iComponentModel {
+public interface IComponentModel {
 	public String getCode();
 
 	SchemaComponent getComponent();

@@ -54,7 +54,7 @@ public class GroupGraph extends AbstractXmlGraph {
 		iconsColumn++;
 	}
 
-	private void apppendContent(mxCell parent, mxCell iconParent, ArrayList<IComplexContentModel> elements,
+	private void apppendContent(mxCell parent, mxCell iconParent, List<IComplexContentModel> elements,
 			int[] widths, int height) {
 		final int x = height + (height / 2);
 		for (final IComplexContentModel element : elements) {
@@ -155,7 +155,7 @@ public class GroupGraph extends AbstractXmlGraph {
 		super.insertIcon(titulo, DitaConstants.SUFFIX_GROUP.toLowerCase(), height);
 		y = height;
 		width -= 6;
-		if (group.getElements().size() > 0) {
+		if (!group.getElements().isEmpty()) {
 			final mxCell subCell = (mxCell) getGraph().insertVertex(cell, group.getName() + DitaConstants.SUFFIX_GROUP,
 					"", x, y, width, height, GraphTools.getStyle(false, true));
 			contentPosition = 0;
@@ -252,7 +252,7 @@ public class GroupGraph extends AbstractXmlGraph {
 		return sizes;
 	}
 
-	private int[] getSizes(ArrayList<IComplexContentModel> elements) {
+	private int[] getSizes(List<IComplexContentModel> elements) {
 		final int[] sizes = { 0, 0 };
 		if (elements != null) {
 			for (final IComplexContentModel element : elements) {
@@ -278,7 +278,7 @@ public class GroupGraph extends AbstractXmlGraph {
 
 	public int[] getSizes(AttributeGroupModel attributeGroup) {
 		final int[] sizes = { 0, 0 };
-		final int[] tempSizes = getSizes(attributeGroup.getAttributes());
+		final int[] tempSizes = getSizesAttr(attributeGroup.getAttributes());
 		if (tempSizes[0] > sizes[0]) {
 			sizes[0] = tempSizes[0];
 		}
@@ -305,7 +305,7 @@ public class GroupGraph extends AbstractXmlGraph {
 		return sizes;
 	}
 
-	private int[] getSizes(List<AttributeModel> attributes) {
+	private int[] getSizesAttr(List<AttributeModel> attributes) {
 		final int[] sizes = { 0, 0 };
 		if (attributes != null) {
 			for (final AttributeModel atr : attributes) {
@@ -331,7 +331,7 @@ public class GroupGraph extends AbstractXmlGraph {
 		final mxCell icono = super.insertIcon(parent, icon, size);
 		final mxGeometry g = icono.getGeometry();
 		if (move > 0) {
-			g.setX(size + move);
+			g.setX((double) size + move);
 			icono.setId(GraphConstants.EXCLUDE_PREFIX_ICON + parent.getId() + move);
 		}
 		g.setTerminalPoint(new mxPoint(0, g.getHeight() / 2), false);
@@ -385,7 +385,7 @@ public class GroupGraph extends AbstractXmlGraph {
 		for (int i = 0; i < cell.getChildCount(); i++) {
 			final mxCell child = (mxCell) cell.getChildAt(i);
 			if (child.getId().startsWith(GraphConstants.EXCLUDE_PREFIX_ICON)) {
-				if (icons.size() == 0) {
+				if (icons.isEmpty()) {
 					iWidth = child.getGeometry().getWidth();
 				}
 				icons.add(i);

@@ -27,7 +27,7 @@ public class CreateAttributeGroup extends BasicCreate {
 		getContext().put("content", getContent());
 		getContext().put("attributeGroup", new AttributeGroupModel(attributeGroup));
 		run(getContext());
-		return getFile_name();
+		return getFileName();
 	}
 
 }

@@ -13,6 +13,7 @@ import net.ramso.docindita.References;
 import net.ramso.docindita.tools.DitaConstants;
 import net.ramso.docindita.tools.DitaTools;
 import net.ramso.docindita.xml.schema.GenerateSchema;
+import net.ramso.docindita.xml.wadl.GenerateWadl;
 import net.ramso.docindita.xml.wsdl.GenerateWsdl;
 import net.ramso.tools.ConfigurationException;
 import net.ramso.tools.FileTools;
@@ -70,7 +71,7 @@ public class GenDoc {
 		return urls;
 	}
 
-	protected void processUrls(List<URL> urls) throws IOException, URISyntaxException {
+	protected void processUrls(List<URL> urls) throws IOException{
 		final List<References> parts = new ArrayList<>();
 		for (final URL url : urls) {
 			LogManager.info("Procesando url " + url.toExternalForm());
@@ -82,6 +83,10 @@ public class GenDoc {
 			case DitaConstants.XSD:
 				final GenerateSchema xsd = new GenerateSchema();
 				parts.add(xsd.generateSchema(url, Config.isOne()));
+				break;
+			case DitaConstants.WADL:
+				final GenerateWadl wadl = new GenerateWadl();
+				parts.add(wadl.generateWADL(url, Config.isOne()));
 				break;
 			default:
 				break;

@@ -14,8 +14,9 @@ import com.predic8.schema.Documentation;
 
 import net.ramso.docindita.xml.Config;
 import net.ramso.tools.LogManager;
+import net.ramso.tools.TextTools;
 
-public abstract class BasicCreate implements iCreate {
+public abstract class BasicCreate implements ICreate {
 	private String templateFile = "template/basic.vm";
 	private String fileName;
 	private String id;
@@ -40,7 +41,7 @@ public abstract class BasicCreate implements iCreate {
 	}
 
 	@Override
-	public String getFile_name() {
+	public String getFileName() {
 		return fileName;
 	}
 
@@ -82,7 +83,7 @@ public abstract class BasicCreate implements iCreate {
 	}
 
 	protected void run(VelocityContext context) throws IOException {
-		final File file = new File(Config.getOutputDir() + File.separator + getFile_name());
+		final File file = new File(Config.getOutputDir() + File.separator + getFileName());
 		file.getParentFile().mkdirs();
 		FileWriter fw = new FileWriter(file);
 		BufferedWriter writer = null;
@@ -106,11 +107,14 @@ public abstract class BasicCreate implements iCreate {
 	}
 
 	protected void setFileName(String fileName) {
-		this.fileName = fileName.replaceAll("\\s+", "_");
+		this.fileName = TextTools.clean(fileName).replaceAll("\\s+", "_").replaceAll("/", "_").replaceAll("\\\\", "_");
 	}
 
 	protected void setId(String id) {
-		this.id = id.replaceAll("\\s+", "_");
+		if (!Character.isAlphabetic(id.charAt(0))) {
+			id = "id" + id;
+		}
+		this.id =id.replaceAll("\\s+", "_");
 		setFileName(id + ".dita");
 	}
 

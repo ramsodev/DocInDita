@@ -28,7 +28,6 @@ public class AllModel extends AbstractComplexContentModel {
 
 	@Override
 	public String getDiagram() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

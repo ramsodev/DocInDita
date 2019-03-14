@@ -29,7 +29,7 @@ public class CreateGroup extends BasicCreate {
 		getContext().put("group", new GroupModel(group));
 		getContext().put("tools", DitaTools.class);
 		run(getContext());
-		return getFile_name();
+		return getFileName();
 	}
 
 }

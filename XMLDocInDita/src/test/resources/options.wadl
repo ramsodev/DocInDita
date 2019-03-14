@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<application xmlns="http://wadl.dev.java.net/2009/02">
+    <doc xmlns:jersey="http://jersey.java.net/"
+        jersey:generatedBy="Jersey: 2.0-SNAPSHOT ${buildNumber}"/>
+    <grammars/>
+    <resources base="http://localhost:9998/">
+        <resource path="customer/{id}">
+            <param xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+                type="xs:int" style="template" name="id" />
+            <method name="GET" id="get">
+                <response/>
+            </method>
+            <method name="PUT" id="put">
+                <response/>
+            </method>
+            <method name="OPTIONS" id="apply">
+                <request>
+                    <representation mediaType="*/*"/>
+                </request>
+                <response>
+                    <representation mediaType="application/vnd.sun.wadl+xml"/>
+                </response>
+            </method>
+            <method name="OPTIONS" id="apply">
+                <request>
+                    <representation mediaType="*/*"/>
+                </request>
+                <response>
+                    <representation mediaType="text/plain"/>
+                </response>
+            </method>
+            <method name="OPTIONS" id="apply">
+                <request>
+                    <representation mediaType="*/*"/>
+                </request>
+                <response>
+                    <representation mediaType="*/*"/>
+                </response>
+            </method>
+            <resource path="additional-info">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                    type="xs:int" style="template" name="id"/>
+            </resource>
+            <resource path="address">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                    type="xs:int" style="template" name="id"/>
+                <method name="GET" id="getAddress">
+                    <response/>
+                </method>
+                <method name="PUT" id="updateAddress"/>
+                <resource path="sub">
+                    <method name="GET" id="getDeliveryAddress">
+                        <response/>
+                    </method>
+                </resource>
+            </resource>
+        </resource>
+        <resource path="application.wadl">
+            <method name="GET" id="getWadl">
+                <response>
+                    <representation mediaType="application/vnd.sun.wadl+xml"/>
+                    <representation mediaType="application/xml"/>
+                </response>
+            </method>
+            <method name="OPTIONS" id="apply">
+                <request>
+                    <representation mediaType="*/*"/>
+                </request>
+                <response>
+                    <representation mediaType="text/plain"/>
+                </response>
+            </method>
+            <method name="OPTIONS" id="apply">
+                <request>
+                    <representation mediaType="*/*"/>
+                </request>
+                <response>
+                    <representation mediaType="*/*"/>
+                </response>
+            </method>
+            <resource path="{path}">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                    type="xs:string" style="template" name="path"/>
+                <method name="GET" id="geExternalGrammar">
+                    <response>
+                        <representation mediaType="application/xml"/>
+                    </response>
+                </method>
+                <method name="OPTIONS" id="apply">
+                    <request>
+                        <representation mediaType="*/*"/>
+                    </request>
+                    <response>
+                        <representation mediaType="text/plain"/>
+                    </response>
+                </method>
+                <method name="OPTIONS" id="apply">
+                    <request>
+                        <representation mediaType="*/*"/>
+                    </request>
+                    <response>
+                        <representation mediaType="*/*"/>
+                    </response>
+                </method>
+            </resource>
+        </resource>
+    </resources>
+</application>

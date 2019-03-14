@@ -1,8 +1,6 @@
 package net.ramso.docindita.xml.wsdl;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,15 +36,15 @@ public class GenerateWsdl {
 		return null;
 	}
 
-	public References generateWSDL(String url) throws MalformedURLException, IOException, URISyntaxException {
+	public References generateWSDL(String url) throws IOException {
 		return generateWSDL(new URL(url), false);
 	}
 
-	public References generateWSDL(URL url) throws IOException, URISyntaxException {
+	public References generateWSDL(URL url) throws IOException {
 		return generateWSDL(url, false);
 	}
 
-	public References generateWSDL(URL url, boolean one) throws IOException, URISyntaxException {
+	public References generateWSDL(URL url, boolean one) throws IOException {
 		final String fileName = DitaTools.getName(url.toExternalForm());
 		DitaTools.setIdPrefix(fileName);
 		LogManager.info("Inicio de Procesado de " + url);
@@ -60,11 +58,10 @@ public class GenerateWsdl {
 		}
 		final Definitions desc = parser.parse(ctx);
 		String content = "Definición del Servicio Web " + fileName;
-		if (desc.getDocumentation() != null) {
-			if (!desc.getDocumentation().getContent().isEmpty()) {
-				content = desc.getDocumentation().getContent().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
-			}
+		if (desc.getDocumentation() != null && !desc.getDocumentation().getContent().isEmpty()) {
+			content = desc.getDocumentation().getContent().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 		}
+
 		final ArrayList<References> index = new ArrayList<>();
 		final List<Service> services = desc.getServices();
 		for (final Service service : services) {
@@ -103,7 +100,6 @@ public class GenerateWsdl {
 		for (final Schema schema : schemas) {
 			final String idSchema = (DitaTools.getSchemaId(schema.getTargetNamespace()) + DitaConstants.SUFFIX_SERVICE)
 					.replaceAll("\\s+", "_");
-			;
 			final References cover = findRef(idSchema, index);
 			final GenerateSchema gs = new GenerateSchema();
 			if (cover == null) {

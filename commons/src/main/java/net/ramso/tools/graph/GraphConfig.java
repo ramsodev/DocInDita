@@ -25,7 +25,7 @@ public class GraphConfig {
 		try {
 			List<File> files = FileTools.getResourcesInFolder(GraphConstants.ICONS_FOLDER);
 			for (File file : files) {
-				LogManager.info(file.getName());
+				LogManager.debug(file.getName());
 			}
 		} catch (IOException e) {
 			LogManager.error(BundleManager.getString("commons.icons.error"), e);

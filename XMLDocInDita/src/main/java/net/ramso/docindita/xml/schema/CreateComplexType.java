@@ -29,7 +29,7 @@ public class CreateComplexType extends BasicCreate {
 		getContext().put("complexType", new ComplexTypeModel(type));
 		getContext().put("tools", DitaTools.class);
 		run(getContext());
-		return getFile_name();
+		return getFileName();
 	}
 
 }

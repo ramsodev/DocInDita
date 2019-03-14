@@ -27,7 +27,7 @@ public class CreateAttribute extends BasicCreate {
 		getContext().put("content", getContent());
 		getContext().put("attribute", new AttributeModel(attribute));
 		run(getContext());
-		return getFile_name();
+		return getFileName();
 	}
 
 }

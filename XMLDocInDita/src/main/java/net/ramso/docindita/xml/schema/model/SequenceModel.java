@@ -28,7 +28,7 @@ public class SequenceModel extends AbstractComplexContentModel {
 
 	@Override
 	public String getDiagram() {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 

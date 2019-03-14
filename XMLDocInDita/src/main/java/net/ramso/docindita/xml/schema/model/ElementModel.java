@@ -74,9 +74,9 @@ public class ElementModel extends AbstractComplexContentModel {
 		return element.getRef();
 	}
 
-	public iComponentModel getRefType() {
+	public IComponentModel getRefType() {
 		final TypeDefinition t = DitaTools.getType(getRef());
-		iComponentModel m = null;
+		IComponentModel m = null;
 		if (t != null) {
 			if (t instanceof SimpleType) {
 				m = new SimpleTypeModel((SimpleType) t);

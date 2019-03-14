@@ -23,7 +23,7 @@ public class CreateBookMap extends BasicCreate {
 		getContext().put("references", references);
 		getContext().put("parts", parts);
 		run(getContext());
-		return getFile_name();
+		return getFileName();
 	}
 
 	@Override

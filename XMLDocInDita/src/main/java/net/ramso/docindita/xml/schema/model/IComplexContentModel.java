@@ -1,15 +1,15 @@
 package net.ramso.docindita.xml.schema.model;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import groovy.xml.QName;
 
-public interface IComplexContentModel extends iComponentModel {
+public interface IComplexContentModel extends IComponentModel {
 	public String getComponentName();
 
 	public String getContentType();
 
-	public ArrayList<IComplexContentModel> getElements();
+	public List<IComplexContentModel> getElements();
 
 	public String getMaxOccurs();
 
@@ -21,7 +21,7 @@ public interface IComplexContentModel extends iComponentModel {
 
 	public boolean isRequiered();
 
-	public void setElements(ArrayList<IComplexContentModel> elements);
+	public void setElements(List<IComplexContentModel> elements);
 
 	public void setMinOccurs(Object minOccurs);
 }

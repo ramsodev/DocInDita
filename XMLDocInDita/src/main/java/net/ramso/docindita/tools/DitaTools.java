@@ -103,7 +103,7 @@ public class DitaTools {
 		return idPrefix.trim() + idSchema + "_" + type.getLocalPart() + getSuffixType(type) + ".dita";
 	}
 
-	public static String getName(String uri) throws MalformedURLException {
+	public static String getName(String uri) {
 		String name = "";
 		if ((uri == null) || uri.isEmpty()) {
 			name = "No Name";
@@ -111,8 +111,13 @@ public class DitaTools {
 			final URI urn = URI.create(uri);
 			name = urn.getSchemeSpecificPart().substring(urn.getSchemeSpecificPart().lastIndexOf(':') + 1);
 		} else {
-			final URL url = new URL(uri);
-			name = url.getPath().substring(url.getPath().lastIndexOf('/') + 1);
+			URL url;
+			try {
+				url = new URL(uri);
+				name = url.getPath().substring(url.getPath().lastIndexOf('/') + 1);
+			} catch (MalformedURLException e) {
+				name = uri.substring(uri.lastIndexOf('/') + 1);
+			}
 			if (name.contains("?")) {
 				name = name.substring(0, name.lastIndexOf('?'));
 			} else if (name.contains(".")) {

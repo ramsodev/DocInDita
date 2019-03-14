@@ -113,7 +113,7 @@ public class AttributeGroupGraph extends AbstractXmlGraph {
 		super.insertIcon(titulo, DitaConstants.SUFFIX_ATTRIBUTEGROUP.toLowerCase(), height);
 		y += height;
 		width -= 6;
-		if (attributeGroup.getAttributes().size() > 0) {
+		if (!attributeGroup.getAttributes().isEmpty()) {
 			final mxCell subCell = (mxCell) getGraph().insertVertex(cell,
 					attributeGroup.getName() + DitaConstants.SUFFIX_ATTRIBUTEGROUP, "", x, y, width, height,
 					GraphTools.getStyle(false, true));
@@ -223,7 +223,7 @@ public class AttributeGroupGraph extends AbstractXmlGraph {
 		final mxCell icono = super.insertIcon(parent, icon, size);
 		final mxGeometry g = icono.getGeometry();
 		if (move > 0) {
-			g.setX(size + move);
+			g.setX((double) size + move);
 			icono.setId(GraphConstants.EXCLUDE_PREFIX_ICON + parent.getId() + move);
 		}
 		g.setTerminalPoint(new mxPoint(0, g.getHeight() / 2), false);

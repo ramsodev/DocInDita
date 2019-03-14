@@ -1,8 +1,6 @@
 package net.ramso.docindita.xml.schema;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -150,15 +148,15 @@ public class GenerateSchema {
 		return null;
 	}
 
-	public References generateSchema(String url) throws MalformedURLException, IOException, URISyntaxException {
+	public References generateSchema(String url) throws IOException {
 		return generateSchema(new URL(url), false);
 	}
 
-	public References generateSchema(URL url) throws IOException, URISyntaxException {
+	public References generateSchema(URL url) throws IOException {
 		return generateSchema(url, false);
 	}
 
-	public References generateSchema(URL url, boolean one) throws IOException, URISyntaxException {
+	public References generateSchema(URL url, boolean one) throws IOException {
 		final SchemaParser parser = new SchemaParser();
 		final SchemaParserContext ctx = new SchemaParserContext();
 		if (url.getProtocol().startsWith("file")) {

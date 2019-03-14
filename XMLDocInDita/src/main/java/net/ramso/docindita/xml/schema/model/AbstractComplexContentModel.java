@@ -19,7 +19,7 @@ public abstract class AbstractComplexContentModel extends AbstractComponentModel
 	private int minOccurs = -1;
 	private String maxOccurs = "-1";
 	private boolean requiered;
-	private ArrayList<IComplexContentModel> elements = new ArrayList<>();
+	private List<IComplexContentModel> elements = new ArrayList<>();
 	protected String contentType = DitaConstants.SEQUENCE;
 
 	protected void addElement(IComplexContentModel elementModel) {
@@ -35,7 +35,7 @@ public abstract class AbstractComplexContentModel extends AbstractComponentModel
 	}
 
 	@Override
-	public ArrayList<IComplexContentModel> getElements() {
+	public List<IComplexContentModel> getElements() {
 		return elements;
 	}
 
@@ -137,7 +137,7 @@ public abstract class AbstractComplexContentModel extends AbstractComponentModel
 	}
 
 	@Override
-	public void setElements(ArrayList<IComplexContentModel> elements) {
+	public void setElements(List<IComplexContentModel> elements) {
 		this.elements = elements;
 	}
 

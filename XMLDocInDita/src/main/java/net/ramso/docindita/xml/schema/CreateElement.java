@@ -26,6 +26,6 @@ public class CreateElement extends BasicCreate {
 		getContext().put("content", getContent());
 		getContext().put("element", new ElementModel(element));
 		run(getContext());
-		return getFile_name();
+		return getFileName();
 	}
 }

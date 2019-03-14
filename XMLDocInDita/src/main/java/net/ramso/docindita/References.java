@@ -1,11 +1,12 @@
 package net.ramso.docindita;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class References {
 	private String id;
 	private String href;
-	private ArrayList<References> childs;
+	private List<References> childs;
 
 	public References(String href) {
 		super();
@@ -20,7 +21,7 @@ public class References {
 		childs.add(child);
 	}
 
-	public ArrayList<References> getChilds() {
+	public List<References> getChilds() {
 		if (childs == null) {
 			childs = new ArrayList<>();
 		}
@@ -48,7 +49,7 @@ public class References {
 		return null;
 	}
 
-	public void setChilds(ArrayList<References> childs) {
+	public void setChilds(List<References> childs) {
 		this.childs = childs;
 	}
 

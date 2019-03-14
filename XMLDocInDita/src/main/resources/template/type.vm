@@ -25,5 +25,8 @@
     	#if(${group})
     		#parse("group.vm")
     	#end
+    	#if(${method})
+    		#parse("method.vm")
+    	#end
     </body>
 </topic>

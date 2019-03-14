@@ -184,12 +184,12 @@ public class SimpleTypeModel extends AbstractComponentModel {
 				if (maxLength > size) {
 					size = maxLength;
 				}
-			} else if (facet instanceof MinExclusiveFacet) {
+			} else if (facet instanceof MinExclusiveFacet ) {
 				minInclusive = false;
 				minValue = facet.getValue();
 				setSizeFromMask(facet.getValue());
 			} else if (facet instanceof MinInclusiveFacet) {
-				minInclusive = false;
+				minInclusive = true;
 				minValue = facet.getValue();
 				setSizeFromMask(facet.getValue());
 			} else if (facet instanceof MinLengthFacet) {

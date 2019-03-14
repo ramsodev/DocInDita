@@ -14,8 +14,6 @@ import net.ramso.tools.LogManager;
 
 public class AttributeGroupModel extends AbstractComponentModel {
 
-	private final SimpleTypeModel simpleType = null;
-
 	private final AttributeGroup attributeGroup;
 
 	private List<AttributeModel> attributes;
@@ -57,13 +55,6 @@ public class AttributeGroupModel extends AbstractComponentModel {
 
 	public QName getRef() {
 		return attributeGroup.getRef();
-	}
-
-	/**
-	 * @return the simpleType
-	 */
-	public SimpleTypeModel getSimpleType() {
-		return simpleType;
 	}
 
 	/**

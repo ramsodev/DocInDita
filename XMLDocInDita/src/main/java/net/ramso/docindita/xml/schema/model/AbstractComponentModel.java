@@ -3,12 +3,10 @@ package net.ramso.docindita.xml.schema.model;
 import java.net.MalformedURLException;
 
 import com.predic8.schema.Documentation;
-import com.predic8.schema.SchemaComponent;
 
-import groovy.xml.QName;
 import net.ramso.docindita.tools.DitaTools;
 
-public abstract class AbstractComponentModel implements iComponentModel {
+public abstract class AbstractComponentModel implements IComponentModel {
 
 	private boolean scaleDiagram = false;
 
@@ -17,21 +15,20 @@ public abstract class AbstractComponentModel implements iComponentModel {
 		return getComponent().getAsString().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 	}
 
-	@Override
-	public abstract SchemaComponent getComponent();
+	
 
 	@Override
 	public String getDoc() {
-		String value = "";
+		StringBuilder value = new StringBuilder();
 		if (getComponent().getAnnotation() != null) {
 			for (final Documentation doc : getComponent().getAnnotation().getDocumentations()) {
 				if (doc.getSource() != null) {
-					value += doc.getSource() + ": ";
+					value.append(doc.getSource() + ": ");
 				}
-				value += doc.getContent().replaceAll("<", "&lt;").replaceAll(">", "&gt;") + ". \n";
+				value.append(doc.getContent().replaceAll("<", "&lt;").replaceAll(">", "&gt;") + ". \n");
 			}
 		}
-		return value;
+		return value.toString();
 	}
 
 	@Override
@@ -52,11 +49,6 @@ public abstract class AbstractComponentModel implements iComponentModel {
 		return getComponent().getName();
 	}
 
-	/**
-	 * @return the type
-	 */
-	@Override
-	public abstract QName getType();
 
 	@Override
 	public boolean isScaleDiagram() {
