@@ -6,7 +6,12 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.apache.commons.collections.map.HashedMap;
 
 import com.predic8.schema.Schema;
 import com.predic8.wadl.Application;
@@ -115,15 +120,27 @@ public class GenerateWadl {
 			if (name == null || name.isEmpty()) {
 				name = resource.getPath();
 			}
+			Map<String, List<Method>> ms = new HashMap<>();
 			for (Method method : resource.getMethods()) {
-				CreateMethod cm = new CreateMethod(name + "_" + method.getName() + DitaConstants.SUFFIX_RESOURCE_METHOD,
-						method.getName() + " " + resource.getPath(), getDoc(method.getDocs()));
-				index.add(new References(cm.create(method, resource)));
+				if (ms.containsKey(method.getName())) {
+					ms.get(method.getName()).add(method);
+				} else {
+					List<Method> m = new ArrayList<>();
+					m.add(method);
+					ms.put(method.getName(), m);
+				}				
+			}
+			for(Entry<String, List<Method>> entry: ms.entrySet()) {
+				CreateMethod cm = new CreateMethod(name + "_" + entry.getKey() + DitaConstants.SUFFIX_RESOURCE_METHOD,
+						entry.getKey() + " " + resource.getPath(), getDocs(entry.getValue()));
+				index.add(new References(cm.create(entry.getValue(), resource)));
 			}
 
 		}
 		return index;
 	}
+
+	
 
 	private References findRef(String idSchema, ArrayList<References> index) {
 		for (final References ref : index) {
@@ -131,6 +148,14 @@ public class GenerateWadl {
 				return ref;
 		}
 		return null;
+	}
+	
+	private String getDocs(List<Method> methods) {
+		StringBuilder content = new StringBuilder();
+		for(Method method:methods) {
+			content.append(getDoc(method.getDocs()));
+		}
+		return content.toString();
 	}
 
 	private String getDoc(List<Doc> docs) {

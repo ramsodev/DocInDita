@@ -3,7 +3,7 @@
    <title>${text.getString("wadl.resource.method.request")}</title>
    <p>${method.getRequestDoc()}</p>
    #if(!${method.getRequestParams().isEmpty()})
-      <table frame="none" rowsep="0" colsep="0" id="table_bm2_jhb_chb">
+      <table frame="none" rowsep="0" colsep="0" id="request1">
             <title>${text.getString("wadl.resource.parms")}</title>
             <tgroup cols="2" align="left">
                 <colspec colname="c1" colnum="1" colwidth="1*"/>
@@ -32,17 +32,40 @@
             		#end 
             		#if(!${param.getFixed().isEmpty()})
             				<p><i>${text.getString("wadl.resource.parms.fixed", ${param.getFixed()})}</i></p>
-            		#end                           
+            		#end                      
                        </entry>
                     </row>
                     <row rowsep="1">
                         <entry namest="c1" nameend="c2" />
                     </row>
 		#end
+		
                 </tbody>
             </tgroup>
         </table>
     #end
+    #if(!${method.getRequestMediaType().isEmpty()})
+		<table frame="none" rowsep="0" colsep="0" id="request2">          
+            <tgroup cols="2" align="left">
+                <colspec colname="c1" colnum="1" colwidth="1*"/>
+                <colspec colname="c2" colnum="2" colwidth="3*"/>                
+                <tbody>
+					<row>
+                        <entry>
+            				${text.getString("wadl.resource.content")}
+            			</entry>
+            			<entry>
+            				<ul>
+            			#foreach($media in ${method.getRequestMediaType()})
+            					<li>$media</li>
+            			#end
+            				</ul>
+            			</entry>
+            		</row>
+            	</tbody>
+            </tgroup>
+        </table>
+	#end  
    </section>  
 #end
 #if(${method.isResponse()})   
@@ -50,7 +73,7 @@
    <title>${text.getString("wadl.resource.method.response")}</title>
    <p>${method.getResponseDoc()}</p>
    #if(!${method.getResponseParams().isEmpty()})
-      <table frame="none" rowsep="0" colsep="0" id="table_bm2_jhb_chb">
+      <table frame="none" rowsep="0" colsep="0" id="response1">
             <title>${text.getString("wadl.resource.parms")}</title>
             <tgroup cols="2" align="left">
                 <colspec colname="c1" colnum="1" colwidth="1*"/>
@@ -79,17 +102,41 @@
             		#end 
             		#if(!${param.getFixed().isEmpty()})
             				<p><i>${text.getString("wadl.resource.parms.fixed", ${param.getFixed()})}</i></p>
-            		#end                           
+            		#end
+            		                          
                        </entry>
                     </row>
                     <row rowsep="1">
                         <entry namest="c1" nameend="c2" />
                     </row>
 		#end
+		
                 </tbody>
             </tgroup>
         </table>
     #end
+	#if(!${method.getResponseMediaType().isEmpty()})
+		<table frame="none" rowsep="0" colsep="0" id="response2">          
+            <tgroup cols="2" align="left">
+                <colspec colname="c1" colnum="1" colwidth="1*"/>
+                <colspec colname="c2" colnum="2" colwidth="3*"/>                
+                <tbody>
+					<row>
+                        <entry>
+            				${text.getString("wadl.resource.content")}
+            			</entry>
+            			<entry>
+            				<ul>
+            			#foreach($media in ${method.getResponseMediaType()})
+            					<li>$media</li>
+            			#end
+            				</ul>
+            			</entry>
+            		</row>
+            	</tbody>
+            </tgroup>
+        </table>
+	#end  
    </section>  
 #end
     

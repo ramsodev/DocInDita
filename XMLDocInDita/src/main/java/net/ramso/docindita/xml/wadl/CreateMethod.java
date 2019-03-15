@@ -21,10 +21,10 @@ public class CreateMethod extends BasicCreate {
 		setContent(content);
 	}
 
-	public String create(Method method, Resource resource) throws IOException {
+	public String create(List<Method> methods, Resource resource) throws IOException {
 		
 		getContext().put("content", getContent());
-		getContext().put("method", new MethodModel(method,getParams(resource.getParams())));
+		getContext().put("method", new MethodModel(methods,getParams(resource.getParams())));
 		getContext().put("tools", DitaTools.class);
 		getContext().put("text", BundleManager.class);
 		run(getContext());
