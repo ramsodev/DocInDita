@@ -22,11 +22,11 @@ import net.ramso.docindita.tools.DitaConstants;
 import net.ramso.docindita.tools.DitaTools;
 import net.ramso.docindita.xml.Config;
 
-public class GenerateSchema {
+public class GenerateXSD {
 
 	private String idWSDL;
 
-	public GenerateSchema() {
+	public GenerateXSD() {
 		super();
 
 	}
@@ -104,7 +104,7 @@ public class GenerateSchema {
 		return references;
 	}
 
-	public References generateSchema(Schema schema, String idWsdl, boolean one) throws IOException {
+	public References generateXsd(Schema schema, String idWsdl, boolean one) throws IOException {
 		if (idWsdl != null) {
 			idWSDL = idWsdl.trim() + "_";
 		} else {
@@ -142,21 +142,23 @@ public class GenerateSchema {
 			} else {
 				final CreatePortada cc = new CreatePortada(idSchema, "Documentación  del XSD " + name,
 						"NameSpace:" + schema.getTargetNamespace());
-				return new References(cc.create());
+				References cover = new References(cc.create());
+				cover.getChilds().addAll(references);
+				return cover;
 			}
 		}
 		return null;
 	}
 
-	public References generateSchema(String url) throws IOException {
-		return generateSchema(new URL(url), false);
+	public References generateXsd(String url) throws IOException {
+		return generateXsd(new URL(url), false);
 	}
 
-	public References generateSchema(URL url) throws IOException {
-		return generateSchema(url, false);
+	public References generateXsd(URL url) throws IOException {
+		return generateXsd(url, false);
 	}
 
-	public References generateSchema(URL url, boolean one) throws IOException {
+	public References generateXsd(URL url, boolean one) throws IOException {
 		final SchemaParser parser = new SchemaParser();
 		final SchemaParserContext ctx = new SchemaParserContext();
 		if (url.getProtocol().startsWith("file")) {
@@ -166,7 +168,7 @@ public class GenerateSchema {
 			ctx.setInput(url.toExternalForm());
 		}
 		final Schema schema = parser.parse(ctx);
-		return generateSchema(schema, null, one);
+		return generateXsd(schema, null, one);
 	}
 
 	protected String getIdWSDL() {

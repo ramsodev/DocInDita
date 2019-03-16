@@ -18,7 +18,7 @@ import net.ramso.docindita.References;
 import net.ramso.docindita.tools.DitaConstants;
 import net.ramso.docindita.tools.DitaTools;
 import net.ramso.docindita.xml.Config;
-import net.ramso.docindita.xml.schema.GenerateSchema;
+import net.ramso.docindita.xml.schema.GenerateXSD;
 import net.ramso.docindita.xml.wsdl.graph.WSDLGraph;
 import net.ramso.tools.LogManager;
 
@@ -101,9 +101,9 @@ public class GenerateWsdl {
 			final String idSchema = (DitaTools.getSchemaId(schema.getTargetNamespace()) + DitaConstants.SUFFIX_SERVICE)
 					.replaceAll("\\s+", "_");
 			final References cover = findRef(idSchema, index);
-			final GenerateSchema gs = new GenerateSchema();
+			final GenerateXSD gs = new GenerateXSD();
 			if (cover == null) {
-				final References ref = gs.generateSchema(schema, fileName, false);
+				final References ref = gs.generateXsd(schema, fileName, false);
 				index.add(ref);
 			} else {
 				gs.append2Schema(cover, schema);

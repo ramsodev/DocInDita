@@ -12,7 +12,7 @@ import net.ramso.docindita.CreateBookMap;
 import net.ramso.docindita.References;
 import net.ramso.docindita.tools.DitaConstants;
 import net.ramso.docindita.tools.DitaTools;
-import net.ramso.docindita.xml.schema.GenerateSchema;
+import net.ramso.docindita.xml.schema.GenerateXSD;
 import net.ramso.docindita.xml.wadl.GenerateWadl;
 import net.ramso.docindita.xml.wsdl.GenerateWsdl;
 import net.ramso.tools.ConfigurationException;
@@ -81,8 +81,8 @@ public class GenDoc {
 				parts.add(gen.generateWSDL(url, Config.isOne()));
 				break;
 			case DitaConstants.XSD:
-				final GenerateSchema xsd = new GenerateSchema();
-				parts.add(xsd.generateSchema(url, Config.isOne()));
+				final GenerateXSD xsd = new GenerateXSD();
+				parts.add(xsd.generateXsd(url, Config.isOne()));
 				break;
 			case DitaConstants.WADL:
 				final GenerateWadl wadl = new GenerateWadl();
