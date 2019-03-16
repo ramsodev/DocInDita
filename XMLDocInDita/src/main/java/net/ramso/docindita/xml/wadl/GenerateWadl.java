@@ -28,7 +28,7 @@ import net.ramso.docindita.References;
 import net.ramso.docindita.tools.DitaConstants;
 import net.ramso.docindita.tools.DitaTools;
 import net.ramso.docindita.xml.Config;
-import net.ramso.docindita.xml.schema.GenerateSchema;
+import net.ramso.docindita.xml.schema.GenerateXSD;
 import net.ramso.tools.BundleManager;
 import net.ramso.tools.LogManager;
 
@@ -66,10 +66,10 @@ public class GenerateWadl {
 			String name = DitaTools.getName(resource.getBase());
 			String content = BundleManager.getString("wadl.resources.basedir", resource.getBase()) + "\n"
 					+ getDoc(resource.getDocs());
-			CreatePortada cc = new CreatePortada(name + DitaConstants.SUFFIX_RESOURCE + "s",
+			CreatePortada cc = new CreatePortada(fileName + "_" + name + DitaConstants.SUFFIX_RESOURCE + "s",
 					BundleManager.getString("wadl.resources.title", name), content);
 			References chapter = new References(cc.create());
-			chapter.getChilds().addAll(createResources(resource.getResources()));
+			chapter.getChilds().addAll(createResources(resource.getResources(), fileName));
 
 			index.add(chapter);
 		}
@@ -79,9 +79,9 @@ public class GenerateWadl {
 				final String idSchema = (DitaTools.getSchemaId(schema.getTargetNamespace())
 						+ DitaConstants.SUFFIX_RESOURCE).replaceAll("\\s+", "_");
 				final References cover = findRef(idSchema, index);
-				final GenerateSchema gs = new GenerateSchema();
+				final GenerateXSD gs = new GenerateXSD();
 				if (cover == null) {
-					final References ref = gs.generateSchema(schema, fileName, false);
+					final References ref = gs.generateXsd(schema, fileName, false);
 					index.add(ref);
 				} else {
 					gs.append2Schema(cover, schema);
@@ -113,7 +113,7 @@ public class GenerateWadl {
 
 	}
 
-	private List<References> createResources(List<Resource> resources) throws IOException {
+	private List<References> createResources(List<Resource> resources, String prefix) throws IOException {
 		List<References> index = new ArrayList<>();
 		for (Resource resource : resources) {
 			String name = DitaTools.getName(resource.getPath());
@@ -128,10 +128,11 @@ public class GenerateWadl {
 					List<Method> m = new ArrayList<>();
 					m.add(method);
 					ms.put(method.getName(), m);
-				}				
+				}
 			}
-			for(Entry<String, List<Method>> entry: ms.entrySet()) {
-				CreateMethod cm = new CreateMethod(name + "_" + entry.getKey() + DitaConstants.SUFFIX_RESOURCE_METHOD,
+			for (Entry<String, List<Method>> entry : ms.entrySet()) {
+				CreateMethod cm = new CreateMethod(
+						prefix + "_" + name + "_" + entry.getKey() + DitaConstants.SUFFIX_RESOURCE_METHOD,
 						entry.getKey() + " " + resource.getPath(), getDocs(entry.getValue()));
 				index.add(new References(cm.create(entry.getValue(), resource)));
 			}
@@ -140,8 +141,6 @@ public class GenerateWadl {
 		return index;
 	}
 
-	
-
 	private References findRef(String idSchema, ArrayList<References> index) {
 		for (final References ref : index) {
 			if (ref.getId().equalsIgnoreCase(idSchema))
@@ -149,10 +148,10 @@ public class GenerateWadl {
 		}
 		return null;
 	}
-	
+
 	private String getDocs(List<Method> methods) {
 		StringBuilder content = new StringBuilder();
-		for(Method method:methods) {
+		for (Method method : methods) {
 			content.append(getDoc(method.getDocs()));
 		}
 		return content.toString();
