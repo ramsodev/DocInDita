@@ -25,37 +25,37 @@ class GenreateWSDLTest extends BaseTest {
 
 	}
 
-	@Test
-	@DisplayName("Simple Calculator")
-	void testGenerateWSDL() {
-		Config.setOutputDir(DitaConstants.OUTDIR_DEFAULT + File.separator + "calculator");
-		clean();
-		URL wsdl = Thread.currentThread().getContextClassLoader().getResource("calculator.wsdl");
-		try {
-			generate.generateWSDL(wsdl);
-		} catch (Exception e) {
-
-			e.printStackTrace();
-			fail(e.getLocalizedMessage());
-		}
-		assertTrue(true);
-	}
-
-	@Test
-	@DisplayName("Simple HelloService")
-	void testGenerateWSDL2() {
-		Config.setOutputDir(DitaConstants.OUTDIR_DEFAULT + File.separator + "hello");
-		clean();
-		URL wsdl = Thread.currentThread().getContextClassLoader().getResource("helloService.wsdl");
-		try {
-			generate.generateWSDL(wsdl);
-		} catch (Exception e) {
-
-			e.printStackTrace();
-			fail(e.getLocalizedMessage());
-		}
-		assertTrue(true);
-	}
+//	@Test
+//	@DisplayName("Simple Calculator")
+//	void testGenerateWSDL() {
+//		Config.setOutputDir(DitaConstants.OUTDIR_DEFAULT + File.separator + "calculator");
+//		clean();
+//		URL wsdl = Thread.currentThread().getContextClassLoader().getResource("calculator.wsdl");
+//		try {
+//			generate.generateWSDL(wsdl);
+//		} catch (Exception e) {
+//
+//			e.printStackTrace();
+//			fail(e.getLocalizedMessage());
+//		}
+//		assertTrue(true);
+//	}
+//
+//	@Test
+//	@DisplayName("Simple HelloService")
+//	void testGenerateWSDL2() {
+//		Config.setOutputDir(DitaConstants.OUTDIR_DEFAULT + File.separator + "hello");
+//		clean();
+//		URL wsdl = Thread.currentThread().getContextClassLoader().getResource("helloService.wsdl");
+//		try {
+//			generate.generateWSDL(wsdl);
+//		} catch (Exception e) {
+//
+//			e.printStackTrace();
+//			fail(e.getLocalizedMessage());
+//		}
+//		assertTrue(true);
+//	}
 
 	@Test
 	@DisplayName("Public http AWSE")
@@ -74,39 +74,39 @@ class GenreateWSDLTest extends BaseTest {
 		assertTrue(true);
 	}
 
-	@Test
-	@DisplayName("Complex doc  iban")
-	void testGenerateWSDL4() {
-		Config.setOutputDir(DitaConstants.OUTDIR_DEFAULT + File.separator + "iban");
-		clean();
-		try {
-			URL wsdl = Thread.currentThread().getContextClassLoader().getResource("iban.wsdl");
-
-			generate.generateWSDL(wsdl);
-		} catch (Exception e) {
-
-			e.printStackTrace();
-			fail(e.getLocalizedMessage());
-		}
-		assertTrue(true);
-	}
-
-	@Test
-	@DisplayName("tododolist")
-	void testGenerateWSDL5() {
-		Config.setOutputDir(DitaConstants.OUTDIR_DEFAULT + File.separator + "todo");
-		clean();
-		try {
-			final URL wsdl = Thread.currentThread().getContextClassLoader().getResource("todolist.wsdl");
-
-			generate.generateWSDL(wsdl, false);
-		} catch (final Exception e) {
-
-			e.printStackTrace();
-			fail(e.getLocalizedMessage());
-		}
-		assertTrue(true);
-	}
+//	@Test
+//	@DisplayName("Complex doc  iban")
+//	void testGenerateWSDL4() {
+//		Config.setOutputDir(DitaConstants.OUTDIR_DEFAULT + File.separator + "iban");
+//		clean();
+//		try {
+//			URL wsdl = Thread.currentThread().getContextClassLoader().getResource("iban.wsdl");
+//
+//			generate.generateWSDL(wsdl);
+//		} catch (Exception e) {
+//
+//			e.printStackTrace();
+//			fail(e.getLocalizedMessage());
+//		}
+//		assertTrue(true);
+//	}
+//
+//	@Test
+//	@DisplayName("tododolist")
+//	void testGenerateWSDL5() {
+//		Config.setOutputDir(DitaConstants.OUTDIR_DEFAULT + File.separator + "todo");
+//		clean();
+//		try {
+//			final URL wsdl = Thread.currentThread().getContextClassLoader().getResource("todolist.wsdl");
+//
+//			generate.generateWSDL(wsdl, false);
+//		} catch (final Exception e) {
+//
+//			e.printStackTrace();
+//			fail(e.getLocalizedMessage());
+//		}
+//		assertTrue(true);
+//	}
 
 	
 }

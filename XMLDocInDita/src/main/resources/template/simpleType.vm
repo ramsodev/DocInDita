@@ -1,51 +1,50 @@
-    <dl>
+#if(${simpleType.getRestriction()})
+	#parse('restriction.vm')
+#end
+#if(${simpleType.isList()})
+	<dl>
     	<dlentry>
-       		<dt>Tipo base</dt>
-            <dd><xref href="${simpleType.getHrefType()}" ${simpleType.getExternalHref()}>${simpleType.getDataType()}</xref></dd>
+       		<dt>List of values</dt>
+            <dd>#if(${simpleType.getListSimpleType()})
+            		#set($childc = $child)
+       				#set($child = true)
+            		#set($pst = $simpleType)
+            		#set($simpleType = ${simpleType.getListSimpleType()})
+            		#parse('simpleType.vm')
+            		#set($simpleType = $pst)
+            		#set($child = $childc)
+            #else
+            ${simpleType.getListType()}
+            #end</dd>
         </dlentry>
-        #if(${simpleType.getSize()} > 0)
-        <dlentry>
-        	<dt>Tamaño</dt>
-        	<dd>${simpleType.getSize()}#if(${simpleType.getDecimals()} > 0),${simpleType.getDecimals()}#end</dd>
-        </dlentry>
-        #end
-        #if(${simpleType.getMinLength()} > 0 || ${simpleType.getMaxLength()} > 0)
-        <dlentry>
-        	<dt>Tamaño</dt>
-        	<dd> #if(${simpleType.getMinLength()} > 0)Desde ${simpleType.getMinLength()} #end #if(${simpleType.getMaxLength()} > 0)hasta ${simpleType.getMaxLength()}#end</dd>
-        </dlentry>
-        #end 
-        #if(${simpleType.getMinValue()} || ${simpleType.getMaxValue()})
-        <dlentry>
-        	<dt>Rango de valores admitidos</dt>
-        	<dd> #if(${simpleType.getMinValue()})Desde ${simpleType.getMinValue()}#if(${simpleType.isMinInclusive()}) (incluido) #end #end #if(${simpleType.getMaxValue()})hasta ${simpleType.getMaxValue()} #if(${simpleType.isMaxInclusive()}) (incluido) #end#end</dd>
-        </dlentry>
-        #end
-        #if(${simpleType.isWhiteSpaces()})
-        <dlentry>
-        	<dt>Espacios en Blanco</dt>
-        	<dd>Eliminar</dd>
-        </dlentry>
-        #end
-        #if(${simpleType.getPattern()})
-        <dlentry>
-        	<dt>Patron de validación</dt>
-        	<dd>${simpleType.getPattern()}</dd>
-        </dlentry>
-        #end 
-        #if(${simpleType.getValues()})
-        <dlentry>
-       		<dt>Valores Admitidos</dt>
-       		<dd>
-       			<ul>
-       		#foreach($value in ${simpleType.getValues()})
-       				<li>${value}</li>
-       		#end		
-       			</ul>
-       		</dd>
-       	</dlentry>
-       	#end        
     </dl>
+#end
+#if(${simpleType.isUnion()})
+	<dl>
+    	<dlentry>
+       		<dt>Union</dt>
+            <dd>
+            #if(${simpleType.getUnionRefs().isEmpty()})
+            	#foreach($st in ${simpleType.getUnionSimpleTypes()})
+            		#set($childc = $child)
+       				#set($child = true)
+            		#set($pst = ${simpleType})
+            		#set(${simpleType} = $st)
+            		#parse('simpleType.vm')
+            		#set($simpleType = $pst)
+            		#set($child = $childc)
+            	#end
+            #else
+            	<ul>
+            	#foreach($st in ${simpleType.getUnionRefs()})
+            		<li><xref href="${tools.getHref($st)}" ${tools.getExternalHref($st)}>${$st.getLocalPart()}</xref></li>
+            	#end
+            	</ul>
+            #end
+            </dd>
+        </dlentry>
+    </dl>
+#end     
     #if(!$child)
         <section id="section_diagram">
             <title>Diagrama</title>            

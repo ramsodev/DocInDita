@@ -145,7 +145,7 @@ public class DitaTools {
 		if (url.getPath() != null) {
 			idSchema += url.getPath().replaceAll("\\/", "");
 		}
-		return idSchema;
+		return TextTools.cleanNonAlfaNumeric(idSchema,"_");
 	}
 
 	public static String getSuffixType(QName type) {

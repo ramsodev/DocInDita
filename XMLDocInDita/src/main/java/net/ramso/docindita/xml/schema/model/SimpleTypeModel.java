@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.predic8.schema.SchemaComponent;
+import com.predic8.schema.SchemaList;
 import com.predic8.schema.SimpleType;
+import com.predic8.schema.Union;
 import com.predic8.schema.restriction.BaseRestriction;
 import com.predic8.schema.restriction.facet.EnumerationFacet;
 import com.predic8.schema.restriction.facet.Facet;
@@ -20,6 +22,7 @@ import com.predic8.schema.restriction.facet.MinLengthFacet;
 import com.predic8.schema.restriction.facet.PatternFacet;
 import com.predic8.schema.restriction.facet.TotalDigitsFacet;
 import com.predic8.schema.restriction.facet.WhiteSpaceFacet;
+import com.sun.org.apache.xerces.internal.impl.dv.xs.UnionDV;
 
 import groovy.xml.QName;
 import net.ramso.docindita.tools.DitaConstants;
@@ -48,12 +51,23 @@ public class SimpleTypeModel extends AbstractComponentModel {
 
 	private String diagram;
 
+	private Union union;
+
+	private SchemaList lista;
+
+	private String listType;
+
+	private List<QName> unionRefs;
+	List<SimpleTypeModel> unionSimpleTypes;
+
+	private SimpleTypeModel listSimpleType;
+
 	public SimpleTypeModel(SimpleType type) {
 		super();
 		simpleType = type;
 		restriction = type.getRestriction();
-		type.getUnion();
-		type.getList();
+		union = type.getUnion();
+		lista = type.getList();
 		init();
 		LogManager.debug("Carga de SimpleType " + getName());
 	}
@@ -163,9 +177,31 @@ public class SimpleTypeModel extends AbstractComponentModel {
 		return values;
 	}
 
+	@SuppressWarnings("unchecked")
 	private void init() {
+		if (restriction != null) {
+			initRestriction();
+		}
+		if (lista != null) {
+			listType = lista.getItemType();
+			listSimpleType = new SimpleTypeModel(lista.getSimpleType());
+		}
+		if (union != null) {
+			unionRefs = union.getMemberTypes();
+			if (unionRefs.isEmpty()) {
+				Object ust = union.getSimpleTypes();
+				if (ust instanceof List<?>) {
+					unionSimpleTypes = new ArrayList<>();
+					for (SimpleType st : (List<SimpleType>) ust) {
+						unionSimpleTypes.add(new SimpleTypeModel(st));
+					}
+				}
+			}
+		}
+	}
+
+	private void initRestriction() {
 		dataType = restriction.getBase().getLocalPart();
-		
 		for (final Facet facet : restriction.getFacets()) {
 			if (facet instanceof EnumerationFacet) {
 				addValue(facet.getValue());
@@ -186,7 +222,7 @@ public class SimpleTypeModel extends AbstractComponentModel {
 				if (maxLength > size) {
 					size = maxLength;
 				}
-			} else if (facet instanceof MinExclusiveFacet ) {
+			} else if (facet instanceof MinExclusiveFacet) {
 				minInclusive = false;
 				minValue = facet.getValue();
 				setSizeFromMask(facet.getValue());
@@ -252,4 +288,35 @@ public class SimpleTypeModel extends AbstractComponentModel {
 		}
 	}
 
+	public BaseRestriction getRestriction() {
+		return restriction;
+	}
+
+	public String getListType() {
+		return listType;
+	}
+
+	public List<QName> getUnionRefs() {
+		if (unionRefs == null)
+			unionRefs = new ArrayList<>();
+		return unionRefs;
+	}
+
+	public List<SimpleTypeModel> getUnionSimpleTypes() {
+		if (unionSimpleTypes == null)
+			unionSimpleTypes = new ArrayList<>();
+		return unionSimpleTypes;
+	}
+
+	public SimpleTypeModel getListSimpleType() {
+		return listSimpleType;
+	}
+
+	public boolean isUnion() {
+		return union != null;
+	}
+
+	public boolean isList() {
+		return lista != null;
+	}
 }
