@@ -118,4 +118,8 @@ public class Config extends ConfigurationManager {
 		return outputDir;
 	}
 
+	public static void setOutputDir(String outputDir) {
+		Config.outputDir = outputDir;
+	}
+
 }

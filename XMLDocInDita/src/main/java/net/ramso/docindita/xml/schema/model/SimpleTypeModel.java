@@ -52,6 +52,8 @@ public class SimpleTypeModel extends AbstractComponentModel {
 		super();
 		simpleType = type;
 		restriction = type.getRestriction();
+		type.getUnion();
+		type.getList();
 		init();
 		LogManager.debug("Carga de SimpleType " + getName());
 	}
@@ -163,7 +165,7 @@ public class SimpleTypeModel extends AbstractComponentModel {
 
 	private void init() {
 		dataType = restriction.getBase().getLocalPart();
-
+		
 		for (final Facet facet : restriction.getFacets()) {
 			if (facet instanceof EnumerationFacet) {
 				addValue(facet.getValue());

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<reference id="${id}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="urn:oasis:names:tc:dita:xsd:reference.xsd">
+
+<topic id="${id}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:oasis:names:tc:dita:xsd:topic.xsd">
     <title>${title}</title>
     <shortdesc>ports del servicio</shortdesc>
-    <refbody>
+    <body>
         
 #foreach( ${port} in ${ports} )
         <section>
@@ -29,5 +30,5 @@
             </ul>    
         </section>                	
 #end
-    </refbody>
-</reference>
+    </body>
+</topic>

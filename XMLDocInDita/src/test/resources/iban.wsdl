@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<definitions xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="https://www.iban.com/clients/api/soap.php" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns="http://schemas.xmlsoap.org/wsdl/" targetNamespace="https://www.iban.com/clients/api/soap.php">
+<types>
+<xsd:schema targetNamespace="https://www.iban.com/clients/api/soap.php"
+>
+ <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+ <xsd:import namespace="http://schemas.xmlsoap.org/wsdl/" />
+ <xsd:complexType name="ValidateResults">
+  <xsd:all>
+   <xsd:element name="iban" type="xsd:string"/>
+   <xsd:element name="bank_name" type="xsd:string"/>
+   <xsd:element name="country" type="xsd:string"/>
+   <xsd:element name="country_code" type="xsd:string"/>
+   <xsd:element name="city" type="xsd:string"/>
+   <xsd:element name="address" type="xsd:string"/>
+   <xsd:element name="bic" type="xsd:string"/>
+   <xsd:element name="valid" type="xsd:string"/>
+   <xsd:element name="error" type="xsd:string"/>
+  </xsd:all>
+ </xsd:complexType>
+ <xsd:complexType name="ArrayOfString">
+  <xsd:complexContent>
+   <xsd:restriction base="SOAP-ENC:Array">
+    <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="xsd:string[]"/>
+   </xsd:restriction>
+  </xsd:complexContent>
+ </xsd:complexType>
+ <xsd:complexType name="RecoveryResults">
+  <xsd:all>
+   <xsd:element name="suggestions" type="tns:ArrayOfString"/>
+   <xsd:element name="format_data" type="tns:ArrayOfString"/>
+   <xsd:element name="errors" type="tns:ArrayOfString"/>
+  </xsd:all>
+ </xsd:complexType>
+ <xsd:complexType name="AccountInformation">
+  <xsd:all>
+   <xsd:element name="expires" type="xsd:string"/>
+   <xsd:element name="queries" type="xsd:integer"/>
+   <xsd:element name="errors" type="tns:ArrayOfString"/>
+  </xsd:all>
+ </xsd:complexType>
+ <xsd:complexType name="bank_data">
+  <xsd:all>
+   <xsd:element name="bic" type="xsd:string"/>
+   <xsd:element name="branch" type="xsd:string"/>
+   <xsd:element name="bank" type="xsd:string"/>
+   <xsd:element name="country" type="xsd:string"/>
+   <xsd:element name="country_iso" type="xsd:string"/>
+   <xsd:element name="city" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+   <xsd:element name="state" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+   <xsd:element name="phone" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+   <xsd:element name="fax" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+   <xsd:element name="www" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+   <xsd:element name="email" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+   <xsd:element name="address" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+   <xsd:element name="account" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+  </xsd:all>
+ </xsd:complexType>
+ <xsd:complexType name="sepa_data">
+  <xsd:all>
+   <xsd:element name="SCT" type="xsd:string"/>
+   <xsd:element name="SDD" type="xsd:string"/>
+   <xsd:element name="COR1" type="xsd:string"/>
+   <xsd:element name="B2B" type="xsd:string"/>
+   <xsd:element name="SCC" type="xsd:string"/>
+  </xsd:all>
+ </xsd:complexType>
+ <xsd:complexType name="validations">
+  <xsd:all>
+   <xsd:element name="code" type="xsd:string"/>
+   <xsd:element name="message" type="xsd:string"/>
+  </xsd:all>
+ </xsd:complexType>
+ <xsd:complexType name="errors">
+  <xsd:all>
+   <xsd:element name="code" type="xsd:string"/>
+   <xsd:element name="message" type="xsd:string"/>
+  </xsd:all>
+ </xsd:complexType>
+ <xsd:complexType name="ValidateResultsV2">
+  <xsd:all>
+   <xsd:element name="bank_data" type="tns:bank_data"/>
+   <xsd:element name="validations" type="tns:validations"/>
+   <xsd:element name="sepa_data" type="tns:sepa_data"/>
+   <xsd:element name="errors" type="tns:errors"/>
+  </xsd:all>
+ </xsd:complexType>
+</xsd:schema>
+</types>
+<message name="validate_ibanRequest">
+  <part name="api_key" type="xsd:string" />
+  <part name="iban" type="xsd:string" /></message>
+<message name="validate_ibanResponse">
+  <part name="return" type="tns:ValidateResults" /></message>
+<message name="recover_ibanRequest">
+  <part name="api_key" type="xsd:string" />
+  <part name="iban" type="xsd:string" /></message>
+<message name="recover_ibanResponse">
+  <part name="return" type="tns:RecoveryResults" /></message>
+<message name="account_infoRequest">
+  <part name="api_key" type="xsd:string" /></message>
+<message name="account_infoResponse">
+  <part name="return" type="tns:AccountInformation" /></message>
+<message name="validate_iban2Request">
+  <part name="api_key" type="xsd:string" />
+  <part name="iban" type="xsd:string" /></message>
+<message name="validate_iban2Response">
+  <part name="return" type="tns:ValidateResultsV2" /></message>
+<portType name="SOAP_APIPortType">
+  <operation name="validate_iban">
+    <documentation>Validate IBAN number and return the results in an array</documentation>
+    <input message="tns:validate_ibanRequest"/>
+    <output message="tns:validate_ibanResponse"/>
+  </operation>
+  <operation name="recover_iban">
+    <documentation>&lt;br&gt;
+Recover unknown characters from IBAN. This function requires you to send an IBAN with &quot;?&quot; ( question mark ) for a wildcard in the place of the unknown characters. &lt;br&gt;
+Up to two wildcards are supported. The function returns an array of possible correct IBANs as well as additional formatting information and domestic bank code and account number information.&lt;br&gt;
+&lt;br&gt;
+Example IBAN recovery request:&lt;br&gt;
+&lt;br&gt;
+&lt;pre&gt;
+GB04BA?C2047447316094?
+&lt;/pre&gt;
+
+&lt;br&gt;
+The result would be:&lt;br&gt;
+&lt;pre&gt;
+Array
+(
+    [suggestions] =&gt; Array
+        (
+            [0] =&gt; GB04BAGC20474473160947
+            [1] =&gt; GB04BARC20474473160944
+        )
+
+    [format_data] =&gt; Array
+        (
+            [country] =&gt; GB
+            [iban_length] =&gt; 22
+            [format_template] =&gt; CCNNAAAANNNNNNNNNNNNNN
+            [bank_code] =&gt; BAC2
+            [branch_code] =&gt; 047447
+            [account_number] =&gt; 316094
+        )
+
+    [errors] =&gt; Array
+        (
+        )
+
+)
+&lt;/pre&gt;
+&lt;br&gt;
+Possible Error Codes Returned:&lt;br&gt;
+&lt;br&gt;
+&lt;pre&gt;
+Status Code	Type			Description
+301		Account Error		API Key is invalid
+302		Account Error		Subscription expired
+303		Account Error		No queries available
+304		Account Error		You have no access to this API
+401		Input Error		Required fields missing.
+402		Input Error		Too many wildcards. Maximum of two wildcards allowed.
+403		Input Error		Too few wildcards. A minimum of one wildcards is required.
+&lt;/pre&gt;
+
+
+</documentation>
+    <input message="tns:recover_ibanRequest"/>
+    <output message="tns:recover_ibanResponse"/>
+  </operation>
+  <operation name="account_info">
+    <documentation>&lt;br&gt;
+Retrieves account statistics such as remaining queries and account expiration date.&lt;br&gt;
+Possible Error Codes:&lt;br&gt;
+&lt;pre&gt;
+Code: 301 Message: API Key is invalid.
+Code: 302 Message: Subscription Expired.
+Code: 303 Message: No Queries Available.
+&lt;/pre&gt;
+</documentation>
+    <input message="tns:account_infoRequest"/>
+    <output message="tns:account_infoResponse"/>
+  </operation>
+  <operation name="validate_iban2">
+    <documentation>New function to validate IBAN providing multi-level validation.&lt;br /&gt;
+Supports domestic bank code and account number validation.&lt;br /&gt;
+Supports SEPA reachability lookup.&lt;br /&gt;
+Supports IBAN Formatting check.&lt;br /&gt;
+Supports IBAN Length check.&lt;br /&gt;
+&lt;br /&gt;
+SEPA data definitions:&lt;br /&gt;
+&lt;pre&gt;
+&lt;table border=1&gt;
+&lt;thead&gt;
+ &lt;tr &gt;
+  &lt;th&gt;Field Name&lt;/th&gt;
+  &lt;th&gt;Length&lt;/th&gt;
+  &lt;th&gt;Type&lt;/th&gt;
+  &lt;th&gt;Description&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+  &lt;tr&gt;
+  &lt;td&gt;B2B&lt;/td&gt;
+  &lt;td&gt;Max 3&lt;/td&gt;
+  &lt;td&gt;String&lt;/td&gt;
+  &lt;td&gt;Whether this bank supports SEPA Business to Business.&lt;/td&gt;
+ &lt;/tr&gt;&lt;tr class=&quot;odd&quot;&gt;
+  &lt;td&gt;COR1&lt;/td&gt;
+  &lt;td&gt;Max 3&lt;/td&gt;
+  &lt;td&gt;String&lt;/td&gt;
+  &lt;td&gt;Whether this bank supports SEPA COR1.&lt;/td&gt;
+ &lt;/tr&gt;&lt;tr class=&quot;odd&quot;&gt;
+  &lt;td&gt;SCC&lt;/td&gt;
+  &lt;td&gt;Max 3&lt;/td&gt;
+  &lt;td&gt;String&lt;/td&gt;
+  &lt;td&gt;Whether this bank supports SEPA Card Clearing.&lt;/td&gt;
+ &lt;/tr&gt;&lt;tr&gt;
+  &lt;td&gt;SCT&lt;/td&gt;
+  &lt;td&gt;Max 3&lt;/td&gt;
+  &lt;td&gt;String&lt;/td&gt;
+  &lt;td&gt;Whether this bank supports SEPA Credit Transfer.&lt;/td&gt;
+ &lt;/tr&gt;&lt;tr&gt;
+  &lt;td&gt;SDD&lt;/td&gt;
+  &lt;td&gt;Max 3&lt;/td&gt;
+  &lt;td&gt;String&lt;/td&gt;
+  &lt;td&gt;Whether this bank supports SEPA Direct Debit.&lt;/td&gt;
+ &lt;/tr&gt;&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;br /&gt;
+&lt;/pre&gt;
+
+
+Possible status codes are returned in the validations object:&lt;br /&gt;
+&lt;pre&gt;
+&lt;table border=1&gt;
+&lt;thead&gt;
+ &lt;tr &gt;
+  &lt;th &gt;Status Code&lt;/th&gt;
+  &lt;th &gt;Type&lt;/th&gt;
+  &lt;th &gt;Description&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+&lt;tr&gt;
+  &lt;td&gt;201&lt;/td&gt;
+  &lt;td&gt;Validation Failed&lt;/td&gt;
+  &lt;td&gt;Account Number check digit not correct&lt;/td&gt;
+ &lt;/tr&gt;&lt;tr&gt;
+  &lt;td&gt;202&lt;/td&gt;
+  &lt;td&gt;Validation Failed&lt;/td&gt;
+  &lt;td&gt;IBAN Check digit not correct&lt;/td&gt;
+ &lt;/tr&gt;&lt;tr&gt;
+  &lt;td&gt;203&lt;/td&gt;
+  &lt;td&gt;Validation Failed&lt;/td&gt;
+  &lt;td&gt;IBAN Length is not correct&lt;/td&gt;
+ &lt;/tr&gt;&lt;tr&gt;
+  &lt;td&gt;205&lt;/td&gt;
+  &lt;td&gt;Validation Failed&lt;/td&gt;
+  &lt;td&gt;IBAN structure is not correct&lt;/td&gt;
+ &lt;/tr&gt;&lt;tr &gt;
+  &lt;td&gt;001&lt;/td&gt;
+  &lt;td&gt;Validation Success&lt;/td&gt;
+  &lt;td&gt;IBAN Check digit is correct&lt;/td&gt;
+ &lt;/tr&gt;&lt;tr&gt;
+  &lt;td&gt;002&lt;/td&gt;
+  &lt;td&gt;Validation Success&lt;/td&gt;
+  &lt;td&gt;Account Number check digit is correct&lt;/td&gt;
+ &lt;/tr&gt;&lt;tr&gt;
+  &lt;td&gt;003&lt;/td&gt;
+  &lt;td&gt;Validation Success&lt;/td&gt;
+  &lt;td&gt;IBAN Length is correct&lt;/td&gt;
+ &lt;/tr&gt;&lt;tr &gt;
+  &lt;td&gt;004&lt;/td&gt;
+  &lt;td&gt;Validation Success&lt;/td&gt;
+  &lt;td&gt;Account Number does not support check digit&lt;/td&gt;
+ &lt;/tr&gt;&lt;tr&gt;
+  &lt;td&gt;005&lt;/td&gt;
+  &lt;td&gt;Validation Success&lt;/td&gt;
+  &lt;td&gt;IBAN structure is correct&lt;/td&gt;
+ &lt;/tr&gt;&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/pre&gt;
+&lt;br /&gt;
+Possible errors returned in the &quot;errors&quot; object coan be:&lt;br /&gt;
+
+&lt;pre&gt;
+&lt;table border=1&gt;
+&lt;thead&gt;
+ &lt;tr &gt;
+  &lt;th &gt;Status Code&lt;/th&gt;
+  &lt;th &gt;Type&lt;/th&gt;
+  &lt;th &gt;Description&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+   &lt;tr&gt;
+  &lt;td&gt;301&lt;/td&gt;
+  &lt;td&gt;Account Error&lt;/td&gt;
+  &lt;td&gt;API Key is invalid&lt;/td&gt;
+ &lt;/tr&gt;&lt;tr&gt;
+  &lt;td&gt;302&lt;/td&gt;
+  &lt;td&gt;Account Error&lt;/td&gt;
+  &lt;td&gt;Subscription expired&lt;/td&gt;
+ &lt;/tr&gt;&lt;tr&gt;
+  &lt;td&gt;303&lt;/td&gt;
+  &lt;td&gt;Account Error&lt;/td&gt;
+  &lt;td&gt;No queries available&lt;/td&gt;
+ &lt;/tr&gt;&lt;tr&gt;
+  &lt;td&gt;304&lt;/td&gt;
+  &lt;td&gt;Account Error&lt;/td&gt;
+  &lt;td&gt;You have no access to this API&lt;/td&gt;
+ &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/pre&gt;
+
+</documentation>
+    <input message="tns:validate_iban2Request"/>
+    <output message="tns:validate_iban2Response"/>
+  </operation>
+</portType>
+<binding name="SOAP_APIBinding" type="tns:SOAP_APIPortType">
+  <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+  <operation name="validate_iban">
+    <soap:operation soapAction="https://www.iban.com/clients/api/soap.php#ValidateIBAN" style="rpc"/>
+    <input><soap:body use="encoded" namespace="https://www.iban.com/clients/api/soap.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
+    <output><soap:body use="encoded" namespace="https://www.iban.com/clients/api/soap.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
+  </operation>
+  <operation name="recover_iban">
+    <soap:operation soapAction="https://www.iban.com/clients/api/soap.php#RecoverIBAN" style="rpc"/>
+    <input><soap:body use="encoded" namespace="https://www.iban.com/clients/api/soap.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
+    <output><soap:body use="encoded" namespace="https://www.iban.com/clients/api/soap.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
+  </operation>
+  <operation name="account_info">
+    <soap:operation soapAction="https://www.iban.com/clients/api/soap.php#AccountInformation" style="rpc"/>
+    <input><soap:body use="encoded" namespace="https://www.iban.com/clients/api/soap.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
+    <output><soap:body use="encoded" namespace="https://www.iban.com/clients/api/soap.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
+  </operation>
+  <operation name="validate_iban2">
+    <soap:operation soapAction="https://www.iban.com/clients/api/soap.php#ValidateResultsV2" style="rpc"/>
+    <input><soap:body use="encoded" namespace="https://www.iban.com/clients/api/soap.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
+    <output><soap:body use="encoded" namespace="https://www.iban.com/clients/api/soap.php" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
+  </operation>
+</binding>
+<service name="SOAP_API">
+  <port name="SOAP_APIPort" binding="tns:SOAP_APIBinding">
+    <soap:address location="https://www.iban.com/clients/api/soap.php"/>
+  </port>
+</service>
+</definitions>

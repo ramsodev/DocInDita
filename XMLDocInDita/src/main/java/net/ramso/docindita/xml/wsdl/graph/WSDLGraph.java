@@ -10,6 +10,7 @@ import com.mxgraph.model.mxCell;
 import com.mxgraph.model.mxGeometry;
 import com.mxgraph.util.mxConstants;
 import com.mxgraph.view.mxGraph;
+import com.predic8.schema.Element;
 import com.predic8.wsdl.Binding;
 import com.predic8.wsdl.Fault;
 import com.predic8.wsdl.Operation;
@@ -32,7 +33,6 @@ public class WSDLGraph extends AbstractGraph {
 	private HashMap<String, Object> binds;
 	private int maxWith2;
 	private HashMap<String, Object> pts;
-	
 
 	public WSDLGraph(Service service) {
 		this.service = service;
@@ -112,15 +112,24 @@ public class WSDLGraph extends AbstractGraph {
 					GraphConstants.EXCLUDE_PREFIX_GROUP + part.getName() + DitaConstants.SUFFIX_ELEMENT, part.getName(),
 					groupWith, 0, anchura, altura, GraphTools.getStyle(false, true));
 			groupWith += anchura;
-			base = GraphTools.getTextSize(part.getElement().getName().trim());
+			String name = "";
+			String iconName = DitaConstants.SUFFIX_SIMPLETYPE.toLowerCase();
+			if (part.getElement() != null) {
+				name = part.getElement().getName();
+				iconName = DitaConstants.SUFFIX_ELEMENT.toLowerCase();
+			} else if (part.getType() != null) {
+				name = part.getType().getQname().getLocalPart();
+			}
+
+			base = GraphTools.getTextSize(name.trim());
+
 			anchura = (int) (base.getWidth() + (altura * 2));
 
 			titulo = getGraph().insertVertex(input,
-					GraphConstants.EXCLUDE_PREFIX_GROUP + part.getElement().getName() + DitaConstants.SUFFIX_ELEMENT,
-					part.getElement().getName().trim(), groupWith, 0, anchura, altura,
-					GraphTools.getStyle(false, altura));
+					GraphConstants.EXCLUDE_PREFIX_GROUP + name + DitaConstants.SUFFIX_ELEMENT, name.trim(), groupWith,
+					0, anchura, altura, GraphTools.getStyle(false, altura));
 
-			insertIcon((mxCell) titulo, DitaConstants.SUFFIX_ELEMENT.toLowerCase(), altura);
+			insertIcon((mxCell) titulo, iconName, altura);
 			groupWith += anchura;
 		}
 		if (groupWith > getMaxWith2()) {
@@ -145,8 +154,8 @@ public class WSDLGraph extends AbstractGraph {
 		}
 		final Object p = getGraph().insertVertex(parent, port.getName() + DitaConstants.SUFFIX_PORT, "", 0, y, width,
 				(double) altura * 2, GraphTools.getStyle(false, true));
-		getGraph().insertVertex(p, port.getName() + "Title" + DitaConstants.SUFFIX_ADDRESS, port.getName(), 0, 0,
-				width, altura, GraphTools.getStyle(false));
+		getGraph().insertVertex(p, port.getName() + "Title" + DitaConstants.SUFFIX_ADDRESS, port.getName(), 0, 0, width,
+				altura, GraphTools.getStyle(false));
 		y += altura;
 		String url = port.getAddress().getLocation();
 		if (port.getAddress().getLocation().length() > 30) {
@@ -157,8 +166,8 @@ public class WSDLGraph extends AbstractGraph {
 		if ((width + 20) > getMaxWith()) {
 			setMaxWith(width + 20);
 		}
-		return (mxCell) getGraph().insertVertex(p, port.getName() + DitaConstants.SUFFIX_ADDRESS, url, 10,
-				altura, width, altura, GraphTools.getStyle(false, true));
+		return (mxCell) getGraph().insertVertex(p, port.getName() + DitaConstants.SUFFIX_ADDRESS, url, 10, altura,
+				width, altura, GraphTools.getStyle(false, true));
 	}
 
 	private mxCell createPortType(Object parent, PortType portType, int altura) {
@@ -242,7 +251,7 @@ public class WSDLGraph extends AbstractGraph {
 				resizeCell((mxCell) entry.getValue(), getMaxWith2());
 			}
 		}
-	
+
 		process(getGraph(), Config.getOutputDir());
 		return getFileName();
 
@@ -277,16 +286,14 @@ public class WSDLGraph extends AbstractGraph {
 	}
 
 	/**
-	 * @param maxWith
-	 *            the maxWith to set
+	 * @param maxWith the maxWith to set
 	 */
 	protected void setMaxWith(int maxWith) {
 		this.maxWith = maxWith;
 	}
 
 	/**
-	 * @param maxWith2
-	 *            the maxWith2 to set
+	 * @param maxWith2 the maxWith2 to set
 	 */
 	protected void setMaxWith2(int maxWith2) {
 		this.maxWith2 = maxWith2;

@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!-- Schema Example for Global Attribute 
+	created by E. Fernandez  -->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	
+<xsd:element name="contact">
+   <xsd:complexType>
+      <xsd:sequence>
+
+      <xsd:element name = "email">
+         <xsd:complexType>
+            <xsd:simpleContent>
+  	       <xsd:extension base="xsd:string">
+                  <xsd:attribute ref="type" default="work"/>
+               </xsd:extension>
+            </xsd:simpleContent>
+         </xsd:complexType>
+      </xsd:element>
+
+      <xsd:element name = "phone">
+         <xsd:complexType>
+            <xsd:simpleContent>
+  	       <xsd:extension base="xsd:string">
+                  <xsd:attribute ref="type" default="work"/>
+               </xsd:extension>
+            </xsd:simpleContent>
+         </xsd:complexType>
+      </xsd:element>
+
+      </xsd:sequence>
+   </xsd:complexType>
+</xsd:element>
+
+
+<xsd:attribute name="type">
+   <xsd:simpleType>
+      <xsd:restriction base="xsd:string">
+	 <xsd:enumeration value="home" /> 
+	 <xsd:enumeration value="work" /> 
+      </xsd:restriction>
+   </xsd:simpleType>
+</xsd:attribute>
+
+</xsd:schema>

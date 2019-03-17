@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<reference id="$id" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="urn:oasis:names:tc:dita:xsd:reference.xsd">
+<topic id="$id" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:oasis:names:tc:dita:xsd:topic.xsd">
     <title>${title}</title>
     <shortdesc>${content}</shortdesc>
-    <refbody>
+    <body>
         <table frame="all" id="table_${id}_${operation.getName().toLowerCase()}">
        
             <tgroup cols="3">
@@ -62,5 +62,5 @@
                   	</tbody>
             </tgroup>
         </table>
-    </refbody>
-</reference>
+    </body>
+</topic>

@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!-- Schema Example for empty element with enumerated attribute
+	created by E. Fernandez  -->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+<!-- inline version 
+<xsd:element name="gender">
+   <xsd:complexType>
+      <xsd:attribute name="value" use="required">
+         <xsd:simpleType>
+	    <xsd:restriction base="xsd:string">
+		<xsd:enumeration value="M"/>
+		<xsd:enumeration value="F"/>
+	    </xsd:restriction>
+	 </xsd:simpleType>
+      </xsd:attribute>
+   </xsd:complexType>
+</xsd:element>
+-->
+
+<!-- named type version -->
+<xsd:element name="gender" type="genderType"/>
+
+
+<xsd:complexType name="genderType">
+      <xsd:attribute name="value" use="required">
+         <xsd:simpleType>
+	    <xsd:restriction base="xsd:string">
+		<xsd:enumeration value="M"/>
+		<xsd:enumeration value="F"/>
+	    </xsd:restriction>
+	 </xsd:simpleType>
+      </xsd:attribute>
+</xsd:complexType>
+
+
+</xsd:schema>

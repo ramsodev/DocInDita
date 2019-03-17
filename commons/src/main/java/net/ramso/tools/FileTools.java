@@ -154,9 +154,12 @@ public class FileTools {
 			walk = Files.walk(myPath, 1);
 			for (Iterator<Path> it = walk.iterator(); it.hasNext();) {
 				Path i = it.next();
-				if (!i.getFileName().toString().equals(folder)) {
-					files.add(new File(Thread.currentThread().getContextClassLoader()
-							.getResource(folder + File.separator + i.getFileName()).toURI()));
+				URL resource = Thread.currentThread().getContextClassLoader()
+						.getResource(folder + File.separator + i.getFileName());
+				if (resource != null) {
+					File f = new File(resource.toURI());
+					if (!f.isDirectory())
+						files.add(f);
 				}
 			}
 		} catch (IOException | URISyntaxException e) {

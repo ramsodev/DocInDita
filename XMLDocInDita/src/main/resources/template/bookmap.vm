@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bookmap xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="urn:oasis:names:tc:dita:xsd:bookmap.xsd" translate="yes" collection-type="sequence" id="$id">
+<bookmap translate="yes" collection-type="sequence" id="$id" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:oasis:names:tc:dita:xsd:bookmap.xsd">
   <booktitle>
     <mainbooktitle>$title</mainbooktitle>
     <booktitlealt>$content</booktitlealt>
