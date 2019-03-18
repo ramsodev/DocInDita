@@ -27,8 +27,8 @@ public interface IComponentModel {
 	
 	public String getHref();
 	
-	public String getId();
+	public String getFileName();
 	
-	public void setId(String id);
+	public void setFileName(String id);
 
 }

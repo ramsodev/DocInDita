@@ -33,7 +33,7 @@ public class CreateSimpleType extends BasicCreate {
 	public References create(SimpleTypeModel model, String name) throws IOException {
 		setId( idParent + "_" + name + DitaConstants.SUFFIX_SIMPLETYPE);
 		setTitle("Simple Type " + name);
-		model.setId(getId());
+		model.setFileName(getFileName());
 		setContent(model.getDoc());
 		init();
 		getContext().put("content", getContent());

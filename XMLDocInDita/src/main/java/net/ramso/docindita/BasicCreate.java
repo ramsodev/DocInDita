@@ -42,6 +42,10 @@ public abstract class BasicCreate implements ICreate {
 
 	@Override
 	public String getFileName() {
+		if(fileName.length()>250) {
+			String ext = fileName.substring(fileName.lastIndexOf('.'));
+			setFileName(fileName.substring(0, 230)+hashCode()+ext);
+		}
 		return fileName;
 	}
 
@@ -83,10 +87,7 @@ public abstract class BasicCreate implements ICreate {
 	}
 
 	protected void run(VelocityContext context) throws IOException {
-		if(getFileName().length()>250) {
-			String ext = getFileName().substring(getFileName().lastIndexOf('.'));
-			setFileName(getFileName().substring(0, 200)+hashCode()+ext);
-		}
+		
 		final File file = new File(Config.getOutputDir() + File.separator + getFileName());
 		file.getParentFile().mkdirs();
 		FileWriter fw = new FileWriter(file);

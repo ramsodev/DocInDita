@@ -42,7 +42,7 @@ public class CreateGroup extends BasicCreate {
 		setId(idParent + "_" + name + DitaConstants.SUFFIX_GROUP);
 		setTitle("Complex Type " + name);
 		setContent(model.getDoc());
-		model.setId(getId());
+		model.setFileName(getFileName());
 		init();
 		
 		References ref = new References(getFileName());

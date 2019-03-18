@@ -43,7 +43,7 @@ public class CreateElement extends BasicCreate {
 		setId(idParent + "_" + name + DitaConstants.SUFFIX_ELEMENT);
 		setTitle(DitaConstants.SUFFIX_ELEMENT + " " + name);
 		setContent(model.getDoc());
-		model.setId(getId());
+		model.setFileName(getFileName());
 		init();
 		
 		References ref = new References(getFileName());

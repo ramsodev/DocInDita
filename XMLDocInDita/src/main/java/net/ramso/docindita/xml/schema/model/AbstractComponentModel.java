@@ -9,7 +9,7 @@ import net.ramso.docindita.tools.DitaTools;
 public abstract class AbstractComponentModel implements IComponentModel {
 
 	private boolean scaleDiagram = false;
-	private String id = "";
+	private String fileName = "";
 
 	@Override
 	public String getCode() {
@@ -43,7 +43,8 @@ public abstract class AbstractComponentModel implements IComponentModel {
 	}
 
 	public String getHref() {
-		return DitaTools.getHref(true, getId());
+		
+		return getFileName();
 	}
 	/**
 	 * @return the name
@@ -65,14 +66,14 @@ public abstract class AbstractComponentModel implements IComponentModel {
 
 
 
-	public String getId() {
-		return id;
+	public String getFileName() {
+		return fileName;
 	}
 
 
 
-	public void setId(String id) {
-		this.id = id;
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 
 }

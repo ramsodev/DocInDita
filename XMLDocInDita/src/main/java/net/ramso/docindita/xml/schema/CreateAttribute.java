@@ -33,7 +33,7 @@ public class CreateAttribute extends BasicCreate {
 		setId( idParent + "_" + name + DitaConstants.SUFFIX_ATTRIBUTE);
 		setTitle("Attribute " + name);
 		setContent(model.getDoc());
-		model.setId(getId());
+		model.setFileName(getFileName());
 		init();
 		
 		References ref = new References(getFileName());
