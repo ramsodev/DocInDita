@@ -31,6 +31,7 @@ public class AttributeModel extends AbstractComponentModel {
 		super();
 		this.attribute = attribute;
 		init();
+		
 		LogManager.debug("Carga de Attribute " + getName());
 	}
 
@@ -61,11 +62,20 @@ public class AttributeModel extends AbstractComponentModel {
 		return form;
 	}
 
-	public String getHref() throws MalformedURLException {
-		if (getRef() != null)
-			return getHrefType();
-		return DitaTools.getHref(attribute.getQname(), DitaConstants.SUFFIX_ATTRIBUTE);
+	public String getHref() {
+		String href = "";
+		try {
+			if (getRef() != null) {
 
+				href = getHrefType();
+			} else {
+				href = super.getHref();
+			}
+//			return DitaTools.getHref(attribute.getQname(), DitaConstants.SUFFIX_ATTRIBUTE);
+		} catch (MalformedURLException e) {
+			LogManager.warn("Error al generar url del attribute " + getName(), e);
+		}
+		return href;
 	}
 
 	public QName getRef() {

@@ -20,19 +20,14 @@ import net.ramso.docindita.xml.schema.model.SequenceModel;
 
 public class CreateElement extends BasicCreate {
 
-	private final String idSchema;
-	private String prefix;
+	private final String idParent;
 
-	public CreateElement(String idSchema) {
-		this(idSchema, "");
-	}
-
-	public CreateElement(String idSchema, String prefix) {
+	public CreateElement(String idParent) {
 		super("", "");
 		setTemplateFile("template/type.vm");
 		setContent("Definicioón del elemento");
-		this.idSchema = idSchema;
-		this.prefix = prefix;
+		this.idParent = idParent;
+		
 	}
 
 	public References create(Element element) throws IOException {
@@ -45,13 +40,12 @@ public class CreateElement extends BasicCreate {
 	}
 
 	public References create(ElementModel model, String name) throws IOException {
-		setId(prefix + idSchema + "_" + name + DitaConstants.SUFFIX_ELEMENT);
+		setId(idParent + "_" + name + DitaConstants.SUFFIX_ELEMENT);
 		setTitle(DitaConstants.SUFFIX_ELEMENT + " " + name);
 		setContent(model.getDoc());
+		model.setId(getId());
 		init();
-		getContext().put("content", getContent());
-		getContext().put("element", model);
-		run(getContext());
+		
 		References ref = new References(getFileName());
 		if (model.getSimpleType() != null) {
 			String nameST = name + " Embebed " + DitaConstants.SUFFIX_SIMPLETYPE;
@@ -60,7 +54,7 @@ public class CreateElement extends BasicCreate {
 			} else if (model.getType() != null) {
 				name = model.getType().getLocalPart();
 			}
-			CreateSimpleType cs = new CreateSimpleType(idSchema, name);
+			CreateSimpleType cs = new CreateSimpleType(getId());
 			ref.addChild(cs.create(model.getSimpleType(), nameST));
 		}
 		if (model.getComplexType() != null) {
@@ -68,10 +62,13 @@ public class CreateElement extends BasicCreate {
 			if (model.getName() != null) {
 				name = model.getName();
 			}
-			CreateComplexType cs = new CreateComplexType(idSchema, name);
+			CreateComplexType cs = new CreateComplexType(getId());
 			ref.addChild(cs.create(model.getComplexType(), nameST));
 		}
 		ref.getChilds().addAll(append(model.getElements(), name));
+		getContext().put("content", getContent());
+		getContext().put("element", model);
+		run(getContext());
 		return ref;
 	}
 
@@ -80,18 +77,18 @@ public class CreateElement extends BasicCreate {
 		List<References> refs = new ArrayList<>();
 		for (IComplexContentModel model : elements) {
 			if (model instanceof SequenceModel) {
-				CreatePortada cp = new CreatePortada(parentName + DitaConstants.SEQUENCE, DitaConstants.SEQUENCE,
+				CreatePortada cp = new CreatePortada(getId() + DitaConstants.SEQUENCE, DitaConstants.SEQUENCE,
 						model.getDoc());
 				References childRef = new References(cp.create());
 				childRef.getChilds().addAll(append(model.getElements(), DitaConstants.SEQUENCE + " " + parentName));
 				refs.add(childRef);
 			} else if (model instanceof AllModel) {
-				CreatePortada cp = new CreatePortada(parentName + DitaConstants.ALL, DitaConstants.ALL, model.getDoc());
+				CreatePortada cp = new CreatePortada(getId() + DitaConstants.ALL, DitaConstants.ALL, model.getDoc());
 				References childRef = new References(cp.create());
 				childRef.getChilds().addAll(append(model.getElements(), DitaConstants.ALL + " " + parentName));
 				refs.add(childRef);
 			} else if (model instanceof ChoiceModel) {
-				CreatePortada cp = new CreatePortada(parentName + DitaConstants.CHOICE, DitaConstants.CHOICE,
+				CreatePortada cp = new CreatePortada(getId() + DitaConstants.CHOICE, DitaConstants.CHOICE,
 						model.getDoc());
 				References childRef = new References(cp.create());
 				childRef.getChilds().addAll(append(model.getElements(), DitaConstants.CHOICE + " " + parentName));
@@ -103,7 +100,7 @@ public class CreateElement extends BasicCreate {
 				} else if (model.getRef() != null) {
 					name = model.getRef().getLocalPart();
 				}
-				CreateElement ce = new CreateElement(idSchema, parentName);
+				CreateElement ce = new CreateElement(getId());
 				refs.add(ce.create((ElementModel) model, name));
 			} else if (model instanceof ComplexTypeModel) {
 				String name = parentName + " Embebed " + DitaConstants.SUFFIX_COMPLEXTYPE;
@@ -112,7 +109,7 @@ public class CreateElement extends BasicCreate {
 				} else if (model.getRef() != null) {
 					name = model.getRef().getLocalPart();
 				}
-				CreateComplexType ce = new CreateComplexType(idSchema, parentName);
+				CreateComplexType ce = new CreateComplexType(getId());
 				refs.add(ce.create((ComplexTypeModel) model, name));
 			} else if (model instanceof GroupModel) {
 				String name = parentName + " Embebed " + DitaConstants.SUFFIX_GROUP;
@@ -121,7 +118,7 @@ public class CreateElement extends BasicCreate {
 				} else if (model.getRef() != null) {
 					name = model.getRef().getLocalPart();
 				}
-				CreateGroup ce = new CreateGroup(idSchema, parentName);
+				CreateGroup ce = new CreateGroup(getId());
 				refs.add(ce.create((GroupModel) model, name));
 			}
 		}

@@ -11,19 +11,14 @@ import net.ramso.docindita.xml.schema.model.AttributeModel;
 
 public class CreateAttribute extends BasicCreate {
 
-	private final String idSchema;
-	private String prefix;
+	private final String idParent;
 
-	public CreateAttribute(String idSchema) {
-		this(idSchema, "");
-	}
+	public CreateAttribute(String idParent) {
 
-	public CreateAttribute(String idSchema, String prefix) {
 		super("", "");
 		setTemplateFile("template/type.vm");
 		setContent("Definición del atributo");
-		this.idSchema = idSchema;
-		this.prefix = prefix;
+		this.idParent = idParent;
 	}
 
 	public References create(Attribute attribute) throws IOException {
@@ -35,19 +30,21 @@ public class CreateAttribute extends BasicCreate {
 	}
 
 	public References create(AttributeModel model, String name) throws IOException {
-		setId(prefix + idSchema + "_" + name + DitaConstants.SUFFIX_ATTRIBUTE);
+		setId( idParent + "_" + name + DitaConstants.SUFFIX_ATTRIBUTE);
 		setTitle("Attribute " + name);
 		setContent(model.getDoc());
+		model.setId(getId());
 		init();
+		
+		References ref = new References(getFileName());
+		if (model.getSimpleType() != null) {
+			CreateSimpleType cs = new CreateSimpleType(getId());
+			ref.addChild(cs.create(model.getSimpleType(), name));
+		}
 		getContext().put("content", getContent());
 		getContext().put("attribute", model);
 		getContext().put("child", true);
 		run(getContext());
-		References ref = new References(getFileName());
-		if (model.getSimpleType() != null) {
-			CreateSimpleType cs = new CreateSimpleType(idSchema);
-			ref.addChild(cs.create(model.getSimpleType(), name));
-		}
 		return ref;
 	}
 

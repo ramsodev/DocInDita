@@ -12,19 +12,14 @@ import net.ramso.docindita.xml.schema.model.SimpleTypeModel;
 
 public class CreateSimpleType extends BasicCreate {
 
-	private final String idSchema;
-	private String prefix;
+	private final String idParent;
 
-	public CreateSimpleType(String idSchema) {
-		this(idSchema, "");
-	}
 
-	public CreateSimpleType(String idSchema, String prefix) {
+	public CreateSimpleType(String idParent) {
 		super("", "");
 		setTemplateFile("template/type.vm");
 		setContent("Definición del tipo de datos simple");
-		this.idSchema = idSchema;
-		this.prefix = prefix;
+		this.idParent = idParent;
 	}
 
 	public References create(SimpleType type) throws IOException {
@@ -36,8 +31,9 @@ public class CreateSimpleType extends BasicCreate {
 	}
 
 	public References create(SimpleTypeModel model, String name) throws IOException {
-		setId(prefix + idSchema + "_" + name + DitaConstants.SUFFIX_SIMPLETYPE);
+		setId( idParent + "_" + name + DitaConstants.SUFFIX_SIMPLETYPE);
 		setTitle("Simple Type " + name);
+		model.setId(getId());
 		setContent(model.getDoc());
 		init();
 		getContext().put("content", getContent());

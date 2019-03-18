@@ -24,5 +24,11 @@ public interface IComponentModel {
 	public QName getType();
 
 	boolean isScaleDiagram();
+	
+	public String getHref();
+	
+	public String getId();
+	
+	public void setId(String id);
 
 }

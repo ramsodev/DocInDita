@@ -23,19 +23,13 @@ import net.ramso.docindita.xml.schema.model.SequenceModel;
 
 public class CreateComplexType extends BasicCreate {
 
-	private final String idSchema;
-	private String prefix;
+	private final String idParent;
 
-	public CreateComplexType(String idSchema) {
-		this(idSchema, "");
-	}
-
-	public CreateComplexType(String idSchema, String prefix) {
+	public CreateComplexType(String idParent) {
 		super("", "");
 		setTemplateFile("template/type.vm");
 		setContent("Definicioón del tipo de datos simple");
-		this.idSchema = idSchema;
-		this.prefix = prefix;
+		this.idParent = idParent;
 	}
 
 	public References create(ComplexType ComplexType) throws IOException {
@@ -48,14 +42,12 @@ public class CreateComplexType extends BasicCreate {
 	}
 
 	public References create(ComplexTypeModel model, String name) throws IOException {
-		setId(prefix + idSchema + "_" + name + DitaConstants.SUFFIX_COMPLEXTYPE);
+		setId(idParent + "_" + name + DitaConstants.SUFFIX_COMPLEXTYPE);
 		setTitle("Complex Type " + name);
 		setContent(model.getDoc());
+		model.setId(getId());
 		init();
-		getContext().put("content", getContent());
-		getContext().put("complexType", model);
-		getContext().put("tools", DitaTools.class);
-		run(getContext());
+		
 		References ref = new References(getFileName());
 		References r1 = appendAttributesGroups(model.getAttributeGroups(), name);
 		if (r1 != null)
@@ -64,6 +56,10 @@ public class CreateComplexType extends BasicCreate {
 		if (r1 != null)
 			ref.addChild(r1);
 		ref.getChilds().addAll(append(model.getElements(), name));
+		getContext().put("content", getContent());
+		getContext().put("complexType", model);
+		getContext().put("tools", DitaTools.class);
+		run(getContext());
 		return ref;
 	}
 
@@ -80,7 +76,7 @@ public class CreateComplexType extends BasicCreate {
 			} else if (attribute.getRef() != null) {
 				name = attribute.getRef().getLocalPart();
 			}
-			CreateAttribute cg = new CreateAttribute(idSchema, parentName);
+			CreateAttribute cg = new CreateAttribute(getId());
 			childRef.addChild(cg.create(attribute, name));
 		}
 		return childRef;
@@ -99,7 +95,7 @@ public class CreateComplexType extends BasicCreate {
 			}else if(group.getRef()!=null) {
 				name = group.getRef().getLocalPart();
 			}
-			CreateAttributeGroup cg = new CreateAttributeGroup(idSchema,parentName);
+			CreateAttributeGroup cg = new CreateAttributeGroup(getId());
 			childRef.addChild(cg.create(group, name));
 		}
 		return childRef;
@@ -110,18 +106,18 @@ public class CreateComplexType extends BasicCreate {
 		List<References> refs = new ArrayList<>();
 		for (IComplexContentModel model : elements) {
 			if (model instanceof SequenceModel) {
-				CreatePortada cp = new CreatePortada(parentName + DitaConstants.SEQUENCE, DitaConstants.SEQUENCE,
+				CreatePortada cp = new CreatePortada(getId() + DitaConstants.SEQUENCE, DitaConstants.SEQUENCE,
 						model.getDoc());
 				References childRef = new References(cp.create());
 				childRef.getChilds().addAll(append(model.getElements(), DitaConstants.SEQUENCE + " " + parentName));
 				refs.add(childRef);
 			} else if (model instanceof AllModel) {
-				CreatePortada cp = new CreatePortada(parentName + DitaConstants.ALL, DitaConstants.ALL, model.getDoc());
+				CreatePortada cp = new CreatePortada(getId() + DitaConstants.ALL, DitaConstants.ALL, model.getDoc());
 				References childRef = new References(cp.create());
 				childRef.getChilds().addAll(append(model.getElements(), DitaConstants.ALL + " " + parentName));
 				refs.add(childRef);
 			} else if (model instanceof ChoiceModel) {
-				CreatePortada cp = new CreatePortada(parentName + DitaConstants.CHOICE, DitaConstants.CHOICE,
+				CreatePortada cp = new CreatePortada(getId() + DitaConstants.CHOICE, DitaConstants.CHOICE,
 						model.getDoc());
 				References childRef = new References(cp.create());
 				childRef.getChilds().addAll(append(model.getElements(), DitaConstants.CHOICE + " " + parentName));
@@ -133,7 +129,7 @@ public class CreateComplexType extends BasicCreate {
 				} else if (model.getRef() != null) {
 					name = model.getRef().getLocalPart();
 				}
-				CreateElement ce = new CreateElement(idSchema, parentName);
+				CreateElement ce = new CreateElement(getId());
 				refs.add(ce.create((ElementModel) model, name));
 			} else if (model instanceof ComplexTypeModel) {
 				String name = parentName + " Embebed " + DitaConstants.SUFFIX_COMPLEXTYPE;
@@ -142,7 +138,7 @@ public class CreateComplexType extends BasicCreate {
 				} else if (model.getRef() != null) {
 					name = model.getRef().getLocalPart();
 				}
-				CreateComplexType ce = new CreateComplexType(idSchema, parentName);
+				CreateComplexType ce = new CreateComplexType(getId());
 				refs.add(ce.create((ComplexTypeModel) model, name));
 			} else if (model instanceof GroupModel) {
 				String name = parentName + " Embebed " + DitaConstants.SUFFIX_GROUP;
@@ -151,7 +147,7 @@ public class CreateComplexType extends BasicCreate {
 				} else if (model.getRef() != null) {
 					name = model.getRef().getLocalPart();
 				}
-				CreateGroup ce = new CreateGroup(idSchema, parentName);
+				CreateGroup ce = new CreateGroup(getId());
 				refs.add(ce.create((GroupModel) model, name));
 			}
 		}

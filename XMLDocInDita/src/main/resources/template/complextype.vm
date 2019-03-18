@@ -25,12 +25,12 @@
         	<dd><sl>
             		#foreach($attribute in ${complexType.getAttributes()})
             			<sli><xref #if(${attribute.getRef()})href="${attribute.getHref()}" ${attribute.getExternalHref()}>${attribute.getRef().getLocalPart()}
-            					   #else href="#$id/sectionAttribute${attribute.getName()}">${attribute.getName()}
+            					   #else href="${attribute.getHref()}">${attribute.getName()}
             					   #end </xref></sli>
             		#end
             		#foreach($attribute in ${complexType.getAttributeGroups()})
             			<sli><xref #if(${attribute.getRef()})href="${attribute.getHref()}" ${attribute.getExternalHref()}>${attribute.getRef().getLocalPart()}
-            					   #else href="#$id/sectionAttributeGroup${attribute.getName()}">${attibute.getName()}
+            					   #else href="${attribute.getHref()}">${attibute.getName()}
             					   #end </xref></sli>
             		#end
             </sl></dd>

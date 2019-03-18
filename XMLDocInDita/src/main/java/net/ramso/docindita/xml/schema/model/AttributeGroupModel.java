@@ -46,10 +46,20 @@ public class AttributeGroupModel extends AbstractComponentModel {
 		return diagram;
 	}
 
-	public String getHref() throws MalformedURLException {
-		if (getRef() != null)
-			return getHrefType();
-		return null;
+	public String getHref() {
+		String href = "";
+		try {
+			if (getRef() != null) {
+
+				href = getHrefType();
+			} else {
+				href = super.getHref();
+			}
+//			return DitaTools.getHref(attribute.getQname(), DitaConstants.SUFFIX_ATTRIBUTE);
+		} catch (MalformedURLException e) {
+			LogManager.warn("Error al generar url del attribute " + getName(), e);
+		}
+		return href;
 
 	}
 

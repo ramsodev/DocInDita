@@ -14,19 +14,14 @@ import net.ramso.docindita.xml.schema.model.ComplexTypeModel;
 
 public class CreateAttributeGroup extends BasicCreate {
 
-	private final String idSchema;
-	private String prefix;
+	private final String idParent;
+	
 
-	public CreateAttributeGroup(String idSchema) {
-		this(idSchema, "");
-	}
-
-	public CreateAttributeGroup(String idSchema, String prefix) {
+	public CreateAttributeGroup(String idParent) {
 		super("", "");
 		setTemplateFile("template/type.vm");
 		setContent("Definición del grupo de atributos");
-		this.idSchema = idSchema;
-		this.prefix = prefix;
+		this.idParent = idParent;
 	}
 
 	public References create(AttributeGroup attributeGroup) throws IOException {
@@ -39,20 +34,22 @@ public class CreateAttributeGroup extends BasicCreate {
 	}
 
 	public References create(AttributeGroupModel model, String name) throws IOException {
-		setId(prefix + idSchema + "_" + name + DitaConstants.SUFFIX_ATTRIBUTEGROUP);
+		setId( idParent + "_" + name + DitaConstants.SUFFIX_ATTRIBUTEGROUP);
 		setTitle("Attribute Group " + name);
 		setContent(model.getDoc());
+		model.setId(getId());
 		init();
-		getContext().put("content", getContent());
-		getContext().put("attributeGroup", model);
-		run(getContext());
+		
 		References ref = new References(getFileName());
 		for (AttributeModel attribute : model.getAttributes()) {
 			if (attribute.getRef() == null) {
-				CreateAttribute ca = new CreateAttribute(idSchema);
+				CreateAttribute ca = new CreateAttribute(getId());
 				ref.addChild(ca.create(attribute));
 			}
 		}
+		getContext().put("content", getContent());
+		getContext().put("attributeGroup", model);
+		run(getContext());
 		return ref;
 	}
 

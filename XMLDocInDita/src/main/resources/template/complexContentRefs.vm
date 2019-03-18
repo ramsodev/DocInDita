@@ -5,7 +5,7 @@
 					<sl>
 		#end
             			<sli><xref #if(${element.getRef()})href="${element.getHrefType()}" ${element.getExternalHref()}>${element.getComponentName()} ${element.getRef().getLocalPart()}
-            					   #else href="#$id/sectionElement${element.getName()}">${element.getComponentName()} ${element.getName()}
+            					   #else href="${element.getHref()}">${element.getComponentName()} ${element.getName()}
             					   #end </xref></sli>
 		
             				   

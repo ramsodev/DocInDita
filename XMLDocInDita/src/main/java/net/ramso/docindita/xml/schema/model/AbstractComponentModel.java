@@ -9,6 +9,7 @@ import net.ramso.docindita.tools.DitaTools;
 public abstract class AbstractComponentModel implements IComponentModel {
 
 	private boolean scaleDiagram = false;
+	private String id = "";
 
 	@Override
 	public String getCode() {
@@ -41,6 +42,9 @@ public abstract class AbstractComponentModel implements IComponentModel {
 		return DitaTools.getHrefType(getType());
 	}
 
+	public String getHref() {
+		return DitaTools.getHref(true, getId());
+	}
 	/**
 	 * @return the name
 	 */
@@ -57,6 +61,18 @@ public abstract class AbstractComponentModel implements IComponentModel {
 
 	protected void setScaleDiagram(boolean scaleDiagram) {
 		this.scaleDiagram = scaleDiagram;
+	}
+
+
+
+	public String getId() {
+		return id;
+	}
+
+
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 }
