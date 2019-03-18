@@ -35,3 +35,8 @@
         <codeblock>${group.getCode()}</codeblock>
     </section>
     	#end
+       	#if(${group.getElements()})
+        	#set($childs = ${group.getElements()})
+        	#parse("complexContentDetail.vm")
+        #end
+

@@ -9,7 +9,7 @@
 		<relativePath>../</relativePath>
 	</parent>
 	<artifactId>XMLDocInDita</artifactId>
-	<version>1.0.1-SNAPSHOT</version>
+	<version>1.1.0-SNAPSHOT</version>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
@@ -23,8 +23,6 @@
 			<artifactId>soa-model-core</artifactId>
 			<version>1.6.0</version>
 		</dependency>
-
-
 		<dependency>
 			<groupId>net.ramso</groupId>
 			<artifactId>commons</artifactId>

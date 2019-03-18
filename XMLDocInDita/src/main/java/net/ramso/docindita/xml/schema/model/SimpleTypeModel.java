@@ -102,9 +102,13 @@ public class SimpleTypeModel extends AbstractComponentModel {
 	@Override
 	public String getDiagram() {
 		if (diagram == null) {
+			if(getName()!=null) {
 			final SimpleTypeGraph graph = new SimpleTypeGraph(this);
 			diagram = graph.generate();
 			setScaleDiagram(graph.scale());
+			}else {
+				diagram="";
+			}
 		}
 		return diagram;
 	}

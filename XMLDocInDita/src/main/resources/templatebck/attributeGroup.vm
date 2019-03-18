@@ -6,6 +6,17 @@
             		#end
             </sl>
  	</section>
+   #set($childg = $child)
+   #set($child = true)
+   #foreach($attribute in ${attributeGroup.getAttributes()})
+   	#if(!${attribute.getRef()})
+   	<section id = "sectionAttribute${attribute.getName()}">
+   	<title>Attribute ${attribute.getName()}</title>
+   		#parse("attribute.vm")
+   	</section>
+   	#end
+   #end
+   #set($child = $childg)
     #if(!$child)
         <section id="section_diagram">
             <title>Diagrama</title>            

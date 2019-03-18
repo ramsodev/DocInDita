@@ -6,6 +6,8 @@ import com.predic8.schema.Attribute;
 import com.predic8.schema.SchemaComponent;
 
 import groovy.xml.QName;
+import net.ramso.docindita.tools.DitaConstants;
+import net.ramso.docindita.tools.DitaTools;
 import net.ramso.docindita.xml.schema.model.graph.AttributeGraph;
 import net.ramso.tools.LogManager;
 
@@ -62,7 +64,7 @@ public class AttributeModel extends AbstractComponentModel {
 	public String getHref() throws MalformedURLException {
 		if (getRef() != null)
 			return getHrefType();
-		return null;
+		return DitaTools.getHref(attribute.getQname(), DitaConstants.SUFFIX_ATTRIBUTE);
 
 	}
 

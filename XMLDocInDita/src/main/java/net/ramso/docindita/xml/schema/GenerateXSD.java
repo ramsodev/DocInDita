@@ -59,7 +59,7 @@ public class GenerateXSD {
 
 		for (final Element element : schema.getElements()) {
 			final CreateElement ce = new CreateElement(idSchema);
-			cover.addChild(new References(ce.create(element)));
+			cover.addChild(ce.create(element));
 		}
 
 		references.add(cover);
@@ -69,7 +69,7 @@ public class GenerateXSD {
 
 		for (final SimpleType type : schema.getSimpleTypes()) {
 			final CreateSimpleType cs = new CreateSimpleType(idSchema);
-			cover.addChild(new References(cs.create(type)));
+			cover.addChild(cs.create(type));
 		}
 		references.add(cover);
 		cc = new CreatePortada(idSchema + DitaConstants.SUFFIX_COMPLEXTYPE, "Complex Types del esquema ",
@@ -78,7 +78,7 @@ public class GenerateXSD {
 
 		for (final ComplexType type : schema.getComplexTypes()) {
 			final CreateComplexType ct = new CreateComplexType(idSchema);
-			cover.addChild(new References(ct.create(type)));
+			cover.addChild(ct.create(type));
 		}
 		references.add(cover);
 		cc = new CreatePortada(idSchema + DitaConstants.SUFFIX_ATTRIBUTE + "s", "Attributes del esquema ",
@@ -86,11 +86,11 @@ public class GenerateXSD {
 		cover = new References(cc.create());
 		for (final Attribute attribute : schema.getAttributes()) {
 			final CreateAttribute ca = new CreateAttribute(idSchema);
-			cover.addChild(new References(ca.create(attribute)));
+			cover.addChild(ca.create(attribute));
 		}
 		for (final AttributeGroup attributeGroup : schema.getAttributeGroups()) {
 			final CreateAttributeGroup cag = new CreateAttributeGroup(idSchema);
-			cover.addChild(new References(cag.create(attributeGroup)));
+			cover.addChild(cag.create(attributeGroup));
 		}
 		references.add(cover);
 		cc = new CreatePortada(idSchema + DitaConstants.SUFFIX_GROUP, "Grupos del esquema ", "Grupos del esquema XML");
@@ -98,7 +98,7 @@ public class GenerateXSD {
 
 		for (final Group group : schema.getGroups()) {
 			final CreateGroup cg = new CreateGroup(idSchema);
-			cover.addChild(new References(cg.create(group)));
+			cover.addChild(cg.create(group));
 		}
 		references.add(cover);
 		return references;

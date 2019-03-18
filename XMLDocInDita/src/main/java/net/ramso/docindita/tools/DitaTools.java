@@ -17,6 +17,7 @@ import com.predic8.schema.ComplexType;
 import com.predic8.schema.Element;
 import com.predic8.schema.Group;
 import com.predic8.schema.Schema;
+import com.predic8.schema.SchemaComponent;
 import com.predic8.schema.SimpleType;
 import com.predic8.schema.TypeDefinition;
 import com.predic8.wsdl.BindingOperation;
@@ -43,6 +44,10 @@ public class DitaTools {
 		if (type.getNamespaceURI().equalsIgnoreCase(DitaConstants.XSD_NAMESPACE))
 			return "format=\"html\" scope=\"external\"";
 		return "";
+	}
+
+	public static String getExternalHref(TypeDefinition type) {
+		return getExternalHref(type.getQname());
 	}
 
 	public static String getFileType(URL url) {
@@ -86,12 +91,26 @@ public class DitaTools {
 		final String idSchema = DitaTools.getSchemaId(element.getNamespaceUri());
 		return idPrefix.trim() + idSchema + "_" + getHref(true, element.getName() + DitaConstants.SUFFIX_ELEMENT);
 	}
+	
+	public static String getHref(TypeDefinition type) throws MalformedURLException {
+		String suffix = DitaConstants.SUFFIX_TYPE;
+		if (type instanceof SimpleType) {
+			suffix = DitaConstants.SUFFIX_SIMPLETYPE;
+		} else if (type instanceof ComplexType) {
+			suffix = DitaConstants.SUFFIX_COMPLEXTYPE;
+		}
+		return getHref(type.getQname(), suffix);
+	}
 
-	public static String getHref(QName qname) throws MalformedURLException {
+	public static String getHref(QName qname, String suffix) throws MalformedURLException {
 		if (qname.getNamespaceURI().equalsIgnoreCase(DitaConstants.XSD_NAMESPACE))
 			return DitaConstants.XSD_DOC_URI + qname.getLocalPart();
 		final String idSchema = DitaTools.getSchemaId(qname.getNamespaceURI());
-		return idPrefix.trim() + idSchema + "_" + getHref(true, qname.getLocalPart() + getSuffixType(qname));
+		return idPrefix.trim() + idSchema + "_" + getHref(true, qname.getLocalPart() + suffix);
+	}
+
+	public static String getHref(QName qname) throws MalformedURLException {
+		return getHref(qname, getSuffixType(qname));
 
 	}
 
@@ -101,7 +120,8 @@ public class DitaTools {
 
 	public static String getHrefType(QName type) throws MalformedURLException {
 		final String idSchema = DitaTools.getSchemaId(type.getNamespaceURI());
-		return TextTools.cleanNonAlfaNumeric(idPrefix.trim() + idSchema + "_" + type.getLocalPart() + getSuffixType(type),"_") + ".dita";
+		return TextTools.cleanNonAlfaNumeric(
+				idPrefix.trim() + idSchema + "_" + type.getLocalPart() + getSuffixType(type), "_") + ".dita";
 	}
 
 	public static String getName(String uri) {
@@ -145,7 +165,7 @@ public class DitaTools {
 		if (url.getPath() != null) {
 			idSchema += url.getPath().replaceAll("\\/", "");
 		}
-		return TextTools.cleanNonAlfaNumeric(idSchema,"_");
+		return TextTools.cleanNonAlfaNumeric(idSchema, "_");
 	}
 
 	public static String getSuffixType(QName type) {
@@ -214,4 +234,6 @@ public class DitaTools {
 			idPrefix = idPrefix.trim() + "_";
 		DitaTools.idPrefix = idPrefix;
 	}
+
+	
 }

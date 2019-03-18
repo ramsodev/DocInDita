@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -11,7 +12,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import net.ramso.docindita.tools.DitaConstants;
-import net.ramso.docindita.xml.Config;
 import net.ramso.docindita.xml.wsdl.GenerateWsdl;
 
 class GenreateWSDLTest extends BaseTest {
@@ -56,7 +56,7 @@ class GenreateWSDLTest extends BaseTest {
 //		}
 //		assertTrue(true);
 //	}
-
+//
 	@Test
 	@DisplayName("Public http AWSE")
 	void testGenerateWSDL3() {
@@ -66,6 +66,7 @@ class GenreateWSDLTest extends BaseTest {
 		try {
 			wsdl = new URL("http://webservices.amazon.com/AWSECommerceService/AWSECommerceService.wsdl");
 			generate.generateWSDL(wsdl);
+			validXML();
 		} catch (Exception e) {
 
 			e.printStackTrace();
@@ -90,7 +91,7 @@ class GenreateWSDLTest extends BaseTest {
 //		}
 //		assertTrue(true);
 //	}
-//
+
 //	@Test
 //	@DisplayName("tododolist")
 //	void testGenerateWSDL5() {
@@ -108,5 +109,14 @@ class GenreateWSDLTest extends BaseTest {
 //		assertTrue(true);
 //	}
 
+	protected boolean validXML() throws IOException {
+		File[] files = new File(Config.getOutputDir()).listFiles();
+		
+			for(File file:files) {
+				
+			}
+		
+		return true;
+	}
 	
 }

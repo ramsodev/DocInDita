@@ -20,6 +20,7 @@ public class CreateOperation extends BasicCreate {
 		getContext().put("content", getContent());
 		getContext().put("operation", operation);
 		getContext().put("tools", DitaTools.class);
+		
 		run(getContext());
 		return getFileName();
 	}

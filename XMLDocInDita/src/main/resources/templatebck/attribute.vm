@@ -29,6 +29,28 @@
             <dd><xref href="${attribute.getHrefType()}" ${attribute.getExternalHref()}>${attribute.getType().getLocalPart()}</xref></dd>
         </dlentry>
    	</dl> 
+    #elseif(${attribute.getSimpleType()})
+ 	</dl>
+ 			#if($child)
+ 		<sectiondiv id= "section_embebedType${attribute.getName()}">
+ 			<p><u><b>Simple Type</b></u></p>
+ 			#else
+    	<section id= "section_embebedType">    		
+    		<title>Simple Type</title>
+    			#if(${attribute.getSimpleType().getDoc()})
+    		<p><lines>${attribute.getSimpleType().getDoc()}</lines></p>
+    			#end
+    		#end
+            #set($simpleType = ${attribute.getSimpleType()})
+            #set($childs = $child)
+            #set($child = true)
+            #parse("simpleType.vm")
+            #set($child =  $childs)
+            #if($child)
+        </sectiondiv>    
+            #else
+        </section>
+        	#end
     #end  
      #if(!$child)
         <section id="section_diagram">
