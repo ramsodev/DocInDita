@@ -40,9 +40,9 @@ public class AttributeGroupGraph extends AbstractXmlGraph {
 
 	protected void addCellType(mxCell cell) {
 		if (getCellTypes() == null) {
-			cellTypes = new ArrayList<>();
+			this.cellTypes = new ArrayList<>();
 		}
-		typeGroup.insert(cell);
+		this.typeGroup.insert(cell);
 		getCellTypes().add(cell);
 	}
 
@@ -64,7 +64,7 @@ public class AttributeGroupGraph extends AbstractXmlGraph {
 				getGraph().insertEdge(getGraph().getDefaultParent(), "", "", cellLine, cellType,
 						GraphTools.getOrtogonalEdgeStyle(true));
 			}
-			contentPosition += height;
+			this.contentPosition += height;
 			final mxGeometry g = cellLine.getGeometry();
 			g.setTerminalPoint(new mxPoint(0, g.getHeight() / 2), false);
 			g.setTerminalPoint(new mxPoint(g.getWidth(), g.getHeight() / 2), true);
@@ -73,16 +73,16 @@ public class AttributeGroupGraph extends AbstractXmlGraph {
 	}
 
 	public mxCell crateAttributeGroupCell(mxCell parent) {
-		return crateAttributeGroupCell(parent, attributeGroup.getName());
+		return crateAttributeGroupCell(parent, this.attributeGroup.getName());
 	}
 
 	public mxCell crateAttributeGroupCell(mxCell parent, int x, int y, int width, int height) {
 		final int[] sizes = getSizes();
-		return crateAttributeGroupCell(parent, attributeGroup.getName(), x, y, width, height, sizes);
+		return crateAttributeGroupCell(parent, this.attributeGroup.getName(), x, y, width, height, sizes);
 	}
 
 	public mxCell crateAttributeGroupCell(mxCell parent, int x, int y, int width, int height, int[] sizes) {
-		return crateAttributeGroupCell(parent, attributeGroup.getName(), x, y, width, height, sizes);
+		return crateAttributeGroupCell(parent, this.attributeGroup.getName(), x, y, width, height, sizes);
 	}
 
 	public mxCell crateAttributeGroupCell(mxCell parent, String name) {
@@ -113,18 +113,18 @@ public class AttributeGroupGraph extends AbstractXmlGraph {
 		super.insertIcon(titulo, DitaConstants.SUFFIX_ATTRIBUTEGROUP.toLowerCase(), height);
 		y += height;
 		width -= 6;
-		if (!attributeGroup.getAttributes().isEmpty()) {
+		if (!this.attributeGroup.getAttributes().isEmpty()) {
 			final mxCell subCell = (mxCell) getGraph().insertVertex(cell,
-					attributeGroup.getName() + DitaConstants.SUFFIX_ATTRIBUTEGROUP, "", x, y, width, height,
+					this.attributeGroup.getName() + DitaConstants.SUFFIX_ATTRIBUTEGROUP, "", x, y, width, height,
 					GraphTools.getStyle(false, true));
 			y = 0;
-			contentPosition = 0;
-			typeGroup = (mxCell) getGraph().createVertex(parent,
+			this.contentPosition = 0;
+			this.typeGroup = (mxCell) getGraph().createVertex(parent,
 					GraphConstants.EXCLUDE_PREFIX_GROUP + DitaConstants.SUFFIX_TYPE, "", 100, 100, 300, 0,
 					mxConstants.STYLE_AUTOSIZE + "=1;" + mxConstants.STYLE_RESIZABLE + "=1;"
 							+ mxConstants.STYLE_STROKE_OPACITY + "=0;" + mxConstants.STYLE_FILL_OPACITY + "=0;");
 
-			apppendContent(subCell, null, attributeGroup.getAttributes(), sizes, height);
+			apppendContent(subCell, null, this.attributeGroup.getAttributes(), sizes, height);
 			width = (int) resize(subCell, sizes);
 			subCell.getGeometry().setWidth(width);
 
@@ -136,7 +136,7 @@ public class AttributeGroupGraph extends AbstractXmlGraph {
 
 	@Override
 	public String generate() {
-		addType = true;
+		this.addType = true;
 		setGraph(new mxGraph());
 		getGraph().setAutoSizeCells(true);
 		getGraph().setCellsResizable(true);
@@ -144,34 +144,34 @@ public class AttributeGroupGraph extends AbstractXmlGraph {
 		final mxCell complexTypeCell = crateAttributeGroupCell(parent);
 		getGraph().addCell(complexTypeCell);
 		if (isAddType()) {
-			getGraph().addCell(typeGroup);
+			getGraph().addCell(this.typeGroup);
 		}
 		process(getGraph(), Config.getOutputDir());
 		return getFileName();
 	}
 
 	protected List<mxCell> getCellTypes() {
-		return cellTypes;
+		return this.cellTypes;
 	}
 
 	protected Object[] getCellTypesArray() {
-		if (cellTypes == null) {
-			cellTypes = new ArrayList<>();
+		if (this.cellTypes == null) {
+			this.cellTypes = new ArrayList<>();
 		}
-		return cellTypes.toArray();
+		return this.cellTypes.toArray();
 	}
 
 	protected int getContentPosition() {
-		return contentPosition;
+		return this.contentPosition;
 	}
 
 	protected int getMaxWidth() {
-		return maxWidth;
+		return this.maxWidth;
 	}
 
 	private int[] getSizes() {
 		final int[] sizes = { 0, 0 };
-		final int[] tempSizes = getSizes(attributeGroup.getAttributes());
+		final int[] tempSizes = getSizes(this.attributeGroup.getAttributes());
 		if (tempSizes[0] > sizes[0]) {
 			sizes[0] = tempSizes[0];
 		}
@@ -236,9 +236,9 @@ public class AttributeGroupGraph extends AbstractXmlGraph {
 	private mxCell inserType(AttributeModel attribute) {
 		mxCell type = null;
 		if (isAddType()) {
-			final mxCell parent = typeGroup;
+			final mxCell parent = this.typeGroup;
 			final int x = 0;
-			int y = (int) typeGroup.getGeometry().getHeight();
+			int y = (int) this.typeGroup.getGeometry().getHeight();
 			y += 21;
 
 			if (attribute.getSimpleType() != null) {
@@ -252,14 +252,14 @@ public class AttributeGroupGraph extends AbstractXmlGraph {
 				type = createType(parent, attribute.getType().getLocalPart(), x, y);
 			}
 			if (type != null) {
-				typeGroup.getGeometry().setHeight(y + type.getGeometry().getHeight());
+				this.typeGroup.getGeometry().setHeight(y + type.getGeometry().getHeight());
 			}
 		}
 		return type;
 	}
 
 	protected boolean isAddType() {
-		return addType;
+		return this.addType;
 	}
 
 	private double resize(mxCell cell, int[] sizes) {

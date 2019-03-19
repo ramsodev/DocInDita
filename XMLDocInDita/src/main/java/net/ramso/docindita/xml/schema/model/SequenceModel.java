@@ -11,14 +11,14 @@ public class SequenceModel extends AbstractComplexContentModel {
 
 	public SequenceModel(Sequence choice) {
 		super();
-		sequence = choice;
+		this.sequence = choice;
 		init();
 	}
 
 	@Override
 	public SchemaComponent getComponent() {
 
-		return sequence;
+		return this.sequence;
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class SequenceModel extends AbstractComplexContentModel {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.ramso.doc.dita.xml.schema.model.AbstractComponentModel#getName()
 	 */
 	@Override
@@ -58,8 +58,8 @@ public class SequenceModel extends AbstractComplexContentModel {
 	}
 
 	private void init() {
-		contentType = DitaConstants.SEQUENCE;
-		procesSequence(sequence);
+		this.contentType = DitaConstants.SEQUENCE;
+		procesSequence(this.sequence);
 
 	}
 

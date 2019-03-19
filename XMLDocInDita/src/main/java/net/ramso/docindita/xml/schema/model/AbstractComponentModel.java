@@ -16,11 +16,9 @@ public abstract class AbstractComponentModel implements IComponentModel {
 		return getComponent().getAsString().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 	}
 
-	
-
 	@Override
 	public String getDoc() {
-		StringBuilder value = new StringBuilder();
+		final StringBuilder value = new StringBuilder();
 		if (getComponent().getAnnotation() != null) {
 			for (final Documentation doc : getComponent().getAnnotation().getDocumentations()) {
 				if (doc.getSource() != null) {
@@ -42,10 +40,12 @@ public abstract class AbstractComponentModel implements IComponentModel {
 		return DitaTools.getHrefType(getType());
 	}
 
+	@Override
 	public String getHref() {
-		
+
 		return getFileName();
 	}
+
 	/**
 	 * @return the name
 	 */
@@ -54,24 +54,21 @@ public abstract class AbstractComponentModel implements IComponentModel {
 		return getComponent().getName();
 	}
 
-
 	@Override
 	public boolean isScaleDiagram() {
-		return scaleDiagram;
+		return this.scaleDiagram;
 	}
 
 	protected void setScaleDiagram(boolean scaleDiagram) {
 		this.scaleDiagram = scaleDiagram;
 	}
 
-
-
+	@Override
 	public String getFileName() {
-		return fileName;
+		return this.fileName;
 	}
 
-
-
+	@Override
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}

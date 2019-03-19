@@ -30,12 +30,12 @@ public class ElementModel extends AbstractComplexContentModel {
 	}
 
 	public ComplexTypeModel getComplexType() {
-		return complexType;
+		return this.complexType;
 	}
 
 	@Override
 	public SchemaComponent getComponent() {
-		return element;
+		return this.element;
 	}
 
 	@Override
@@ -45,12 +45,12 @@ public class ElementModel extends AbstractComplexContentModel {
 
 	@Override
 	public String getDiagram() {
-		if (diagram == null) {
+		if (this.diagram == null) {
 			final ElementGraph graph = new ElementGraph(this);
-			diagram = graph.generate();
+			this.diagram = graph.generate();
 			setScaleDiagram(graph.scale());
 		}
-		return diagram;
+		return this.diagram;
 	}
 
 	/**
@@ -58,7 +58,7 @@ public class ElementModel extends AbstractComplexContentModel {
 	 */
 	@Override
 	public String getMaxOccurs() {
-		return maxOccurs;
+		return this.maxOccurs;
 	}
 
 	/**
@@ -66,12 +66,12 @@ public class ElementModel extends AbstractComplexContentModel {
 	 */
 	@Override
 	public int getMinOccurs() {
-		return minOccurs;
+		return this.minOccurs;
 	}
 
 	@Override
 	public QName getRef() {
-		return element.getRef();
+		return this.element.getRef();
 	}
 
 	public IComponentModel getRefType() {
@@ -91,32 +91,34 @@ public class ElementModel extends AbstractComplexContentModel {
 	 * @return the simpleType
 	 */
 	public SimpleTypeModel getSimpleType() {
-		return simpleType;
+		return this.simpleType;
 	}
 
 	@Override
 	public QName getType() {
-		if (element.getRef() != null)
-			return element.getRef();
-		if ((element.getType() == null) && (getSimpleType() == null) && (getComplexType() == null))
+		if (this.element.getRef() != null) {
+			return this.element.getRef();
+		}
+		if ((this.element.getType() == null) && (getSimpleType() == null) && (getComplexType() == null)) {
 			return DitaTools.getAnyType();
-		return element.getType();
+		}
+		return this.element.getType();
 	}
 
 	private void init() {
-		contentType = DitaConstants.SUFFIX_ELEMENT;
-		if ((element.getMinOccurs() != null) && !element.getMinOccurs().isEmpty()) {
-			setMinOccurs(Integer.parseInt(element.getMinOccurs()));
+		this.contentType = DitaConstants.SUFFIX_ELEMENT;
+		if ((this.element.getMinOccurs() != null) && !this.element.getMinOccurs().isEmpty()) {
+			setMinOccurs(Integer.parseInt(this.element.getMinOccurs()));
 		}
-		if ((element.getMaxOccurs() != null) && !element.getMaxOccurs().isEmpty()) {
-			maxOccurs = element.getMaxOccurs();
+		if ((this.element.getMaxOccurs() != null) && !this.element.getMaxOccurs().isEmpty()) {
+			this.maxOccurs = this.element.getMaxOccurs();
 		}
-		if (element.getEmbeddedType() != null) {
-			final TypeDefinition t = element.getEmbeddedType();
+		if (this.element.getEmbeddedType() != null) {
+			final TypeDefinition t = this.element.getEmbeddedType();
 			if (t instanceof SimpleType) {
-				simpleType = new SimpleTypeModel((SimpleType) t);
+				this.simpleType = new SimpleTypeModel((SimpleType) t);
 			} else if (t instanceof ComplexType) {
-				complexType = new ComplexTypeModel((ComplexType) t);
+				this.complexType = new ComplexTypeModel((ComplexType) t);
 			}
 		}
 	}
@@ -126,7 +128,7 @@ public class ElementModel extends AbstractComplexContentModel {
 	 */
 	@Override
 	public boolean isRequiered() {
-		return requiered;
+		return this.requiered;
 	}
 
 	/**
@@ -136,7 +138,7 @@ public class ElementModel extends AbstractComplexContentModel {
 	public void setMinOccurs(int minOccurs) {
 		this.minOccurs = minOccurs;
 		if (minOccurs > 0) {
-			requiered = true;
+			this.requiered = true;
 		}
 	}
 

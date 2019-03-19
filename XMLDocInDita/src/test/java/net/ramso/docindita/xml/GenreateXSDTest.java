@@ -10,7 +10,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import net.ramso.docindita.tools.DitaConstants;
-import net.ramso.docindita.xml.Config;
 import net.ramso.docindita.xml.schema.GenerateXSD;
 
 class GenreateXSDTest extends BaseTest {
@@ -20,7 +19,7 @@ class GenreateXSDTest extends BaseTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		Config.start();
-		generate = new GenerateXSD();
+		this.generate = new GenerateXSD();
 
 	}
 
@@ -29,10 +28,10 @@ class GenreateXSDTest extends BaseTest {
 	void testGenerateXSD0() {
 		Config.setOutputDir(DitaConstants.OUTDIR_DEFAULT + File.separator + "enumattr");
 		clean();
-		URL xsd = Thread.currentThread().getContextClassLoader().getResource("enumattr.xsd");
+		final URL xsd = Thread.currentThread().getContextClassLoader().getResource("enumattr.xsd");
 		try {
-			generate.generateXsd(xsd);
-		} catch (Exception e) {
+			this.generate.generateXsd(xsd);
+		} catch (final Exception e) {
 			e.printStackTrace();
 			fail(e.getLocalizedMessage());
 		}
@@ -43,10 +42,10 @@ class GenreateXSDTest extends BaseTest {
 	void testGenerateXSD1() {
 		Config.setOutputDir(DitaConstants.OUTDIR_DEFAULT + File.separator + "EnumAttr2");
 		clean();
-		URL xsd = Thread.currentThread().getContextClassLoader().getResource("EnumAttr2.xsd");
+		final URL xsd = Thread.currentThread().getContextClassLoader().getResource("EnumAttr2.xsd");
 		try {
-			generate.generateXsd(xsd);
-		} catch (Exception e) {
+			this.generate.generateXsd(xsd);
+		} catch (final Exception e) {
 			e.printStackTrace();
 			fail(e.getLocalizedMessage());
 		}
@@ -57,10 +56,10 @@ class GenreateXSDTest extends BaseTest {
 	void testGenerateXSD2() {
 		Config.setOutputDir(DitaConstants.OUTDIR_DEFAULT + File.separator + "GlobalAttr");
 		clean();
-		URL xsd = Thread.currentThread().getContextClassLoader().getResource("GlobalAttr.xsd");
+		final URL xsd = Thread.currentThread().getContextClassLoader().getResource("GlobalAttr.xsd");
 		try {
-			generate.generateXsd(xsd);
-		} catch (Exception e) {
+			this.generate.generateXsd(xsd);
+		} catch (final Exception e) {
 			e.printStackTrace();
 			fail(e.getLocalizedMessage());
 		}
@@ -71,10 +70,10 @@ class GenreateXSDTest extends BaseTest {
 	void testGenerateXSD3() {
 		Config.setOutputDir(DitaConstants.OUTDIR_DEFAULT + File.separator + "order");
 		clean();
-		URL xsd = Thread.currentThread().getContextClassLoader().getResource("order.xsd");
+		final URL xsd = Thread.currentThread().getContextClassLoader().getResource("order.xsd");
 		try {
-			generate.generateXsd(xsd);
-		} catch (Exception e) {
+			this.generate.generateXsd(xsd);
+		} catch (final Exception e) {
 			e.printStackTrace();
 			fail(e.getLocalizedMessage());
 		}
@@ -85,10 +84,10 @@ class GenreateXSDTest extends BaseTest {
 	void testGenerateXSD4() {
 		Config.setOutputDir(DitaConstants.OUTDIR_DEFAULT + File.separator + "CustomerOrders");
 		clean();
-		URL xsd = Thread.currentThread().getContextClassLoader().getResource("CustomerOrders.xsd");
+		final URL xsd = Thread.currentThread().getContextClassLoader().getResource("CustomerOrders.xsd");
 		try {
-			generate.generateXsd(xsd);
-		} catch (Exception e) {
+			this.generate.generateXsd(xsd);
+		} catch (final Exception e) {
 			e.printStackTrace();
 			fail(e.getLocalizedMessage());
 		}
@@ -98,10 +97,10 @@ class GenreateXSDTest extends BaseTest {
 	@DisplayName("Procesar pacs0008")
 	void testGenerateXSD() {
 		Config.setOutputDir(DitaConstants.OUTDIR_DEFAULT + File.separator + "pacs008");
-		URL xsd = Thread.currentThread().getContextClassLoader().getResource("pacs.008.001.08.xsd");
+		final URL xsd = Thread.currentThread().getContextClassLoader().getResource("pacs.008.001.08.xsd");
 		try {
-			generate.generateXsd(xsd);
-		} catch (Exception e) {
+			this.generate.generateXsd(xsd);
+		} catch (final Exception e) {
 			e.printStackTrace();
 			fail(e.getLocalizedMessage());
 		}

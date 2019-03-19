@@ -23,20 +23,20 @@ public abstract class AbstractComplexContentModel extends AbstractComponentModel
 	protected String contentType = DitaConstants.SEQUENCE;
 
 	protected void addElement(IComplexContentModel elementModel) {
-		if (elements == null) {
-			elements = new ArrayList<>();
+		if (this.elements == null) {
+			this.elements = new ArrayList<>();
 		}
-		elements.add(elementModel);
+		this.elements.add(elementModel);
 	}
 
 	@Override
 	public String getContentType() {
-		return contentType;
+		return this.contentType;
 	}
 
 	@Override
 	public List<IComplexContentModel> getElements() {
-		return elements;
+		return this.elements;
 	}
 
 	/**
@@ -44,7 +44,7 @@ public abstract class AbstractComplexContentModel extends AbstractComponentModel
 	 */
 	@Override
 	public String getMaxOccurs() {
-		return maxOccurs;
+		return this.maxOccurs;
 	}
 
 	/**
@@ -52,7 +52,7 @@ public abstract class AbstractComplexContentModel extends AbstractComponentModel
 	 */
 	@Override
 	public int getMinOccurs() {
-		return minOccurs;
+		return this.minOccurs;
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public abstract class AbstractComplexContentModel extends AbstractComponentModel
 	 */
 	@Override
 	public boolean isRequiered() {
-		return requiered;
+		return this.requiered;
 	}
 
 	protected void procesAll(All all) {
@@ -170,7 +170,7 @@ public abstract class AbstractComplexContentModel extends AbstractComponentModel
 			this.minOccurs = -1;
 		}
 		if (this.minOccurs > 0) {
-			requiered = true;
+			this.requiered = true;
 		}
 	}
 }

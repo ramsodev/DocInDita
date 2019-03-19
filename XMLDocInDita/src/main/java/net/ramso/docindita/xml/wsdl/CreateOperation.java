@@ -20,7 +20,7 @@ public class CreateOperation extends BasicCreate {
 		getContext().put("content", getContent());
 		getContext().put("operation", operation);
 		getContext().put("tools", DitaTools.class);
-		
+
 		run(getContext());
 		return getFileName();
 	}
@@ -30,7 +30,7 @@ public class CreateOperation extends BasicCreate {
 	 */
 	@Override
 	public String getContent() {
-		return content;
+		return this.content;
 	}
 
 	/**

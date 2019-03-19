@@ -1,4 +1,3 @@
-   
    <dl>
    	#if(${attribute.getUsage()})
         <dlentry>
@@ -28,8 +27,8 @@
        		<dt>Tipo</dt>
             <dd><xref href="${attribute.getHrefType()}" ${attribute.getExternalHref()}>${attribute.getType().getLocalPart()}</xref></dd>
         </dlentry>
-   	</dl> 
-    #end  
+    #end
+    </dl>  
         <section id="section_diagram">
             <title>Diagrama</title>            
         		<fig id="${id}Diagram">

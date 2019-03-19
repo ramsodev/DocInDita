@@ -6,8 +6,6 @@ import com.predic8.schema.Attribute;
 import com.predic8.schema.SchemaComponent;
 
 import groovy.xml.QName;
-import net.ramso.docindita.tools.DitaConstants;
-import net.ramso.docindita.tools.DitaTools;
 import net.ramso.docindita.xml.schema.model.graph.AttributeGraph;
 import net.ramso.tools.LogManager;
 
@@ -31,62 +29,61 @@ public class AttributeModel extends AbstractComponentModel {
 		super();
 		this.attribute = attribute;
 		init();
-		
+
 		LogManager.debug("Carga de Attribute " + getName());
 	}
 
 	@Override
 	public SchemaComponent getComponent() {
-		return attribute;
+		return this.attribute;
 	}
 
 	public String getDefaultValue() {
-		return defaultValue;
+		return this.defaultValue;
 	}
 
 	@Override
 	public String getDiagram() {
-		if (diagram == null) {
+		if (this.diagram == null) {
 			final AttributeGraph graph = new AttributeGraph(this);
-			diagram = graph.generate();
+			this.diagram = graph.generate();
 			setScaleDiagram(graph.scale());
 		}
-		return diagram;
+		return this.diagram;
 	}
 
 	public String getFixedValue() {
-		return fixedValue;
+		return this.fixedValue;
 	}
 
 	public String getForm() {
-		return form;
+		return this.form;
 	}
 
+	@Override
 	public String getHref() {
 		String href = "";
 		try {
 			if (getRef() != null) {
-
 				href = getHrefType();
 			} else {
 				href = super.getHref();
 			}
-//			return DitaTools.getHref(attribute.getQname(), DitaConstants.SUFFIX_ATTRIBUTE);
-		} catch (MalformedURLException e) {
+		} catch (final MalformedURLException e) {
 			LogManager.warn("Error al generar url del attribute " + getName(), e);
 		}
 		return href;
 	}
 
 	public QName getRef() {
-		return attribute.getRef();
+		return this.attribute.getRef();
 	}
 
 	/**
 	 * @return the simpleType
 	 */
 	public SimpleTypeModel getSimpleType() {
-		return simpleType;
+		return this.simpleType;
 	}
 
 	/**
@@ -94,22 +91,23 @@ public class AttributeModel extends AbstractComponentModel {
 	 */
 	@Override
 	public QName getType() {
-		if (attribute.getType() != null)
-			return attribute.getType();
-		return attribute.getRef();
+		if (this.attribute.getType() != null) {
+			return this.attribute.getType();
+		}
+		return this.attribute.getRef();
 	}
 
 	public String getUsage() {
-		return usage;
+		return this.usage;
 	}
 
 	private void init() {
-		defaultValue = attribute.getDefaultValue();
-		fixedValue = attribute.getFixedValue();
-		form = attribute.getForm();
-		usage = attribute.getUse();
-		if (attribute.getSimpleType() != null) {
-			simpleType = new SimpleTypeModel(attribute.getSimpleType());
+		this.defaultValue = this.attribute.getDefaultValue();
+		this.fixedValue = this.attribute.getFixedValue();
+		this.form = this.attribute.getForm();
+		this.usage = this.attribute.getUse();
+		if (this.attribute.getSimpleType() != null) {
+			this.simpleType = new SimpleTypeModel(this.attribute.getSimpleType());
 		}
 	}
 

@@ -33,46 +33,46 @@ public abstract class BasicCreate implements ICreate {
 	}
 
 	public String getContent() {
-		return content;
+		return this.content;
 	}
 
 	protected VelocityContext getContext() {
-		return context;
+		return this.context;
 	}
 
 	@Override
 	public String getFileName() {
-		if(fileName.length()>250) {
-			String ext = fileName.substring(fileName.lastIndexOf('.'));
-			setFileName(fileName.substring(0, 230)+hashCode()+ext);
+		if (this.fileName.length() > 250) {
+			final String ext = this.fileName.substring(this.fileName.lastIndexOf('.'));
+			setFileName(this.fileName.substring(0, 230) + hashCode() + ext);
 		}
-		return fileName;
+		return this.fileName;
 	}
 
 	@Override
 	public String getId() {
-		return id;
+		return this.id;
 	}
 
 	protected Template getTemplate() {
-		return template;
+		return this.template;
 	}
 
 	@Override
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
 
 	protected void init() {
-		template = Velocity.getTemplate(templateFile);
-		context = new VelocityContext();
-		context.put("id", getId());
-		context.put("title", getTitle());
+		this.template = Velocity.getTemplate(this.templateFile);
+		this.context = new VelocityContext();
+		this.context.put("id", getId());
+		this.context.put("title", getTitle());
 	}
 
 	public void loadContent(Annotation annotation) {
-		StringBuilder value = new StringBuilder();
-		if (annotation != null && annotation.getDocumentations() != null) {
+		final StringBuilder value = new StringBuilder();
+		if ((annotation != null) && (annotation.getDocumentations() != null)) {
 			for (final Documentation doc : annotation.getDocumentations()) {
 				if (doc.getSource() != null) {
 					value.append(doc.getSource() + ": ");
@@ -87,10 +87,10 @@ public abstract class BasicCreate implements ICreate {
 	}
 
 	protected void run(VelocityContext context) throws IOException {
-		
+
 		final File file = new File(Config.getOutputDir() + File.separator + getFileName());
 		file.getParentFile().mkdirs();
-		FileWriter fw = new FileWriter(file);
+		final FileWriter fw = new FileWriter(file);
 		BufferedWriter writer = null;
 		try {
 			writer = new BufferedWriter(fw);
@@ -98,11 +98,12 @@ public abstract class BasicCreate implements ICreate {
 				getTemplate().merge(context, writer);
 			}
 			writer.flush();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LogManager.warn("Problemas al crear el fichero", e);
 		} finally {
-			if (writer != null)
+			if (writer != null) {
 				writer.close();
+			}
 		}
 
 	}
@@ -120,7 +121,6 @@ public abstract class BasicCreate implements ICreate {
 			id = "id" + id;
 		}
 		this.id = TextTools.cleanNonAlfaNumeric(id, "_");
-//				id.replaceAll("\\s+", "_").replaceAll("{", "_").replaceAll("}", replacement);
 		setFileName(this.id + ".dita");
 	}
 

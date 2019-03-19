@@ -10,7 +10,6 @@ import com.mxgraph.model.mxCell;
 import com.mxgraph.model.mxGeometry;
 import com.mxgraph.util.mxConstants;
 import com.mxgraph.view.mxGraph;
-import com.predic8.schema.Element;
 import com.predic8.wsdl.Binding;
 import com.predic8.wsdl.Fault;
 import com.predic8.wsdl.Operation;
@@ -173,7 +172,7 @@ public class WSDLGraph extends AbstractGraph {
 	private mxCell createPortType(Object parent, PortType portType, int altura) {
 		final int alt = ((portType.getOperations().size() * 2) * altura);
 
-		mxCell portTypeCell = (mxCell) pts.get(portType.getName());
+		mxCell portTypeCell = (mxCell) this.pts.get(portType.getName());
 
 		if (portTypeCell == null) {
 			final Rectangle2D base = GraphTools.getTextSize(portType.getName());
@@ -189,7 +188,7 @@ public class WSDLGraph extends AbstractGraph {
 			for (final Operation operation : portType.getOperations()) {
 				y += createOperation(portTypeCell, operation, y, altura);
 			}
-			pts.put(portType.getName(), portTypeCell);
+			this.pts.put(portType.getName(), portTypeCell);
 		}
 		return portTypeCell;
 	}
@@ -201,15 +200,15 @@ public class WSDLGraph extends AbstractGraph {
 		getGraph().setCellsResizable(true);
 
 		final Object parent = getGraph().getDefaultParent();
-		final Rectangle2D base = GraphTools.getTextSize(service.getName());
+		final Rectangle2D base = GraphTools.getTextSize(this.service.getName());
 		final int altura = (int) (base.getHeight() + (base.getHeight() / 2));
 		final int width = (int) (base.getWidth() + ((base.getWidth() * 25) / 100));
 		setMaxWith(width);
 		setMaxWith2(width);
-		final int alt = (service.getPorts().size() * altura);
-		binds = new HashMap<>();
-		pts = new HashMap<>();
-		final mxCell ports = (mxCell) getGraph().insertVertex(parent, service.getName(), "", 100, 100, width, alt,
+		final int alt = (this.service.getPorts().size() * altura);
+		this.binds = new HashMap<>();
+		this.pts = new HashMap<>();
+		final mxCell ports = (mxCell) getGraph().insertVertex(parent, this.service.getName(), "", 100, 100, width, alt,
 				GraphTools.getStyle(false, true));
 
 		final mxCell bindingGroup = (mxCell) getGraph().createVertex(parent,
@@ -217,11 +216,11 @@ public class WSDLGraph extends AbstractGraph {
 				mxConstants.STYLE_AUTOSIZE + "=1;" + mxConstants.STYLE_RESIZABLE + "=1;"
 						+ mxConstants.STYLE_STROKE_OPACITY + "=0;" + mxConstants.STYLE_FILL_OPACITY + "=0;");
 		int y = 0;
-		final Object titulo = getGraph().insertVertex(ports, "title", service.getName(), 0, y, width, altura,
+		final Object titulo = getGraph().insertVertex(ports, "title", this.service.getName(), 0, y, width, altura,
 				GraphTools.getStyle(true, true, "BLUE"));
 		insertIcon((mxCell) titulo, DitaConstants.SUFFIX_SERVICE.toLowerCase(), altura);
 
-		for (final Port port : service.getPorts()) {
+		for (final Port port : this.service.getPorts()) {
 			final mxCell adrs = createPort(ports, port, altura);
 			final mxCell bind = createBinding(bindingGroup, port.getBinding());
 			getGraph().insertEdge(parent, "edge" + "_" + port.getName() + "_" + port.getBinding().getName(), "", adrs,
@@ -237,7 +236,7 @@ public class WSDLGraph extends AbstractGraph {
 		y = 15;
 		final mxGeometry g = ports.getGeometry();
 		bindingGroup.setGeometry(new mxGeometry(g.getX() + g.getWidth() + 50, g.getY() + 15, 80, g.getHeight()));
-		for (final Entry<String, Object> entry : binds.entrySet()) {
+		for (final Entry<String, Object> entry : this.binds.entrySet()) {
 			final mxCell c = (mxCell) entry.getValue();
 			c.setGeometry(new mxGeometry(15, y, 30, 30));
 			y += 80;
@@ -261,39 +260,41 @@ public class WSDLGraph extends AbstractGraph {
 	 * @return the binds
 	 */
 	protected HashMap<String, Object> getBinds() {
-		return binds;
+		return this.binds;
 	}
 
 	/**
 	 * @return the maxWith
 	 */
 	protected int getMaxWith() {
-		return maxWith;
+		return this.maxWith;
 	}
 
 	/**
 	 * @return the maxWith2
 	 */
 	protected int getMaxWith2() {
-		return maxWith2;
+		return this.maxWith2;
 	}
 
 	/**
 	 * @return the pts
 	 */
 	protected HashMap<String, Object> getPts() {
-		return pts;
+		return this.pts;
 	}
 
 	/**
-	 * @param maxWith the maxWith to set
+	 * @param maxWith
+	 *            the maxWith to set
 	 */
 	protected void setMaxWith(int maxWith) {
 		this.maxWith = maxWith;
 	}
 
 	/**
-	 * @param maxWith2 the maxWith2 to set
+	 * @param maxWith2
+	 *            the maxWith2 to set
 	 */
 	protected void setMaxWith2(int maxWith2) {
 		this.maxWith2 = maxWith2;

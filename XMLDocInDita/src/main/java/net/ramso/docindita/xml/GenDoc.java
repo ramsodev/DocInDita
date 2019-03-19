@@ -49,7 +49,7 @@ public class GenDoc {
 			URL url = null;
 			final File f = new File(file);
 			if (f.isDirectory()) {
-				if (first || Config.isR()) {
+				if (this.first || Config.isR()) {
 					urls.addAll(processFiles(FileTools.toString(f.listFiles())));
 				}
 			} else {
@@ -66,12 +66,12 @@ public class GenDoc {
 				}
 				urls.add(url);
 			}
-			first = false;
+			this.first = false;
 		}
 		return urls;
 	}
 
-	protected void processUrls(List<URL> urls) throws IOException{
+	protected void processUrls(List<URL> urls) throws IOException {
 		final List<References> parts = new ArrayList<>();
 		for (final URL url : urls) {
 			LogManager.info("Procesando url " + url.toExternalForm());

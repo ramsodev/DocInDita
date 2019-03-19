@@ -50,9 +50,9 @@ public class SimpleTypeModel extends AbstractComponentModel {
 
 	private String diagram;
 
-	private Union union;
+	private final Union union;
 
-	private SchemaList lista;
+	private final SchemaList lista;
 
 	private String listType;
 
@@ -63,136 +63,138 @@ public class SimpleTypeModel extends AbstractComponentModel {
 
 	public SimpleTypeModel(SimpleType type) {
 		super();
-		simpleType = type;
-		restriction = type.getRestriction();
-		union = type.getUnion();
-		lista = type.getList();
+		this.simpleType = type;
+		this.restriction = type.getRestriction();
+		this.union = type.getUnion();
+		this.lista = type.getList();
 		init();
 		LogManager.debug("Carga de SimpleType " + getName());
 	}
 
 	private void addValue(String value) {
 		if (getValues() == null) {
-			values = new ArrayList<>();
+			this.values = new ArrayList<>();
 		}
-		values.add(value);
+		this.values.add(value);
 
 	}
 
 	@Override
 	public SchemaComponent getComponent() {
-		return simpleType;
+		return this.simpleType;
 	}
 
 	/**
 	 * @return the dataType
 	 */
 	public String getDataType() {
-		return dataType;
+		return this.dataType;
 	}
 
 	/**
 	 * @return the decimals
 	 */
 	public int getDecimals() {
-		return decimals;
+		return this.decimals;
 	}
 
 	@Override
 	public String getDiagram() {
-		if (diagram == null) {
+		if (this.diagram == null) {
 			final SimpleTypeGraph graph = new SimpleTypeGraph(this);
-			diagram = graph.generate();
+			this.diagram = graph.generate();
 			setScaleDiagram(graph.scale());
 		}
-		return diagram;
+		return this.diagram;
 	}
 
 	@Override
 	public String getExternalHref() {
-		if (restriction.getBase().getNamespaceURI().equalsIgnoreCase(DitaConstants.XSD_NAMESPACE))
+		if (this.restriction.getBase().getNamespaceURI().equalsIgnoreCase(DitaConstants.XSD_NAMESPACE)) {
 			return "format=\"html\" scope=\"external\"";
+		}
 		return "";
 	}
 
 	@Override
 	public String getHrefType() throws MalformedURLException {
-		if (restriction.getBase().getNamespaceURI().equalsIgnoreCase(DitaConstants.XSD_NAMESPACE))
-			return DitaConstants.XSD_DOC_URI + restriction.getBase().getLocalPart();
-		return DitaTools.getHrefType(restriction.getBase());
+		if (this.restriction.getBase().getNamespaceURI().equalsIgnoreCase(DitaConstants.XSD_NAMESPACE)) {
+			return DitaConstants.XSD_DOC_URI + this.restriction.getBase().getLocalPart();
+		}
+		return DitaTools.getHrefType(this.restriction.getBase());
 	}
 
 	/**
 	 * @return the maxLength
 	 */
 	public int getMaxLength() {
-		return maxLength;
+		return this.maxLength;
 	}
 
 	/**
 	 * @return the maxValue
 	 */
 	public String getMaxValue() {
-		return maxValue;
+		return this.maxValue;
 	}
 
 	/**
 	 * @return the minLenght
 	 */
 	public int getMinLength() {
-		return minLength;
+		return this.minLength;
 	}
 
 	/**
 	 * @return the minValue
 	 */
 	public String getMinValue() {
-		return minValue;
+		return this.minValue;
 	}
 
 	/**
 	 * @return the pattern
 	 */
 	public String getPattern() {
-		return pattern;
+		return this.pattern;
 	}
 
 	/**
 	 * @return the size
 	 */
 	public int getSize() {
-		return size;
+		return this.size;
 	}
 
 	@Override
 	public QName getType() {
-		return restriction.getBase();
+		return this.restriction.getBase();
 	}
 
 	/**
 	 * @return the values
 	 */
 	public List<String> getValues() {
-		return values;
+		return this.values;
 	}
 
 	@SuppressWarnings("unchecked")
 	private void init() {
-		if (restriction != null) {
+		if (this.restriction != null) {
 			initRestriction();
 		}
-		if (lista != null) {
-			listType = lista.getItemType();
-			listSimpleType = new SimpleTypeModel(lista.getSimpleType());
+		if (this.lista != null) {
+			this.listType = this.lista.getItemType();
+			this.listSimpleType = new SimpleTypeModel(this.lista.getSimpleType());
 		}
-		if (union != null) {
-			unionRefs = union.getMemberTypes();
-			if (unionRefs.isEmpty()) {
-				Object ust = union.getSimpleTypes();
+		if (this.union != null) {
+			this.unionRefs = this.union.getMemberTypes();
+			if (this.unionRefs.isEmpty()) {
+				final Object ust = this.union.getSimpleTypes();
 				if (ust instanceof List<?>) {
-					unionSimpleTypes = new ArrayList<>();
-					for (SimpleType st : (List<SimpleType>) ust) {
-						unionSimpleTypes.add(new SimpleTypeModel(st));
+					this.unionSimpleTypes = new ArrayList<>();
+					for (final SimpleType st : (List<SimpleType>) ust) {
+						this.unionSimpleTypes.add(new SimpleTypeModel(st));
 					}
 				}
 			}
@@ -200,46 +202,46 @@ public class SimpleTypeModel extends AbstractComponentModel {
 	}
 
 	private void initRestriction() {
-		dataType = restriction.getBase().getLocalPart();
-		for (final Facet facet : restriction.getFacets()) {
+		this.dataType = this.restriction.getBase().getLocalPart();
+		for (final Facet facet : this.restriction.getFacets()) {
 			if (facet instanceof EnumerationFacet) {
 				addValue(facet.getValue());
 			} else if (facet instanceof FractionDigits) {
-				decimals = Integer.parseInt(facet.getValue());
+				this.decimals = Integer.parseInt(facet.getValue());
 			} else if (facet instanceof LengthFacet) {
-				size = Integer.parseInt(facet.getValue());
+				this.size = Integer.parseInt(facet.getValue());
 			} else if (facet instanceof MaxExclusiveFacet) {
-				maxInclusive = false;
-				maxValue = facet.getValue();
+				this.maxInclusive = false;
+				this.maxValue = facet.getValue();
 				setSizeFromMask(facet.getValue());
 			} else if (facet instanceof MaxInclusiveFacet) {
-				maxInclusive = true;
-				maxValue = facet.getValue();
+				this.maxInclusive = true;
+				this.maxValue = facet.getValue();
 				setSizeFromMask(facet.getValue());
 			} else if (facet instanceof MaxLengthFacet) {
-				maxLength = Integer.parseInt(facet.getValue());
-				if (maxLength > size) {
-					size = maxLength;
+				this.maxLength = Integer.parseInt(facet.getValue());
+				if (this.maxLength > this.size) {
+					this.size = this.maxLength;
 				}
 			} else if (facet instanceof MinExclusiveFacet) {
-				minInclusive = false;
-				minValue = facet.getValue();
+				this.minInclusive = false;
+				this.minValue = facet.getValue();
 				setSizeFromMask(facet.getValue());
 			} else if (facet instanceof MinInclusiveFacet) {
-				minInclusive = true;
-				minValue = facet.getValue();
+				this.minInclusive = true;
+				this.minValue = facet.getValue();
 				setSizeFromMask(facet.getValue());
 			} else if (facet instanceof MinLengthFacet) {
-				minLength = Integer.parseInt(facet.getValue());
-				if (minLength > size) {
-					size = minLength;
+				this.minLength = Integer.parseInt(facet.getValue());
+				if (this.minLength > this.size) {
+					this.size = this.minLength;
 				}
 			} else if (facet instanceof PatternFacet) {
-				pattern = facet.getValue();
+				this.pattern = facet.getValue();
 			} else if (facet instanceof TotalDigitsFacet) {
-				size = Integer.parseInt(facet.getValue());
+				this.size = Integer.parseInt(facet.getValue());
 			} else if (facet instanceof WhiteSpaceFacet) {
-				whiteSpaces = Boolean.parseBoolean(facet.getValue());
+				this.whiteSpaces = Boolean.parseBoolean(facet.getValue());
 			}
 		}
 
@@ -249,21 +251,21 @@ public class SimpleTypeModel extends AbstractComponentModel {
 	 * @return the maxInclusive
 	 */
 	public boolean isMaxInclusive() {
-		return maxInclusive;
+		return this.maxInclusive;
 	}
 
 	/**
 	 * @return the minInclusive
 	 */
 	public boolean isMinInclusive() {
-		return minInclusive;
+		return this.minInclusive;
 	}
 
 	/**
 	 * @return the whiteSpaces
 	 */
 	public boolean isWhiteSpaces() {
-		return whiteSpaces;
+		return this.whiteSpaces;
 	}
 
 	protected void setSizeFromMask(final String mask) {
@@ -279,36 +281,38 @@ public class SimpleTypeModel extends AbstractComponentModel {
 			sizes[1] = cuts[1].trim().length();
 			sizes[0] = cuts[0].trim().length() + sizes[1];
 		}
-		if (sizes[0] > size) {
-			size = sizes[0];
+		if (sizes[0] > this.size) {
+			this.size = sizes[0];
 		}
-		if (sizes[1] > decimals) {
-			decimals = sizes[1];
+		if (sizes[1] > this.decimals) {
+			this.decimals = sizes[1];
 		}
 	}
 
 	public BaseRestriction getRestriction() {
-		return restriction;
+		return this.restriction;
 	}
 
 	public String getListType() {
-		return listType;
+		return this.listType;
 	}
 
 	public List<QName> getUnionRefs() {
-		if (unionRefs == null)
-			unionRefs = new ArrayList<>();
-		return unionRefs;
+		if (this.unionRefs == null) {
+			this.unionRefs = new ArrayList<>();
+		}
+		return this.unionRefs;
 	}
 
 	public List<SimpleTypeModel> getUnionSimpleTypes() {
-		if (unionSimpleTypes == null)
-			unionSimpleTypes = new ArrayList<>();
-		return unionSimpleTypes;
+		if (this.unionSimpleTypes == null) {
+			this.unionSimpleTypes = new ArrayList<>();
+		}
+		return this.unionSimpleTypes;
 	}
 
 	public SimpleTypeModel getListSimpleType() {
-		return listSimpleType;
+		return this.listSimpleType;
 	}
 
 	public boolean isUnion() {
@@ -316,6 +320,6 @@ public class SimpleTypeModel extends AbstractComponentModel {
 	}
 
 	public boolean isList() {
-		return getListType() != null && !getListType().isEmpty();
+		return (getListType() != null) && !getListType().isEmpty();
 	}
 }

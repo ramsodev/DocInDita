@@ -10,11 +10,11 @@ import com.predic8.wadl.WADLElement;
 
 public class MethodModel extends AbstracWadlModel {
 
-	private List<Method> methods;
+	private final List<Method> methods;
 	private List<ParameterModel> requestParams = new ArrayList<>();
-	private List<ParameterModel> responseParams = new ArrayList<>();
-	private List<String> requestMediaType = new ArrayList<>();
-	private List<String> responseMediaType = new ArrayList<>();
+	private final List<ParameterModel> responseParams = new ArrayList<>();
+	private final List<String> requestMediaType = new ArrayList<>();
+	private final List<String> responseMediaType = new ArrayList<>();
 
 	public MethodModel(List<Method> methods, List<ParameterModel> parms) {
 		super();
@@ -24,30 +24,30 @@ public class MethodModel extends AbstracWadlModel {
 	}
 
 	private void init() {
-		for (Method method : methods) {
+		for (final Method method : this.methods) {
 			if (method.getRequest() != null) {
-				for (Param param : method.getRequest().getParams()) {
-					requestParams.add(new ParameterModel(param));
+				for (final Param param : method.getRequest().getParams()) {
+					this.requestParams.add(new ParameterModel(param));
 				}
-				for (Representation representation : method.getRequest().getRepresentations()) {
-					for (Param param : representation.getParams()) {
-						requestParams.add(new ParameterModel(param));
+				for (final Representation representation : method.getRequest().getRepresentations()) {
+					for (final Param param : representation.getParams()) {
+						this.requestParams.add(new ParameterModel(param));
 					}
-					if (representation.getMediaType() != null && !representation.getMediaType().isEmpty()) {
-						requestMediaType.add(representation.getMediaType());
+					if ((representation.getMediaType() != null) && !representation.getMediaType().isEmpty()) {
+						this.requestMediaType.add(representation.getMediaType());
 					}
 				}
 			}
 			if (method.getResponse() != null) {
-				for (Param param : method.getResponse().getParams()) {
-					responseParams.add(new ParameterModel(param));
+				for (final Param param : method.getResponse().getParams()) {
+					this.responseParams.add(new ParameterModel(param));
 				}
-				for (Representation representation : method.getResponse().getRepresentations()) {
-					for (Param param : representation.getParams()) {
-						responseParams.add(new ParameterModel(param));
+				for (final Representation representation : method.getResponse().getRepresentations()) {
+					for (final Param param : representation.getParams()) {
+						this.responseParams.add(new ParameterModel(param));
 					}
-					if (representation.getMediaType() != null && !representation.getMediaType().isEmpty()) {
-						responseMediaType.add(representation.getMediaType());
+					if ((representation.getMediaType() != null) && !representation.getMediaType().isEmpty()) {
+						this.responseMediaType.add(representation.getMediaType());
 					}
 				}
 			}
@@ -56,15 +56,15 @@ public class MethodModel extends AbstracWadlModel {
 
 	@Override
 	public WADLElement getElement() {
-		if (!methods.isEmpty()) {
-			return methods.get(0);
+		if (!this.methods.isEmpty()) {
+			return this.methods.get(0);
 		}
 		return new Method();
 	}
 
 	public String getRequestDoc() {
-		StringBuilder content = new StringBuilder();
-		for (Method method : methods) {
+		final StringBuilder content = new StringBuilder();
+		for (final Method method : this.methods) {
 			if (method.getRequest() != null) {
 				content.append(getDoc(method.getRequest().getDocs()));
 			}
@@ -73,8 +73,8 @@ public class MethodModel extends AbstracWadlModel {
 	}
 
 	public String getResponseDoc() {
-		StringBuilder content = new StringBuilder();
-		for (Method method : methods) {
+		final StringBuilder content = new StringBuilder();
+		for (final Method method : this.methods) {
 			if (method.getResponse() != null) {
 				content.append(getDoc(method.getResponse().getDocs()));
 			}
@@ -83,11 +83,11 @@ public class MethodModel extends AbstracWadlModel {
 	}
 
 	public List<ParameterModel> getRequestParams() {
-		return requestParams;
+		return this.requestParams;
 	}
 
 	public List<ParameterModel> getResponseParams() {
-		return responseParams;
+		return this.responseParams;
 	}
 
 	public boolean isRequest() {
@@ -99,11 +99,11 @@ public class MethodModel extends AbstracWadlModel {
 	}
 
 	public List<String> getRequestMediaType() {
-		return requestMediaType;
+		return this.requestMediaType;
 	}
 
 	public List<String> getResponseMediaType() {
-		return responseMediaType;
+		return this.responseMediaType;
 	}
 
 }

@@ -12,9 +12,9 @@ public abstract class AbstracWadlModel implements IWadlModel {
 	}
 
 	protected String getDoc(List<Doc> docs) {
-		StringBuilder content = new StringBuilder();
+		final StringBuilder content = new StringBuilder();
 		if (docs != null) {
-			for (Doc doc : docs) {
+			for (final Doc doc : docs) {
 				content.append(doc.getContent());
 			}
 		}

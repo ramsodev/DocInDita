@@ -81,8 +81,9 @@ public class Config extends ConfigurationManager {
 		outputDir = getProperty(DitaConstants.CMD_OUTDIR);
 		if (outputDir != null) {
 			final File f = new File(outputDir);
-			if (f.exists() && !f.isDirectory())
+			if (f.exists() && !f.isDirectory()) {
 				throw new ConfigurationException("El directorio de salida existe y no es un directorio");
+			}
 		} else {
 			outputDir = getProperty(DitaConstants.OUTDIR_PROPERTY, DitaConstants.OUTDIR_DEFAULT);
 		}

@@ -22,9 +22,9 @@ public class CreateMethod extends BasicCreate {
 	}
 
 	public String create(List<Method> methods, Resource resource) throws IOException {
-		
+
 		getContext().put("content", getContent());
-		getContext().put("method", new MethodModel(methods,getParams(resource.getParams())));
+		getContext().put("method", new MethodModel(methods, getParams(resource.getParams())));
 		getContext().put("tools", DitaTools.class);
 		getContext().put("text", BundleManager.class);
 		run(getContext());
@@ -36,7 +36,7 @@ public class CreateMethod extends BasicCreate {
 	 */
 	@Override
 	public String getContent() {
-		return content;
+		return this.content;
 	}
 
 	/**
@@ -49,9 +49,9 @@ public class CreateMethod extends BasicCreate {
 	}
 
 	private List<ParameterModel> getParams(List<Param> params) {
-		List<ParameterModel> parameters = new ArrayList<>();
+		final List<ParameterModel> parameters = new ArrayList<>();
 		if (params != null) {
-			for (Param param : params) {
+			for (final Param param : params) {
 				parameters.add(new ParameterModel(param));
 			}
 		}

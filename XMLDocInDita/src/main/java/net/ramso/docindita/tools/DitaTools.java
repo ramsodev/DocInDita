@@ -17,7 +17,6 @@ import com.predic8.schema.ComplexType;
 import com.predic8.schema.Element;
 import com.predic8.schema.Group;
 import com.predic8.schema.Schema;
-import com.predic8.schema.SchemaComponent;
 import com.predic8.schema.SimpleType;
 import com.predic8.schema.TypeDefinition;
 import com.predic8.wsdl.BindingOperation;
@@ -41,8 +40,9 @@ public class DitaTools {
 	}
 
 	public static String getExternalHref(QName type) {
-		if (type.getNamespaceURI().equalsIgnoreCase(DitaConstants.XSD_NAMESPACE))
+		if (type.getNamespaceURI().equalsIgnoreCase(DitaConstants.XSD_NAMESPACE)) {
 			return "format=\"html\" scope=\"external\"";
+		}
 		return "";
 	}
 
@@ -91,7 +91,7 @@ public class DitaTools {
 		final String idSchema = DitaTools.getSchemaId(element.getNamespaceUri());
 		return idPrefix.trim() + idSchema + "_" + getHref(true, element.getName() + DitaConstants.SUFFIX_ELEMENT);
 	}
-	
+
 	public static String getHref(TypeDefinition type) throws MalformedURLException {
 		String suffix = DitaConstants.SUFFIX_TYPE;
 		if (type instanceof SimpleType) {
@@ -103,13 +103,15 @@ public class DitaTools {
 	}
 
 	public static String getHref(QName qname, String suffix) throws MalformedURLException {
-		if (qname.getNamespaceURI().equalsIgnoreCase(DitaConstants.XSD_NAMESPACE))
+		if (qname.getNamespaceURI().equalsIgnoreCase(DitaConstants.XSD_NAMESPACE)) {
 			return DitaConstants.XSD_DOC_URI + qname.getLocalPart();
+		}
 		final String idSchema = DitaTools.getSchemaId(qname.getNamespaceURI());
 		return idPrefix.trim() + idSchema + "_" + getHref(true, qname.getLocalPart() + suffix);
 	}
 
 	public static String getHref(QName qname) throws MalformedURLException {
+
 		return getHref(qname, getSuffixType(qname));
 
 	}
@@ -119,6 +121,9 @@ public class DitaTools {
 	}
 
 	public static String getHrefType(QName type) throws MalformedURLException {
+		if (type.getNamespaceURI().equalsIgnoreCase(DitaConstants.XSD_NAMESPACE)) {
+			return DitaConstants.XSD_DOC_URI + type.getLocalPart();
+		}
 		final String idSchema = DitaTools.getSchemaId(type.getNamespaceURI());
 		return TextTools.cleanNonAlfaNumeric(
 				idPrefix.trim() + idSchema + "_" + type.getLocalPart() + getSuffixType(type), "_") + ".dita";
@@ -136,7 +141,7 @@ public class DitaTools {
 			try {
 				url = new URL(uri);
 				name = url.getPath().substring(url.getPath().lastIndexOf('/') + 1);
-			} catch (MalformedURLException e) {
+			} catch (final MalformedURLException e) {
 				name = uri.substring(uri.lastIndexOf('/') + 1);
 			}
 			if (name.contains("?")) {
@@ -150,9 +155,9 @@ public class DitaTools {
 
 	public static String getSchemaId(String uri) throws MalformedURLException {
 		URL url = null;
-		if ((uri == null) || uri.isEmpty())
+		if ((uri == null) || uri.isEmpty()) {
 			return "noNamespace";
-		else if (uri.startsWith("urn")) {
+		} else if (uri.startsWith("urn")) {
 			final URI urn = URI.create(uri);
 			return urn.getSchemeSpecificPart().replaceAll("\\.", "").replaceAll("\\:", "");
 		} else {
@@ -177,32 +182,33 @@ public class DitaTools {
 			} catch (final Exception e) {
 				LogManager.debug("No Encuentra el tipo");
 			} finally {
-				if (td instanceof SimpleType)
+				if (td instanceof SimpleType) {
 					value = DitaConstants.SUFFIX_SIMPLETYPE;
-				else if (td instanceof ComplexType)
+				} else if (td instanceof ComplexType) {
 					value = DitaConstants.SUFFIX_COMPLEXTYPE;
-				else {
+				} else {
 
 					final Attribute a = schema.getAttribute(type);
-					if (a != null)
+					if (a != null) {
 						value = DitaConstants.SUFFIX_ATTRIBUTE;
-					else {
+					} else {
 						final AttributeGroup g = schema.getAttributeGroup(type);
-						if (g != null)
+						if (g != null) {
 							value = DitaConstants.SUFFIX_ATTRIBUTEGROUP;
-						else {
+						} else {
 							final Group gr = schema.getGroup(type);
-							if (gr != null)
+							if (gr != null) {
 								value = DitaConstants.SUFFIX_GROUP;
-							else {
+							} else {
 								Element el = null;
 								try {
 									el = schema.getElement(type);
 								} catch (final Exception e) {
 									LogManager.debug("No encuentra el elemento");
 								}
-								if (el != null)
+								if (el != null) {
 									value = DitaConstants.SUFFIX_ELEMENT;
+								}
 							}
 						}
 					}
@@ -230,10 +236,10 @@ public class DitaTools {
 	}
 
 	public static void setIdPrefix(String idPrefix) {
-		if (!idPrefix.endsWith("_"))
+		if (!idPrefix.endsWith("_")) {
 			idPrefix = idPrefix.trim() + "_";
+		}
 		DitaTools.idPrefix = idPrefix;
 	}
 
-	
 }

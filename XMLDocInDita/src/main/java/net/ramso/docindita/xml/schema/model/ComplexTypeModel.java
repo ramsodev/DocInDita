@@ -29,7 +29,7 @@ public class ComplexTypeModel extends AbstractComplexContentModel {
 
 	public ComplexTypeModel(ComplexType type) {
 		super();
-		complexType = type;
+		this.complexType = type;
 		init();
 		LogManager.debug("Carga de ComplexType " + getName());
 	}
@@ -37,10 +37,10 @@ public class ComplexTypeModel extends AbstractComplexContentModel {
 	private void addAttributeGroups(List<AttributeGroup> attrGroups) {
 		if (attrGroups != null) {
 			for (final AttributeGroup atr : attrGroups) {
-				if (attributeGroups == null) {
-					attributeGroups = new ArrayList<>();
+				if (this.attributeGroups == null) {
+					this.attributeGroups = new ArrayList<>();
 				}
-				attributeGroups.add(new AttributeGroupModel(atr));
+				this.attributeGroups.add(new AttributeGroupModel(atr));
 			}
 		}
 
@@ -49,10 +49,10 @@ public class ComplexTypeModel extends AbstractComplexContentModel {
 	private void addAttributes(List<Attribute> attrs) {
 		if (attrs != null) {
 			for (final Attribute atr : attrs) {
-				if (attributes == null) {
-					attributes = new ArrayList<>();
+				if (this.attributes == null) {
+					this.attributes = new ArrayList<>();
 				}
-				attributes.add(new AttributeModel(atr));
+				this.attributes.add(new AttributeModel(atr));
 			}
 		}
 
@@ -62,20 +62,20 @@ public class ComplexTypeModel extends AbstractComplexContentModel {
 	 * @return the attributeGroups
 	 */
 	public List<AttributeGroupModel> getAttributeGroups() {
-		return attributeGroups;
+		return this.attributeGroups;
 	}
 
 	/**
 	 * @return the attributes
 	 */
 	public List<AttributeModel> getAttributes() {
-		return attributes;
+		return this.attributes;
 	}
 
 	@Override
 	public String getCode() {
 		try {
-			return complexType.getAsString().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+			return this.complexType.getAsString().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 		} catch (final Exception e) {
 			return "";
 		}
@@ -83,7 +83,7 @@ public class ComplexTypeModel extends AbstractComplexContentModel {
 
 	@Override
 	public SchemaComponent getComponent() {
-		return complexType;
+		return this.complexType;
 	}
 
 	@Override
@@ -94,16 +94,16 @@ public class ComplexTypeModel extends AbstractComplexContentModel {
 
 	@Override
 	public String getDiagram() {
-		if (diagram == null) {
+		if (this.diagram == null) {
 			final ComplexTypeGraph graph = new ComplexTypeGraph(this);
-			diagram = graph.generate();
+			this.diagram = graph.generate();
 			setScaleDiagram(graph.scale());
 		}
-		return diagram;
+		return this.diagram;
 	}
 
 	public String getNameSpace() {
-		return complexType.getNamespaceUri();
+		return this.complexType.getNamespaceUri();
 	}
 
 	@Override
@@ -112,7 +112,7 @@ public class ComplexTypeModel extends AbstractComplexContentModel {
 	}
 
 	public QName getSuper() {
-		return superType;
+		return this.superType;
 	}
 
 	@Override
@@ -122,21 +122,21 @@ public class ComplexTypeModel extends AbstractComplexContentModel {
 	}
 
 	private void init() {
-		contentType = DitaConstants.SUFFIX_COMPLEXTYPE;
-		final Sequence s = complexType.getSequence();
+		this.contentType = DitaConstants.SUFFIX_COMPLEXTYPE;
+		final Sequence s = this.complexType.getSequence();
 		try {
-			setSuper(complexType.getSuperTypes());
-			addAttributes(complexType.getAttributes());
-			addAttributeGroups(complexType.getAttributeGroups());
+			setSuper(this.complexType.getSuperTypes());
+			addAttributes(this.complexType.getAttributes());
+			addAttributeGroups(this.complexType.getAttributeGroups());
 		} catch (final Exception e) {
-			superType = null;
+			this.superType = null;
 		}
 
-		if ((superType != null) || (s == null)) {
-			procesContent(complexType.getModel());
+		if ((this.superType != null) || (s == null)) {
+			procesContent(this.complexType.getModel());
 		}
 		if (s != null) {
-			procesModel(complexType.getModel());
+			procesModel(this.complexType.getModel());
 		}
 	}
 
@@ -175,9 +175,9 @@ public class ComplexTypeModel extends AbstractComplexContentModel {
 	}
 
 	private void setSuper(List<QName> supers) {
-		superType = null;
+		this.superType = null;
 		if ((supers != null) && (!supers.isEmpty())) {
-			superType = supers.get(0);
+			this.superType = supers.get(0);
 		}
 	}
 

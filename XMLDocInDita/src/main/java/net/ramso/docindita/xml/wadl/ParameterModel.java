@@ -8,7 +8,7 @@ import groovy.xml.QName;
 
 public class ParameterModel extends AbstracWadlModel {
 
-	private Param parameter;
+	private final Param parameter;
 
 	public ParameterModel(Param parameter) {
 		super();
@@ -17,45 +17,45 @@ public class ParameterModel extends AbstracWadlModel {
 	}
 
 	public boolean isRequired() {
-		return parameter.isRequired();
+		return this.parameter.isRequired();
 	}
 
 	public boolean isRepeting() {
-		return parameter.isRepeating();
+		return this.parameter.isRepeating();
 	}
 
 	public String getName() {
-		return parameter.getName();
+		return this.parameter.getName();
 	}
 
 	public String getStyle() {
-		return parameter.getStyle() != null ? parameter.getStyle() : new String();
+		return this.parameter.getStyle() != null ? this.parameter.getStyle() : "";
 	}
 
 	public QName getType() {
 
-		if (parameter.getType() instanceof QName) {
-			return (QName) parameter.getType();
-		} else if (parameter.getType() == null) {
+		if (this.parameter.getType() instanceof QName) {
+			return (QName) this.parameter.getType();
+		} else if (this.parameter.getType() == null) {
 			return QName.valueOf("");
 		}
-		return QName.valueOf(parameter.getType().toString());
+		return QName.valueOf(this.parameter.getType().toString());
 	}
 
 	public String getDefault() {
-		return parameter.getDfault() != null ? parameter.getDfault() : new String();
+		return this.parameter.getDfault() != null ? this.parameter.getDfault() : "";
 	}
 
 	public String getFixed() {
-		return parameter.getFixed() != null ? parameter.getFixed() : new String();
+		return this.parameter.getFixed() != null ? this.parameter.getFixed() : "";
 	}
 
 	public String getOptions() {
 		String result = "";
-		if (parameter.getOptions() != null) {
-			StringBuilder content = new StringBuilder();
+		if (this.parameter.getOptions() != null) {
+			final StringBuilder content = new StringBuilder();
 			boolean coma = false;
-			for (Option option : parameter.getOptions()) {
+			for (final Option option : this.parameter.getOptions()) {
 				if (coma) {
 					content.append(", ");
 				} else {
@@ -70,7 +70,7 @@ public class ParameterModel extends AbstracWadlModel {
 
 	@Override
 	public WADLElement getElement() {
-		return parameter;
+		return this.parameter;
 	}
 
 }

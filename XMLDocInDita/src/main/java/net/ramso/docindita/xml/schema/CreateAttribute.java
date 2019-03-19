@@ -23,7 +23,7 @@ public class CreateAttribute extends BasicCreate {
 	}
 
 	public References create(Attribute attribute) throws IOException {
-		this.child  = false;
+		this.child = false;
 		return create(new AttributeModel(attribute), attribute.getName());
 	}
 
@@ -32,20 +32,20 @@ public class CreateAttribute extends BasicCreate {
 	}
 
 	public References create(AttributeModel model, String name) throws IOException {
-		setId( idParent + "_" + name + DitaConstants.SUFFIX_ATTRIBUTE);
+		setId(this.idParent + "_" + name + DitaConstants.SUFFIX_ATTRIBUTE);
 		setTitle("Attribute " + name);
 		setContent(model.getDoc());
 		model.setFileName(getFileName());
 		init();
-		
-		References ref = new References(getFileName());
+
+		final References ref = new References(getFileName());
 		if (model.getSimpleType() != null) {
-			CreateSimpleType cs = new CreateSimpleType(getId());
+			final CreateSimpleType cs = new CreateSimpleType(getId());
 			ref.addChild(cs.create(model.getSimpleType(), name));
 		}
 		getContext().put("content", getContent());
 		getContext().put("attribute", model);
-		getContext().put("child", child);
+		getContext().put("child", this.child);
 		run(getContext());
 		return ref;
 	}

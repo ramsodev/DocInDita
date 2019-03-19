@@ -18,7 +18,7 @@ public class ChoiceModel extends AbstractComplexContentModel {
 	@Override
 	public SchemaComponent getComponent() {
 
-		return choice;
+		return this.choice;
 	}
 
 	@Override
@@ -33,7 +33,7 @@ public class ChoiceModel extends AbstractComplexContentModel {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.ramso.doc.dita.xml.schema.model.AbstractComponentModel#getName()
 	 */
 	@Override
@@ -57,8 +57,8 @@ public class ChoiceModel extends AbstractComplexContentModel {
 	}
 
 	private void init() {
-		contentType = DitaConstants.CHOICE;
-		procesChoice(choice);
+		this.contentType = DitaConstants.CHOICE;
+		procesChoice(this.choice);
 
 	}
 

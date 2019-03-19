@@ -44,18 +44,18 @@ public class GroupGraph extends AbstractXmlGraph {
 
 	protected void addCellType(mxCell cell) {
 		if (getCellTypes() == null) {
-			cellTypes = new ArrayList<>();
+			this.cellTypes = new ArrayList<>();
 		}
-		typeGroup.insert(cell);
+		this.typeGroup.insert(cell);
 		getCellTypes().add(cell);
 	}
 
 	private void addIconColumn() {
-		iconsColumn++;
+		this.iconsColumn++;
 	}
 
-	private void apppendContent(mxCell parent, mxCell iconParent, List<IComplexContentModel> elements,
-			int[] widths, int height) {
+	private void apppendContent(mxCell parent, mxCell iconParent, List<IComplexContentModel> elements, int[] widths,
+			int height) {
 		final int x = height + (height / 2);
 		for (final IComplexContentModel element : elements) {
 			if (element.isElement()) {
@@ -74,7 +74,7 @@ public class GroupGraph extends AbstractXmlGraph {
 						getGraph().insertEdge(getGraph().getDefaultParent(), "", "", cellLine, cellType,
 								GraphTools.getOrtogonalEdgeStyle(true));
 					}
-					contentPosition += height;
+					this.contentPosition += height;
 					final mxGeometry g = cellLine.getGeometry();
 					g.setTerminalPoint(new mxPoint(0, g.getHeight() / 2), false);
 					g.setTerminalPoint(new mxPoint(g.getWidth(), g.getHeight() / 2), true);
@@ -94,7 +94,7 @@ public class GroupGraph extends AbstractXmlGraph {
 					}
 
 					final mxGeometry g = cellLine.getGeometry();
-					contentPosition += g.getHeight();
+					this.contentPosition += g.getHeight();
 					g.setX(x);
 					g.setTerminalPoint(new mxPoint(0, g.getHeight() / 2), false);
 					g.setTerminalPoint(new mxPoint(g.getWidth(), g.getHeight() / 2), true);
@@ -118,16 +118,16 @@ public class GroupGraph extends AbstractXmlGraph {
 	}
 
 	public mxCell createGroupCell(mxCell parent) {
-		return createGroupCell(parent, group.getName());
+		return createGroupCell(parent, this.group.getName());
 	}
 
 	public mxCell createGroupCell(mxCell parent, int x, int y, int width, int height) {
 		final int[] sizes = getSizes();
-		return createGroupCell(parent, group.getName(), x, y, width, height, sizes);
+		return createGroupCell(parent, this.group.getName(), x, y, width, height, sizes);
 	}
 
 	public mxCell createGroupCell(mxCell parent, int x, int y, int width, int height, int[] sizes) {
-		return createGroupCell(parent, group.getName(), x, y, width, height, sizes);
+		return createGroupCell(parent, this.group.getName(), x, y, width, height, sizes);
 	}
 
 	public mxCell createGroupCell(mxCell parent, String name) {
@@ -155,17 +155,18 @@ public class GroupGraph extends AbstractXmlGraph {
 		super.insertIcon(titulo, DitaConstants.SUFFIX_GROUP.toLowerCase(), height);
 		y = height;
 		width -= 6;
-		if (!group.getElements().isEmpty()) {
-			final mxCell subCell = (mxCell) getGraph().insertVertex(cell, group.getName() + DitaConstants.SUFFIX_GROUP,
-					"", x, y, width, height, GraphTools.getStyle(false, true));
-			contentPosition = 0;
+		if (!this.group.getElements().isEmpty()) {
+			final mxCell subCell = (mxCell) getGraph().insertVertex(cell,
+					this.group.getName() + DitaConstants.SUFFIX_GROUP, "", x, y, width, height,
+					GraphTools.getStyle(false, true));
+			this.contentPosition = 0;
 			if (isAddType()) {
-				typeGroup = (mxCell) getGraph().createVertex(parent,
+				this.typeGroup = (mxCell) getGraph().createVertex(parent,
 						GraphConstants.EXCLUDE_PREFIX_GROUP + DitaConstants.SUFFIX_TYPE, "", 100, 100, 300, 0,
 						mxConstants.STYLE_AUTOSIZE + "=1;" + mxConstants.STYLE_RESIZABLE + "=1;"
 								+ mxConstants.STYLE_STROKE_OPACITY + "=0;" + mxConstants.STYLE_FILL_OPACITY + "=0;");
 			}
-			apppendContent(subCell, null, group.getElements(), sizes, height);
+			apppendContent(subCell, null, this.group.getElements(), sizes, height);
 			width = (int) resize(subCell, sizes);
 			subCell.getGeometry().setWidth(width);
 			cell.getGeometry().setHeight(height + subCell.getGeometry().getHeight());
@@ -177,7 +178,7 @@ public class GroupGraph extends AbstractXmlGraph {
 
 	@Override
 	public String generate() {
-		addType = true;
+		this.addType = true;
 		setGraph(new mxGraph());
 		getGraph().setAutoSizeCells(true);
 		getGraph().setCellsResizable(true);
@@ -185,36 +186,36 @@ public class GroupGraph extends AbstractXmlGraph {
 		final mxCell complexTypeCell = createGroupCell(parent);
 		getGraph().addCell(complexTypeCell);
 		if (isAddType()) {
-			getGraph().addCell(typeGroup);
+			getGraph().addCell(this.typeGroup);
 		}
 		process(getGraph(), Config.getOutputDir());
 		return getFileName();
 	}
 
 	protected List<mxCell> getCellTypes() {
-		return cellTypes;
+		return this.cellTypes;
 	}
 
 	protected Object[] getCellTypesArray() {
-		if (cellTypes == null) {
-			cellTypes = new ArrayList<>();
+		if (this.cellTypes == null) {
+			this.cellTypes = new ArrayList<>();
 		}
-		return cellTypes.toArray();
+		return this.cellTypes.toArray();
 	}
 
 	protected int getContentPosition() {
-		return contentPosition;
+		return this.contentPosition;
 	}
 
 	protected int getIconsColumn() {
-		return iconsColumn;
+		return this.iconsColumn;
 	}
 
 	/**
 	 * @return the maxWidth
 	 */
 	protected int getMaxWidth() {
-		return maxWidth;
+		return this.maxWidth;
 	}
 
 	private int[] getSize(ElementModel element) {
@@ -242,7 +243,7 @@ public class GroupGraph extends AbstractXmlGraph {
 
 	private int[] getSizes() {
 		final int[] sizes = { 0, 0 };
-		final int[] tempSizes = getSizes(group.getElements());
+		final int[] tempSizes = getSizes(this.group.getElements());
 		if (tempSizes[0] > sizes[0]) {
 			sizes[0] = tempSizes[0];
 		}
@@ -344,9 +345,9 @@ public class GroupGraph extends AbstractXmlGraph {
 	private mxCell inserType(ElementModel element) {
 		mxCell type = null;
 		if (isAddType()) {
-			final mxCell parent = typeGroup;
+			final mxCell parent = this.typeGroup;
 			final int x = 0;
-			int y = (int) typeGroup.getGeometry().getHeight();
+			int y = (int) this.typeGroup.getGeometry().getHeight();
 			y += 21;
 
 			if (element.getType() != null) {
@@ -367,14 +368,14 @@ public class GroupGraph extends AbstractXmlGraph {
 						x, y);
 			}
 			if (type != null) {
-				typeGroup.getGeometry().setHeight(y + type.getGeometry().getHeight());
+				this.typeGroup.getGeometry().setHeight(y + type.getGeometry().getHeight());
 			}
 		}
 		return type;
 	}
 
 	protected boolean isAddType() {
-		return addType;
+		return this.addType;
 	}
 
 	private double resize(mxCell cell, int[] sizes) {
@@ -430,7 +431,7 @@ public class GroupGraph extends AbstractXmlGraph {
 	}
 
 	private void setMaxWidth(int width) {
-		maxWidth = width;
+		this.maxWidth = width;
 
 	}
 

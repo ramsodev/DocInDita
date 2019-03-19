@@ -30,8 +30,9 @@ public class GenerateWsdl {
 
 	private References findRef(String idSchema, ArrayList<References> index) {
 		for (final References ref : index) {
-			if (ref.getId().equalsIgnoreCase(idSchema))
+			if (ref.getId().equalsIgnoreCase(idSchema)) {
 				return ref;
+			}
 		}
 		return null;
 	}
@@ -58,7 +59,7 @@ public class GenerateWsdl {
 		}
 		final Definitions desc = parser.parse(ctx);
 		String content = "Definición del Servicio Web " + fileName;
-		if (desc.getDocumentation() != null && !desc.getDocumentation().getContent().isEmpty()) {
+		if ((desc.getDocumentation() != null) && !desc.getDocumentation().getContent().isEmpty()) {
 			content = desc.getDocumentation().getContent().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 		}
 
@@ -74,7 +75,7 @@ public class GenerateWsdl {
 					"Documentacion del Servicio " + service.getName(), content);
 			cc.setDiagram(graph.generate());
 			final References chapterService = new References(cc.create());
-			CreatePorts ce = new CreatePorts(service.getName());
+			final CreatePorts ce = new CreatePorts(service.getName());
 			chapterService.addChild(new References(ce.create(service.getPorts())));
 			content = "Operaciones del servicio " + service.getName();
 

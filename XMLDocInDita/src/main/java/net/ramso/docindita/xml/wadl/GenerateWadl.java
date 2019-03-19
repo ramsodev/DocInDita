@@ -1,17 +1,12 @@
 package net.ramso.docindita.xml.wadl;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.apache.commons.collections.map.HashedMap;
 
 import com.predic8.schema.Schema;
 import com.predic8.wadl.Application;
@@ -60,15 +55,15 @@ public class GenerateWadl {
 		}
 		final ArrayList<References> index = new ArrayList<>();
 
-		Application app = parser.parse(ctx);
+		final Application app = parser.parse(ctx);
 
-		for (Resources resource : app.getRscss()) {
-			String name = DitaTools.getName(resource.getBase());
-			String content = BundleManager.getString("wadl.resources.basedir", resource.getBase()) + "\n"
+		for (final Resources resource : app.getRscss()) {
+			final String name = DitaTools.getName(resource.getBase());
+			final String content = BundleManager.getString("wadl.resources.basedir", resource.getBase()) + "\n"
 					+ getDoc(resource.getDocs());
-			CreatePortada cc = new CreatePortada(fileName + "_" + name + DitaConstants.SUFFIX_RESOURCE + "s",
+			final CreatePortada cc = new CreatePortada(fileName + "_" + name + DitaConstants.SUFFIX_RESOURCE + "s",
 					BundleManager.getString("wadl.resources.title", name), content);
-			References chapter = new References(cc.create());
+			final References chapter = new References(cc.create());
 			chapter.getChilds().addAll(createResources(resource.getResources(), fileName));
 
 			index.add(chapter);
@@ -98,7 +93,7 @@ public class GenerateWadl {
 			if ((title == null) || title.isEmpty()) {
 				title = "Documentación  del WADL " + fileName;
 			}
-			String description = Config.getDescription();
+			final String description = Config.getDescription();
 
 			final CreateBookMap cb = new CreateBookMap(id, title, description);
 			cb.create(index);
@@ -114,24 +109,24 @@ public class GenerateWadl {
 	}
 
 	private List<References> createResources(List<Resource> resources, String prefix) throws IOException {
-		List<References> index = new ArrayList<>();
-		for (Resource resource : resources) {
+		final List<References> index = new ArrayList<>();
+		for (final Resource resource : resources) {
 			String name = DitaTools.getName(resource.getPath());
-			if (name == null || name.isEmpty()) {
+			if ((name == null) || name.isEmpty()) {
 				name = resource.getPath();
 			}
-			Map<String, List<Method>> ms = new HashMap<>();
-			for (Method method : resource.getMethods()) {
+			final Map<String, List<Method>> ms = new HashMap<>();
+			for (final Method method : resource.getMethods()) {
 				if (ms.containsKey(method.getName())) {
 					ms.get(method.getName()).add(method);
 				} else {
-					List<Method> m = new ArrayList<>();
+					final List<Method> m = new ArrayList<>();
 					m.add(method);
 					ms.put(method.getName(), m);
 				}
 			}
-			for (Entry<String, List<Method>> entry : ms.entrySet()) {
-				CreateMethod cm = new CreateMethod(
+			for (final Entry<String, List<Method>> entry : ms.entrySet()) {
+				final CreateMethod cm = new CreateMethod(
 						prefix + "_" + name + "_" + entry.getKey() + DitaConstants.SUFFIX_RESOURCE_METHOD,
 						entry.getKey() + " " + resource.getPath(), getDocs(entry.getValue()));
 				index.add(new References(cm.create(entry.getValue(), resource)));
@@ -143,24 +138,25 @@ public class GenerateWadl {
 
 	private References findRef(String idSchema, ArrayList<References> index) {
 		for (final References ref : index) {
-			if (ref.getId().equalsIgnoreCase(idSchema))
+			if (ref.getId().equalsIgnoreCase(idSchema)) {
 				return ref;
+			}
 		}
 		return null;
 	}
 
 	private String getDocs(List<Method> methods) {
-		StringBuilder content = new StringBuilder();
-		for (Method method : methods) {
+		final StringBuilder content = new StringBuilder();
+		for (final Method method : methods) {
 			content.append(getDoc(method.getDocs()));
 		}
 		return content.toString();
 	}
 
 	private String getDoc(List<Doc> docs) {
-		StringBuilder content = new StringBuilder();
+		final StringBuilder content = new StringBuilder();
 		if (docs != null) {
-			for (Doc doc : docs) {
+			for (final Doc doc : docs) {
 				content.append(doc.getContent());
 			}
 		}

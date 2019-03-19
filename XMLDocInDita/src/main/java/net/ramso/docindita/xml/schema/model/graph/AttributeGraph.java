@@ -29,11 +29,17 @@ public class AttributeGraph extends AbstractXmlGraph {
 	}
 
 	public mxCell createAttribute(mxCell parent) {
-		return createAttribute(parent, attribute.getName());
+		String name = this.attribute.getName();
+		if (((name == null) || name.isEmpty()) && (this.attribute.getRef() != null)) {
+			name = this.attribute.getRef().getLocalPart();
+		} else {
+			name = "NoName" + hashCode();
+		}
+		return createAttribute(parent, name);
 	}
 
 	public mxCell createAttribute(mxCell parent, int x, int y, int width, int height) {
-		return createAttribute(parent, attribute.getName(), x, y, width, height);
+		return createAttribute(parent, this.attribute.getName(), x, y, width, height);
 	}
 
 	public mxCell createAttribute(mxCell parent, String name) {
@@ -63,12 +69,12 @@ public class AttributeGraph extends AbstractXmlGraph {
 
 	public mxCell createAttributeLine(mxCell parent, int x, int y, int width, int height, int widthType) {
 		final mxCell cell = (mxCell) getGraph().insertVertex(parent,
-				GraphConstants.EXCLUDE_PREFIX_LINE + parent.getId() + attribute.getName()
+				GraphConstants.EXCLUDE_PREFIX_LINE + parent.getId() + this.attribute.getName()
 						+ DitaConstants.SUFFIX_ATTRIBUTE,
-				"", x, y,((double) ((width + 100) - 6) + widthType), height, GraphTools.getStyle(false, true));
+				"", x, y, ((double) ((width + 100) - 6) + widthType), height, GraphTools.getStyle(false, true));
 
-		Object titulo = getGraph().insertVertex(cell, cell.getId() + "Name", attribute.getName(), 0, 0, width, height,
-				GraphTools.getStyle(false, false, height));
+		Object titulo = getGraph().insertVertex(cell, cell.getId() + "Name", this.attribute.getName(), 0, 0, width,
+				height, GraphTools.getStyle(false, false, height));
 		insertIcon((mxCell) titulo, DitaConstants.SUFFIX_ATTRIBUTE.toLowerCase(), height);
 		final int anchura = 100 - 6;
 		String value = "";
@@ -76,18 +82,18 @@ public class AttributeGraph extends AbstractXmlGraph {
 				GraphTools.getStyle(false));
 		value = "";
 		String icon = DitaConstants.SUFFIX_TYPE.toLowerCase();
-		if (attribute.getSimpleType() != null) {
+		if (this.attribute.getSimpleType() != null) {
 			icon = DitaConstants.SUFFIX_SIMPLETYPE.toLowerCase();
-			value = attribute.getSimpleType().getName();
+			value = this.attribute.getSimpleType().getName();
 			if ((value == null) || value.isEmpty()) {
-				value = attribute.getName() + DitaConstants.SUFFIX_SIMPLETYPE;
+				value = this.attribute.getName() + DitaConstants.SUFFIX_SIMPLETYPE;
 			}
-		} else if (attribute.getType() != null) {
-			value = attribute.getType().getLocalPart();
+		} else if (this.attribute.getType() != null) {
+			value = this.attribute.getType().getLocalPart();
 			icon = DitaConstants.SUFFIX_TYPE.toLowerCase();
 		}
-		titulo = getGraph().insertVertex(cell, cell.getId() + value, value, ((double) width + anchura), 0, widthType, height,
-				GraphTools.getStyle(false, false, height));
+		titulo = getGraph().insertVertex(cell, cell.getId() + value, value, ((double) width + anchura), 0, widthType,
+				height, GraphTools.getStyle(false, false, height));
 		insertIcon((mxCell) titulo, icon, height);
 		return cell;
 	}
@@ -102,14 +108,14 @@ public class AttributeGraph extends AbstractXmlGraph {
 		final mxCell simpleTypeCell = createAttribute(parent);
 		mxCell type = null;
 
-		if (attribute.getSimpleType() != null) {
-			String value = attribute.getSimpleType().getName();
+		if (this.attribute.getSimpleType() != null) {
+			String value = this.attribute.getSimpleType().getName();
 			if ((value == null) || value.isEmpty()) {
-				value = "(" + attribute.getName() + DitaConstants.SUFFIX_SIMPLETYPE + ")";
+				value = "(" + this.attribute.getName() + DitaConstants.SUFFIX_SIMPLETYPE + ")";
 			}
-			type = new SimpleTypeGraph(attribute.getSimpleType(), getGraph()).createSimpleType(parent, value);
-		} else if (attribute.getType() != null) {
-			type = createType(parent, attribute.getType().getLocalPart());
+			type = new SimpleTypeGraph(this.attribute.getSimpleType(), getGraph()).createSimpleType(parent, value);
+		} else if (this.attribute.getType() != null) {
+			type = createType(parent, this.attribute.getType().getLocalPart());
 		}
 
 		getGraph().insertEdge(parent, "", "", simpleTypeCell, type, GraphTools.getExtendEdgeStyle());

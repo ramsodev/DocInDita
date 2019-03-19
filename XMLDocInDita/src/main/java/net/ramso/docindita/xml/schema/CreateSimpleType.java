@@ -34,12 +34,12 @@ public class CreateSimpleType extends BasicCreate {
 	}
 
 	public References create(SimpleTypeModel model, String name) throws IOException {
-		setId(idParent + "_" + name + DitaConstants.SUFFIX_SIMPLETYPE);
+		setId(this.idParent + "_" + name + DitaConstants.SUFFIX_SIMPLETYPE);
 		setTitle("Simple Type " + name);
 		model.setFileName(getFileName());
 		setContent(model.getDoc());
 		init();
-		References ref = new References(getFileName());
+		final References ref = new References(getFileName());
 		if (model.getListSimpleType() != null) {
 			String nameST = name + " " + DitaConstants.LIST + " " + DitaConstants.SUFFIX_SIMPLETYPE;
 			if (model.getName() != null) {
@@ -47,9 +47,10 @@ public class CreateSimpleType extends BasicCreate {
 			} else if (model.getType() != null) {
 				nameST = model.getType().getLocalPart();
 			}
-			CreatePortada cp = new CreatePortada(getId() + DitaConstants.LIST, DitaConstants.LIST, model.getDoc());
-			References childRef = new References(cp.create());
-			CreateSimpleType cs = new CreateSimpleType(getId());
+			final CreatePortada cp = new CreatePortada(getId() + DitaConstants.LIST, DitaConstants.LIST,
+					model.getDoc());
+			final References childRef = new References(cp.create());
+			final CreateSimpleType cs = new CreateSimpleType(getId());
 			childRef.addChild(cs.create(model.getListSimpleType(), nameST));
 			ref.addChild(childRef);
 		}
@@ -59,23 +60,23 @@ public class CreateSimpleType extends BasicCreate {
 		getContext().put("content", getContent());
 		getContext().put("simpleType", model);
 		getContext().put("tools", DitaTools.class);
-		getContext().put("child", child);
+		getContext().put("child", this.child);
 		run(getContext());
 		return ref;
 
 	}
 
 	private References append(List<SimpleTypeModel> unionSimpleTypes, String name) throws IOException {
-		CreatePortada cp = new CreatePortada(getId() + DitaConstants.UNION, DitaConstants.UNION, "");
-		References cover = new References(cp.create());
-		for (SimpleTypeModel model : unionSimpleTypes) {
+		final CreatePortada cp = new CreatePortada(getId() + DitaConstants.UNION, DitaConstants.UNION, "");
+		final References cover = new References(cp.create());
+		for (final SimpleTypeModel model : unionSimpleTypes) {
 			String nameST = name + "  " + DitaConstants.UNION + " " + DitaConstants.SUFFIX_SIMPLETYPE;
 			if (model.getName() != null) {
 				nameST = model.getName();
 			} else if (model.getType() != null) {
 				nameST = model.getType().getLocalPart();
 			}
-			CreateSimpleType cs = new CreateSimpleType(getId());
+			final CreateSimpleType cs = new CreateSimpleType(getId());
 			cover.addChild(cs.create(model, nameST));
 		}
 		return cover;

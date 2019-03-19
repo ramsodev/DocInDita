@@ -51,16 +51,16 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 
 	protected void addCellType(mxCell cell) {
 		if (getCellTypes() == null) {
-			cellTypes = new ArrayList<>();
+			this.cellTypes = new ArrayList<>();
 		}
 		if (cell != null) {
-			typeGroup.insert(cell);
+			this.typeGroup.insert(cell);
 			getCellTypes().add(cell);
 		}
 	}
 
 	private void addIconColumn() {
-		iconsColumn++;
+		this.iconsColumn++;
 	}
 
 	private void apppendContent(mxCell parent, mxCell iconParent, List<IComplexContentModel> elements, int[] widths,
@@ -83,7 +83,7 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 						getGraph().insertEdge(getGraph().getDefaultParent(), "", "", cellLine, cellType,
 								GraphTools.getOrtogonalEdgeStyle(true));
 					}
-					contentPosition += height;
+					this.contentPosition += height;
 
 				} else if (element instanceof GroupModel) {
 					final GroupModel ele = (GroupModel) element;
@@ -99,8 +99,8 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 								GraphTools.getOrtogonalEdgeStyle());
 					}
 					final mxGeometry g = cellLine.getGeometry();
-					contentPosition += g.getHeight();
-					contentPosition += 3;
+					this.contentPosition += g.getHeight();
+					this.contentPosition += 3;
 					g.setX(x);
 					g.setTerminalPoint(new mxPoint(0, g.getHeight() / 2), false);
 					g.setTerminalPoint(new mxPoint(g.getWidth(), g.getHeight() / 2), true);
@@ -135,14 +135,14 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 				getGraph().insertEdge(getGraph().getDefaultParent(), "", "", cellLine, cellType,
 						GraphTools.getOrtogonalEdgeStyle());
 			}
-			contentPosition += height;
+			this.contentPosition += height;
 			final mxGeometry g = cellLine.getGeometry();
 			g.setTerminalPoint(new mxPoint(0, g.getHeight() / 2), false);
 			g.setTerminalPoint(new mxPoint(g.getWidth(), g.getHeight() / 2), true);
 			cellLine.setGeometry(g);
 		}
 		if (!attributes.isEmpty()) {
-			contentPosition += 3;
+			this.contentPosition += 3;
 		}
 	}
 
@@ -158,7 +158,7 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 			final mxCell cellLine = eg.crateAttributeGroupCell(parent, name, 0, getContentPosition(),
 					widths[0] + widths[1] + 100, height, widths);
 			final mxGeometry g = cellLine.getGeometry();
-			contentPosition += g.getHeight();
+			this.contentPosition += g.getHeight();
 			g.setX(x);
 			g.setTerminalPoint(new mxPoint(0, g.getHeight() / 2), false);
 			g.setTerminalPoint(new mxPoint(g.getWidth(), g.getHeight() / 2), true);
@@ -166,22 +166,22 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 			parent.insert(cellLine);
 		}
 		if (!attributes.isEmpty()) {
-			contentPosition += 3;
+			this.contentPosition += 3;
 		}
 
 	}
 
 	public mxCell createComplexTypeCell(mxCell parent) {
-		return createComplexTypeCell(parent, complexType.getName());
+		return createComplexTypeCell(parent, this.complexType.getName());
 	}
 
 	public mxCell createComplexTypeCell(mxCell parent, int x, int y, int width, int height) {
 		final int[] sizes = getSizes();
-		return createComplexTypeCell(parent, complexType.getName(), x, y, width, height, sizes);
+		return createComplexTypeCell(parent, this.complexType.getName(), x, y, width, height, sizes);
 	}
 
 	public mxCell createComplexTypeCell(mxCell parent, int x, int y, int width, int height, int[] sizes) {
-		return createComplexTypeCell(parent, complexType.getName(), x, y, width, height, sizes);
+		return createComplexTypeCell(parent, this.complexType.getName(), x, y, width, height, sizes);
 	}
 
 	public mxCell createComplexTypeCell(mxCell parent, String name) {
@@ -208,9 +208,9 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 				GraphTools.getStyleTransparent(true));
 		final mxCell cell = (mxCell) getGraph().insertVertex(superGroup, name + DitaConstants.SUFFIX_COMPLEXTYPE, "", x,
 				y, width, height, GraphTools.getStyle(false, true));
-		if (isAddType() && (complexType.getSuper() != null)) {
+		if (isAddType() && (this.complexType.getSuper() != null)) {
 			int h = 0;
-			final mxCell sc = insertSupers(superGroup, complexType.getSuper());
+			final mxCell sc = insertSupers(superGroup, this.complexType.getSuper());
 			superGroup.insert(sc);
 			getGraph().insertEdge(getGraph().getDefaultParent(), "", "", cell, sc, GraphTools.getExtendEdgeStyle());
 			h += sc.getGeometry().getHeight();
@@ -224,19 +224,19 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 
 		y += height;
 		width -= 6;
-		if ((!complexType.getElements().isEmpty()) || (!complexType.getAttributes().isEmpty())) {
+		if ((!this.complexType.getElements().isEmpty()) || (!this.complexType.getAttributes().isEmpty())) {
 			final mxCell subCell = (mxCell) getGraph().insertVertex(cell,
-					complexType.getName() + DitaConstants.SUFFIX_COMPLEXTYPE, "", x, y, width, height,
+					this.complexType.getName() + DitaConstants.SUFFIX_COMPLEXTYPE, "", x, y, width, height,
 					GraphTools.getStyle(false, false));
 
-			contentPosition = 0;
-			typeGroup = (mxCell) getGraph().createVertex(parent,
+			this.contentPosition = 0;
+			this.typeGroup = (mxCell) getGraph().createVertex(parent,
 					GraphConstants.EXCLUDE_PREFIX_GROUP + DitaConstants.SUFFIX_TYPE, "",
 					superGroup.getGeometry().getWidth() + 100, cell.getGeometry().getY() + 100, 300, 0,
 					GraphTools.getStyleTransparent(false));
-			apppendContentAttributeGroup(subCell, complexType.getAttributeGroups(), sizes, height);
-			apppendContent(subCell, complexType.getAttributes(), sizes, height);
-			apppendContent(subCell, null, complexType.getElements(), sizes, height);
+			apppendContentAttributeGroup(subCell, this.complexType.getAttributeGroups(), sizes, height);
+			apppendContent(subCell, this.complexType.getAttributes(), sizes, height);
+			apppendContent(subCell, null, this.complexType.getElements(), sizes, height);
 			width = (int) resize(subCell, sizes);
 		}
 
@@ -245,16 +245,16 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 		if (superGroup.getGeometry().getWidth() < width) {
 			superGroup.getGeometry().setWidth(width);
 		}
-		if (typeGroup != null) {
-			typeGroup.getGeometry().setX(superGroup.getGeometry().getWidth() + 100);
-			typeGroup.getGeometry().setY(cell.getGeometry().getY() + height);
+		if (this.typeGroup != null) {
+			this.typeGroup.getGeometry().setX(superGroup.getGeometry().getWidth() + 100);
+			this.typeGroup.getGeometry().setY(cell.getGeometry().getY() + height);
 		}
 		return superGroup;
 	}
 
 	@Override
 	public String generate() {
-		addType = true;
+		this.addType = true;
 		setGraph(new mxGraph());
 		getGraph().setAutoSizeCells(true);
 		getGraph().setCellsResizable(true);
@@ -262,29 +262,29 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 		final mxCell complexTypeCell = createComplexTypeCell(parent);
 		getGraph().addCell(complexTypeCell);
 		if (isAddType()) {
-			getGraph().addCell(typeGroup);
+			getGraph().addCell(this.typeGroup);
 		}
 		process(getGraph(), Config.getOutputDir());
 		return getFileName();
 	}
 
 	protected List<mxCell> getCellTypes() {
-		return cellTypes;
+		return this.cellTypes;
 	}
 
 	protected Object[] getCellTypesArray() {
-		if (cellTypes == null) {
-			cellTypes = new ArrayList<>();
+		if (this.cellTypes == null) {
+			this.cellTypes = new ArrayList<>();
 		}
-		return cellTypes.toArray();
+		return this.cellTypes.toArray();
 	}
 
 	protected int getContentPosition() {
-		return contentPosition;
+		return this.contentPosition;
 	}
 
 	protected int getIconsColumn() {
-		return iconsColumn;
+		return this.iconsColumn;
 	}
 
 	private int[] getSize(ElementModel element) {
@@ -312,21 +312,21 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 
 	private int[] getSizes() {
 		final int[] sizes = { 0, 0 };
-		int[] tempSizes = getSizesG(complexType.getAttributeGroups());
+		int[] tempSizes = getSizesG(this.complexType.getAttributeGroups());
 		if (tempSizes[0] > sizes[0]) {
 			sizes[0] = tempSizes[0];
 		}
 		if (tempSizes[1] > sizes[1]) {
 			sizes[1] = tempSizes[1];
 		}
-		tempSizes = getSizesAttr(complexType.getAttributes());
+		tempSizes = getSizesAttr(this.complexType.getAttributes());
 		if (tempSizes[0] > sizes[0]) {
 			sizes[0] = tempSizes[0];
 		}
 		if (tempSizes[1] > sizes[1]) {
 			sizes[1] = tempSizes[1];
 		}
-		tempSizes = getSizes(complexType.getElements());
+		tempSizes = getSizes(this.complexType.getElements());
 		if (tempSizes[0] > sizes[0]) {
 			sizes[0] = tempSizes[0];
 		}
@@ -488,9 +488,9 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 	private mxCell inserType(AttributeModel attribute) {
 		mxCell type = null;
 		if (isAddType()) {
-			final mxCell parent = typeGroup;
+			final mxCell parent = this.typeGroup;
 			final int x = 0;
-			int y = (int) typeGroup.getGeometry().getHeight();
+			int y = (int) this.typeGroup.getGeometry().getHeight();
 			y += 21;
 
 			if (attribute.getSimpleType() != null) {
@@ -504,7 +504,7 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 				type = createType(parent, attribute.getType().getLocalPart(), x, y);
 			}
 			if (type != null) {
-				typeGroup.getGeometry().setHeight(y + type.getGeometry().getHeight());
+				this.typeGroup.getGeometry().setHeight(y + type.getGeometry().getHeight());
 			}
 		}
 		return type;
@@ -513,9 +513,9 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 	private mxCell inserType(ElementModel element) {
 		mxCell type = null;
 		if (isAddType()) {
-			final mxCell parent = typeGroup;
+			final mxCell parent = this.typeGroup;
 			final int x = 0;
-			int y = (int) typeGroup.getGeometry().getHeight();
+			int y = (int) this.typeGroup.getGeometry().getHeight();
 			y += 21;
 
 			if (element.getSimpleType() != null) {
@@ -528,14 +528,14 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 				type = createType(parent, element.getType().getLocalPart(), x, y);
 			}
 			if (type != null) {
-				typeGroup.getGeometry().setHeight(y + type.getGeometry().getHeight());
+				this.typeGroup.getGeometry().setHeight(y + type.getGeometry().getHeight());
 			}
 		}
 		return type;
 	}
 
 	protected boolean isAddType() {
-		return addType;
+		return this.addType;
 	}
 
 	private double resize(mxCell cell, int[] sizes) {

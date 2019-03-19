@@ -106,9 +106,9 @@ public class GenerateXSD {
 
 	public References generateXsd(Schema schema, String idWsdl, boolean one) throws IOException {
 		if (idWsdl != null) {
-			idWSDL = idWsdl.trim() + "_";
+			this.idWSDL = idWsdl.trim() + "_";
 		} else {
-			idWSDL = "";
+			this.idWSDL = "";
 		}
 		final List<References> references = generate(schema);
 		final String idSchema = getIdWSDL() + DitaTools.getSchemaId(schema.getTargetNamespace());
@@ -142,7 +142,7 @@ public class GenerateXSD {
 			} else {
 				final CreatePortada cc = new CreatePortada(idSchema, "Documentación  del XSD " + name,
 						"NameSpace:" + schema.getTargetNamespace());
-				References cover = new References(cc.create());
+				final References cover = new References(cc.create());
 				cover.getChilds().addAll(references);
 				return cover;
 			}
@@ -172,6 +172,6 @@ public class GenerateXSD {
 	}
 
 	protected String getIdWSDL() {
-		return idWSDL;
+		return this.idWSDL;
 	}
 }

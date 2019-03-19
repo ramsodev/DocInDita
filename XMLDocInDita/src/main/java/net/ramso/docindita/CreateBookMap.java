@@ -28,7 +28,7 @@ public class CreateBookMap extends BasicCreate {
 
 	@Override
 	public String getContent() {
-		return content;
+		return this.content;
 	}
 
 	@Override

@@ -18,21 +18,21 @@ public class GroupModel extends AbstractComplexContentModel {
 
 	public GroupModel(Group group) {
 		super();
-		component = group;
+		this.component = group;
 		init();
 		LogManager.debug("Carga de Grupo " + getName());
 	}
 
 	public GroupModel(GroupRef group) {
 		super();
-		component = group;
+		this.component = group;
 		init();
 	}
 
 	@Override
 	public SchemaComponent getComponent() {
 
-		return component;
+		return this.component;
 	}
 
 	@Override
@@ -42,19 +42,20 @@ public class GroupModel extends AbstractComplexContentModel {
 
 	@Override
 	public String getDiagram() {
-		if (diagram == null) {
+		if (this.diagram == null) {
 			final GroupGraph graph = new GroupGraph(this);
-			diagram = graph.generate();
+			this.diagram = graph.generate();
 			setScaleDiagram(graph.scale());
 		}
-		return diagram;
+		return this.diagram;
 	}
 
 	public GroupModel getModel() {
-		if (getRef() == null)
+		if (getRef() == null) {
 			return this;
-		else
+		} else {
 			return new GroupModel(getComponent().getSchema().getGroup(getRef()));
+		}
 	}
 
 	/**
@@ -62,29 +63,30 @@ public class GroupModel extends AbstractComplexContentModel {
 	 */
 	@Override
 	public QName getRef() {
-		return ref;
+		return this.ref;
 	}
 
 	@Override
 	public QName getType() {
-		if (getRef() != null)
+		if (getRef() != null) {
 			return getRef();
-		return ((Group) component).getQname();
+		}
+		return ((Group) this.component).getQname();
 	}
 
 	private void init() {
-		contentType = DitaConstants.SUFFIX_GROUP;
-		if (component instanceof Group) {
-			procesGroup((Group) component);
+		this.contentType = DitaConstants.SUFFIX_GROUP;
+		if (this.component instanceof Group) {
+			procesGroup((Group) this.component);
 		} else {
-			procesRef((GroupRef) component);
+			procesRef((GroupRef) this.component);
 		}
 
 	}
 
 	@Override
 	public boolean isElement() {
-		return component instanceof GroupRef;
+		return this.component instanceof GroupRef;
 	}
 
 	private void procesGroup(Group group) {
@@ -101,7 +103,7 @@ public class GroupModel extends AbstractComplexContentModel {
 	}
 
 	private void procesRef(GroupRef group) {
-		ref = group.getRef();
+		this.ref = group.getRef();
 		setElements(new ArrayList<IComplexContentModel>());
 
 	}

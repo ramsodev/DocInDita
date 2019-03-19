@@ -18,7 +18,7 @@ public class AllModel extends AbstractComplexContentModel {
 	@Override
 	public SchemaComponent getComponent() {
 
-		return all;
+		return this.all;
 	}
 
 	@Override
@@ -33,7 +33,7 @@ public class AllModel extends AbstractComplexContentModel {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see net.ramso.doc.dita.xml.schema.model.AbstractComponentModel#getName()
 	 */
 	@Override
@@ -57,8 +57,8 @@ public class AllModel extends AbstractComplexContentModel {
 	}
 
 	private void init() {
-		contentType = DitaConstants.ALL;
-		procesAll(all);
+		this.contentType = DitaConstants.ALL;
+		procesAll(this.all);
 
 	}
 

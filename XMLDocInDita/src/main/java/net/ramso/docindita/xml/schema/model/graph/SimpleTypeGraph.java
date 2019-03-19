@@ -23,11 +23,11 @@ public class SimpleTypeGraph extends AbstractXmlGraph {
 		suffix = DitaConstants.SUFFIX_SIMPLETYPE;
 		this.graphName = "Embebed " + hashCode() + DitaConstants.SUFFIX_SIMPLETYPE;
 		if (simpleType.getName() != null) {
-			graphName = simpleType.getName();
+			this.graphName = simpleType.getName();
 		} else if (simpleType.getType() != null) {
-			graphName = simpleType.getType().getLocalPart();
-		} 
-		setFileName(graphName);
+			this.graphName = simpleType.getType().getLocalPart();
+		}
+		setFileName(this.graphName);
 	}
 
 	public SimpleTypeGraph(SimpleTypeModel simpleType, mxGraph graph) {
@@ -36,11 +36,11 @@ public class SimpleTypeGraph extends AbstractXmlGraph {
 	}
 
 	public mxCell createSimpleType(mxCell parent) {
-		return createSimpleType(parent, graphName);
+		return createSimpleType(parent, this.graphName);
 	}
 
 	public mxCell createSimpleType(mxCell parent, int x, int y, int width, int height) {
-		return createSimpleType(parent, graphName, x, y, width, height);
+		return createSimpleType(parent, this.graphName, x, y, width, height);
 	}
 
 	public mxCell createSimpleType(mxCell parent, String name) {
@@ -70,15 +70,15 @@ public class SimpleTypeGraph extends AbstractXmlGraph {
 
 	@Override
 	public String generate() {
-		addType = true;
+		this.addType = true;
 		setGraph(new mxGraph());
 		getGraph().setAutoSizeCells(true);
 		getGraph().setCellsResizable(true);
 		final mxCell parent = (mxCell) getGraph().getDefaultParent();
 		final mxCell simpleTypeCell = createSimpleType(parent);
 		mxCell type = null;
-		if (simpleType.getDataType() != null) {
-			type = createType(parent, simpleType.getDataType());
+		if (this.simpleType.getDataType() != null) {
+			type = createType(parent, this.simpleType.getDataType());
 		}
 		getGraph().insertEdge(parent, "", "", simpleTypeCell, type, GraphTools.getExtendEdgeStyle());
 		getGraph().addCell(simpleTypeCell);
@@ -90,7 +90,7 @@ public class SimpleTypeGraph extends AbstractXmlGraph {
 	}
 
 	protected boolean isAddType() {
-		return addType;
+		return this.addType;
 	}
 
 	@Override
