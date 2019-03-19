@@ -17,21 +17,16 @@
         	#set($i = 0)
         	#set($childs = ${group.getElements()})
         	#parse("complexContentRefs.vm")
-        #end
-            	
+        #end	
 	</dl>
-	 #if(!$child)
         <section id="section_diagram">
             <title>Diagrama</title>            
         		<fig id="${id}Diagram">
             		<title>Diagrama para ${title}</title>
            			<image placement="break" href="${group.getDiagram()}" align="center" id="${id}Image" #if(${group.isScaleDiagram()})scalefit="yes"#end/>
         		</fig>
-        </section>  
-     #end  
-    	#if(!$child)
+        </section>
     <section id="section_code">
     	<title>Codigo</title>            
         <codeblock>${group.getCode()}</codeblock>
     </section>
-    	#end

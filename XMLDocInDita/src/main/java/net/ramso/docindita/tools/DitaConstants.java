@@ -53,5 +53,7 @@ public class DitaConstants {
 	public static final String CMD_DESCRIPTION = "description";
 	public static final String SUFFIX_RESOURCE = "Resource";
 	public static final String SUFFIX_RESOURCE_METHOD = "ResourceMethod";
+	public static final String LIST = "List";
+	public static final String UNION = "Union";
 
 }

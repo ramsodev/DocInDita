@@ -16,21 +16,15 @@
             <dd><xref href="${element.getHrefType()}" ${element.getExternalHref()}>${element.getType().getLocalPart()}</xref></dd>
         </dlentry>  
         #end
-   	</dl>      
- 	 #if(!$child)
+   	</dl> 
         <section id="section_diagram">
             <title>Diagrama</title>            
         		<fig id="${id}Diagram">
             		<title>Diagrama para ${title}</title>
            			<image placement="break" href="${element.getDiagram()}" align="center" id="${id}Image" #if(${element.isScaleDiagram()})scalefit="yes"#end/>
         		</fig>
-        </section>  
-     #end  
-        #if(!$child)
+        </section> 
         <section id="section_code">
             <title>Codigo</title>            
         	<codeblock>${element.getCode()}</codeblock>
         </section>  
-        #end
-
-    

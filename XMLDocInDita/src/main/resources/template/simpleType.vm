@@ -5,17 +5,7 @@
 	<dl>
     	<dlentry>
        		<dt>List of values</dt>
-            <dd>#if(${simpleType.getListSimpleType()})
-            		#set($childc = $child)
-       				#set($child = true)
-            		#set($pst = $simpleType)
-            		#set($simpleType = ${simpleType.getListSimpleType()})
-            		#parse('simpleType.vm')
-            		#set($simpleType = $pst)
-            		#set($child = $childc)
-            #else
-            ${simpleType.getListType()}
-            #end</dd>
+            <dd>${simpleType.getListType()}</dd>
         </dlentry>
     </dl>
 #end
@@ -24,40 +14,24 @@
     	<dlentry>
        		<dt>Union</dt>
             <dd>
-            #if(${simpleType.getUnionRefs().isEmpty()})
-            	#foreach($st in ${simpleType.getUnionSimpleTypes()})
-            		#set($childc = $child)
-       				#set($child = true)
-            		#set($pst = ${simpleType})
-            		#set(${simpleType} = $st)
-            		#parse('simpleType.vm')
-            		#set($simpleType = $pst)
-            		#set($child = $childc)
-            	#end
-            #else
             	<ul>
             	#foreach($st in ${simpleType.getUnionRefs()})
             		<li><xref href="${tools.getHref($st)}" ${tools.getExternalHref($st)}>${$st.getLocalPart()}</xref></li>
             	#end
             	</ul>
-            #end
             </dd>
         </dlentry>
     </dl>
-#end     
-    #if(!$child)
+#end 
         <section id="section_diagram">
             <title>Diagrama</title>            
         		<fig id="${id}Diagram">
             		<title>Diagrama para ${title}</title>
            			<image placement="break" href="${simpleType.getDiagram()}" align="center" id="${id}Image" #if(${simpleType.isScaleDiagram()})scalefit="yes"#end/>
         		</fig>
-        </section>  
-     #end  
-        #if(!$child)
+        </section> 
         <section id="section_code">
             <title>Codigo</title>            
         	<codeblock>${simpleType.getCode()}</codeblock>
-        </section>  
-        #end
+        </section> 
         

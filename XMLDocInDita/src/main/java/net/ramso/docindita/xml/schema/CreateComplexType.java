@@ -24,6 +24,7 @@ import net.ramso.docindita.xml.schema.model.SequenceModel;
 public class CreateComplexType extends BasicCreate {
 
 	private final String idParent;
+	private boolean child = true;
 
 	public CreateComplexType(String idParent) {
 		super("", "");
@@ -32,12 +33,14 @@ public class CreateComplexType extends BasicCreate {
 		this.idParent = idParent;
 	}
 
-	public References create(ComplexType ComplexType) throws IOException {
-		return create(new ComplexTypeModel(ComplexType), ComplexType.getName());
+	public References create(ComplexType complexType) throws IOException {
+		this.child    = false;
+		return create(new ComplexTypeModel(complexType), complexType.getName());
 
 	}
 
 	public References create(ComplexTypeModel model) throws IOException {
+		
 		return create(model, model.getName());
 	}
 
@@ -59,6 +62,7 @@ public class CreateComplexType extends BasicCreate {
 		getContext().put("content", getContent());
 		getContext().put("complexType", model);
 		getContext().put("tools", DitaTools.class);
+		getContext().put("child", child);
 		run(getContext());
 		return ref;
 	}

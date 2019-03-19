@@ -15,6 +15,7 @@ import net.ramso.docindita.xml.schema.model.ComplexTypeModel;
 public class CreateAttributeGroup extends BasicCreate {
 
 	private final String idParent;
+	private boolean child = true;
 	
 
 	public CreateAttributeGroup(String idParent) {
@@ -25,6 +26,7 @@ public class CreateAttributeGroup extends BasicCreate {
 	}
 
 	public References create(AttributeGroup attributeGroup) throws IOException {
+		this.child    = false;
 		return create(new AttributeGroupModel(attributeGroup), attributeGroup.getName());
 
 	}
@@ -49,6 +51,7 @@ public class CreateAttributeGroup extends BasicCreate {
 		}
 		getContext().put("content", getContent());
 		getContext().put("attributeGroup", model);
+		getContext().put("child", child);
 		run(getContext());
 		return ref;
 	}

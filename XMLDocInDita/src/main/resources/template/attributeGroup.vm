@@ -1,25 +1,19 @@
  	<section>
  	<title>Atributos</title>
- 	<sl>
+ 			<sl>
             		#foreach($attribute in ${attributeGroup.getAttributes()})
             			<sli><xref href="${attribute.getHref()}" ${attribute.getExternalHref()}>#if(${attribute.getRef()})${attribute.getRef().getLocalPart()}#else${attribute.getName()}#end</xref></sli>
             		#end
             </sl>
  	</section>
-    #if(!$child)
-        <section id="section_diagram">
+ 	<section id="section_diagram">
             <title>Diagrama</title>            
         		<fig id="${id}Diagram">
             		<title>Diagrama para ${title}</title>
            			<image placement="break" href="${attributeGroup.getDiagram()}" align="center" id="${id}Image" #if(${attributeGroup.isScaleDiagram()})scalefit="yes"#end/>
         		</fig>
-        </section>  
-     #end  
-   #if(!$child)
-        <section id="section_code">
-            <title>Codigo</title>            
+    </section>  
+    <section id="section_code">
+           <title>Codigo</title>            
         	<codeblock>${attributeGroup.getCode()}</codeblock>
-        </section>  
-   #end
-    
-    
+    </section> 

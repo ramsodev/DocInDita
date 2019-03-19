@@ -21,6 +21,7 @@ import net.ramso.docindita.xml.schema.model.SequenceModel;
 public class CreateElement extends BasicCreate {
 
 	private final String idParent;
+	private boolean child = true;
 
 	public CreateElement(String idParent) {
 		super("", "");
@@ -31,6 +32,7 @@ public class CreateElement extends BasicCreate {
 	}
 
 	public References create(Element element) throws IOException {
+		this.child   = false;
 		return create(new ElementModel(element), element.getName());
 
 	}
@@ -50,9 +52,9 @@ public class CreateElement extends BasicCreate {
 		if (model.getSimpleType() != null) {
 			String nameST = name + " Embebed " + DitaConstants.SUFFIX_SIMPLETYPE;
 			if (model.getName() != null) {
-				name = model.getName();
+				nameST = model.getName();
 			} else if (model.getType() != null) {
-				name = model.getType().getLocalPart();
+				nameST = model.getType().getLocalPart();
 			}
 			CreateSimpleType cs = new CreateSimpleType(getId());
 			ref.addChild(cs.create(model.getSimpleType(), nameST));
@@ -60,7 +62,7 @@ public class CreateElement extends BasicCreate {
 		if (model.getComplexType() != null) {
 			String nameST = name + " Embebed " + DitaConstants.SUFFIX_COMPLEXTYPE;
 			if (model.getName() != null) {
-				name = model.getName();
+				nameST = model.getName();
 			}
 			CreateComplexType cs = new CreateComplexType(getId());
 			ref.addChild(cs.create(model.getComplexType(), nameST));
@@ -68,6 +70,7 @@ public class CreateElement extends BasicCreate {
 		ref.getChilds().addAll(append(model.getElements(), name));
 		getContext().put("content", getContent());
 		getContext().put("element", model);
+		getContext().put("child", child);
 		run(getContext());
 		return ref;
 	}

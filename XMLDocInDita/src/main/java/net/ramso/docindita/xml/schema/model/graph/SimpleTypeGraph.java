@@ -15,12 +15,19 @@ public class SimpleTypeGraph extends AbstractXmlGraph {
 
 	SimpleTypeModel simpleType;
 	private boolean addType;
+	private String graphName;
 
 	public SimpleTypeGraph(SimpleTypeModel simpleType) {
 		super();
 		this.simpleType = simpleType;
 		suffix = DitaConstants.SUFFIX_SIMPLETYPE;
-		setFileName(simpleType.getName());
+		this.graphName = "Embebed " + hashCode() + DitaConstants.SUFFIX_SIMPLETYPE;
+		if (simpleType.getName() != null) {
+			graphName = simpleType.getName();
+		} else if (simpleType.getType() != null) {
+			graphName = simpleType.getType().getLocalPart();
+		} 
+		setFileName(graphName);
 	}
 
 	public SimpleTypeGraph(SimpleTypeModel simpleType, mxGraph graph) {
@@ -29,11 +36,11 @@ public class SimpleTypeGraph extends AbstractXmlGraph {
 	}
 
 	public mxCell createSimpleType(mxCell parent) {
-		return createSimpleType(parent, simpleType.getName());
+		return createSimpleType(parent, graphName);
 	}
 
 	public mxCell createSimpleType(mxCell parent, int x, int y, int width, int height) {
-		return createSimpleType(parent, simpleType.getName(), x, y, width, height);
+		return createSimpleType(parent, graphName, x, y, width, height);
 	}
 
 	public mxCell createSimpleType(mxCell parent, String name) {

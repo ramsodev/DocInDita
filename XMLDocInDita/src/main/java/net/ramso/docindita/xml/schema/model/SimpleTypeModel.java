@@ -22,7 +22,6 @@ import com.predic8.schema.restriction.facet.MinLengthFacet;
 import com.predic8.schema.restriction.facet.PatternFacet;
 import com.predic8.schema.restriction.facet.TotalDigitsFacet;
 import com.predic8.schema.restriction.facet.WhiteSpaceFacet;
-import com.sun.org.apache.xerces.internal.impl.dv.xs.UnionDV;
 
 import groovy.xml.QName;
 import net.ramso.docindita.tools.DitaConstants;
@@ -102,13 +101,9 @@ public class SimpleTypeModel extends AbstractComponentModel {
 	@Override
 	public String getDiagram() {
 		if (diagram == null) {
-			if(getName()!=null) {
 			final SimpleTypeGraph graph = new SimpleTypeGraph(this);
 			diagram = graph.generate();
 			setScaleDiagram(graph.scale());
-			}else {
-				diagram="";
-			}
 		}
 		return diagram;
 	}
@@ -317,10 +312,10 @@ public class SimpleTypeModel extends AbstractComponentModel {
 	}
 
 	public boolean isUnion() {
-		return union != null;
+		return !getUnionRefs().isEmpty();
 	}
 
 	public boolean isList() {
-		return lista != null;
+		return getListType() != null && !getListType().isEmpty();
 	}
 }

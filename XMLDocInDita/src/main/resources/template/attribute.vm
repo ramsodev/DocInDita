@@ -30,20 +30,15 @@
         </dlentry>
    	</dl> 
     #end  
-     #if(!$child)
         <section id="section_diagram">
             <title>Diagrama</title>            
         		<fig id="${id}Diagram">
             		<title>Diagrama para ${title}</title>
            			<image placement="break" href="${attribute.getDiagram()}" align="center" id="${id}Image" #if(${attribute.isScaleDiagram()})scalefit="yes"#end/>
         		</fig>
-        </section>  
-     #end  
-    #if(!$child)
+        </section>     
         <section id="section_code">
             <title>Codigo</title>            
         	<codeblock>${attribute.getCode()}</codeblock>
-        </section>  
-    #end
-    
+        </section>      
     

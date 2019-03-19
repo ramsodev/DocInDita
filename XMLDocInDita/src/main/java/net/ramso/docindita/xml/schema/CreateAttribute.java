@@ -12,6 +12,7 @@ import net.ramso.docindita.xml.schema.model.AttributeModel;
 public class CreateAttribute extends BasicCreate {
 
 	private final String idParent;
+	private boolean child = true;
 
 	public CreateAttribute(String idParent) {
 
@@ -22,6 +23,7 @@ public class CreateAttribute extends BasicCreate {
 	}
 
 	public References create(Attribute attribute) throws IOException {
+		this.child  = false;
 		return create(new AttributeModel(attribute), attribute.getName());
 	}
 
@@ -43,7 +45,7 @@ public class CreateAttribute extends BasicCreate {
 		}
 		getContext().put("content", getContent());
 		getContext().put("attribute", model);
-		getContext().put("child", true);
+		getContext().put("child", child);
 		run(getContext());
 		return ref;
 	}

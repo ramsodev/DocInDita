@@ -4,7 +4,6 @@
     <title>${title}</title>
     <shortdesc>${content}</shortdesc>
     <body>
-    	#set($child = false)
     	#if(${simpleType})
     		#parse("simpleType.vm")
     	

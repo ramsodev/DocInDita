@@ -22,6 +22,7 @@ import net.ramso.docindita.xml.schema.model.SequenceModel;
 public class CreateGroup extends BasicCreate {
 
 	private final String idParent;
+	private boolean child = true;
 
 	public CreateGroup(String idParent) {
 		super("", "");
@@ -31,6 +32,7 @@ public class CreateGroup extends BasicCreate {
 	}
 
 	public References create(Group group) throws IOException {
+		this.child  = false;
 		return create(new GroupModel(group), group.getName());
 	}
 
@@ -50,6 +52,7 @@ public class CreateGroup extends BasicCreate {
 		getContext().put("content", getContent());
 		getContext().put("group", model);
 		getContext().put("tools", DitaTools.class);
+		getContext().put("child", child);
 		run(getContext());
 		return ref;
 	}
