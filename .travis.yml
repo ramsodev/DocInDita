@@ -11,7 +11,7 @@ deploy:
     - commons/target/*.jar
   skip_cleanup: true
   on:
-    repo: ramsodev/XMLDocInDita
+    repo: ramsodev/DocInDita
     tags: true
   name: $project_version
 addons:
