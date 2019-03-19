@@ -1,6 +1,5 @@
 package net.ramso.docindita.db.metadata;
 
-import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 
 public abstract class AbstractMetadata implements BasicMetadata {
@@ -17,33 +16,25 @@ public abstract class AbstractMetadata implements BasicMetadata {
 		this.metadata = metadata;
 	}
 
-	/**
-	 * @return the name
-	 */
+	
 	@Override
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * @param name the name to set
-	 */
+	
 	@Override
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * @return the catalog
-	 */
+	
 	@Override
 	public String getCatalog() {
 		return catalog;
 	}
 
-	/**
-	 * @param catalog the catalog to set
-	 */
+
 	@Override
 	public void setCatalog(String catalog) {
 		this.catalog = catalog;
@@ -70,16 +61,12 @@ public abstract class AbstractMetadata implements BasicMetadata {
 		this.description = description;
 	}
 
-	/**
-	 * @return the connection
-	 */
+	
 	public DatabaseMetaData getMetadata() {
 		return metadata;
 	}
 
-	/**
-	 * @param connection the connection to set
-	 */
+	
 	public void setMetadata(DatabaseMetaData metadata) {
 		this.metadata = metadata;
 	}
