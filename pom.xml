@@ -8,8 +8,8 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>XMLDocInDita</module>
-		<module>DBDocInDita</module>
 		<module>commons</module>
+		
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -87,14 +87,6 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-deploy-plugin</artifactId>
-				<version>2.8.1</version>
-				<configuration>
-					<skip>true</skip>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.5</version>
 				<configuration>
@@ -121,10 +113,6 @@
 		<url>https://github.com/ramsodev/DocInDita/issues</url>
 	</issueManagement>
 	<distributionManagement>
-		<site>
-			<id>apiDoc</id>
-			<url>https://dev.ramso.net/DocInDita</url>
-		</site>
 		<snapshotRepository>
 			<id>ossrh</id>
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
@@ -209,41 +197,11 @@
 				</plugins>
 			</build>
 		</profile>
-		<profile>
-			<id>Tag</id>
-			<activation>
-				<property>
-					<name>Tag</name>
-				</property>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<artifactId>maven-assembly-plugin</artifactId>
-						<version>2.6</version>
-						<configuration>
-							<descriptorRefs>
-								<descriptorRef>jar-with-dependencies</descriptorRef>
-							</descriptorRefs>
-							<archive>
-								<manifest>
-									<mainClass>net.ramso.doc.GenDoc</mainClass>
-								</manifest>
-							</archive>
-						</configuration>
-						<executions>
-							<execution>
-								<id>make-assembly</id>
-								<phase>package</phase>
-								<goals>
-									<goal>single</goal>
-								</goals>
-							</execution>
-						</executions>
-
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
 	</profiles>
+	<description>Java libraries and cmds applications to generate documentation in dita</description>
+	<ciManagement>
+		<system>travis-ci</system>
+		<url>https://travis-ci.org/ramsodev/DocInDita#</url>
+	</ciManagement>
 </project>
+
