@@ -5,6 +5,8 @@
 [![Build Status](https://travis-ci.org/ramsodev/DocInDita.svg?branch=master)](https://travis-ci.org/ramsodev/DocInDita)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=net.ramso%3ADocInDita&metric=alert_status)](https://sonarcloud.io/dashboard?id=net.ramso%3ADocInDita)
 [![License](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/ramsodev/DocInDita/master/LICENSE)
+[![Maven Central](https://img.shields.io/maven-central/v/net.ramso/XMLDocInDita.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22net.ramso%22%20AND%20a:%22XMLDocInDita%22)
+[![Javadocs](https://www.javadoc.io/badge/net.ramso/XMLDocInDita.svg)](https://www.javadoc.io/doc/net.ramso/XMLDocInDita)
 ***
 
 ## XMLDocInDita
@@ -27,8 +29,7 @@ usage: XMLDocInDiata [-description \<arg\>] [-h] [-id \<arg\>] [-one] [-outDir  
 
 
 
-### documentation
-- [Java Api][c036cfd1]
+
 
   [a3775041]: https://www.dita-ot.org/ "dita-ot"
-  [c036cfd1]: apidocs/index.html "JavaDoc"
+
