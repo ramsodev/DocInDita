@@ -1,7 +1,7 @@
 package net.ramso.tools.graph;
 
-import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -23,9 +23,9 @@ public class GraphConfig {
 
 	public static void loadIcons() {
 		try {
-			List<File> files = FileTools.getResourcesInFolder(GraphConstants.ICONS_FOLDER);
-			for (File file : files) {
-				LogManager.debug(file.getName());
+			List<URL> files = FileTools.getResourcesInFolder(GraphConstants.ICONS_FOLDER);
+			for (URL file : files) {
+				LogManager.debug(file.getFile());
 			}
 		} catch (IOException e) {
 			LogManager.error(BundleManager.getString("commons.icons.error"), e);
@@ -33,13 +33,13 @@ public class GraphConfig {
 	}
 
 	public static void loadShapes() {
-		List<File> files;
+		List<URL> files;
 		try {
 			files = FileTools.getResourcesInFolder(GraphConstants.SHAPES_FOLDER);
-			for (File file : files) {
+			for (URL file : files) {
 				Document doc;
-				doc = FileTools.parseXML(file);
-				mxGraphics2DCanvas.putShape(file.getName().substring(0, file.getName().indexOf('.') - 1).toLowerCase(),
+				doc = FileTools.parseXML(file.openStream());
+				mxGraphics2DCanvas.putShape(file.getFile().substring(0, file.getFile().indexOf('.') - 1).toLowerCase(),
 						new mxStencilShape(doc));
 			}
 		} catch (ParserConfigurationException | SAXException | IOException e) {

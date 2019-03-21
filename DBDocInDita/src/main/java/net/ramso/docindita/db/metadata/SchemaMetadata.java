@@ -7,34 +7,48 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import net.ramso.docindita.db.DBConstants;
+import net.ramso.tools.LogManager;
 
 /**
  * @author ramso
  *
  */
 public class SchemaMetadata extends AbstractMetadata {
-	private ArrayList<TableMetadata> tables;
-
-	public SchemaMetadata(String name, String catalog, String description, DatabaseMetaData metadata) {
-		super(name, catalog, description, metadata);
+	public SchemaMetadata(ResultSet resultSet, DatabaseMetaData metadata) {
+		super(resultSet, metadata);
 	}
 
-	public TableMetadata[] getTables() throws SQLException {
-		ResultSet rs = getMetadata().getTables(getCatalog(), getName(), "*", null);
-		while (rs.next()) {
-			switch (rs.getString("TABLE_TYPE")) {
-			case DBConstants.TABLE:
-				tables.add(new TableMetadata(rs.getString("TABLE_NAME"), this, rs.getString("TABLE_TYPE"),
-						rs.getString("REMARKS")));
-				break;
-			default:
-				break;
-			}
-		}
-		return null;
+	private Collection<TableMetadata> tables = new ArrayList<>();
 
+	@Override
+	public void init(ResultSet resultSet) {
+		try {
+			setName(resultSet.getString(DBConstants.METADATA_SCHEMA));
+			setCatalog(resultSet.getString(DBConstants.METADATA_CATALOG));
+			setSchema(getName());
+		} catch (SQLException e) {
+			LogManager.warn("Error al preparar esquema", e);
+		}
+
+	}
+
+	public Collection<TableMetadata> getTables() throws SQLException {
+		ResultSet rs = getMetadata().getTables(getCatalog(), getName(), null, null);
+		while (rs.next()) {
+			TableMetadata tm = new TableMetadata(rs, getMetadata());
+			tm.getColumns();
+			tables.add(tm);
+		}
+		return tables;
+
+	}
+	
+	@Override
+	public String toString() {
+		return getCatalog()+"."+getSchema();
 	}
 
 }

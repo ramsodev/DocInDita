@@ -11,7 +11,7 @@ public class CreateBookMap extends BasicCreate {
 		super(id, title);
 		setTemplateFile("template/bookmap.vm");
 		setContent(content);
-		setFile_name(id + ".ditamap");
+		setFileName(id + ".ditamap");
 	}
 
 	public String create(List<References> references) throws IOException {
@@ -23,12 +23,12 @@ public class CreateBookMap extends BasicCreate {
 		getContext().put("references", references);
 		getContext().put("parts", parts);
 		run(getContext());
-		return getFile_name();
+		return getFileName();
 	}
 
 	@Override
 	public String getContent() {
-		return content;
+		return this.content;
 	}
 
 	@Override

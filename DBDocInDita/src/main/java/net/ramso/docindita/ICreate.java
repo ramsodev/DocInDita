@@ -1,7 +1,7 @@
 package net.ramso.docindita;
 
-public interface iCreate {
-	String getFile_name();
+public interface ICreate {
+	String getFileName();
 
 	String getId();
 

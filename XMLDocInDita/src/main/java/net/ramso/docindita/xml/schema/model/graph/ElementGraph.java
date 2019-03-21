@@ -9,6 +9,7 @@ import com.mxgraph.view.mxGraph;
 import net.ramso.docindita.tools.DitaConstants;
 import net.ramso.docindita.xml.Config;
 import net.ramso.docindita.xml.schema.model.ElementModel;
+import net.ramso.tools.FileTools;
 import net.ramso.tools.graph.GraphConstants;
 import net.ramso.tools.graph.GraphTools;
 
@@ -19,7 +20,11 @@ public class ElementGraph extends AbstractXmlGraph {
 	public ElementGraph(ElementModel element) {
 		this.element = element;
 		suffix = DitaConstants.SUFFIX_ELEMENT;
-		setFileName(element.getName());
+		if (element.getFileName().isEmpty()) {
+			setFileName(element.getName());
+		} else {
+			setFileName(FileTools.withoutExtension(element.getFileName()));
+		}
 	}
 
 	public ElementGraph(ElementModel ele, mxGraph graph) {

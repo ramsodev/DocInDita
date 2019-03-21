@@ -10,10 +10,12 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 
 import net.ramso.docindita.db.Config;
+import net.ramso.tools.LogManager;
+import net.ramso.tools.TextTools;
 
-public abstract class BasicCreate implements iCreate {
-	private static String TEMPLATE = "template/basic.vm";
-	private String file_name;
+public abstract class BasicCreate implements ICreate {
+	private String templateFile = "template/basic.vm";
+	private String fileName;
 	private String id;
 	private String title;
 	private Template template;
@@ -28,67 +30,83 @@ public abstract class BasicCreate implements iCreate {
 	}
 
 	public String getContent() {
-		return content;
+		return this.content;
 	}
 
 	protected VelocityContext getContext() {
-		return context;
+		return this.context;
 	}
 
 	@Override
-	public String getFile_name() {
-		return file_name;
+	public String getFileName() {
+		if (this.fileName.length() > 250) {
+			final String ext = this.fileName.substring(this.fileName.lastIndexOf('.'));
+			setFileName(this.fileName.substring(0, 230) + hashCode() + ext);
+		}
+		return this.fileName;
 	}
 
 	@Override
 	public String getId() {
-		return id;
+		return this.id;
 	}
 
 	protected Template getTemplate() {
-		return template;
+		return this.template;
 	}
 
 	@Override
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
 
 	protected void init() {
-		template = Velocity.getTemplate(TEMPLATE);
-		context = new VelocityContext();
-		context.put("id", getId());
-		context.put("title", getTitle());
+		this.template = Velocity.getTemplate(this.templateFile);
+		this.context = new VelocityContext();
+		this.context.put("id", getId());
+		this.context.put("title", getTitle());
 	}
 
-	
-
 	protected void run(VelocityContext context) throws IOException {
-		final File file = new File(Config.getOutputDir() + File.separator + getFile_name());
+
+		final File file = new File(Config.getOutputDir() + File.separator + getFileName());
 		file.getParentFile().mkdirs();
-		final BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-		if (getTemplate() != null) {
-			getTemplate().merge(context, writer);
+		final FileWriter fw = new FileWriter(file);
+		BufferedWriter writer = null;
+		try {
+			writer = new BufferedWriter(fw);
+			if (getTemplate() != null) {
+				getTemplate().merge(context, writer);
+			}
+			writer.flush();
+		} catch (final Exception e) {
+			LogManager.warn("Problemas al crear el fichero", e);
+		} finally {
+			if (writer != null) {
+				writer.close();
+			}
 		}
-		writer.flush();
-		writer.close();
+
 	}
 
 	public void setContent(String content) {
 		this.content = content;
 	}
 
-	protected void setFile_name(String file_name) {
-		this.file_name = file_name.replaceAll("\\s+", "_");
+	protected void setFileName(String fileName) {
+		this.fileName = TextTools.clean(fileName).replaceAll("\\s+", "_").replaceAll("/", "_").replaceAll("\\\\", "_");
 	}
 
 	protected void setId(String id) {
-		this.id = id.replaceAll("\\s+", "_");
-		setFile_name(id + ".dita");
+		if (!id.isEmpty() && Character.isDigit(id.charAt(0))) {
+			id = "id" + id;
+		}
+		this.id = TextTools.cleanNonAlfaNumeric(id, "_");
+		setFileName(this.id + ".dita");
 	}
 
 	protected void setTemplateFile(String template) {
-		TEMPLATE = template;
+		this.templateFile = template;
 		init();
 	}
 

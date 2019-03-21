@@ -114,13 +114,22 @@ public class FileTools {
 	}
 
 	public static Document parseXML(File file) throws ParserConfigurationException, SAXException, IOException {
+
 		return parseXML(file.getAbsolutePath());
+	}
+
+	public static Document parseXML(InputStream stream) throws ParserConfigurationException, SAXException, IOException {
+		final DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder;
+		dBuilder = dbFactory.newDocumentBuilder();
+		return dBuilder.parse(stream);
 	}
 
 	public static Document parseXML(String file) throws ParserConfigurationException, SAXException, IOException {
 		final DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dBuilder;
 		dBuilder = dbFactory.newDocumentBuilder();
+		System.out.println(file);
 		return dBuilder.parse(file);
 	}
 
@@ -137,13 +146,12 @@ public class FileTools {
 		return strings;
 	}
 
-	public static List<File> getResourcesInFolder(String folder) throws IOException {
-		List<File> files = new ArrayList<>();
+	public static List<URL> getResourcesInFolder(String folder) throws IOException {
+		List<URL> files = new ArrayList<>();
 		Stream<Path> walk = null;
 		FileSystem fileSystem = null;
 		try {
 			URI uri = Thread.currentThread().getContextClassLoader().getResource(folder).toURI();
-
 			Path myPath;
 			if (uri.getScheme().equals("jar")) {
 				fileSystem = FileSystems.newFileSystem(uri, Collections.<String, Object>emptyMap());
@@ -157,9 +165,7 @@ public class FileTools {
 				URL resource = Thread.currentThread().getContextClassLoader()
 						.getResource(folder + File.separator + i.getFileName());
 				if (resource != null) {
-					File f = new File(resource.toURI());
-					if (!f.isDirectory())
-						files.add(f);
+					files.add(resource);
 				}
 			}
 		} catch (IOException | URISyntaxException e) {
@@ -171,8 +177,16 @@ public class FileTools {
 			if (fileSystem != null) {
 				fileSystem.close();
 			}
-
 		}
 		return files;
+	}
+
+	public static String withoutExtension(String file) {
+		int end = file.lastIndexOf('.');
+		String result = file;
+		if (end > 0) {
+			result = file.substring(0, end);
+		}
+		return result;
 	}
 }

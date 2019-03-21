@@ -14,6 +14,7 @@ import net.ramso.docindita.tools.DitaConstants;
 import net.ramso.docindita.xml.Config;
 import net.ramso.docindita.xml.schema.model.AttributeGroupModel;
 import net.ramso.docindita.xml.schema.model.AttributeModel;
+import net.ramso.tools.FileTools;
 import net.ramso.tools.graph.GraphConstants;
 import net.ramso.tools.graph.GraphTools;
 
@@ -30,7 +31,11 @@ public class AttributeGroupGraph extends AbstractXmlGraph {
 		super();
 		this.attributeGroup = attributeGroup;
 		suffix = DitaConstants.SUFFIX_ATTRIBUTEGROUP;
-		setFileName(attributeGroup.getName());
+		if (attributeGroup.getFileName().isEmpty()) {
+			setFileName(attributeGroup.getFileName());
+		} else {
+			setFileName(FileTools.withoutExtension(attributeGroup.getFileName()));
+		}
 	}
 
 	public AttributeGroupGraph(AttributeGroupModel attributeGroup, mxGraph graph) {
