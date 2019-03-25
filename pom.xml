@@ -9,7 +9,7 @@
 	<modules>
 		<module>XMLDocInDita</module>
 		<module>commons</module>
-		<module>DBDocInDita</module>
+		
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -204,3 +204,4 @@
 		<url>https://travis-ci.org/ramsodev/DocInDita#</url>
 	</ciManagement>
 </project>
+
