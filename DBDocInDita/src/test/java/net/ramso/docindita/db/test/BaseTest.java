@@ -7,6 +7,7 @@ import java.sql.SQLException;
 public abstract class BaseTest {
 	public String driver = "org.apache.derby.jdbc.EmbeddedDriver";
 	public String protocol = "jdbc:derby:";
+//	public String db = "toursdb";
 	public String db = "DB/BirtSample";
 	
 	protected Connection getConnection() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {

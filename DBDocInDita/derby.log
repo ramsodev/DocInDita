@@ -1,13 +1,13 @@
 ----------------------------------------------------------------
-Thu Mar 21 13:27:09 CET 2019:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0169-a038-28eb-000007005700 
-on database directory /home/jjescudero/git/wsdl2dita/DBDocInDita/target/test-classes/DB/BirtSample with class loader sun.misc.Launcher$AppClassLoader@4aa298b7 
+Tue Mar 26 13:04:39 CET 2019:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0169-b9e3-5e4a-00000597e260 
+on database directory /home/jjescudero/git/wsdl2dita/DBDocInDita/target/test-classes/DB/BirtSample with class loader sun.misc.Launcher$AppClassLoader@18b4aac2 
 Loaded from file:/home/jjescudero/.m2/repository/org/apache/derby/derby/10.14.2.0/derby-10.14.2.0.jar
 java.vendor=Oracle Corporation
 java.runtime.version=1.8.0_131-b11
 user.dir=/home/jjescudero/git/wsdl2dita/DBDocInDita
 os.name=Linux
 os.arch=amd64
-os.version=5.0.1-1-default
+os.version=5.0.2-1-default
 derby.system.home=null
 Database Class Loader started - derby.database.classpath=''
