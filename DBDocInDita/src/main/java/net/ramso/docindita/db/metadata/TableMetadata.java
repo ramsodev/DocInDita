@@ -8,8 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +19,7 @@ import net.ramso.tools.LogManager;
  * @author ramso
  *
  */
-public class TableMetadata extends AbstractMetadata {
+public class TableMetadata extends AbstractMetadata implements IBaseMetadata{
 	private String type;
 	private List<ColumnMetadata> columns;
 	private String pkName;
@@ -111,5 +109,20 @@ public class TableMetadata extends AbstractMetadata {
 
 	public void setPkName(String pkName) {
 		this.pkName = pkName;
+	}
+
+	@Override
+	public String getDiagram() {		
+		return "";
+	}
+
+	@Override
+	public boolean isScaleDiagram() {
+		return false;
+	}
+
+	@Override
+	public String getDDL() {
+		return "";
 	}
 }

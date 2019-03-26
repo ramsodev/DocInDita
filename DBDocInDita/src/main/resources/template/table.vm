@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<topic id="${id}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://docs.oasis-open.org/dita/v1.2/os/DITA1.2-xsds/xsd1.2-url/technicalContent/xsd/topic.xsd">
+  <title>${title}</title>
+    <shortdesc>${content}</shortdesc>
+  <body>
+    <section id="erd">
+      <title>Diagrama de entidad relación</title>
+      <fig expanse="page">
+        <title>Diagrama ER $title</title>
+        <image placement="break" href="${table.getDiagram()}" align="center" id="${id}Image" #if(${table.isScaleDiagram()})scalefit="yes"#end/>
+      </fig>
+    </section>
+    <table frame="all" colsep="1" rowsep="1" pgwide="1" scale="80" id="table_col_mns">
+      <title>Columnas de la tabla EMPLOYEES</title>
+      <tgroup cols="8">
+        <colspec align="left" colname="NOMBRE" colnum="1" colwidth="2*" />
+        <colspec align="left" colname="TIPO" colnum="2" colwidth="2*" />
+        <colspec align="left" colname="DEF.VALUE" colnum="3" colwidth="3*" />
+        <colspec align="center" colname="ID" colnum="4" colwidth="1*" />
+        <colspec align="center" colname="NULL" colnum="5" colwidth="1*" />
+        <colspec align="center" colname="PK" colnum="6" colwidth="1*" />
+        <colspec align="center" colname="FK" colnum="7" colwidth="1*" />
+        <colspec align="center" colname="UQ" colnum="8" colwidth="1*" />
+        <thead>
+          <row valign="middle">
+            <entry align="center">NOMBRE</entry>
+            <entry align="center">TIPO</entry>
+            <entry align="center">DEF.VALUE</entry>
+            <entry align="center">ID</entry>
+            <entry align="center">NULL</entry>
+            <entry align="center">PK</entry>
+            <entry align="center">FK</entry>
+            <entry align="center">UQ</entry>
+          </row>
+        </thead>
+        <tbody>
+        #foreach($col in ${table.getColumns()})
+          <row valign="middle">
+            <entry morerows="1">${col.getName()}</entry>
+            <entry>${col.getType()}</entry>
+            <entry>${col.getDefaultValue()}</entry>
+            <entry>${col.isAutoincrement()}</entry>
+            <entry>${col.isNullable()}</entry>
+            <entry>${col.isPrimaryKey()}</entry>
+            <entry>${col.isForeingKey()}</entry>
+            <entry></entry>
+          </row>
+          <row>
+            <entry colname="DES" namest="TIPO" nameend="UQ" >${col.getDoc()}</entry>
+          </row>
+        #end        
+        </tbody>
+      </tgroup>
+    </table>
+    <section id="pk">
+      <title>Clave Primaria ${table.getPkName()}</title>
+      <dl>
+        <dlentry>
+          <dt>Columnas</dt>
+          <dd>
+            <sl>
+            #foreach($col in ${table.getPkColumns()})
+              <sli>${col.getName()}</sli>
+            #end
+            </sl>
+          </dd>
+        </dlentry>
+      </dl>
+    </section>
+    #foreach($fk in ${table.getForeingKeys()})
+    <section id="fk_${fk.getName()}">
+      <title>Restricción ${fk.getName()}</title>
+      <dl id="fk_dl_${fk.getName()}">
+        <dlentry>
+          <dt>Columnas</dt>
+          <dd>
+            #* table *#
+          </dd>
+        </dlentry>
+        <dlentry>
+          <dt>OnUpdate</dt>
+          <dd>NO_ACTION</dd>
+        </dlentry>
+        <dlentry>
+          <dt>OnDelete</dt>
+          <dd>NO_ACTION</dd>
+        </dlentry>
+      </dl>
+    </section>
+    #end
+    #foreach($idx in ${table.getIndex()})
+    <section id="idx_${idx.getName()}">
+      <title>Indice ${idx.getName()}</title>
+      <dl id="idx${idx.getName()}">
+        <dlentry>
+          <dt>Columnas</dt>
+          <dd>
+            <sl>
+            #foreach($col in ${idx.getColumns()})
+              <sli>${col.getName()} (${col.getOrder()})</sli>
+            #end
+            </sl>
+          </dd>
+        </dlentry>
+        <dlentry>
+          <dt>Unico</dt>
+          <dd>${idx.isUnique()}</dd>
+        </dlentry>
+      </dl>
+    </section>
+    #end
+   
+    <section id="ddl">
+      <title>DDL</title>
+      <codeblock>${table.getDDL()}</codeblock>
+    </section>
+  </body>
+</topic>

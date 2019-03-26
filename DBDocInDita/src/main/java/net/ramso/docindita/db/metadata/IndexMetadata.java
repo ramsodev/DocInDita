@@ -3,9 +3,6 @@ package net.ramso.docindita.db.metadata;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import net.ramso.docindita.db.DBConstants;
@@ -15,7 +12,7 @@ public class IndexMetadata extends AbstractMetadata {
 
 	private String type;
 	private String table;
-	private List<BasicColumnMetadata> columns;
+	private List<IndexColumnMetadata> columns;
 	private boolean unique = false;
 	private String qualifier;
 	private String filter;
@@ -44,7 +41,7 @@ public class IndexMetadata extends AbstractMetadata {
 	}
 
 	public void addColumn(ResultSet resultSet) {
-		columns.add(new BasicColumnMetadata(resultSet, getMetadata()));
+		columns.add(new IndexColumnMetadata(resultSet, getMetadata()));
 
 	}
 
@@ -127,7 +124,7 @@ public class IndexMetadata extends AbstractMetadata {
 		this.filter = filter;
 	}
 
-	public List<BasicColumnMetadata> getColumns() {
+	public List<IndexColumnMetadata> getColumns() {
 		columns.sort((BasicColumnMetadata o1, BasicColumnMetadata o2) -> o1.getIdx() - o2.getIdx());
 		return columns;
 	}

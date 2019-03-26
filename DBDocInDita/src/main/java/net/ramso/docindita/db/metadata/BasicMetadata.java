@@ -16,4 +16,5 @@ public interface BasicMetadata {
 	DatabaseMetaData getMetadata();
 	void setMetadata(DatabaseMetaData metadata);
 	
+	
 }
