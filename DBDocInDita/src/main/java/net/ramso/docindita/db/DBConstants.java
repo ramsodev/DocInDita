@@ -44,5 +44,13 @@ public class DBConstants {
 	public static final String INDEX_HASHED = "Hashed index";
 	public static final String INDEX_STADISTIC = "Table statistics";
 	public static final String INDEX_OTHER = "Other type of index";
+	public static final String CASCADE = "Cascade";
+	public static final String SET_NULL = "Set Null";
+	public static final String SET_DEFAULT = "Set Default";
+	public static final String RESTRICT = "Restrict";
+	public static final String NO_ACTION = "No Action";
+	public static final String INITIALLY_DEFERRED = "Initially Deferred";
+	public static final String INITIALLY_INMEDIATE = "Initially inmediate";
+	public static final String NOT_DEFERRABLE = "No Deferrable";
 
 }

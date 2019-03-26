@@ -16,9 +16,13 @@ public class IndexColumnMetadata extends BasicColumnMetadata {
 	}
 
 	@Override
-	public void init(ResultSet resultSet) {
-		super.init(resultSet);
+	public void init(ResultSet resultSet) {		
 		try {
+			setSchema(resultSet.getString(DBConstants.METADATA_SCHEMA));
+			setCatalog(resultSet.getString(DBConstants.METADATA_TABLE_CATALOG));
+			setTable(resultSet.getString(DBConstants.METADATA_TABLE));
+			setName(resultSet.getString(DBConstants.METADATA_COLUMN));
+			setIdx(resultSet.getInt(DBConstants.METADATA_ORDINAL_POSITION));
 			setOrder(resultSet.getString(DBConstants.METADATA_ASC_OR_DESC));
 		} catch (SQLException e) {
 			LogManager.warn("Error al preparar columna", e);

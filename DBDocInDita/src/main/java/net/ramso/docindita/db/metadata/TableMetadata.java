@@ -19,11 +19,13 @@ import net.ramso.tools.LogManager;
  * @author ramso
  *
  */
-public class TableMetadata extends AbstractMetadata implements IBaseMetadata{
+public class TableMetadata extends AbstractMetadata implements IBaseMetadata {
 	private String type;
 	private List<ColumnMetadata> columns;
-	private String pkName;
+
 	private List<IndexMetadata> tableIdx;
+	private List<ForeingKeyMetadata> foreingKeys;
+	private List<PrimaryKeyMetadata> primaryKeys;
 
 	public TableMetadata(ResultSet resultSet, DatabaseMetaData metadata) {
 		super(resultSet, metadata);
@@ -51,23 +53,34 @@ public class TableMetadata extends AbstractMetadata implements IBaseMetadata{
 				ColumnMetadata cm = new ColumnMetadata(rs, getMetadata());
 				columnsMap.put(cm.getName(), cm);
 			}
+			Map<String, PrimaryKeyMetadata> pksMap = new HashMap<>();
 			rs = getMetadata().getPrimaryKeys(getCatalog(), getSchema(), getName());
-
 			while (rs.next()) {
-				if (getPkName() != null)
-					setPkName(rs.getString(DBConstants.METADATA_PK_NAME));
 				columnsMap.get(rs.getString(DBConstants.METADATA_COLUMN)).setPrimaryKey(true);
+				PrimaryKeyMetadata pk = pksMap.get(rs.getString(DBConstants.METADATA_PK_NAME));
+				if (pk == null) {
+					pk = new PrimaryKeyMetadata(rs, getMetadata());
+					pksMap.put(pk.getName(), pk);
+				} else {
+					pk.addColumn(rs);
+				}
 			}
+			primaryKeys= new ArrayList<>(pksMap.values());
+			Map<String, ForeingKeyMetadata> fksMap = new HashMap<>();
 			rs = getMetadata().getImportedKeys(getCatalog(), getSchema(), getName());
 			while (rs.next()) {
-				columnsMap.get(rs.getString(DBConstants.METADATA_FKCOLUMN_NAME)).setForeingKey(
-						rs.getString(DBConstants.METADATA_FK_NAME), rs.getString(DBConstants.METADATA_PKTABLE_CAT),
-						rs.getString(DBConstants.METADATA_PKTABLE_SCHEM),
-						rs.getString(DBConstants.METADATA_PKTABLE_NAME),
-						rs.getString(DBConstants.METADATA_PKCOLUMN_NAME));
+				columnsMap.get(rs.getString(DBConstants.METADATA_FKCOLUMN_NAME)).setForeingKey(true);
+				ForeingKeyMetadata fk = fksMap.get(rs.getString(DBConstants.METADATA_FK_NAME));
+				if (fk == null) {
+					fk = new ForeingKeyMetadata(rs, getMetadata());
+					fksMap.put(fk.getName(), fk);
+				} else {
+					fk.addColumn(rs);
+				}
 			}
+			foreingKeys = new ArrayList<>(fksMap.values());
 			columns = new ArrayList<>(columnsMap.values());
-			columns.sort((ColumnMetadata o1, ColumnMetadata o2) -> o1.getIdx() - o2.getIdx());
+			columns.sort((BasicColumnMetadata o1, BasicColumnMetadata o2) -> o1.getIdx() - o2.getIdx());
 		}
 		return columns;
 	}
@@ -103,16 +116,8 @@ public class TableMetadata extends AbstractMetadata implements IBaseMetadata{
 		return getCatalog() + "." + getSchema() + "." + getName() + " (" + getType() + ")";
 	}
 
-	public String getPkName() {
-		return pkName;
-	}
-
-	public void setPkName(String pkName) {
-		this.pkName = pkName;
-	}
-
 	@Override
-	public String getDiagram() {		
+	public String getDiagram() {
 		return "";
 	}
 
@@ -124,5 +129,13 @@ public class TableMetadata extends AbstractMetadata implements IBaseMetadata{
 	@Override
 	public String getDDL() {
 		return "";
+	}
+
+	public List<ForeingKeyMetadata> getForeingKeys() {
+		return foreingKeys;
+	}
+
+	public List<PrimaryKeyMetadata> getPrimaryKeys() {
+		return primaryKeys;
 	}
 }

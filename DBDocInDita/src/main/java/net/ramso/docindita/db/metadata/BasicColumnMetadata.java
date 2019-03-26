@@ -25,7 +25,7 @@ public class BasicColumnMetadata extends AbstractMetadata {
 			setCatalog(resultSet.getString(DBConstants.METADATA_TABLE_CATALOG));
 			setTable(resultSet.getString(DBConstants.METADATA_TABLE));
 			setName(resultSet.getString(DBConstants.METADATA_COLUMN));
-			setIdx(resultSet.getInt(DBConstants.METADATA_ORDINAL_POSITION));			
+			setIdx(resultSet.getShort(DBConstants.METADATA_KEY_SEQ));		
 		} catch (SQLException e) {
 			LogManager.warn("Error al preparar columna", e);
 		}
