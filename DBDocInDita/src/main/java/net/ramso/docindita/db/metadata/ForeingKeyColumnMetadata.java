@@ -93,4 +93,32 @@ public class ForeingKeyColumnMetadata extends BasicColumnMetadata {
 	public void setFkColumn(String fkColumn) {
 		this.fkColumn = fkColumn;
 	}
+
+	public String getPkTxt() {
+		StringBuilder st = new StringBuilder();
+		if (getCatalog() != null && !getCatalog().isEmpty()) {
+			st.append(getCatalog());
+			st.append(".");
+		}
+		st.append(getSchema());
+		st.append(".");
+		st.append(getTable());
+		st.append(".");
+		st.append(getName());
+		return st.toString();
+	}
+
+	public String getFkTxt() {
+		StringBuilder st = new StringBuilder();
+		if (getFkCatalog() != null && !getFkCatalog().isEmpty()) {
+			st.append(getFkCatalog());
+			st.append(".");
+		}
+		st.append(getFkSchema());
+		st.append(".");
+		st.append(getFkTable());
+		st.append(".");
+		st.append(getFkColumn());
+		return st.toString();
+	}
 }

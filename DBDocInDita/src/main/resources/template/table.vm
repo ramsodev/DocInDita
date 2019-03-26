@@ -54,14 +54,15 @@
         </tbody>
       </tgroup>
     </table>
-    <section id="pk">
-      <title>Clave Primaria ${table.getPkName()}</title>
+    #foreach($pk in ${table.getPrimaryKeys()})
+    <section id="pk_${pk.getName()}">
+      <title>Clave Primaria ${pk.getName()}</title>
       <dl>
         <dlentry>
           <dt>Columnas</dt>
           <dd>
             <sl>
-            #foreach($col in ${table.getPkColumns()})
+            #foreach($col in ${pk.getColumns()})
               <sli>${col.getName()}</sli>
             #end
             </sl>
@@ -69,6 +70,7 @@
         </dlentry>
       </dl>
     </section>
+    #end
     #foreach($fk in ${table.getForeingKeys()})
     <section id="fk_${fk.getName()}">
       <title>Restricción ${fk.getName()}</title>
@@ -76,16 +78,31 @@
         <dlentry>
           <dt>Columnas</dt>
           <dd>
-            #* table *#
+            <simpletable frame="all" id="fk_cols_${fk.getName()}">
+            	<sthead>
+               		<stentry>${fk.getName()}</stentry>
+                    <stentry>${fk.getPkName()}</stentry>
+                </sthead>
+                #foreach($col in ${fk.getColumns()})
+                <strow>
+                	<stentry>${col.getFkTxt()}</stentry>
+                    <stentry>${col.getPkTxt()}</stentry>
+                </strow>
+                #end
+            </simpletable>
           </dd>
         </dlentry>
         <dlentry>
           <dt>OnUpdate</dt>
-          <dd>NO_ACTION</dd>
+          <dd>${fk.getUpdateRule()}</dd>
         </dlentry>
         <dlentry>
           <dt>OnDelete</dt>
-          <dd>NO_ACTION</dd>
+          <dd>${fk.getDeleteRule()}</dd>
+        </dlentry>
+        <dlentry>
+          <dt>Deferrability</dt>
+          <dd>${fk.getDeferrability()}</dd>
         </dlentry>
       </dl>
     </section>
