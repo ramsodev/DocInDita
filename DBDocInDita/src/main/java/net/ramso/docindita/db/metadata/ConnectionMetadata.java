@@ -17,11 +17,15 @@ public class ConnectionMetadata {
 
 	}
 
+	public SchemaMetadata getSchema() throws SQLException  {
+		return getSchema(connection.getSchema());
+	}
+
 	public SchemaMetadata getSchema(String name) throws SQLException {
 		SchemaMetadata schema = null;
 		DatabaseMetaData metadata = connection.getMetaData();
 		ResultSet rs = metadata.getSchemas(null, name);
-		if (rs.first()) {
+		if (rs.next()) {
 			schema = new SchemaMetadata(rs, metadata);
 		}
 		return schema;

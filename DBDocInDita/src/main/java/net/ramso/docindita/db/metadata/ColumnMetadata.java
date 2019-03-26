@@ -7,10 +7,10 @@ import java.sql.SQLException;
 import net.ramso.docindita.db.DBConstants;
 import net.ramso.tools.LogManager;
 
-public class ColumnsMetadata extends AbstractMetadata {
+public class ColumnMetadata extends BasicColumnMetadata {
 
 	private String type;
-	private String table;
+	
 	private int size;
 	private int decimal;
 	private String defaultValue;
@@ -19,9 +19,14 @@ public class ColumnsMetadata extends AbstractMetadata {
 	private boolean isGenerated = false;
 	private boolean primaryKey = false;
 	private boolean foreingKey = false;
-	private int idx;
+	
+	private String fkCatalog;
+	private String fkSchema;
+	private String fkTable;
+	private String fkName;
+	private String fkColumn;
 
-	public ColumnsMetadata(ResultSet resultSet, DatabaseMetaData metadata) {
+	public ColumnMetadata(ResultSet resultSet, DatabaseMetaData metadata) {
 		super(resultSet, metadata);
 	}
 
@@ -40,6 +45,7 @@ public class ColumnsMetadata extends AbstractMetadata {
 			setAutoincrement(resultSet.getString(DBConstants.METADATA_IS_AUTOINCREMENT).equalsIgnoreCase("YES"));
 			setGenerated(resultSet.getString(DBConstants.METADATA_IS_GENERATEDCOLUMN).equalsIgnoreCase("YES"));
 			setDoc(resultSet.getString(DBConstants.METADATA_REMARKS));
+			setIdx(resultSet.getInt(DBConstants.METADATA_ORDINAL_POSITION));
 		} catch (SQLException e) {
 			LogManager.warn("Error al preparar esquema", e);
 		}
@@ -110,32 +116,20 @@ public class ColumnsMetadata extends AbstractMetadata {
 		this.foreingKey = foreingKey;
 	}
 
-	public String getTable() {
-		return table;
+	public void setForeingKey(String name, String catalog, String schema, String table, String column) {
+		this.foreingKey = true;
+		this.fkColumn = column;
+		this.fkTable = table;
+		this.fkName = name;
+		this.fkCatalog = catalog;
+		this.fkSchema = schema;
 	}
 
-	protected void setTable(String table) {
-		this.table = table;
-	}
-
-	public int getIdx() {
-		return idx;
-	}
-
-	public void setIdx(int idx) {
-		this.idx = idx;
-	}
-
+	
 	@Override
 	public String toString() {
 		StringBuilder st = new StringBuilder();
-		st.append(getCatalog());
-		st.append(".");
-		st.append(getSchema());
-		st.append(".");
-		st.append(getTable());
-		st.append(".");
-		st.append(getName());
+		st.append(super.toString());
 		st.append(" type: ");
 		st.append(getType());
 		st.append(" Position: " + getIdx());
@@ -144,7 +138,37 @@ public class ColumnsMetadata extends AbstractMetadata {
 		st.append(isNullable() ? " Nullable" : "");
 		st.append(isGenerated() ? " Generated" : "");
 		st.append(isPrimaryKey() ? " PK " : "");
-		st.append(isForeingKey() ? " FK " : "");
+		if (isForeingKey()) {
+			st.append(" (FK ");
+			st.append(getFkName() + ": ");
+			st.append(getFkCatalog());
+			st.append(".");
+			st.append(getFkSchema());
+			st.append(".");
+			st.append(getFkTable());
+			st.append(".");
+			st.append(getFkColumn() + ")");
+		}
 		return st.toString();
+	}
+
+	public String getFkCatalog() {
+		return fkCatalog;
+	}
+
+	public String getFkSchema() {
+		return fkSchema;
+	}
+
+	public String getFkTable() {
+		return fkTable;
+	}
+
+	public String getFkName() {
+		return fkName;
+	}
+
+	public String getFkColumn() {
+		return fkColumn;
 	}
 }

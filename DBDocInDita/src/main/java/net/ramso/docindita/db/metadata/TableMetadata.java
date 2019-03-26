@@ -6,8 +6,12 @@ package net.ramso.docindita.db.metadata;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.ramso.docindita.db.DBConstants;
@@ -19,7 +23,9 @@ import net.ramso.tools.LogManager;
  */
 public class TableMetadata extends AbstractMetadata {
 	private String type;
-	private Collection<ColumnsMetadata> columns;
+	private List<ColumnMetadata> columns;
+	private String pkName;
+	private List<IndexMetadata> tableIdx;
 
 	public TableMetadata(ResultSet resultSet, DatabaseMetaData metadata) {
 		super(resultSet, metadata);
@@ -39,25 +45,51 @@ public class TableMetadata extends AbstractMetadata {
 
 	}
 
-	public Collection<ColumnsMetadata> getColumns() throws SQLException {
+	public Collection<ColumnMetadata> getColumns() throws SQLException {
 		if (columns == null) {
-			Map<String, ColumnsMetadata> columnsMap = new HashMap<>();
+			Map<String, ColumnMetadata> columnsMap = new HashMap<>();
 			ResultSet rs = getMetadata().getColumns(getCatalog(), getSchema(), getName(), null);
 			while (rs.next()) {
-				ColumnsMetadata cm = new ColumnsMetadata(rs, getMetadata());
+				ColumnMetadata cm = new ColumnMetadata(rs, getMetadata());
 				columnsMap.put(cm.getName(), cm);
 			}
 			rs = getMetadata().getPrimaryKeys(getCatalog(), getSchema(), getName());
+
 			while (rs.next()) {
+				if (getPkName() != null)
+					setPkName(rs.getString(DBConstants.METADATA_PK_NAME));
 				columnsMap.get(rs.getString(DBConstants.METADATA_COLUMN)).setPrimaryKey(true);
 			}
 			rs = getMetadata().getImportedKeys(getCatalog(), getSchema(), getName());
 			while (rs.next()) {
-				columnsMap.get(rs.getString(DBConstants.METADATA_COLUMN)).setForeingKey(true);
+				columnsMap.get(rs.getString(DBConstants.METADATA_FKCOLUMN_NAME)).setForeingKey(
+						rs.getString(DBConstants.METADATA_FK_NAME), rs.getString(DBConstants.METADATA_PKTABLE_CAT),
+						rs.getString(DBConstants.METADATA_PKTABLE_SCHEM),
+						rs.getString(DBConstants.METADATA_PKTABLE_NAME),
+						rs.getString(DBConstants.METADATA_PKCOLUMN_NAME));
 			}
-			columns = columnsMap.values();
+			columns = new ArrayList<>(columnsMap.values());
+			columns.sort((ColumnMetadata o1, ColumnMetadata o2) -> o1.getIdx() - o2.getIdx());
 		}
 		return columns;
+	}
+
+	public Collection<IndexMetadata> getIndex() throws SQLException {
+		if (tableIdx == null) {
+			Map<String, IndexMetadata> index = new HashMap<>();
+			ResultSet rs = getMetadata().getIndexInfo(getCatalog(), getSchema(), getName(), false, false);
+			while (rs.next()) {
+				IndexMetadata idx = index.get(rs.getString(DBConstants.METADATA_INDEX_NAME));
+				if (idx == null) {
+					idx = new IndexMetadata(rs, getMetadata());
+					index.put(idx.getName(), idx);
+				} else {
+					idx.addColumn(rs);
+				}
+			}
+			tableIdx = new ArrayList<>(index.values());
+		}
+		return tableIdx;
 	}
 
 	public String getType() {
@@ -71,5 +103,13 @@ public class TableMetadata extends AbstractMetadata {
 	@Override
 	public String toString() {
 		return getCatalog() + "." + getSchema() + "." + getName() + " (" + getType() + ")";
+	}
+
+	public String getPkName() {
+		return pkName;
+	}
+
+	public void setPkName(String pkName) {
+		this.pkName = pkName;
 	}
 }
