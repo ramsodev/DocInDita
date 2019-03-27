@@ -14,7 +14,7 @@ import net.ramso.docindita.db.Config;
 import net.ramso.docindita.db.GenerateDataBase;
 import net.ramso.docindita.tools.DitaConstants;
 
-class GenreateDataBaseTest extends BaseTest {
+class GenerateDataBaseTest extends BaseTest {
 
 	private GenerateDataBase generate;
 	

@@ -133,6 +133,7 @@ public class IndexMetadata extends AbstractMetadata {
 		columns.sort((BasicColumnMetadata o1, BasicColumnMetadata o2) -> o1.getIdx() - o2.getIdx());
 		return columns;
 	}
+
 	@Override
 	public String getId() {
 		StringBuilder st = new StringBuilder();
@@ -146,7 +147,25 @@ public class IndexMetadata extends AbstractMetadata {
 
 	@Override
 	public String getDDL() {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuilder st = new StringBuilder();
+		st.append("CREATE INDEX ");
+		if(isUnique()) {
+			st.append("UNIQUE ");
+		}
+		st.append(super.getId());
+		st.append(getName());
+		st.append(" ON ");
+		st.append(super.getId());
+		st.append(getTable());
+		st.append("(");
+		boolean comma = false;
+		for(IndexColumnMetadata col:getColumns()) {
+			if(comma) {
+				st.append(", ");
+			}comma=true;
+			st.append(col.getDDL());
+		}
+		st.append(");");
+		return st.toString();
 	}
 }

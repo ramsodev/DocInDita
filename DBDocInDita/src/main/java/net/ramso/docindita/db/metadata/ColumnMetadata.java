@@ -129,7 +129,7 @@ public class ColumnMetadata extends BasicColumnMetadata {
 	@Override
 	public String getDDL() {
 		StringBuilder st = new StringBuilder();
-		st.append(super.toString());
+		st.append(getName());
 		st.append(' ');
 		st.append(getType());
 		if (isNullable()) {

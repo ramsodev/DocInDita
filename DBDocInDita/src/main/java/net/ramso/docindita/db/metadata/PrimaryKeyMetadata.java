@@ -78,7 +78,22 @@ public class PrimaryKeyMetadata extends AbstractMetadata {
 
 	@Override
 	public String getDDL() {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuilder st = new StringBuilder();
+		st.append("ALTER TABLE ");
+		st.append(super.getId());
+		st.append(getTable());
+		st.append(" ADD CONSTRAINT ");
+		st.append(super.getId());
+		st.append(getName());
+		st.append(" PRIMARY KEY (");
+		boolean comma = false;
+		for(BasicColumnMetadata col:getColumns()) {
+			if(comma) {
+				st.append(", ");
+			}comma=true;
+			st.append(col.getDDL());
+		}
+		st.append(");"); 
+		return st.toString();
 	}
 }

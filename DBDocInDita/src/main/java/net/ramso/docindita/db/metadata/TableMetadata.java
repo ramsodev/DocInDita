@@ -132,14 +132,13 @@ public class TableMetadata extends AbstractMetadata implements IBaseMetadata {
 		try {
 			if (getType().equals(DBConstants.TABLE)) {
 				st.append("CREATE TABLE ");
-				st.append(getSchema());
-				st.append('.');
+				st.append(super.getId());
 				st.append(getName());
 				st.append(" (");
 				boolean comma = false;
 				for (ColumnMetadata col : getColumns()) {
 					if (comma) {
-						st.append(',');
+						st.append(", ");
 					}
 					comma = true;
 					st.append(System.lineSeparator());
@@ -147,6 +146,18 @@ public class TableMetadata extends AbstractMetadata implements IBaseMetadata {
 				}
 				st.append(System.lineSeparator());
 				st.append(");");
+				for(PrimaryKeyMetadata pk:getPrimaryKeys()) {
+					st.append(System.lineSeparator());
+					st.append(pk.getDDL());
+				}
+				for(IndexMetadata idx:getIndex()) {
+					st.append(System.lineSeparator());
+					st.append(idx.getDDL());
+				}
+				for(ForeingKeyMetadata fk:getForeingKeys()) {
+					st.append(System.lineSeparator());
+					st.append(fk.getDDL());
+				}
 			}
 		} catch (SQLException e) {
 			LogManager.warn("Fallo al crear el ddl de la tabla " + getName(), e);

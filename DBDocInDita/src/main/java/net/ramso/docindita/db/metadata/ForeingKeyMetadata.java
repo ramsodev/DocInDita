@@ -146,7 +146,7 @@ public class ForeingKeyMetadata extends AbstractMetadata {
 			this.deferrability = DBConstants.NOT_DEFERRABLE;
 			break;
 		}
-		
+
 	}
 
 	public String getPkName() {
@@ -156,6 +156,7 @@ public class ForeingKeyMetadata extends AbstractMetadata {
 	public void setPkName(String pkName) {
 		this.pkName = pkName;
 	}
+
 	@Override
 	public String getId() {
 		StringBuilder st = new StringBuilder();
@@ -169,7 +170,55 @@ public class ForeingKeyMetadata extends AbstractMetadata {
 
 	@Override
 	public String getDDL() {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuilder st = new StringBuilder();
+		st.append("ALTER TABLE ");
+		st.append(super.getId());
+		st.append(getTable());
+		st.append(" ADD CONSTRAINT ");
+		st.append(super.getId());
+		st.append(getName());
+		st.append(System.lineSeparator());
+		st.append("	 FOREIGN KEY (");
+		boolean comma = false;
+		for (ForeingKeyColumnMetadata col : getColumns()) {
+			if (comma) {
+				st.append(", ");
+			}
+			comma = true;
+			st.append(col.getName());
+		}
+		st.append(")");
+		st.append(System.lineSeparator());
+		st.append("	 REFERENCES ");
+		comma = false;
+		for (ForeingKeyColumnMetadata col : getColumns()) {
+			if (!comma) {
+				if (col.getFkCatalog() != null && !col.getFkCatalog().isEmpty()) {
+					st.append(col.getFkCatalog());
+					st.append(".");
+				}
+				if (col.getFkSchema() != null && !col.getFkSchema().isEmpty()) {
+					st.append(col.getFkSchema());
+					st.append(".");
+				}
+				st.append(col.getFkTable());
+				st.append(System.lineSeparator());
+				st.append("	 	(");
+			} else {
+				st.append(", ");
+			}
+			comma = true;
+			st.append(col.getName());
+		}
+
+		st.append(")");
+		st.append(System.lineSeparator());
+		st.append("	 ON UPDATE ");
+		st.append(getUpdateRule().toUpperCase());
+		st.append(System.lineSeparator());
+		st.append("	 ON DELETE ");
+		st.append(getDeleteRule().toUpperCase());
+		st.append(';');
+		return st.toString();
 	}
 }
