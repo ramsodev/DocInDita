@@ -3,6 +3,7 @@ package net.ramso.docindita.db.metadata;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import net.ramso.docindita.db.DBConstants;
@@ -24,9 +25,9 @@ public class ForeingKeyMetadata extends AbstractMetadata {
 	@Override
 	public void init(ResultSet resultSet) {
 		try {
-			setSchema(resultSet.getString(DBConstants.METADATA_SCHEMA));
-			setCatalog(resultSet.getString(DBConstants.METADATA_TABLE_CATALOG));
-			setTable(resultSet.getString(DBConstants.METADATA_TABLE));
+			setSchema(resultSet.getString(DBConstants.METADATA_FKTABLE_SCHEM));
+			setCatalog(resultSet.getString(DBConstants.METADATA_FKTABLE_CAT));
+			setTable(resultSet.getString(DBConstants.METADATA_FKTABLE_NAME));
 			setName(resultSet.getString(DBConstants.METADATA_FK_NAME));
 			setPkName(resultSet.getString(DBConstants.METADATA_PK_NAME));
 			setDoc("");
@@ -38,7 +39,9 @@ public class ForeingKeyMetadata extends AbstractMetadata {
 	}
 
 	public void addColumn(ResultSet resultSet) {
-		columns.add(new ForeingKeyColumnMetadata(resultSet, getMetadata()));
+		if (this.columns == null)
+			this.columns = new ArrayList<>();
+		this.columns.add(new ForeingKeyColumnMetadata(resultSet, getMetadata()));
 
 	}
 
@@ -63,16 +66,17 @@ public class ForeingKeyMetadata extends AbstractMetadata {
 		st.append(" Deferrability ");
 		st.append(getDeferrability());
 		st.append(" Columns:");
-		for (BasicColumnMetadata column : getColumns()) {
-			st.append("\\n-------->");
+		for (ForeingKeyColumnMetadata column : getColumns()) {
+			st.append(System.lineSeparator());
+			st.append("----------->");
 			st.append(column.toString());
 		}
 		return st.toString();
 	}
 
 	public List<ForeingKeyColumnMetadata> getColumns() {
-		columns.sort((BasicColumnMetadata o1, BasicColumnMetadata o2) -> o1.getIdx() - o2.getIdx());
-		return columns;
+		this.columns.sort((BasicColumnMetadata o1, BasicColumnMetadata o2) -> o1.getIdx() - o2.getIdx());
+		return this.columns;
 	}
 
 	public String getUpdateRule() {

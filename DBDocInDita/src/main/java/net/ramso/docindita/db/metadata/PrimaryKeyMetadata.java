@@ -3,6 +3,7 @@ package net.ramso.docindita.db.metadata;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import net.ramso.docindita.db.DBConstants;
@@ -12,7 +13,6 @@ public class PrimaryKeyMetadata extends AbstractMetadata {
 
 	private String table;
 	private List<BasicColumnMetadata> columns;
-	
 
 	public PrimaryKeyMetadata(ResultSet resultSet, DatabaseMetaData metadata) {
 		super(resultSet, metadata);
@@ -34,7 +34,9 @@ public class PrimaryKeyMetadata extends AbstractMetadata {
 	}
 
 	public void addColumn(ResultSet resultSet) {
-		columns.add(new BasicColumnMetadata(resultSet, getMetadata()));
+		if (this.columns == null)
+			this.columns = new ArrayList<>();
+		this.columns.add(new BasicColumnMetadata(resultSet, getMetadata()));
 
 	}
 
@@ -52,17 +54,16 @@ public class PrimaryKeyMetadata extends AbstractMetadata {
 		st.append("PK " + getName());
 		st.append(" Columns:");
 		for (BasicColumnMetadata column : getColumns()) {
-			st.append("\\n-------->");
+			st.append(System.lineSeparator());
+			st.append("---------->");
 			st.append(column.toString());
 		}
 		return st.toString();
 	}
 
 	public List<BasicColumnMetadata> getColumns() {
-		columns.sort((BasicColumnMetadata o1, BasicColumnMetadata o2) -> o1.getIdx() - o2.getIdx());
-		return columns;
+		this.columns.sort((BasicColumnMetadata o1, BasicColumnMetadata o2) -> o1.getIdx() - o2.getIdx());
+		return this.columns;
 	}
-
-	
 
 }

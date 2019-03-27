@@ -22,10 +22,10 @@ public class ForeingKeyColumnMetadata extends BasicColumnMetadata {
 	@Override
 	public void init(ResultSet resultSet) {
 		try {
-			setSchema(resultSet.getString(DBConstants.METADATA_SCHEMA));
-			setCatalog(resultSet.getString(DBConstants.METADATA_TABLE_CATALOG));
-			setTable(resultSet.getString(DBConstants.METADATA_TABLE));
-			setName(resultSet.getString(DBConstants.METADATA_COLUMN));
+			setSchema(resultSet.getString(DBConstants.METADATA_FKTABLE_SCHEM));
+			setCatalog(resultSet.getString(DBConstants.METADATA_FKTABLE_CAT));
+			setTable(resultSet.getString(DBConstants.METADATA_FKTABLE_NAME));
+			setName(resultSet.getString(DBConstants.METADATA_FKCOLUMN_NAME));
 			setFkCatalog(resultSet.getString(DBConstants.METADATA_PKTABLE_CAT));
 			setFkSchema(resultSet.getString(DBConstants.METADATA_PKTABLE_SCHEM));
 			setFkTable(resultSet.getString(DBConstants.METADATA_PKTABLE_NAME));

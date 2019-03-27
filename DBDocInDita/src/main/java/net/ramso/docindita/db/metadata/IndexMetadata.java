@@ -3,6 +3,7 @@ package net.ramso.docindita.db.metadata;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import net.ramso.docindita.db.DBConstants;
@@ -41,6 +42,8 @@ public class IndexMetadata extends AbstractMetadata {
 	}
 
 	public void addColumn(ResultSet resultSet) {
+		if (columns == null)
+			columns = new ArrayList<>();
 		columns.add(new IndexColumnMetadata(resultSet, getMetadata()));
 
 	}
@@ -77,6 +80,7 @@ public class IndexMetadata extends AbstractMetadata {
 	@Override
 	public String toString() {
 		StringBuilder st = new StringBuilder();
+		st.append("Index: ");
 		st.append(getCatalog());
 		st.append(".");
 		st.append(getSchema());
@@ -93,7 +97,8 @@ public class IndexMetadata extends AbstractMetadata {
 		st.append(getFilter());
 		st.append(" Columns:");
 		for (BasicColumnMetadata column : getColumns()) {
-			st.append("\\n-------->");
+			st.append(System.lineSeparator());
+			st.append("---------->");
 			st.append(column.toString());
 		}
 

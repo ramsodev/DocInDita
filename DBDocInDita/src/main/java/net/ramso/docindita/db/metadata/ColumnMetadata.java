@@ -10,7 +10,7 @@ import net.ramso.tools.LogManager;
 public class ColumnMetadata extends BasicColumnMetadata {
 
 	private String type;
-	
+
 	private int size;
 	private int decimal;
 	private String defaultValue;
@@ -19,12 +19,6 @@ public class ColumnMetadata extends BasicColumnMetadata {
 	private boolean isGenerated = false;
 	private boolean primaryKey = false;
 	private boolean foreingKey = false;
-	
-	private String fkCatalog;
-	private String fkSchema;
-	private String fkTable;
-	private String fkName;
-	private String fkColumn;
 
 	public ColumnMetadata(ResultSet resultSet, DatabaseMetaData metadata) {
 		super(resultSet, metadata);
@@ -116,16 +110,6 @@ public class ColumnMetadata extends BasicColumnMetadata {
 		this.foreingKey = foreingKey;
 	}
 
-	public void setForeingKey(String name, String catalog, String schema, String table, String column) {
-		this.foreingKey = true;
-		this.fkColumn = column;
-		this.fkTable = table;
-		this.fkName = name;
-		this.fkCatalog = catalog;
-		this.fkSchema = schema;
-	}
-
-	
 	@Override
 	public String toString() {
 		StringBuilder st = new StringBuilder();
@@ -138,37 +122,8 @@ public class ColumnMetadata extends BasicColumnMetadata {
 		st.append(isNullable() ? " Nullable" : "");
 		st.append(isGenerated() ? " Generated" : "");
 		st.append(isPrimaryKey() ? " PK " : "");
-		if (isForeingKey()) {
-			st.append(" (FK ");
-			st.append(getFkName() + ": ");
-			st.append(getFkCatalog());
-			st.append(".");
-			st.append(getFkSchema());
-			st.append(".");
-			st.append(getFkTable());
-			st.append(".");
-			st.append(getFkColumn() + ")");
-		}
+		st.append(isForeingKey() ? " FK " : "");
 		return st.toString();
 	}
 
-	public String getFkCatalog() {
-		return fkCatalog;
-	}
-
-	public String getFkSchema() {
-		return fkSchema;
-	}
-
-	public String getFkTable() {
-		return fkTable;
-	}
-
-	public String getFkName() {
-		return fkName;
-	}
-
-	public String getFkColumn() {
-		return fkColumn;
-	}
 }
