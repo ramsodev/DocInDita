@@ -126,4 +126,23 @@ public class ColumnMetadata extends BasicColumnMetadata {
 		return st.toString();
 	}
 
+	@Override
+	public String getDDL() {
+		StringBuilder st = new StringBuilder();
+		st.append(super.toString());
+		st.append(' ');
+		st.append(getType());
+		if (isNullable()) {
+			st.append(" NOT NULL");
+		}
+		if(defaultValue!=null) {
+			st.append(" DEFAULT ");
+			st.append(getDefaultValue());
+		}
+		if(isGenerated) {
+			st.append(" GENERATED ALWAYS AS IDENTITY");
+		}
+		return st.toString();
+	}
+
 }

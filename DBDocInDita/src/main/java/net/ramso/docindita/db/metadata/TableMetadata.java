@@ -65,7 +65,7 @@ public class TableMetadata extends AbstractMetadata implements IBaseMetadata {
 					pk.addColumn(rs);
 				}
 			}
-			primaryKeys= new ArrayList<>(pksMap.values());
+			primaryKeys = new ArrayList<>(pksMap.values());
 			Map<String, ForeingKeyMetadata> fksMap = new HashMap<>();
 			rs = getMetadata().getImportedKeys(getCatalog(), getSchema(), getName());
 			while (rs.next()) {
@@ -128,7 +128,30 @@ public class TableMetadata extends AbstractMetadata implements IBaseMetadata {
 
 	@Override
 	public String getDDL() {
-		return "";
+		StringBuilder st = new StringBuilder();
+		try {
+			if (getType().equals(DBConstants.TABLE)) {
+				st.append("CREATE TABLE ");
+				st.append(getSchema());
+				st.append('.');
+				st.append(getName());
+				st.append(" (");
+				boolean comma = false;
+				for (ColumnMetadata col : getColumns()) {
+					if (comma) {
+						st.append(',');
+					}
+					comma = true;
+					st.append(System.lineSeparator());
+					st.append(col.getDDL());
+				}
+				st.append(System.lineSeparator());
+				st.append(");");
+			}
+		} catch (SQLException e) {
+			LogManager.warn("Fallo al crear el ddl de la tabla " + getName(), e);
+		}
+		return st.toString();
 	}
 
 	public List<ForeingKeyMetadata> getForeingKeys() {
@@ -138,6 +161,7 @@ public class TableMetadata extends AbstractMetadata implements IBaseMetadata {
 	public List<PrimaryKeyMetadata> getPrimaryKeys() {
 		return primaryKeys;
 	}
+
 	@Override
 	public String getId() {
 		StringBuilder st = new StringBuilder();

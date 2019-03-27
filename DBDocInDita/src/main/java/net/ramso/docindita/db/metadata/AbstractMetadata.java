@@ -3,7 +3,7 @@ package net.ramso.docindita.db.metadata;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 
-public abstract class AbstractMetadata implements BasicMetadata {
+public abstract class AbstractMetadata implements IBasicMetadata {
 	private String name;
 	private String catalog;
 	private String schema;

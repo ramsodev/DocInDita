@@ -9,10 +9,8 @@ import net.ramso.tools.LogManager;
 
 public class BasicColumnMetadata extends AbstractMetadata {
 
-	
 	private String table;
 	private int idx;
-	
 
 	public BasicColumnMetadata(ResultSet resultSet, DatabaseMetaData metadata) {
 		super(resultSet, metadata);
@@ -25,14 +23,13 @@ public class BasicColumnMetadata extends AbstractMetadata {
 			setCatalog(resultSet.getString(DBConstants.METADATA_TABLE_CATALOG));
 			setTable(resultSet.getString(DBConstants.METADATA_TABLE));
 			setName(resultSet.getString(DBConstants.METADATA_COLUMN));
-			setIdx(resultSet.getShort(DBConstants.METADATA_KEY_SEQ));		
+			setIdx(resultSet.getShort(DBConstants.METADATA_KEY_SEQ));
 		} catch (SQLException e) {
 			LogManager.warn("Error al preparar columna", e);
 		}
 
 	}
 
-	
 	public String getTable() {
 		return table;
 	}
@@ -52,14 +49,14 @@ public class BasicColumnMetadata extends AbstractMetadata {
 	@Override
 	public String toString() {
 		StringBuilder st = new StringBuilder();
-		st.append(getIdx()+") ");
+		st.append(getIdx() + ") ");
 		st.append(getCatalog());
 		st.append(".");
 		st.append(getSchema());
 		st.append(".");
 		st.append(getTable());
 		st.append(".");
-		st.append(getName());		
+		st.append(getName());
 		return st.toString();
 	}
 
@@ -71,6 +68,11 @@ public class BasicColumnMetadata extends AbstractMetadata {
 		st.append('.');
 		st.append(getName());
 		return st.toString();
+	}
+
+	@Override
+	public String getDDL() {
+		return getName();
 	}
 
 }
