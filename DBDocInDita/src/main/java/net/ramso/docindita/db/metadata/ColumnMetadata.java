@@ -75,7 +75,39 @@ public class ColumnMetadata extends BasicColumnMetadata {
 	}
 
 	public String getType() {
-		return type + "(" + this.size + "," + this.decimal + ")";
+		StringBuilder st = new StringBuilder();
+		st.append(type);
+		switch (type) {
+		case DBConstants.SMALLINT:
+		case DBConstants.INTEGER:
+		case DBConstants.INT:
+		case DBConstants.BIGINT:
+		case DBConstants.REAL:
+		case DBConstants.DOUBLE:
+		case DBConstants.DOUBLE_PRECISION:
+		case DBConstants.BOOLEAN:
+		case DBConstants.DATE:
+		case DBConstants.TIME:
+		case DBConstants.TIMESTAMP:
+			break;
+		case DBConstants.NUMERIC:
+		case DBConstants.DECIMAL:
+		case DBConstants.DEC:
+			st.append('(');
+			st.append(this.size);
+			st.append(',');
+			st.append(this.decimal);
+			st.append(')');
+			break;
+		default:
+			if(this.size>0) {
+				st.append('(');
+				st.append(this.size);
+				st.append(')');
+			}
+			break;
+		}
+		return st.toString();
 	}
 
 	public String getDefaultValue() {
@@ -135,11 +167,11 @@ public class ColumnMetadata extends BasicColumnMetadata {
 		if (isNullable()) {
 			st.append(" NOT NULL");
 		}
-		if(defaultValue!=null) {
+		if (defaultValue != null) {
 			st.append(" DEFAULT ");
 			st.append(getDefaultValue());
 		}
-		if(isGenerated) {
+		if (isGenerated) {
 			st.append(" GENERATED ALWAYS AS IDENTITY");
 		}
 		return st.toString();

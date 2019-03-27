@@ -54,4 +54,19 @@ public class DBConstants {
 	public static final String NOT_DEFERRABLE = "No Deferrable";
 	public static final String METADATA_DEFERRABILITY = "DEFERRABILITY";
 
+	public static final String SMALLINT = "SMALLINT";
+	public static final String INTEGER = "INTEGER";
+	public static final String INT = "INT";
+	public static final String BIGINT = "BIGINT";
+	public static final String REAL = "REAL";
+	public static final String DOUBLE = "DOUBLE";
+	public static final String DOUBLE_PRECISION = "DOUBLE PRECISION";
+	public static final String BOOLEAN = "BOOLEAN";
+	public static final String DATE = "DATE";
+	public static final String TIME = "TIME";
+	public static final String TIMESTAMP = "TIMESTAMP";
+	public static final String NUMERIC = "NUMERIC";
+	public static final String DECIMAL = "DECIMAL";
+	public static final String DEC = "DEC";
+
 }

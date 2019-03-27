@@ -36,7 +36,7 @@ public class SchemaMetadata extends AbstractMetadata {
 	}
 
 	public Collection<TableMetadata> getTables() throws SQLException {
-		ResultSet rs = getMetadata().getTables(getCatalog(), getName(), null, null);
+		ResultSet rs = getMetadata().getTables(getCatalog(), getName(), null, new String[] { DBConstants.TABLE });
 		while (rs.next()) {
 			TableMetadata tm = new TableMetadata(rs, getMetadata());
 			tm.getColumns();
@@ -45,10 +45,10 @@ public class SchemaMetadata extends AbstractMetadata {
 		return tables;
 
 	}
-	
+
 	@Override
 	public String toString() {
-		return getCatalog()+"."+getSchema();
+		return getCatalog() + "." + getSchema();
 	}
 
 	@Override
