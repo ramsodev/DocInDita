@@ -15,6 +15,7 @@ public interface BasicMetadata {
 	void setSchema(String schema);
 	DatabaseMetaData getMetadata();
 	void setMetadata(DatabaseMetaData metadata);
+	String getId();
 	
 	
 }

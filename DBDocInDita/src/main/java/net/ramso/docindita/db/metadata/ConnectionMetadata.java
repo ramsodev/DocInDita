@@ -7,6 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import net.ramso.tools.BundleManager;
+import net.ramso.tools.TextTools;
+
 public class ConnectionMetadata {
 
 	private Connection connection;
@@ -17,7 +20,7 @@ public class ConnectionMetadata {
 
 	}
 
-	public SchemaMetadata getSchema() throws SQLException  {
+	public SchemaMetadata getSchema() throws SQLException {
 		return getSchema(connection.getSchema());
 	}
 
@@ -48,8 +51,20 @@ public class ConnectionMetadata {
 		while (rs.next()) {
 			schemas.add(new SchemaMetadata(rs, metadata));
 		}
-
 		return schemas;
+	}
 
+	public String getDescription() throws SQLException {
+		DatabaseMetaData metadata = connection.getMetaData();
+		StringBuilder st = new StringBuilder();
+		st.append(BundleManager.getString("Database.title", metadata.getDatabaseProductName(),
+				metadata.getDatabaseProductVersion()));
+		return st.toString();
+	}
+
+	public String getId() throws SQLException {
+		DatabaseMetaData metadata = connection.getMetaData();
+		return TextTools.cleanNonAlfaNumeric(metadata.getDatabaseProductName()+"."+
+				metadata.getDatabaseProductVersion(), "_");
 	}
 }

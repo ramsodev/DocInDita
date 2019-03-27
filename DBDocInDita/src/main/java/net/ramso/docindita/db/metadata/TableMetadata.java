@@ -138,4 +138,11 @@ public class TableMetadata extends AbstractMetadata implements IBaseMetadata {
 	public List<PrimaryKeyMetadata> getPrimaryKeys() {
 		return primaryKeys;
 	}
+	@Override
+	public String getId() {
+		StringBuilder st = new StringBuilder();
+		st.append(super.getId());
+		st.append(getName());
+		return st.toString();
+	}
 }

@@ -66,4 +66,17 @@ public abstract class AbstractMetadata implements BasicMetadata {
 		this.doc = doc;
 	}
 
+	public String getId() {
+		StringBuilder st = new StringBuilder();
+		if (getCatalog() != null && !getCatalog().isEmpty()) {
+			st.append(getCatalog());
+			st.append(".");
+		}
+		if (getSchema() != null && !getSchema().isEmpty()) {
+			st.append(getSchema());
+			st.append(".");
+		}
+		return st.toString();
+	}
+
 }

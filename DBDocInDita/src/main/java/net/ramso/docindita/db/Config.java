@@ -13,7 +13,6 @@ import net.ramso.docindita.tools.DitaConstants;
 import net.ramso.tools.CommandLineProcessor;
 import net.ramso.tools.ConfigurationException;
 import net.ramso.tools.ConfigurationManager;
-import net.ramso.tools.Constants;
 import net.ramso.tools.LogManager;
 import net.ramso.tools.graph.GraphConfig;
 
@@ -25,23 +24,11 @@ public class Config extends ConfigurationManager {
 	private static String title;
 	private static String description;
 
-	public static String getDescription() {
-		return description;
-	}
-
-	public static String getId() {
-
-		return id;
-	}
-
-	public static String getOutputDir() {
-		return outputDir;
-	}
-
 	public static List<String> getParmeters(String[] args, int pmin, int pmax) throws ConfigurationException {
 		final CommandLineProcessor cmd = new CommandLineProcessor();
 		try {
 			final List<String> parameters = cmd.parse(args, pmin, pmax);
+			getCmdValues();
 			if (((getId() != null) || (getTitle() != null) || (getDescription() != null)) && !isOne()) {
 				LogManager.error("The options id, title or description are only available with the option one", null);
 				System.err.println("The options id, title or description are only available with the option one");
@@ -63,7 +50,7 @@ public class Config extends ConfigurationManager {
 	}
 
 	protected static Properties getVelocityConfig() {
-		final Properties p = getProperties(Constants.VELOCITY_PREFIX);
+		final Properties p = getProperties(DitaConstants.VELOCITY_PREFIX);
 		final Properties velocityConfig = new Properties();
 		for (final Entry<Object, Object> entry : p.entrySet()) {
 			final String key = (String) entry.getKey();
@@ -94,8 +81,9 @@ public class Config extends ConfigurationManager {
 		outputDir = getProperty(DitaConstants.CMD_OUTDIR);
 		if (outputDir != null) {
 			final File f = new File(outputDir);
-			if (f.exists() && !f.isDirectory())
+			if (f.exists() && !f.isDirectory()) {
 				throw new ConfigurationException("El directorio de salida existe y no es un directorio");
+			}
 		} else {
 			outputDir = getProperty(DitaConstants.OUTDIR_PROPERTY, DitaConstants.OUTDIR_DEFAULT);
 		}
@@ -108,6 +96,7 @@ public class Config extends ConfigurationManager {
 
 	public static void start() {
 		try {
+			System.setProperty("java.awt.headless", "true");
 			init();
 			load();
 			final Properties p = getVelocityConfig();
@@ -116,6 +105,22 @@ public class Config extends ConfigurationManager {
 		} catch (final ConfigurationException e) {
 			LogManager.error("Error en configuración", e);
 		}
+	}
+
+	public static String getDescription() {
+		return description;
+	}
+
+	public static String getId() {
+		return id;
+	}
+
+	public static String getOutputDir() {
+		return outputDir;
+	}
+
+	public static void setOutputDir(String outputDir) {
+		Config.outputDir = outputDir;
 	}
 
 }

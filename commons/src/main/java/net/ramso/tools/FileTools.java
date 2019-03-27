@@ -151,23 +151,27 @@ public class FileTools {
 		Stream<Path> walk = null;
 		FileSystem fileSystem = null;
 		try {
-			URI uri = Thread.currentThread().getContextClassLoader().getResource(folder).toURI();
-			Path myPath;
-			if (uri.getScheme().equals("jar")) {
-				fileSystem = FileSystems.newFileSystem(uri, Collections.<String, Object>emptyMap());
-				myPath = fileSystem.getPath(File.separator + folder);
-			} else {
-				myPath = Paths.get(uri);
-			}
-			walk = Files.walk(myPath, 1);
-			for (Iterator<Path> it = walk.iterator(); it.hasNext();) {
-				Path i = it.next();
-				URL resource = Thread.currentThread().getContextClassLoader()
-						.getResource(folder + File.separator + i.getFileName());
-				if (resource != null) {
-					files.add(resource);
+			URL resourceFolder = Thread.currentThread().getContextClassLoader().getResource(folder);
+			if (resourceFolder != null) {
+				URI uri = resourceFolder.toURI();
+				Path myPath;
+				if (uri.getScheme().equals("jar")) {
+					fileSystem = FileSystems.newFileSystem(uri, Collections.<String, Object>emptyMap());
+					myPath = fileSystem.getPath(File.separator + folder);
+				} else {
+					myPath = Paths.get(uri);
+				}
+				walk = Files.walk(myPath, 1);
+				for (Iterator<Path> it = walk.iterator(); it.hasNext();) {
+					Path i = it.next();
+					URL resource = Thread.currentThread().getContextClassLoader()
+							.getResource(folder + File.separator + i.getFileName());
+					if (resource != null) {
+						files.add(resource);
+					}
 				}
 			}
+
 		} catch (IOException | URISyntaxException e) {
 			LogManager.warn(BundleManager.getString("commons.folder.error", folder), e);
 		} finally {

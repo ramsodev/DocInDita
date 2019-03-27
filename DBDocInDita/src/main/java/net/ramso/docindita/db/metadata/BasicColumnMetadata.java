@@ -63,5 +63,14 @@ public class BasicColumnMetadata extends AbstractMetadata {
 		return st.toString();
 	}
 
+	@Override
+	public String getId() {
+		StringBuilder st = new StringBuilder();
+		st.append(super.getId());
+		st.append(getTable());
+		st.append('.');
+		st.append(getName());
+		return st.toString();
+	}
 
 }

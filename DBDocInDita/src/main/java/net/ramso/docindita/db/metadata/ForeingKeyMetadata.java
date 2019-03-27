@@ -153,5 +153,14 @@ public class ForeingKeyMetadata extends AbstractMetadata {
 	public void setPkName(String pkName) {
 		this.pkName = pkName;
 	}
-
+	@Override
+	public String getId() {
+		StringBuilder st = new StringBuilder();
+		st.append("FK.");
+		st.append(super.getId());
+		st.append(getTable());
+		st.append('.');
+		st.append(getName());
+		return st.toString();
+	}
 }

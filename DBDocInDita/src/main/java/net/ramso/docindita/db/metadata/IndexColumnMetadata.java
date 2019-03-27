@@ -46,5 +46,11 @@ public class IndexColumnMetadata extends BasicColumnMetadata {
 		st.append(')');
 		return st.toString();
 	}
-
+	@Override
+	public String getId() {
+		StringBuilder st = new StringBuilder();
+		st.append("IndexColumn.");
+		st.append(super.getId());
+		return st.toString();
+	}
 }

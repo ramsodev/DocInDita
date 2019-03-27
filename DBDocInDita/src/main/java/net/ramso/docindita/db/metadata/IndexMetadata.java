@@ -133,5 +133,14 @@ public class IndexMetadata extends AbstractMetadata {
 		columns.sort((BasicColumnMetadata o1, BasicColumnMetadata o2) -> o1.getIdx() - o2.getIdx());
 		return columns;
 	}
-
+	@Override
+	public String getId() {
+		StringBuilder st = new StringBuilder();
+		st.append("Index.");
+		st.append(super.getId());
+		st.append(getTable());
+		st.append('.');
+		st.append(getName());
+		return st.toString();
+	}
 }

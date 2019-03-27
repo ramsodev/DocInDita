@@ -121,4 +121,11 @@ public class ForeingKeyColumnMetadata extends BasicColumnMetadata {
 		st.append(getFkColumn());
 		return st.toString();
 	}
+	@Override
+	public String getId() {
+		StringBuilder st = new StringBuilder();
+		st.append("FKColumn.");
+		st.append(super.getId());
+		return st.toString();
+	}
 }

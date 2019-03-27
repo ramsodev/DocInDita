@@ -65,5 +65,14 @@ public class PrimaryKeyMetadata extends AbstractMetadata {
 		this.columns.sort((BasicColumnMetadata o1, BasicColumnMetadata o2) -> o1.getIdx() - o2.getIdx());
 		return this.columns;
 	}
-
+	@Override
+	public String getId() {
+		StringBuilder st = new StringBuilder();
+		st.append("PK.");
+		st.append(super.getId());
+		st.append(getTable());
+		st.append('.');
+		st.append(getName());
+		return st.toString();
+	}
 }
