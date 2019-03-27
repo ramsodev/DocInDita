@@ -5,7 +5,6 @@ import java.io.IOException;
 import net.ramso.docindita.BasicCreate;
 import net.ramso.docindita.References;
 import net.ramso.docindita.db.metadata.CatalogMetadata;
-import net.ramso.docindita.tools.DitaTools;
 import net.ramso.tools.BundleManager;
 
 public class CreateCatalog extends BasicCreate{
@@ -21,7 +20,6 @@ public class CreateCatalog extends BasicCreate{
 		setContent(catalog.getDoc());
 		setTemplateFile("template/portada.vm");
 		getContext().put("content", getContent());
-		getContext().put("tools", DitaTools.class);
 		run(getContext());
 		return new References(getFileName());
 	}

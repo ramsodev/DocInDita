@@ -10,6 +10,8 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 
 import net.ramso.docindita.db.Config;
+import net.ramso.docindita.tools.DitaTools;
+import net.ramso.tools.BundleManager;
 import net.ramso.tools.LogManager;
 import net.ramso.tools.TextTools;
 
@@ -65,6 +67,8 @@ public abstract class BasicCreate implements ICreate {
 		this.context = new VelocityContext();
 		this.context.put("id", getId());
 		this.context.put("title", getTitle());
+		this.context.put("tools", DitaTools.class);
+		this.context.put("text", BundleManager.class);
 	}
 
 	protected void run(VelocityContext context) throws IOException {

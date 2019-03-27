@@ -79,7 +79,7 @@ public class ColumnMetadata extends BasicColumnMetadata {
 	}
 
 	public String getDefaultValue() {
-		return defaultValue;
+		return defaultValue != null ? defaultValue : "";
 	}
 
 	public boolean isNullable() {

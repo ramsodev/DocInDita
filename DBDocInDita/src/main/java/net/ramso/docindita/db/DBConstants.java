@@ -52,5 +52,6 @@ public class DBConstants {
 	public static final String INITIALLY_DEFERRED = "Initially Deferred";
 	public static final String INITIALLY_INMEDIATE = "Initially inmediate";
 	public static final String NOT_DEFERRABLE = "No Deferrable";
+	public static final String METADATA_DEFERRABILITY = "DEFERRABILITY";
 
 }

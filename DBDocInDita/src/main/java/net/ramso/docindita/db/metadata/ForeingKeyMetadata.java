@@ -30,6 +30,9 @@ public class ForeingKeyMetadata extends AbstractMetadata {
 			setTable(resultSet.getString(DBConstants.METADATA_FKTABLE_NAME));
 			setName(resultSet.getString(DBConstants.METADATA_FK_NAME));
 			setPkName(resultSet.getString(DBConstants.METADATA_PK_NAME));
+			setUpdateRule(resultSet.getShort(DBConstants.METADATA_UPDATE_RULE));
+			setDeleteRule(resultSet.getShort(DBConstants.METADATA_DELETE_RULE));
+			setDeferrability(resultSet.getShort(DBConstants.METADATA_DEFERRABILITY));
 			setDoc("");
 			addColumn(resultSet);
 		} catch (SQLException e) {
