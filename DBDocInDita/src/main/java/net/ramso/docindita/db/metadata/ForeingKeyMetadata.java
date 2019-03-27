@@ -166,4 +166,10 @@ public class ForeingKeyMetadata extends AbstractMetadata {
 		st.append(getName());
 		return st.toString();
 	}
+
+	@Override
+	public String getDDL() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

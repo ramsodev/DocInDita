@@ -51,4 +51,10 @@ public class SchemaMetadata extends AbstractMetadata {
 		return getCatalog()+"."+getSchema();
 	}
 
+	@Override
+	public String getDDL() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

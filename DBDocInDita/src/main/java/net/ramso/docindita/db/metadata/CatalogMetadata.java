@@ -58,6 +58,12 @@ public class CatalogMetadata extends AbstractMetadata {
 	public String toString() {
 		return getName();
 	}
+
+	@Override
+	public String getDDL() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 
