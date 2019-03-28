@@ -22,14 +22,23 @@ public class ForeingKeyColumnMetadata extends BasicColumnMetadata {
 	@Override
 	public void init(ResultSet resultSet) {
 		try {
-			setSchema(resultSet.getString(DBConstants.METADATA_FKTABLE_SCHEM));
-			setCatalog(resultSet.getString(DBConstants.METADATA_FKTABLE_CAT));
-			setTable(resultSet.getString(DBConstants.METADATA_FKTABLE_NAME));
-			setName(resultSet.getString(DBConstants.METADATA_FKCOLUMN_NAME));
-			setFkCatalog(resultSet.getString(DBConstants.METADATA_PKTABLE_CAT));
-			setFkSchema(resultSet.getString(DBConstants.METADATA_PKTABLE_SCHEM));
-			setFkTable(resultSet.getString(DBConstants.METADATA_PKTABLE_NAME));
-			setFkColumn(resultSet.getString(DBConstants.METADATA_PKCOLUMN_NAME));
+			loadLabels(resultSet.getMetaData());
+			if (labelExist(DBConstants.METADATA_FKTABLE_SCHEM))
+				setSchema(resultSet.getString(DBConstants.METADATA_FKTABLE_SCHEM));
+			if (labelExist(DBConstants.METADATA_FKTABLE_CAT))
+				setCatalog(resultSet.getString(DBConstants.METADATA_FKTABLE_CAT));
+			if (labelExist(DBConstants.METADATA_FKTABLE_NAME))
+				setTable(resultSet.getString(DBConstants.METADATA_FKTABLE_NAME));
+			if (labelExist(DBConstants.METADATA_FKCOLUMN_NAME))
+				setName(resultSet.getString(DBConstants.METADATA_FKCOLUMN_NAME));
+			if (labelExist(DBConstants.METADATA_PKTABLE_CAT))
+				setFkCatalog(resultSet.getString(DBConstants.METADATA_PKTABLE_CAT));
+			if (labelExist(DBConstants.METADATA_PKTABLE_SCHEM))
+				setFkSchema(resultSet.getString(DBConstants.METADATA_PKTABLE_SCHEM));
+			if (labelExist(DBConstants.METADATA_PKTABLE_NAME))
+				setFkTable(resultSet.getString(DBConstants.METADATA_PKTABLE_NAME));
+			if (labelExist(DBConstants.METADATA_PKCOLUMN_NAME))
+				setFkColumn(resultSet.getString(DBConstants.METADATA_PKCOLUMN_NAME));
 			setDoc("");
 			setIdx(resultSet.getShort(DBConstants.METADATA_KEY_SEQ));
 		} catch (SQLException e) {
@@ -121,6 +130,7 @@ public class ForeingKeyColumnMetadata extends BasicColumnMetadata {
 		st.append(getFkColumn());
 		return st.toString();
 	}
+
 	@Override
 	public String getId() {
 		StringBuilder st = new StringBuilder();

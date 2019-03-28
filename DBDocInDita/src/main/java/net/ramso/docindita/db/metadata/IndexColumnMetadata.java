@@ -9,7 +9,7 @@ import net.ramso.tools.LogManager;
 
 public class IndexColumnMetadata extends BasicColumnMetadata {
 
-	public String order;
+	private String order;
 
 	public IndexColumnMetadata(ResultSet resultSet, DatabaseMetaData metadata) {
 		super(resultSet, metadata);
@@ -18,12 +18,19 @@ public class IndexColumnMetadata extends BasicColumnMetadata {
 	@Override
 	public void init(ResultSet resultSet) {
 		try {
-			setSchema(resultSet.getString(DBConstants.METADATA_SCHEMA));
-			setCatalog(resultSet.getString(DBConstants.METADATA_TABLE_CATALOG));
-			setTable(resultSet.getString(DBConstants.METADATA_TABLE));
-			setName(resultSet.getString(DBConstants.METADATA_COLUMN));
-			setIdx(resultSet.getInt(DBConstants.METADATA_ORDINAL_POSITION));
-			setOrder(resultSet.getString(DBConstants.METADATA_ASC_OR_DESC));
+			loadLabels(resultSet.getMetaData());
+			if (labelExist(DBConstants.METADATA_SCHEMA))
+				setSchema(resultSet.getString(DBConstants.METADATA_SCHEMA));
+			if (labelExist(DBConstants.METADATA_TABLE_CATALOG))
+				setCatalog(resultSet.getString(DBConstants.METADATA_TABLE_CATALOG));
+			if (labelExist(DBConstants.METADATA_TABLE))
+				setTable(resultSet.getString(DBConstants.METADATA_TABLE));
+			if (labelExist(DBConstants.METADATA_COLUMN))
+				setName(resultSet.getString(DBConstants.METADATA_COLUMN));
+			if (labelExist(DBConstants.METADATA_ORDINAL_POSITION))
+				setIdx(resultSet.getInt(DBConstants.METADATA_ORDINAL_POSITION));
+			if (labelExist(DBConstants.METADATA_ASC_OR_DESC))
+				setOrder(resultSet.getString(DBConstants.METADATA_ASC_OR_DESC));
 		} catch (SQLException e) {
 			LogManager.warn("Error al preparar columna", e);
 		}

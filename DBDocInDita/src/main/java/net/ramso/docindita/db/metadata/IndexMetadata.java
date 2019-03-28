@@ -25,14 +25,23 @@ public class IndexMetadata extends AbstractMetadata {
 	@Override
 	public void init(ResultSet resultSet) {
 		try {
-			setSchema(resultSet.getString(DBConstants.METADATA_SCHEMA));
-			setCatalog(resultSet.getString(DBConstants.METADATA_TABLE_CATALOG));
-			setTable(resultSet.getString(DBConstants.METADATA_TABLE));
-			setName(resultSet.getString(DBConstants.METADATA_INDEX_NAME));
-			setQualifier(resultSet.getString(DBConstants.METADATA_INDEX_QUALIFIER));
-			setFilter(resultSet.getString(DBConstants.METADATA_FILTER_CONDITION));
-			setUnique(!resultSet.getBoolean(DBConstants.METADATA_NON_UNIQUE));
-			setType(resultSet.getShort(DBConstants.METADATA_TYPE));
+			loadLabels(resultSet.getMetaData());
+			if (labelExist(DBConstants.METADATA_SCHEMA))
+				setSchema(resultSet.getString(DBConstants.METADATA_SCHEMA));
+			if (labelExist(DBConstants.METADATA_TABLE_CATALOG))
+				setCatalog(resultSet.getString(DBConstants.METADATA_TABLE_CATALOG));
+			if (labelExist(DBConstants.METADATA_TABLE))
+				setTable(resultSet.getString(DBConstants.METADATA_TABLE));
+			if (labelExist(DBConstants.METADATA_INDEX_NAME))
+				setName(resultSet.getString(DBConstants.METADATA_INDEX_NAME));
+			if (labelExist(DBConstants.METADATA_INDEX_QUALIFIER))
+				setQualifier(resultSet.getString(DBConstants.METADATA_INDEX_QUALIFIER));
+			if (labelExist(DBConstants.METADATA_FILTER_CONDITION))
+				setFilter(resultSet.getString(DBConstants.METADATA_FILTER_CONDITION));
+			if (labelExist(DBConstants.METADATA_NON_UNIQUE))
+				setUnique(!resultSet.getBoolean(DBConstants.METADATA_NON_UNIQUE));
+			if (labelExist(DBConstants.METADATA_TYPE))
+				setType(resultSet.getShort(DBConstants.METADATA_TYPE));
 			setDoc("");
 			addColumn(resultSet);
 		} catch (SQLException e) {
@@ -149,7 +158,7 @@ public class IndexMetadata extends AbstractMetadata {
 	public String getDDL() {
 		StringBuilder st = new StringBuilder();
 		st.append("CREATE INDEX ");
-		if(isUnique()) {
+		if (isUnique()) {
 			st.append("UNIQUE ");
 		}
 		st.append(super.getId());
@@ -159,10 +168,11 @@ public class IndexMetadata extends AbstractMetadata {
 		st.append(getTable());
 		st.append("(");
 		boolean comma = false;
-		for(IndexColumnMetadata col:getColumns()) {
-			if(comma) {
+		for (IndexColumnMetadata col : getColumns()) {
+			if (comma) {
 				st.append(", ");
-			}comma=true;
+			}
+			comma = true;
 			st.append(col.getDDL());
 		}
 		st.append(");");

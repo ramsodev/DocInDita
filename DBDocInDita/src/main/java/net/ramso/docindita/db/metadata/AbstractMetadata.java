@@ -2,6 +2,10 @@ package net.ramso.docindita.db.metadata;
 
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class AbstractMetadata implements IBasicMetadata {
 	private String name;
@@ -9,6 +13,7 @@ public abstract class AbstractMetadata implements IBasicMetadata {
 	private String schema;
 	private String doc;
 	private DatabaseMetaData metadata;
+	private List<String> labels;
 
 	public AbstractMetadata(ResultSet resultSet, DatabaseMetaData metadata) {
 		super();
@@ -77,6 +82,18 @@ public abstract class AbstractMetadata implements IBasicMetadata {
 			st.append(".");
 		}
 		return st.toString();
+	}
+
+	protected void loadLabels(ResultSetMetaData metaData) throws SQLException {
+		labels = new ArrayList<>();
+		for (int i = 1; i <= metaData.getColumnCount(); i++) {
+			labels.add(metaData.getColumnLabel(i).toUpperCase());
+		}
+
+	}
+
+	protected boolean labelExist(String label) {
+		return labels.contains(label);
 	}
 
 }

@@ -34,11 +34,17 @@ public class TableMetadata extends AbstractMetadata implements IBaseMetadata {
 	@Override
 	public void init(ResultSet resultSet) {
 		try {
-			setSchema(resultSet.getString(DBConstants.METADATA_SCHEMA));
-			setCatalog(resultSet.getString(DBConstants.METADATA_TABLE_CATALOG));
-			setName(resultSet.getString(DBConstants.METADATA_TABLE));
-			setType(resultSet.getString(DBConstants.METADATA_TABLE_TYPE));
-			setDoc(resultSet.getString(DBConstants.METADATA_REMARKS));
+			loadLabels(resultSet.getMetaData());
+			if (labelExist(DBConstants.METADATA_SCHEMA))
+				setSchema(resultSet.getString(DBConstants.METADATA_SCHEMA));
+			if (labelExist(DBConstants.METADATA_TABLE_CATALOG))
+				setCatalog(resultSet.getString(DBConstants.METADATA_TABLE_CATALOG));
+			if (labelExist(DBConstants.METADATA_TABLE))
+				setName(resultSet.getString(DBConstants.METADATA_TABLE));
+			if (labelExist(DBConstants.METADATA_TABLE_TYPE))
+				setType(resultSet.getString(DBConstants.METADATA_TABLE_TYPE));
+			if (labelExist(DBConstants.METADATA_REMARKS))
+				setDoc(resultSet.getString(DBConstants.METADATA_REMARKS));
 		} catch (SQLException e) {
 			LogManager.warn("Error al preparar esquema", e);
 		}
@@ -146,15 +152,15 @@ public class TableMetadata extends AbstractMetadata implements IBaseMetadata {
 				}
 				st.append(System.lineSeparator());
 				st.append(");");
-				for(PrimaryKeyMetadata pk:getPrimaryKeys()) {
+				for (PrimaryKeyMetadata pk : getPrimaryKeys()) {
 					st.append(System.lineSeparator());
 					st.append(pk.getDDL());
 				}
-				for(IndexMetadata idx:getIndex()) {
+				for (IndexMetadata idx : getIndex()) {
 					st.append(System.lineSeparator());
 					st.append(idx.getDDL());
 				}
-				for(ForeingKeyMetadata fk:getForeingKeys()) {
+				for (ForeingKeyMetadata fk : getForeingKeys()) {
 					st.append(System.lineSeparator());
 					st.append(fk.getDDL());
 				}

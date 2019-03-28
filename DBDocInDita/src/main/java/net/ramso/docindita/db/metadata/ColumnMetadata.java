@@ -27,19 +27,33 @@ public class ColumnMetadata extends BasicColumnMetadata {
 	@Override
 	public void init(ResultSet resultSet) {
 		try {
-			setSchema(resultSet.getString(DBConstants.METADATA_SCHEMA));
-			setCatalog(resultSet.getString(DBConstants.METADATA_TABLE_CATALOG));
-			setTable(resultSet.getString(DBConstants.METADATA_TABLE));
-			setName(resultSet.getString(DBConstants.METADATA_COLUMN));
-			setType(resultSet.getString(DBConstants.METADATA_COLUMN_TYPE));
-			setSize(resultSet.getInt(DBConstants.METADATA_COLUMN_SIZE));
-			setDecimal(resultSet.getInt(DBConstants.METADATA_DECIMAL_DIGITS));
-			setDefaultValue(resultSet.getString(DBConstants.METADATA_COLUMN_DEF));
-			setNullable(resultSet.getString(DBConstants.METADATA_IS_NULLABLE).equalsIgnoreCase("YES"));
-			setAutoincrement(resultSet.getString(DBConstants.METADATA_IS_AUTOINCREMENT).equalsIgnoreCase("YES"));
-			setGenerated(resultSet.getString(DBConstants.METADATA_IS_GENERATEDCOLUMN).equalsIgnoreCase("YES"));
-			setDoc(resultSet.getString(DBConstants.METADATA_REMARKS));
-			setIdx(resultSet.getInt(DBConstants.METADATA_ORDINAL_POSITION));
+			loadLabels(resultSet.getMetaData());
+			if (labelExist(DBConstants.METADATA_SCHEMA))
+				setSchema(resultSet.getString(DBConstants.METADATA_SCHEMA));
+			if (labelExist(DBConstants.METADATA_TABLE_CATALOG))
+				setCatalog(resultSet.getString(DBConstants.METADATA_TABLE_CATALOG));
+			if (labelExist(DBConstants.METADATA_TABLE))
+				setTable(resultSet.getString(DBConstants.METADATA_TABLE));
+			if (labelExist(DBConstants.METADATA_COLUMN))
+				setName(resultSet.getString(DBConstants.METADATA_COLUMN));
+			if (labelExist(DBConstants.METADATA_COLUMN_TYPE))
+				setType(resultSet.getString(DBConstants.METADATA_COLUMN_TYPE));
+			if (labelExist(DBConstants.METADATA_COLUMN_SIZE))
+				setSize(resultSet.getInt(DBConstants.METADATA_COLUMN_SIZE));
+			if (labelExist(DBConstants.METADATA_DECIMAL_DIGITS))
+				setDecimal(resultSet.getInt(DBConstants.METADATA_DECIMAL_DIGITS));
+			if (labelExist(DBConstants.METADATA_COLUMN_DEF))
+				setDefaultValue(resultSet.getString(DBConstants.METADATA_COLUMN_DEF));
+			if (labelExist(DBConstants.METADATA_IS_NULLABLE))
+				setNullable(resultSet.getString(DBConstants.METADATA_IS_NULLABLE).equalsIgnoreCase("YES"));
+			if (labelExist(DBConstants.METADATA_IS_AUTOINCREMENT))
+				setAutoincrement(resultSet.getString(DBConstants.METADATA_IS_AUTOINCREMENT).equalsIgnoreCase("YES"));
+			if (labelExist(DBConstants.METADATA_IS_GENERATEDCOLUMN))
+				setGenerated(resultSet.getString(DBConstants.METADATA_IS_GENERATEDCOLUMN).equalsIgnoreCase("YES"));
+			if (labelExist(DBConstants.METADATA_REMARKS))
+				setDoc(resultSet.getString(DBConstants.METADATA_REMARKS));
+			if (labelExist(DBConstants.METADATA_ORDINAL_POSITION))
+				setIdx(resultSet.getInt(DBConstants.METADATA_ORDINAL_POSITION));
 		} catch (SQLException e) {
 			LogManager.warn("Error al preparar esquema", e);
 		}
@@ -100,7 +114,7 @@ public class ColumnMetadata extends BasicColumnMetadata {
 			st.append(')');
 			break;
 		default:
-			if(this.size>0) {
+			if (this.size > 0) {
 				st.append('(');
 				st.append(this.size);
 				st.append(')');

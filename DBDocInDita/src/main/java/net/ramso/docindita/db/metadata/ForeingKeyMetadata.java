@@ -25,14 +25,23 @@ public class ForeingKeyMetadata extends AbstractMetadata {
 	@Override
 	public void init(ResultSet resultSet) {
 		try {
-			setSchema(resultSet.getString(DBConstants.METADATA_FKTABLE_SCHEM));
-			setCatalog(resultSet.getString(DBConstants.METADATA_FKTABLE_CAT));
-			setTable(resultSet.getString(DBConstants.METADATA_FKTABLE_NAME));
-			setName(resultSet.getString(DBConstants.METADATA_FK_NAME));
-			setPkName(resultSet.getString(DBConstants.METADATA_PK_NAME));
-			setUpdateRule(resultSet.getShort(DBConstants.METADATA_UPDATE_RULE));
-			setDeleteRule(resultSet.getShort(DBConstants.METADATA_DELETE_RULE));
-			setDeferrability(resultSet.getShort(DBConstants.METADATA_DEFERRABILITY));
+			loadLabels(resultSet.getMetaData());
+			if (labelExist(DBConstants.METADATA_FKTABLE_SCHEM))
+				setSchema(resultSet.getString(DBConstants.METADATA_FKTABLE_SCHEM));
+			if (labelExist(DBConstants.METADATA_FKTABLE_CAT))
+				setCatalog(resultSet.getString(DBConstants.METADATA_FKTABLE_CAT));
+			if (labelExist(DBConstants.METADATA_FKTABLE_NAME))
+				setTable(resultSet.getString(DBConstants.METADATA_FKTABLE_NAME));
+			if (labelExist(DBConstants.METADATA_FK_NAME))
+				setName(resultSet.getString(DBConstants.METADATA_FK_NAME));
+			if (labelExist(DBConstants.METADATA_PK_NAME))
+				setPkName(resultSet.getString(DBConstants.METADATA_PK_NAME));
+			if (labelExist(DBConstants.METADATA_UPDATE_RULE))
+				setUpdateRule(resultSet.getShort(DBConstants.METADATA_UPDATE_RULE));
+			if (labelExist(DBConstants.METADATA_DELETE_RULE))
+				setDeleteRule(resultSet.getShort(DBConstants.METADATA_DELETE_RULE));
+			if (labelExist(DBConstants.METADATA_DEFERRABILITY))
+				setDeferrability(resultSet.getShort(DBConstants.METADATA_DEFERRABILITY));
 			setDoc("");
 			addColumn(resultSet);
 		} catch (SQLException e) {

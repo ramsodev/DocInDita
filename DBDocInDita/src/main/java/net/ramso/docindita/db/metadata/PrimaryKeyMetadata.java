@@ -21,10 +21,15 @@ public class PrimaryKeyMetadata extends AbstractMetadata {
 	@Override
 	public void init(ResultSet resultSet) {
 		try {
-			setSchema(resultSet.getString(DBConstants.METADATA_SCHEMA));
-			setCatalog(resultSet.getString(DBConstants.METADATA_TABLE_CATALOG));
-			setTable(resultSet.getString(DBConstants.METADATA_TABLE));
-			setName(resultSet.getString(DBConstants.METADATA_PK_NAME));
+			loadLabels(resultSet.getMetaData());
+			if (labelExist(DBConstants.METADATA_SCHEMA))
+				setSchema(resultSet.getString(DBConstants.METADATA_SCHEMA));
+			if (labelExist(DBConstants.METADATA_TABLE_CATALOG))
+				setCatalog(resultSet.getString(DBConstants.METADATA_TABLE_CATALOG));
+			if (labelExist(DBConstants.METADATA_TABLE))
+				setTable(resultSet.getString(DBConstants.METADATA_TABLE));
+			if (labelExist(DBConstants.METADATA_PK_NAME))
+				setName(resultSet.getString(DBConstants.METADATA_PK_NAME));
 			setDoc("");
 			addColumn(resultSet);
 		} catch (SQLException e) {
@@ -65,6 +70,7 @@ public class PrimaryKeyMetadata extends AbstractMetadata {
 		this.columns.sort((BasicColumnMetadata o1, BasicColumnMetadata o2) -> o1.getIdx() - o2.getIdx());
 		return this.columns;
 	}
+
 	@Override
 	public String getId() {
 		StringBuilder st = new StringBuilder();
@@ -87,13 +93,14 @@ public class PrimaryKeyMetadata extends AbstractMetadata {
 		st.append(getName());
 		st.append(" PRIMARY KEY (");
 		boolean comma = false;
-		for(BasicColumnMetadata col:getColumns()) {
-			if(comma) {
+		for (BasicColumnMetadata col : getColumns()) {
+			if (comma) {
 				st.append(", ");
-			}comma=true;
+			}
+			comma = true;
 			st.append(col.getDDL());
 		}
-		st.append(");"); 
+		st.append(");");
 		return st.toString();
 	}
 }

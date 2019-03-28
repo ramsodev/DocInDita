@@ -19,11 +19,18 @@ public class BasicColumnMetadata extends AbstractMetadata {
 	@Override
 	public void init(ResultSet resultSet) {
 		try {
-			setSchema(resultSet.getString(DBConstants.METADATA_SCHEMA));
+			loadLabels(resultSet.getMetaData());
+			if (labelExist(DBConstants.METADATA_SCHEMA))
+				setSchema(resultSet.getString(DBConstants.METADATA_SCHEMA));
+			if (labelExist(DBConstants.METADATA_TABLE_CATALOG))
 			setCatalog(resultSet.getString(DBConstants.METADATA_TABLE_CATALOG));
+			if (labelExist(DBConstants.METADATA_TABLE))
 			setTable(resultSet.getString(DBConstants.METADATA_TABLE));
+			if (labelExist(DBConstants.METADATA_COLUMN))
 			setName(resultSet.getString(DBConstants.METADATA_COLUMN));
+			if (labelExist(DBConstants.METADATA_KEY_SEQ))
 			setIdx(resultSet.getShort(DBConstants.METADATA_KEY_SEQ));
+
 		} catch (SQLException e) {
 			LogManager.warn("Error al preparar columna", e);
 		}
