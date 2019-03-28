@@ -29,7 +29,8 @@ class ConnectionMetadataTest extends BaseTest {
 
 	@ClassRule
 	public static PostgreSQLContainer postgresContainer = (PostgreSQLContainer) new PostgreSQLContainer()
-			.withInitScript("sqlex/empexbackup.sql");
+			.withInitScript("sqlex/northwindexbackup.sql");
+	// .withInitScript("sqlex/empexbackup.sql");
 	// .withClasspathResourceMapping("pg/", "/var/lib/postgresql/data",
 	// BindMode.READ_WRITE);
 
@@ -39,14 +40,7 @@ class ConnectionMetadataTest extends BaseTest {
 		Config.start();
 		// Connection con = getConnection();
 		postgresContainer.start();
-		// while (!postgresContainer.isRunning()) {
-		// wait(500);
-		// }
 
-//		String importText = "psql  -p " + postgresContainer.getFirstMappedPort()
-//				+ " -f /home/jjescudero/git/wsdl2dita/DBDocInDita/src/test/resources/sqlex/sqlexbackup.sql";
-//		Process pro = Runtime.getRuntime().exec(importText);
-//		System.out.println(pro.getOutputStream());
 		String jdbcUrl = postgresContainer.getJdbcUrl();
 
 		String username = postgresContainer.getUsername();
