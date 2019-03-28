@@ -3,14 +3,17 @@ package net.ramso.docindita.db.test;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Collection;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.ClassRule;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.testcontainers.containers.PostgreSQLContainer;
 
+import net.ramso.docindita.db.Config;
 import net.ramso.docindita.db.metadata.CatalogMetadata;
 import net.ramso.docindita.db.metadata.ColumnMetadata;
 import net.ramso.docindita.db.metadata.ConnectionMetadata;
@@ -22,18 +25,40 @@ import net.ramso.docindita.db.metadata.TableMetadata;
 
 class ConnectionMetadataTest extends BaseTest {
 
-	private Connection con;
-	private ConnectionMetadata meta;
+	private static ConnectionMetadata meta;
 
-	@BeforeEach
-	void setUp() throws Exception {
-		con = getConnection();
-		meta = new ConnectionMetadata(con);
-	}
+	@ClassRule
+	public static PostgreSQLContainer postgresContainer = (PostgreSQLContainer) new PostgreSQLContainer()
+			.withInitScript("sqlex/empexbackup.sql");
+	// .withClasspathResourceMapping("pg/", "/var/lib/postgresql/data",
+	// BindMode.READ_WRITE);
 
-	@AfterEach
-	void tearDown() throws Exception {
-		disconnect(con);
+	@BeforeAll
+	static void setUp() throws Exception {
+
+		Config.start();
+		// Connection con = getConnection();
+		postgresContainer.start();
+		// while (!postgresContainer.isRunning()) {
+		// wait(500);
+		// }
+
+//		String importText = "psql  -p " + postgresContainer.getFirstMappedPort()
+//				+ " -f /home/jjescudero/git/wsdl2dita/DBDocInDita/src/test/resources/sqlex/sqlexbackup.sql";
+//		Process pro = Runtime.getRuntime().exec(importText);
+//		System.out.println(pro.getOutputStream());
+		String jdbcUrl = postgresContainer.getJdbcUrl();
+
+		String username = postgresContainer.getUsername();
+		String password = postgresContainer.getPassword();
+		try {
+			Connection con = DriverManager.getConnection(jdbcUrl, username, password);
+			meta = new ConnectionMetadata(con);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	@Test
@@ -41,25 +66,26 @@ class ConnectionMetadataTest extends BaseTest {
 	void testGetCatalogs() {
 		try {
 			Collection<CatalogMetadata> c = meta.getCatalogs();
+			System.out.println("Test Catalogos:");
 			for (CatalogMetadata catalog : c) {
 				System.out.println(catalog);
 				for (SchemaMetadata schema : catalog.getSchemas()) {
 					System.out.println("-->" + schema);
 					for (TableMetadata table : schema.getTables()) {
 						System.out.println("---->" + table);
-						for (ColumnMetadata column : table.getColumns()) {							
+						for (ColumnMetadata column : table.getColumns()) {
 							System.out.println("------>" + column);
 						}
-						for(PrimaryKeyMetadata pk:table.getPrimaryKeys()) {
+						for (PrimaryKeyMetadata pk : table.getPrimaryKeys()) {
 							System.out.println("------> " + pk);
 						}
-						for(ForeingKeyMetadata fk:table.getForeingKeys()) {
+						for (ForeingKeyMetadata fk : table.getForeingKeys()) {
 							System.out.println("------>" + fk);
 						}
-						for(IndexMetadata index:table.getIndex()) {
+						for (IndexMetadata index : table.getIndex()) {
 							System.out.println("------>" + index);
 						}
-						
+
 					}
 
 				}
@@ -74,6 +100,7 @@ class ConnectionMetadataTest extends BaseTest {
 	@DisplayName("Get Schemas")
 	void testGetschemass() {
 		try {
+			System.out.println("Test schemas");
 			for (SchemaMetadata schema : meta.getSchemas()) {
 				System.out.println("-->" + schema);
 				for (TableMetadata table : schema.getTables()) {
@@ -81,13 +108,13 @@ class ConnectionMetadataTest extends BaseTest {
 					for (ColumnMetadata column : table.getColumns()) {
 						System.out.println("------>" + column);
 					}
-					for(PrimaryKeyMetadata pk:table.getPrimaryKeys()) {
+					for (PrimaryKeyMetadata pk : table.getPrimaryKeys()) {
 						System.out.println("------>" + pk);
 					}
-					for(ForeingKeyMetadata fk:table.getForeingKeys()) {
+					for (ForeingKeyMetadata fk : table.getForeingKeys()) {
 						System.out.println("------>" + fk);
 					}
-					for(IndexMetadata index:table.getIndex()) {
+					for (IndexMetadata index : table.getIndex()) {
 						System.out.println("------>" + index);
 					}
 				}
@@ -97,10 +124,11 @@ class ConnectionMetadataTest extends BaseTest {
 			fail("Por exception");
 		}
 	}
+
 	@Test
 	@DisplayName("Get Schema")
 	void getSchema() {
-		System.out.println("Current Schema Test");
+		System.out.println("Test Current Schema");
 		try {
 			SchemaMetadata schema = meta.getSchema();
 			System.out.println("-->" + schema);
@@ -109,13 +137,13 @@ class ConnectionMetadataTest extends BaseTest {
 				for (ColumnMetadata column : table.getColumns()) {
 					System.out.println("------>" + column);
 				}
-				for(PrimaryKeyMetadata pk:table.getPrimaryKeys()) {
+				for (PrimaryKeyMetadata pk : table.getPrimaryKeys()) {
 					System.out.println("------>" + pk);
 				}
-				for(ForeingKeyMetadata fk:table.getForeingKeys()) {
+				for (ForeingKeyMetadata fk : table.getForeingKeys()) {
 					System.out.println("------>" + fk);
 				}
-				for(IndexMetadata index:table.getIndex()) {
+				for (IndexMetadata index : table.getIndex()) {
 					System.out.println("------>" + index);
 				}
 			}
@@ -123,7 +151,7 @@ class ConnectionMetadataTest extends BaseTest {
 			e.printStackTrace();
 			fail("Por exception");
 		}
-		
+
 	}
 
 }

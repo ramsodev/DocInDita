@@ -5,25 +5,63 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
-import org.junit.jupiter.api.BeforeEach;
+import javax.swing.event.TreeWillExpandListener;
+
+import org.junit.Rule;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.testcontainers.containers.PostgreSQLContainer;
 
 import net.ramso.docindita.db.Config;
 import net.ramso.docindita.db.GenerateDataBase;
 import net.ramso.docindita.tools.DitaConstants;
 
 class GenerateDataBaseTest extends BaseTest {
-
+	@Rule
+	public PostgreSQLContainer postgresContainer = new PostgreSQLContainer();
 	private GenerateDataBase generate;
-	
+	private Connection con;
 
-	@BeforeEach
-	void setUp() throws Exception {
+	public GenerateDataBaseTest() {
+		super();
 		Config.start();
-		Connection con = getConnection();
-		this.generate = new GenerateDataBase(con);
+		// Connection con = getConnection();
+		postgresContainer.start();
+		// while (!postgresContainer.isRunning()) {
+		// wait(500);
+		// }
+		String jdbcUrl = postgresContainer.getJdbcUrl();
+		String username = postgresContainer.getUsername();
+		String password = postgresContainer.getPassword();
+		try {
+			con = DriverManager.getConnection(jdbcUrl, username, password);
+			generate = new GenerateDataBase(con);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+	@BeforeAll
+	static void setUp() throws Exception {
+		GenerateDataBaseTest test = new GenerateDataBaseTest();
+
+	}
+
+	@AfterAll
+	static void tearDown() throws Exception {
+		// disconnect(con);
+//		if (postgresContainer.isRunning()) {
+//			postgresContainer.stop();
+//		}
+
 	}
 
 	@Test
@@ -33,7 +71,7 @@ class GenerateDataBaseTest extends BaseTest {
 		clean();
 		try {
 			this.generate.generateCatalogs();
-			assertTrue(valid(),"Fallo en la validación de los xml");
+			assertTrue(valid(), "Fallo en la validación de los xml");
 		} catch (final Exception e) {
 			e.printStackTrace();
 			fail(e.getLocalizedMessage());
@@ -48,7 +86,7 @@ class GenerateDataBaseTest extends BaseTest {
 		clean();
 		try {
 			this.generate.generateSchemas();
-			assertTrue(valid(),"Fallo en la validación de los xml");
+			assertTrue(valid(), "Fallo en la validación de los xml");
 		} catch (final Exception e) {
 			e.printStackTrace();
 			fail(e.getLocalizedMessage());
@@ -62,7 +100,7 @@ class GenerateDataBaseTest extends BaseTest {
 		clean();
 		try {
 			this.generate.generateSchema();
-			assertTrue(valid(),"Fallo en la validación de los xml");
+			assertTrue(valid(), "Fallo en la validación de los xml");
 		} catch (final Exception e) {
 			e.printStackTrace();
 			fail(e.getLocalizedMessage());
@@ -76,12 +114,11 @@ class GenerateDataBaseTest extends BaseTest {
 		clean();
 		try {
 			this.generate.generateSchema("EMPEX");
-			assertTrue(valid(),"Fallo en la validación de los xml");
+			assertTrue(valid(), "Fallo en la validación de los xml");
 		} catch (final Exception e) {
 			e.printStackTrace();
 			fail(e.getLocalizedMessage());
 		}
 	}
-
 
 }

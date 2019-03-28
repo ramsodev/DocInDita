@@ -4,10 +4,12 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import net.ramso.tools.BundleManager;
+import net.ramso.tools.LogManager;
 import net.ramso.tools.TextTools;
 
 public class ConnectionMetadata {
@@ -21,17 +23,36 @@ public class ConnectionMetadata {
 	}
 
 	public SchemaMetadata getSchema() throws SQLException {
-		return getSchema(connection.getSchema());
+		String schema = "";
+		try {
+			schema = connection.getSchema();
+		} catch (SQLFeatureNotSupportedException e) {
+			LogManager.warn("No se puede recuperar esquema por defecto. Se usa el nombre de usuario", e);
+
+			schema = connection.getMetaData().getUserName();
+		}
+		return getSchema(schema);
 	}
 
 	public SchemaMetadata getSchema(String name) throws SQLException {
 		SchemaMetadata schema = null;
 		DatabaseMetaData metadata = connection.getMetaData();
+
 		ResultSet rs = metadata.getSchemas(null, name);
 		if (rs.next()) {
 			schema = new SchemaMetadata(rs, metadata);
 		}
+
 		return schema;
+	}
+
+	private SchemaMetadata getSchemaFromList(String name) throws SQLException {
+		for (SchemaMetadata schema : getSchemas()) {
+			if (schema.getName().equalsIgnoreCase(name)) {
+				return schema;
+			}
+		}
+		return null;
 	}
 
 	public Collection<CatalogMetadata> getCatalogs() throws SQLException {
@@ -64,7 +85,7 @@ public class ConnectionMetadata {
 
 	public String getId() throws SQLException {
 		DatabaseMetaData metadata = connection.getMetaData();
-		return TextTools.cleanNonAlfaNumeric(metadata.getDatabaseProductName()+"."+
-				metadata.getDatabaseProductVersion(), "_");
+		return TextTools.cleanNonAlfaNumeric(
+				metadata.getDatabaseProductName() + "." + metadata.getDatabaseProductVersion(), "_");
 	}
 }
