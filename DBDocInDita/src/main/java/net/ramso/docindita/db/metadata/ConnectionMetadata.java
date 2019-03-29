@@ -28,8 +28,10 @@ public class ConnectionMetadata {
 			schema = connection.getSchema();
 		} catch (SQLFeatureNotSupportedException e) {
 			LogManager.warn("No se puede recuperar esquema por defecto. Se usa el nombre de usuario", e);
-
-			schema = connection.getMetaData().getUserName();
+		} finally {
+			if (schema == null || schema.isEmpty()) {
+				schema = connection.getMetaData().getUserName();
+			}
 		}
 		return getSchema(schema);
 	}

@@ -20,8 +20,7 @@ DROP SCHEMA IF EXISTS sakila;
 CREATE SCHEMA sakila;
 USE sakila;
 
-GRANT ALL privileges ON `sakila`.* TO 'test'@'%';
-FLUSH PRIVILEGES;
+
 
 --
 -- Table structure for table `actor`

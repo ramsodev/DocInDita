@@ -11,7 +11,8 @@ import org.junit.ClassRule;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.containers.BindMode;
+import org.testcontainers.containers.MariaDBContainer;
 
 import net.ramso.docindita.db.Config;
 import net.ramso.docindita.db.metadata.CatalogMetadata;
@@ -28,23 +29,28 @@ class ConnectionMetadataTest extends BaseTest {
 	private static ConnectionMetadata meta;
 
 	@ClassRule
-	public static PostgreSQLContainer postgresContainer = (PostgreSQLContainer) new PostgreSQLContainer()
-			.withInitScript("sqlex/northwindexbackup.sql");
-	// .withInitScript("sqlex/empexbackup.sql");
-	// .withClasspathResourceMapping("pg/", "/var/lib/postgresql/data",
-	// BindMode.READ_WRITE);
+	public static MariaDBContainer container;
+
 
 	@BeforeAll
 	static void setUp() throws Exception {
-
 		Config.start();
 		// Connection con = getConnection();
-		postgresContainer.start();
+		container = new MariaDBContainer();
+		// container.withClasspathResourceMapping("mysql",
+		// "/docker-entrypoint-initdb.d", BindMode.READ_ONLY);
+		container.addFileSystemBind("DB/mysql", "/var/lib/mysql", BindMode.READ_WRITE);
+		container.addEnv("MYSQL_ROOT_PASSWORD", "admin");
+		container.withUsername("sakila");
+		container.withPassword("sakila");
+		container.withDatabaseName("sakila");
+		container.start();
 
-		String jdbcUrl = postgresContainer.getJdbcUrl();
-
-		String username = postgresContainer.getUsername();
-		String password = postgresContainer.getPassword();
+		String jdbcUrl = container.getJdbcUrl();
+		System.out.println(jdbcUrl);
+		String username = container.getUsername();
+		String password = container.getPassword();
+		container.getDatabaseName();
 		try {
 			Connection con = DriverManager.getConnection(jdbcUrl, username, password);
 			meta = new ConnectionMetadata(con);
@@ -52,7 +58,6 @@ class ConnectionMetadataTest extends BaseTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 
 	@Test
@@ -79,9 +84,7 @@ class ConnectionMetadataTest extends BaseTest {
 						for (IndexMetadata index : table.getIndex()) {
 							System.out.println("------>" + index);
 						}
-
 					}
-
 				}
 			}
 		} catch (SQLException e) {

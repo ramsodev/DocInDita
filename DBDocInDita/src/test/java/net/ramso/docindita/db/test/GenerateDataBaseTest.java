@@ -8,30 +8,21 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import javax.swing.event.TreeWillExpandListener;
-
 import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.testcontainers.containers.BindMode;
 import org.testcontainers.containers.MariaDBContainer;
-import org.testcontainers.containers.PostgreSQLContainer;
 
 import net.ramso.docindita.db.Config;
 import net.ramso.docindita.db.GenerateDataBase;
-import net.ramso.docindita.db.metadata.ConnectionMetadata;
 import net.ramso.docindita.tools.DitaConstants;
 
 class GenerateDataBaseTest extends BaseTest {
 	@ClassRule
-	public static MariaDBContainer container = (MariaDBContainer) new MariaDBContainer()
-			.withInitScript("sakila-schema.sql");
-	// .withClasspathResourceMapping("pg", "/var/lib/postgresql/data",
-	// BindMode.READ_WRITE);
+	public static MariaDBContainer container;
 
 	private static GenerateDataBase generate;
 
@@ -40,7 +31,14 @@ class GenerateDataBaseTest extends BaseTest {
 
 		Config.start();
 		// Connection con = getConnection();
-		 container.start();
+		container = new MariaDBContainer();
+//		container.withClasspathResourceMapping("mysql", "/docker-entrypoint-initdb.d", BindMode.READ_ONLY);
+		container.addFileSystemBind("DB/mysql", "/var/lib/mysql", BindMode.READ_WRITE);
+		container.addEnv("MYSQL_ROOT_PASSWORD", "admin");
+		container.withUsername("sakila");
+		container.withPassword("sakila");
+		container.withDatabaseName("sakila");
+		container.start();
 
 		String jdbcUrl = container.getJdbcUrl();
 		System.out.println(jdbcUrl);
