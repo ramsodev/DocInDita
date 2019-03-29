@@ -25,25 +25,49 @@ import net.ramso.docindita.db.metadata.PrimaryKeyMetadata;
 import net.ramso.docindita.db.metadata.SchemaMetadata;
 import net.ramso.docindita.db.metadata.TableMetadata;
 
-class ConnectionMetadataTest extends BaseTest {
+/**
+ * Class Test with mariadb container
+ * @author ramso
+ *
+ */
+class ConnectionMetadataMariaDBTest extends BaseTest {
 
 	private static ConnectionMetadata meta;
 
+	@SuppressWarnings("rawtypes")
 	@ClassRule
 	public static MariaDBContainer container;
 
 
+	@SuppressWarnings("rawtypes")
 	@BeforeAll
 	static void setUp() throws Exception {
 		Config.start();
-		Connection con = getConnection();
-			meta = new ConnectionMetadata(con);		
+		// Connection con = getConnection();
+		container = new MariaDBContainer();
+		container.withClasspathResourceMapping("mysql", "/docker-entrypoint-initdb.d", BindMode.READ_ONLY);
+//		container.addFileSystemBind("DB/mysql", "/var/lib/mysql", BindMode.READ_WRITE);
+		container.addEnv("MYSQL_ROOT_PASSWORD", "admin");
+		container.withUsername("sakila");
+		container.withPassword("sakila");
+		container.withDatabaseName("sakila");
+		container.start();
+		String jdbcUrl = container.getJdbcUrl();
+		String username = container.getUsername();
+		String password = container.getPassword();
+		try {
+			Connection con = DriverManager.getConnection(jdbcUrl, username, password);
+			meta = new ConnectionMetadata(con);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
+	
 	@AfterAll
 	static void tearDown() throws Exception {
 		meta.disconnect();
-
 	}
+
 	@Test
 	@DisplayName("Get Catalogs")
 	void testGetCatalogs() {

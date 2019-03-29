@@ -21,6 +21,12 @@ public class SchemaMetadata extends AbstractMetadata {
 		super(resultSet, metadata);
 	}
 
+	public SchemaMetadata(CatalogMetadata catalog) {
+		super(catalog.getMetadata());
+		setCatalog(catalog.getName());
+		setName(catalog.getName());
+	}
+
 	private Collection<TableMetadata> tables = new ArrayList<>();
 
 	@Override
@@ -36,7 +42,7 @@ public class SchemaMetadata extends AbstractMetadata {
 	}
 
 	public Collection<TableMetadata> getTables() throws SQLException {
-		ResultSet rs = getMetadata().getTables(getCatalog(), getName(), null, new String[] { DBConstants.TABLE });
+		ResultSet rs = getMetadata().getTables(getCatalog(), getSchema(), null, new String[] { DBConstants.TABLE });
 		while (rs.next()) {
 			TableMetadata tm = new TableMetadata(rs, getMetadata());
 			tm.getColumns();

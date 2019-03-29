@@ -14,6 +14,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.BindMode;
 import org.testcontainers.containers.MariaDBContainer;
+import org.testcontainers.containers.PostgreSQLContainer;
 
 import net.ramso.docindita.db.Config;
 import net.ramso.docindita.db.metadata.CatalogMetadata;
@@ -25,19 +26,42 @@ import net.ramso.docindita.db.metadata.PrimaryKeyMetadata;
 import net.ramso.docindita.db.metadata.SchemaMetadata;
 import net.ramso.docindita.db.metadata.TableMetadata;
 
-class ConnectionMetadataTest extends BaseTest {
+/**
+ * Class Test with Postgres SQL container
+ * 
+ * @author ramso
+ *
+ */
+class ConnectionMetadataPgSqlTest extends BaseTest {
 
 	private static ConnectionMetadata meta;
 
 	@ClassRule
-	public static MariaDBContainer container;
-
+	public static PostgreSQLContainer container;
 
 	@BeforeAll
 	static void setUp() throws Exception {
 		Config.start();
-		Connection con = getConnection();
-			meta = new ConnectionMetadata(con);		
+		// Connection con = getConnection();
+		container = new PostgreSQLContainer<>();
+		container.withClasspathResourceMapping("pgsql", "/docker-entrypoint-initdb.d", BindMode.READ_ONLY);
+//		container.addFileSystemBind("DB/pgsql", "/var/lib/postgresql/data", BindMode.READ_WRITE);
+		container.addEnv("POSTGRES_PASSWORD", "admin");
+//		container.withUsername("postgres");
+//		container.withPassword("postgres");
+//		container.withDatabaseName("sakila");
+		container.start();
+		String jdbcUrl = container.getJdbcUrl();
+
+		String username = container.getUsername();
+		String password = container.getPassword();
+		System.out.println(jdbcUrl + "-" + username + "-" + password + "-" + container.getDatabaseName());
+		try {
+			Connection con = DriverManager.getConnection(jdbcUrl, username, password);
+			meta = new ConnectionMetadata(con);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	@AfterAll
 	static void tearDown() throws Exception {

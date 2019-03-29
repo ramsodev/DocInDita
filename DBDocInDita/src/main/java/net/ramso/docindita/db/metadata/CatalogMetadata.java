@@ -41,9 +41,14 @@ public class CatalogMetadata extends AbstractMetadata {
 				schemas.add(new SchemaMetadata(rs, getMetadata()));
 			}
 		}
+		if(schemas.isEmpty()) {
+			schemas.add(new SchemaMetadata(this));
+		}
 		return schemas;
 
 	}
+
+	
 
 	public SchemaMetadata getSchema(String name) throws SQLException {
 		SchemaMetadata schema = null;

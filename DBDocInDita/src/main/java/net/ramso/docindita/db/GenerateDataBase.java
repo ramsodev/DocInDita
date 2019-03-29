@@ -111,4 +111,8 @@ public class GenerateDataBase {
 		CreateTable create = new CreateTable();
 		return create.create(table);
 	}
+
+	public void disconnect() throws SQLException {
+		connection.disconnect();
+	}
 }

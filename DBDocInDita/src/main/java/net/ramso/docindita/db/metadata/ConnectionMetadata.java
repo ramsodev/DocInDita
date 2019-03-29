@@ -41,10 +41,20 @@ public class ConnectionMetadata {
 		DatabaseMetaData metadata = connection.getMetaData();
 
 		ResultSet rs = metadata.getSchemas(null, name);
+		boolean have = false;
 		if (rs.next()) {
 			schema = new SchemaMetadata(rs, metadata);
+			have = true;
 		}
-
+		if (!have) {
+			rs = metadata.getCatalogs();
+			while (rs.next()) {
+				CatalogMetadata catalog = new CatalogMetadata(rs, metadata);
+				if (catalog.getName().equalsIgnoreCase(name)) {
+					schema = catalog.getSchemas().iterator().next();
+				}
+			}
+		}
 		return schema;
 	}
 
@@ -89,5 +99,11 @@ public class ConnectionMetadata {
 		DatabaseMetaData metadata = connection.getMetaData();
 		return TextTools.cleanNonAlfaNumeric(
 				metadata.getDatabaseProductName() + "." + metadata.getDatabaseProductVersion(), "_");
+	}
+
+	public void disconnect() throws SQLException {
+		if (!connection.isClosed())
+			connection.close();
+
 	}
 }

@@ -2,6 +2,7 @@ package net.ramso.docindita.db.test;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Connection;
@@ -19,22 +20,19 @@ import org.xml.sax.SAXException;
 import net.ramso.docindita.db.Config;
 
 public abstract class BaseTest {
-	public String driver = "org.apache.derby.jdbc.EmbeddedDriver";
-	public String protocol = "jdbc:derby:";
-//	public String db = "toursdb";
-	public String db = "DB/BirtSample";
+	public static String driver = "org.apache.derby.jdbc.EmbeddedDriver";
+	public static String protocol = "jdbc:derby:";
+	public static String db = "DB/BirtSample";
 	private static Validator topicValidator;
 	private static Validator bookmapValidator;
 	
-	protected Connection getConnection() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+	protected static Connection getConnection() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		String path = Thread.currentThread().getContextClassLoader().getResource(db).getPath();
-		Class.forName(driver).newInstance();		
+		Class.forName(driver).getDeclaredConstructor().newInstance();		
 		return DriverManager.getConnection(protocol + path);
 	}
 	
-	protected void disconnect(Connection con) throws SQLException {
-		con.close();
-	}
+	
 	
 	protected void clean() {
 		clean(Config.getOutputDir());

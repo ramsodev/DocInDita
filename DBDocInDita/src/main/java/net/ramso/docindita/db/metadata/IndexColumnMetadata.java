@@ -19,6 +19,8 @@ public class IndexColumnMetadata extends BasicColumnMetadata {
 	public void init(ResultSet resultSet) {
 		try {
 			loadLabels(resultSet.getMetaData());
+			setIdx(0);
+			setOrder("");
 			if (labelExist(DBConstants.METADATA_SCHEMA))
 				setSchema(resultSet.getString(DBConstants.METADATA_SCHEMA));
 			if (labelExist(DBConstants.METADATA_TABLE_CATALOG))
@@ -37,7 +39,10 @@ public class IndexColumnMetadata extends BasicColumnMetadata {
 	}
 
 	public String getOrder() {
-		return order.startsWith("A") ? "ASC" : "DES";
+		if (order == null) {
+			order = "";
+		}
+		return order.startsWith("A") ? "ASC" : order.startsWith("D") ? "DES" : "";
 	}
 
 	public void setOrder(String order) {

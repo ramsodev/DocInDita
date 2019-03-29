@@ -21,6 +21,10 @@ public abstract class AbstractMetadata implements IBasicMetadata {
 		init(resultSet);
 	}
 
+	public AbstractMetadata(DatabaseMetaData metadata) {
+		this.metadata = metadata;
+	}
+
 	@Override
 	public String getName() {
 		return name;
