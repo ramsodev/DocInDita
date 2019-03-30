@@ -17,6 +17,11 @@ import net.ramso.tools.LogManager;
  *
  */
 public class SchemaMetadata extends AbstractMetadata {
+	private Collection<TableMetadata> tables;
+	private Collection<FunctionMetadata> functions;
+	private Collection<UDTMetadata> udts;
+	private Collection<ProcedureMetadata> procedures;
+
 	public SchemaMetadata(ResultSet resultSet, DatabaseMetaData metadata) {
 		super(resultSet, metadata);
 	}
@@ -26,8 +31,6 @@ public class SchemaMetadata extends AbstractMetadata {
 		setCatalog(catalog.getName());
 		setName(catalog.getName());
 	}
-
-	private Collection<TableMetadata> tables = new ArrayList<>();
 
 	@Override
 	public void init(ResultSet resultSet) {
@@ -42,16 +45,52 @@ public class SchemaMetadata extends AbstractMetadata {
 	}
 
 	public Collection<TableMetadata> getTables() throws SQLException {
-		ResultSet rs = getMetadata().getTables(getCatalog(), getSchema(), null, new String[] { DBConstants.TABLE });
-		while (rs.next()) {
-			TableMetadata tm = new TableMetadata(rs, getMetadata());
-			tm.getColumns();
-			tables.add(tm);
+		if (tables == null) {
+			tables = new ArrayList<>();
+			ResultSet rs = getMetadata().getTables(getCatalog(), getSchema(), null, new String[] { DBConstants.TABLE });
+			while (rs.next()) {
+				TableMetadata tm = new TableMetadata(rs, getMetadata());
+				tables.add(tm);
+			}
 		}
 		return tables;
 
 	}
 
+	public Collection<FunctionMetadata> getFunctions() throws SQLException {
+		if (functions == null) {
+			functions = new ArrayList<>();
+			ResultSet rs = getMetadata().getFunctions(getCatalog(), getSchema(), null);
+			while (rs.next()) {
+				FunctionMetadata fm = new FunctionMetadata(rs, getMetadata());
+				functions.add(fm);
+			}
+		}
+		return functions;
+	}
+	
+	public Collection<UDTMetadata> getUDTs() throws SQLException {
+		if (udts == null) {
+			udts = new ArrayList<>();
+			ResultSet rs = getMetadata().getUDTs(getCatalog(), getSchema(),null, null);
+			while (rs.next()) {
+				UDTMetadata um = new UDTMetadata(rs, getMetadata());
+				udts.add(um);
+			}
+		}
+		return udts;
+	}
+	public Collection<ProcedureMetadata> getProcedures() throws SQLException {
+		if (procedures == null) {
+			procedures = new ArrayList<>();
+			ResultSet rs = getMetadata().getProcedures(getCatalog(), getSchema(),null);
+			while (rs.next()) {
+				ProcedureMetadata um = new ProcedureMetadata(rs, getMetadata());
+				procedures.add(um);
+			}
+		}
+		return procedures;
+	}
 	@Override
 	public String toString() {
 		return getCatalog() + "." + getSchema();
@@ -62,5 +101,7 @@ public class SchemaMetadata extends AbstractMetadata {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	
 
 }

@@ -13,7 +13,7 @@ public class DBConstants {
 	public static final String METADATA_TABLE_CATALOG = "TABLE_CAT";
 	public static final String METADATA_CATALOG = "TABLE_CATALOG";
 	public static final String METADATA_COLUMN = "COLUMN_NAME";
-	public static final String METADATA_COLUMN_TYPE = "TYPE_NAME";
+	public static final String METADATA_TYPE_NAME = "TYPE_NAME";
 	public static final String METADATA_COLUMN_SIZE = "COLUMN_SIZE";
 	public static final String METADATA_DECIMAL_DIGITS = "DECIMAL_DIGITS";
 	public static final String METADATA_COLUMN_DEF = "COLUMN_DEF";
@@ -40,6 +40,26 @@ public class DBConstants {
 	public static final String METADATA_TYPE = "TYPE";
 	public static final String METADATA_ASC_OR_DESC = "ASC_OR_DESC";
 	public static final String METADATA_FILTER_CONDITION = "FILTER_CONDITION";
+	public static final String METADATA_DEFERRABILITY = "DEFERRABILITY";
+	public static final String METADATA_FUNCTION_CAT = "FUNCTION_CAT";
+	public static final String METADATA_FUNCTION_SCHEM = "FUNCTION_SCHEM";
+	public static final String METADATA_FUNCTION_NAME = "FUNCTION_NAME";
+	public static final String METADATA_FUNCTION_TYPE = "FUNCTION_TYPE";
+	public static final String METADATA_SPECIFIC_NAME = "SPECIFIC_NAME";
+	public static final String METADATA_METADATA_PRECISION = "PRECISION";
+	public static final String METADATA_METADATA_SCALE = "SCALE";
+	public static final String METADATA_COLUMN_TYPE = "COLUMN_TYPE";
+	public static final String METADATA_TYPE_CAT = "TYPE_CAT";
+	public static final String METADATA_TYPE_SCHEM = "TYPE_SCHEM";
+	public static final String METADATA_BASE_TYPE = "BASE_TYPE";
+	public static final String METADATA_ATTR_NAME = "ATTR_NAME";
+	public static final String METADATA_ATTR_TYPE_NAME = "ATTR_TYPE_NAME";
+	public static final String METADATA_ATTR_SIZE = "ATTR_SIZE";
+	public static final String METADATA_ATTR_DEF = "ATTR_DEF";
+	public static final String METADATA_PROCEDURE_CAT = "PROCEDURE_CAT";
+	public static final String METADATA_PROCEDURE_SCHEM = "PROCEDURE_SCHEM";
+	public static final String METADATA_PROCEDURE_NAME = "PROCEDURE_NAME";
+	public static final String METADATA_PROCEDURE_TYPE = "PROCEDURE_TYPE";
 	public static final String INDEX_CLUSTERED = "Clustered Index";
 	public static final String INDEX_HASHED = "Hashed index";
 	public static final String INDEX_STADISTIC = "Table statistics";
@@ -52,8 +72,6 @@ public class DBConstants {
 	public static final String INITIALLY_DEFERRED = "Initially Deferred";
 	public static final String INITIALLY_INMEDIATE = "Initially inmediate";
 	public static final String NOT_DEFERRABLE = "No Deferrable";
-	public static final String METADATA_DEFERRABILITY = "DEFERRABILITY";
-
 	public static final String SMALLINT = "SMALLINT";
 	public static final String INTEGER = "INTEGER";
 	public static final String INT = "INT";
@@ -68,5 +86,15 @@ public class DBConstants {
 	public static final String NUMERIC = "NUMERIC";
 	public static final String DECIMAL = "DECIMAL";
 	public static final String DEC = "DEC";
-
+	public static final String FUNCTION_RESULT_UNKNOWN = "Unknown";
+	public static final String FUNCTION_RESULT_TABLE = "Table";
+	public static final String FUNCTION_RESULT_NOTABLE = "No Table";
+	public static final String IN = "Input";
+	public static final String OUT = "Output";
+	public static final String INOUT = "Input & Output";
+	public static final String RESULT = "Result";
+	public static final String RETURN = "Return";
+	public static final String PROCEDURE_NO_RESULT = "Without result";
+	public static final String PROCEDURE_RETUNS_RESULT = "Return value";
+	public static final String PROCEDURE_RESULT_UNKNOWN = "Unknown";
 }

@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import net.ramso.docindita.db.DBConstants;
 import net.ramso.tools.LogManager;
 
-public class ColumnMetadata extends BasicColumnMetadata {
+public class AttributeMetadata extends BasicColumnMetadata {
 
 	private String type;
 
@@ -15,12 +15,9 @@ public class ColumnMetadata extends BasicColumnMetadata {
 	private int decimal;
 	private String defaultValue;
 	private boolean isNullable = false;
-	private boolean isAutoincrement = false;
-	private boolean isGenerated = false;
-	private boolean primaryKey = false;
-	private boolean foreingKey = false;
+	
 
-	public ColumnMetadata(ResultSet resultSet, DatabaseMetaData metadata) {
+	public AttributeMetadata(ResultSet resultSet, DatabaseMetaData metadata) {
 		super(resultSet, metadata);
 	}
 
@@ -28,28 +25,24 @@ public class ColumnMetadata extends BasicColumnMetadata {
 	public void init(ResultSet resultSet) {
 		try {
 			loadLabels(resultSet.getMetaData());
-			if (labelExist(DBConstants.METADATA_SCHEMA))
-				setSchema(resultSet.getString(DBConstants.METADATA_SCHEMA));
-			if (labelExist(DBConstants.METADATA_TABLE_CATALOG))
-				setCatalog(resultSet.getString(DBConstants.METADATA_TABLE_CATALOG));
-			if (labelExist(DBConstants.METADATA_TABLE))
-				setTable(resultSet.getString(DBConstants.METADATA_TABLE));
-			if (labelExist(DBConstants.METADATA_COLUMN))
-				setName(resultSet.getString(DBConstants.METADATA_COLUMN));
+			if (labelExist(DBConstants.METADATA_TYPE_SCHEM))
+				setSchema(resultSet.getString(DBConstants.METADATA_TYPE_SCHEM));
+			if (labelExist(DBConstants.METADATA_TYPE_CAT))
+				setCatalog(resultSet.getString(DBConstants.METADATA_TYPE_CAT));
 			if (labelExist(DBConstants.METADATA_TYPE_NAME))
-				setType(resultSet.getString(DBConstants.METADATA_TYPE_NAME));
-			if (labelExist(DBConstants.METADATA_COLUMN_SIZE))
-				setSize(resultSet.getInt(DBConstants.METADATA_COLUMN_SIZE));
+				setTable(resultSet.getString(DBConstants.METADATA_TYPE_NAME));
+			if (labelExist(DBConstants.METADATA_ATTR_NAME))
+				setName(resultSet.getString(DBConstants.METADATA_ATTR_NAME));
+			if (labelExist(DBConstants.METADATA_ATTR_TYPE_NAME))
+				setType(resultSet.getString(DBConstants.METADATA_ATTR_TYPE_NAME));
+			if (labelExist(DBConstants.METADATA_ATTR_SIZE))
+				setSize(resultSet.getInt(DBConstants.METADATA_ATTR_SIZE));
 			if (labelExist(DBConstants.METADATA_DECIMAL_DIGITS))
 				setDecimal(resultSet.getInt(DBConstants.METADATA_DECIMAL_DIGITS));
-			if (labelExist(DBConstants.METADATA_COLUMN_DEF))
-				setDefaultValue(resultSet.getString(DBConstants.METADATA_COLUMN_DEF));
+			if (labelExist(DBConstants.METADATA_ATTR_DEF))
+				setDefaultValue(resultSet.getString(DBConstants.METADATA_ATTR_DEF));
 			if (labelExist(DBConstants.METADATA_IS_NULLABLE))
 				setNullable(resultSet.getString(DBConstants.METADATA_IS_NULLABLE).equalsIgnoreCase("YES"));
-			if (labelExist(DBConstants.METADATA_IS_AUTOINCREMENT))
-				setAutoincrement(resultSet.getString(DBConstants.METADATA_IS_AUTOINCREMENT).equalsIgnoreCase("YES"));
-			if (labelExist(DBConstants.METADATA_IS_GENERATEDCOLUMN))
-				setGenerated(resultSet.getString(DBConstants.METADATA_IS_GENERATEDCOLUMN).equalsIgnoreCase("YES"));
 			if (labelExist(DBConstants.METADATA_REMARKS))
 				setDoc(resultSet.getString(DBConstants.METADATA_REMARKS));
 			if (labelExist(DBConstants.METADATA_ORDINAL_POSITION))
@@ -80,13 +73,7 @@ public class ColumnMetadata extends BasicColumnMetadata {
 		this.isNullable = isNullable;
 	}
 
-	protected void setAutoincrement(boolean isAutoincrement) {
-		this.isAutoincrement = isAutoincrement;
-	}
-
-	protected void setGenerated(boolean isGenerated) {
-		this.isGenerated = isGenerated;
-	}
+	
 
 	public String getType() {
 		StringBuilder st = new StringBuilder();
@@ -132,29 +119,7 @@ public class ColumnMetadata extends BasicColumnMetadata {
 		return isNullable;
 	}
 
-	public boolean isAutoincrement() {
-		return isAutoincrement;
-	}
-
-	public boolean isGenerated() {
-		return isGenerated;
-	}
-
-	public boolean isPrimaryKey() {
-		return primaryKey;
-	}
-
-	public void setPrimaryKey(boolean primaryKey) {
-		this.primaryKey = primaryKey;
-	}
-
-	public boolean isForeingKey() {
-		return foreingKey;
-	}
-
-	public void setForeingKey(boolean foreingKey) {
-		this.foreingKey = foreingKey;
-	}
+	
 
 	@Override
 	public String toString() {
@@ -166,9 +131,7 @@ public class ColumnMetadata extends BasicColumnMetadata {
 		st.append(" Default Value: ");
 		st.append(getDefaultValue());
 		st.append(isNullable() ? " Nullable" : "");
-		st.append(isGenerated() ? " Generated" : "");
-		st.append(isPrimaryKey() ? " PK " : "");
-		st.append(isForeingKey() ? " FK " : "");
+		
 		return st.toString();
 	}
 
@@ -185,9 +148,7 @@ public class ColumnMetadata extends BasicColumnMetadata {
 			st.append(" DEFAULT ");
 			st.append(getDefaultValue());
 		}
-		if (isGenerated) {
-			st.append(" GENERATED ALWAYS AS IDENTITY");
-		}
+		
 		return st.toString();
 	}
 

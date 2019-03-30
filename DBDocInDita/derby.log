@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
-Wed Mar 27 20:34:32 CET 2019:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0169-c0a5-99fe-00001ed6ef40 
+Wed Mar 27 21:06:38 CET 2019:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0169-c0c2-ff3a-00001ed8e328 
 on database directory /home/ramso/git/DocInDita/DBDocInDita/target/test-classes/DB/BirtSample with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@1de0aca6 
 Loaded from file:/home/ramso/.m2/repository/org/apache/derby/derby/10.14.2.0/derby-10.14.2.0.jar
 java.vendor=Oracle Corporation
