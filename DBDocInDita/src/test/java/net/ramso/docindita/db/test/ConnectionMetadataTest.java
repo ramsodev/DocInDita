@@ -20,10 +20,13 @@ import net.ramso.docindita.db.metadata.CatalogMetadata;
 import net.ramso.docindita.db.metadata.ColumnMetadata;
 import net.ramso.docindita.db.metadata.ConnectionMetadata;
 import net.ramso.docindita.db.metadata.ForeingKeyMetadata;
+import net.ramso.docindita.db.metadata.FunctionMetadata;
 import net.ramso.docindita.db.metadata.IndexMetadata;
 import net.ramso.docindita.db.metadata.PrimaryKeyMetadata;
+import net.ramso.docindita.db.metadata.ProcedureMetadata;
 import net.ramso.docindita.db.metadata.SchemaMetadata;
 import net.ramso.docindita.db.metadata.TableMetadata;
+import net.ramso.docindita.db.metadata.UDTMetadata;
 
 class ConnectionMetadataTest extends BaseTest {
 
@@ -32,18 +35,19 @@ class ConnectionMetadataTest extends BaseTest {
 	@ClassRule
 	public static MariaDBContainer container;
 
-
 	@BeforeAll
 	static void setUp() throws Exception {
 		Config.start();
 		Connection con = getConnection();
-			meta = new ConnectionMetadata(con);		
+		meta = new ConnectionMetadata(con);
 	}
+
 	@AfterAll
 	static void tearDown() throws Exception {
 		meta.disconnect();
 
 	}
+
 	@Test
 	@DisplayName("Get Catalogs")
 	void testGetCatalogs() {
@@ -68,6 +72,15 @@ class ConnectionMetadataTest extends BaseTest {
 						for (IndexMetadata index : table.getIndex()) {
 							System.out.println("------>" + index);
 						}
+					}
+					for (FunctionMetadata function : schema.getFunctions()) {
+						System.out.println("---->" + function);
+					}
+					for (ProcedureMetadata procedure : schema.getProcedures()) {
+						System.out.println("---->" + procedure);
+					}
+					for (UDTMetadata udt : schema.getUDTs()) {
+						System.out.println("---->" + udt);
 					}
 				}
 			}
@@ -126,6 +139,15 @@ class ConnectionMetadataTest extends BaseTest {
 				}
 				for (IndexMetadata index : table.getIndex()) {
 					System.out.println("------>" + index);
+				}
+				for(FunctionMetadata function:schema.getFunctions()) {
+					System.out.println("---->" + function);
+				}
+				for(ProcedureMetadata procedure:schema.getProcedures()) {
+					System.out.println("---->" + procedure);
+				}
+				for(UDTMetadata udt:schema.getUDTs()) {
+					System.out.println("---->" + udt);
 				}
 			}
 		} catch (SQLException e) {
