@@ -26,7 +26,7 @@ import net.ramso.docindita.tools.DitaConstants;
  * @author ramso
  *
  */
-class GenerateDataBasePgSqlTest extends BaseTest {
+class GenerateDataBasePgSqlContainerTest extends BaseTest {
 
 	private static GenerateDataBase generate;
 	@SuppressWarnings("rawtypes")
@@ -70,7 +70,7 @@ class GenerateDataBasePgSqlTest extends BaseTest {
 		Config.setOutputDir(DitaConstants.OUTDIR_DEFAULT + File.separator + "pgsql/catalogs");
 		clean();
 		try {
-			GenerateDataBasePgSqlTest.generate.generateCatalogs();
+			GenerateDataBasePgSqlContainerTest.generate.generateCatalogs();
 			assertTrue(valid(), "Fallo en la validación de los xml");
 		} catch (final Exception e) {
 			e.printStackTrace();
@@ -85,7 +85,7 @@ class GenerateDataBasePgSqlTest extends BaseTest {
 		Config.setOutputDir(DitaConstants.OUTDIR_DEFAULT + File.separator + "pgsql/schemas");
 		clean();
 		try {
-			GenerateDataBasePgSqlTest.generate.generateSchemas();
+			GenerateDataBasePgSqlContainerTest.generate.generateSchemas();
 			assertTrue(valid(), "Fallo en la validación de los xml");
 		} catch (final Exception e) {
 			e.printStackTrace();
@@ -99,7 +99,7 @@ class GenerateDataBasePgSqlTest extends BaseTest {
 		Config.setOutputDir(DitaConstants.OUTDIR_DEFAULT + File.separator + "pgsql/currentSchema");
 		clean();
 		try {
-			GenerateDataBasePgSqlTest.generate.generateSchema();
+			GenerateDataBasePgSqlContainerTest.generate.generateSchema();
 			assertTrue(valid(), "Fallo en la validación de los xml");
 		} catch (final Exception e) {
 			e.printStackTrace();

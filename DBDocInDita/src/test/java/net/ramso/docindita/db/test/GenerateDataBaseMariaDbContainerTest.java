@@ -26,7 +26,7 @@ import net.ramso.docindita.tools.DitaConstants;
  * @author ramso
  *
  */
-class GenerateDataBaseMariaDbTest extends BaseTest {
+class GenerateDataBaseMariaDbContainerTest extends BaseTest {
 
 	private static GenerateDataBase generate;
 
@@ -70,7 +70,7 @@ class GenerateDataBaseMariaDbTest extends BaseTest {
 		Config.setOutputDir(DitaConstants.OUTDIR_DEFAULT + File.separator + "mysql/catalogs");
 		clean();
 		try {
-			GenerateDataBaseMariaDbTest.generate.generateCatalogs();
+			generate.generateCatalogs();
 			assertTrue(valid(), "Fallo en la validación de los xml");
 		} catch (final Exception e) {
 			e.printStackTrace();
@@ -85,7 +85,7 @@ class GenerateDataBaseMariaDbTest extends BaseTest {
 		Config.setOutputDir(DitaConstants.OUTDIR_DEFAULT + File.separator + "mysql/schemas");
 		clean();
 		try {
-			GenerateDataBaseMariaDbTest.generate.generateSchemas();
+			generate.generateSchemas();
 			assertTrue(valid(), "Fallo en la validación de los xml");
 		} catch (final Exception e) {
 			e.printStackTrace();
@@ -99,14 +99,12 @@ class GenerateDataBaseMariaDbTest extends BaseTest {
 		Config.setOutputDir(DitaConstants.OUTDIR_DEFAULT + File.separator + "mysql/currentSchema");
 		clean();
 		try {
-			GenerateDataBaseMariaDbTest.generate.generateSchema();
+			generate.generateSchema();
 			assertTrue(valid(), "Fallo en la validación de los xml");
 		} catch (final Exception e) {
 			e.printStackTrace();
 			fail(e.getLocalizedMessage());
 		}
 	}
-
-	
 
 }

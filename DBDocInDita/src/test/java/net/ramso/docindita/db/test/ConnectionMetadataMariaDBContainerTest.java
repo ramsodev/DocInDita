@@ -26,7 +26,7 @@ import net.ramso.docindita.db.metadata.UDTMetadata;
  * @author ramso
  *
  */
-class ConnectionMetadataMariaDBTest extends BaseTest {
+class ConnectionMetadataMariaDBContainerTest extends BaseTest {
 
 	private static ConnectionMetadata meta;
 
