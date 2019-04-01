@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package net.ramso.docindita.db.metadata;
 
@@ -35,31 +35,36 @@ public class TableMetadata extends AbstractMetadata implements IBaseMetadata {
 	public void init(ResultSet resultSet) {
 		try {
 			loadLabels(resultSet.getMetaData());
-			if (labelExist(DBConstants.METADATA_SCHEMA))
+			if (labelExist(DBConstants.METADATA_SCHEMA)) {
 				setSchema(resultSet.getString(DBConstants.METADATA_SCHEMA));
-			if (labelExist(DBConstants.METADATA_TABLE_CATALOG))
+			}
+			if (labelExist(DBConstants.METADATA_TABLE_CATALOG)) {
 				setCatalog(resultSet.getString(DBConstants.METADATA_TABLE_CATALOG));
-			if (labelExist(DBConstants.METADATA_TABLE))
+			}
+			if (labelExist(DBConstants.METADATA_TABLE)) {
 				setName(resultSet.getString(DBConstants.METADATA_TABLE));
-			if (labelExist(DBConstants.METADATA_TABLE_TYPE))
+			}
+			if (labelExist(DBConstants.METADATA_TABLE_TYPE)) {
 				setType(resultSet.getString(DBConstants.METADATA_TABLE_TYPE));
-			if (labelExist(DBConstants.METADATA_REMARKS))
+			}
+			if (labelExist(DBConstants.METADATA_REMARKS)) {
 				setDoc(resultSet.getString(DBConstants.METADATA_REMARKS));
-		} catch (SQLException e) {
+			}
+		} catch (final SQLException e) {
 			LogManager.warn("Error al preparar esquema", e);
 		}
 
 	}
 
 	public Collection<ColumnMetadata> getColumns() throws SQLException {
-		if (columns == null) {
-			Map<String, ColumnMetadata> columnsMap = new HashMap<>();
+		if (this.columns == null) {
+			final Map<String, ColumnMetadata> columnsMap = new HashMap<>();
 			ResultSet rs = getMetadata().getColumns(getCatalog(), getSchema(), getName(), null);
 			while (rs.next()) {
-				ColumnMetadata cm = new ColumnMetadata(rs, getMetadata());
+				final ColumnMetadata cm = new ColumnMetadata(rs, getMetadata());
 				columnsMap.put(cm.getName(), cm);
 			}
-			Map<String, PrimaryKeyMetadata> pksMap = new HashMap<>();
+			final Map<String, PrimaryKeyMetadata> pksMap = new HashMap<>();
 			rs = getMetadata().getPrimaryKeys(getCatalog(), getSchema(), getName());
 			while (rs.next()) {
 				columnsMap.get(rs.getString(DBConstants.METADATA_COLUMN)).setPrimaryKey(true);
@@ -71,8 +76,8 @@ public class TableMetadata extends AbstractMetadata implements IBaseMetadata {
 					pk.addColumn(rs);
 				}
 			}
-			primaryKeys = new ArrayList<>(pksMap.values());
-			Map<String, ForeingKeyMetadata> fksMap = new HashMap<>();
+			this.primaryKeys = new ArrayList<>(pksMap.values());
+			final Map<String, ForeingKeyMetadata> fksMap = new HashMap<>();
 			rs = getMetadata().getImportedKeys(getCatalog(), getSchema(), getName());
 			while (rs.next()) {
 				columnsMap.get(rs.getString(DBConstants.METADATA_FKCOLUMN_NAME)).setForeingKey(true);
@@ -84,17 +89,17 @@ public class TableMetadata extends AbstractMetadata implements IBaseMetadata {
 					fk.addColumn(rs);
 				}
 			}
-			foreingKeys = new ArrayList<>(fksMap.values());
-			columns = new ArrayList<>(columnsMap.values());
-			columns.sort((BasicColumnMetadata o1, BasicColumnMetadata o2) -> o1.getIdx() - o2.getIdx());
+			this.foreingKeys = new ArrayList<>(fksMap.values());
+			this.columns = new ArrayList<>(columnsMap.values());
+			this.columns.sort((BasicColumnMetadata o1, BasicColumnMetadata o2) -> o1.getIdx() - o2.getIdx());
 		}
-		return columns;
+		return this.columns;
 	}
 
 	public Collection<IndexMetadata> getIndex() throws SQLException {
-		if (tableIdx == null) {
-			Map<String, IndexMetadata> index = new HashMap<>();
-			ResultSet rs = getMetadata().getIndexInfo(getCatalog(), getSchema(), getName(), false, false);
+		if (this.tableIdx == null) {
+			final Map<String, IndexMetadata> index = new HashMap<>();
+			final ResultSet rs = getMetadata().getIndexInfo(getCatalog(), getSchema(), getName(), false, false);
 			while (rs.next()) {
 				IndexMetadata idx = index.get(rs.getString(DBConstants.METADATA_INDEX_NAME));
 				if (idx == null) {
@@ -104,13 +109,13 @@ public class TableMetadata extends AbstractMetadata implements IBaseMetadata {
 					idx.addColumn(rs);
 				}
 			}
-			tableIdx = new ArrayList<>(index.values());
+			this.tableIdx = new ArrayList<>(index.values());
 		}
-		return tableIdx;
+		return this.tableIdx;
 	}
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(String type) {
@@ -134,7 +139,7 @@ public class TableMetadata extends AbstractMetadata implements IBaseMetadata {
 
 	@Override
 	public String getDDL() {
-		StringBuilder st = new StringBuilder();
+		final StringBuilder st = new StringBuilder();
 		try {
 			if (getType().equals(DBConstants.TABLE)) {
 				st.append("CREATE TABLE ");
@@ -142,7 +147,7 @@ public class TableMetadata extends AbstractMetadata implements IBaseMetadata {
 				st.append(getName());
 				st.append(" (");
 				boolean comma = false;
-				for (ColumnMetadata col : getColumns()) {
+				for (final ColumnMetadata col : getColumns()) {
 					if (comma) {
 						st.append(", ");
 					}
@@ -152,36 +157,36 @@ public class TableMetadata extends AbstractMetadata implements IBaseMetadata {
 				}
 				st.append(System.lineSeparator());
 				st.append(");");
-				for (PrimaryKeyMetadata pk : getPrimaryKeys()) {
+				for (final PrimaryKeyMetadata pk : getPrimaryKeys()) {
 					st.append(System.lineSeparator());
 					st.append(pk.getDDL());
 				}
-				for (IndexMetadata idx : getIndex()) {
+				for (final IndexMetadata idx : getIndex()) {
 					st.append(System.lineSeparator());
 					st.append(idx.getDDL());
 				}
-				for (ForeingKeyMetadata fk : getForeingKeys()) {
+				for (final ForeingKeyMetadata fk : getForeingKeys()) {
 					st.append(System.lineSeparator());
 					st.append(fk.getDDL());
 				}
 			}
-		} catch (SQLException e) {
+		} catch (final SQLException e) {
 			LogManager.warn("Fallo al crear el ddl de la tabla " + getName(), e);
 		}
 		return st.toString();
 	}
 
 	public List<ForeingKeyMetadata> getForeingKeys() {
-		return foreingKeys;
+		return this.foreingKeys;
 	}
 
 	public List<PrimaryKeyMetadata> getPrimaryKeys() {
-		return primaryKeys;
+		return this.primaryKeys;
 	}
 
 	@Override
 	public String getId() {
-		StringBuilder st = new StringBuilder();
+		final StringBuilder st = new StringBuilder();
 		st.append(super.getId());
 		st.append(getName());
 		return st.toString();

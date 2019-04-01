@@ -11,7 +11,7 @@ public class CreateSchema extends BasicCreate {
 
 	public CreateSchema() {
 		super("", "");
-		
+
 	}
 
 	public References create(SchemaMetadata schema) throws IOException {

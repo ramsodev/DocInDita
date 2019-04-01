@@ -26,34 +26,43 @@ public class IndexMetadata extends AbstractMetadata {
 	public void init(ResultSet resultSet) {
 		try {
 			loadLabels(resultSet.getMetaData());
-			if (labelExist(DBConstants.METADATA_SCHEMA))
+			if (labelExist(DBConstants.METADATA_SCHEMA)) {
 				setSchema(resultSet.getString(DBConstants.METADATA_SCHEMA));
-			if (labelExist(DBConstants.METADATA_TABLE_CATALOG))
+			}
+			if (labelExist(DBConstants.METADATA_TABLE_CATALOG)) {
 				setCatalog(resultSet.getString(DBConstants.METADATA_TABLE_CATALOG));
-			if (labelExist(DBConstants.METADATA_TABLE))
+			}
+			if (labelExist(DBConstants.METADATA_TABLE)) {
 				setTable(resultSet.getString(DBConstants.METADATA_TABLE));
-			if (labelExist(DBConstants.METADATA_INDEX_NAME))
+			}
+			if (labelExist(DBConstants.METADATA_INDEX_NAME)) {
 				setName(resultSet.getString(DBConstants.METADATA_INDEX_NAME));
-			if (labelExist(DBConstants.METADATA_INDEX_QUALIFIER))
+			}
+			if (labelExist(DBConstants.METADATA_INDEX_QUALIFIER)) {
 				setQualifier(resultSet.getString(DBConstants.METADATA_INDEX_QUALIFIER));
-			if (labelExist(DBConstants.METADATA_FILTER_CONDITION))
+			}
+			if (labelExist(DBConstants.METADATA_FILTER_CONDITION)) {
 				setFilter(resultSet.getString(DBConstants.METADATA_FILTER_CONDITION));
-			if (labelExist(DBConstants.METADATA_NON_UNIQUE))
+			}
+			if (labelExist(DBConstants.METADATA_NON_UNIQUE)) {
 				setUnique(!resultSet.getBoolean(DBConstants.METADATA_NON_UNIQUE));
-			if (labelExist(DBConstants.METADATA_TYPE))
+			}
+			if (labelExist(DBConstants.METADATA_TYPE)) {
 				setType(resultSet.getShort(DBConstants.METADATA_TYPE));
+			}
 			setDoc("");
 			addColumn(resultSet);
-		} catch (SQLException e) {
+		} catch (final SQLException e) {
 			LogManager.warn("Error al preparar esquema", e);
 		}
 
 	}
 
 	public void addColumn(ResultSet resultSet) {
-		if (columns == null)
-			columns = new ArrayList<>();
-		columns.add(new IndexColumnMetadata(resultSet, getMetadata()));
+		if (this.columns == null) {
+			this.columns = new ArrayList<>();
+		}
+		this.columns.add(new IndexColumnMetadata(resultSet, getMetadata()));
 
 	}
 
@@ -75,11 +84,11 @@ public class IndexMetadata extends AbstractMetadata {
 	}
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	public String getTable() {
-		return table;
+		return this.table;
 	}
 
 	protected void setTable(String table) {
@@ -88,7 +97,7 @@ public class IndexMetadata extends AbstractMetadata {
 
 	@Override
 	public String toString() {
-		StringBuilder st = new StringBuilder();
+		final StringBuilder st = new StringBuilder();
 		st.append("Index: ");
 		st.append(getCatalog());
 		st.append(".");
@@ -105,7 +114,7 @@ public class IndexMetadata extends AbstractMetadata {
 		st.append(" Filter: ");
 		st.append(getFilter());
 		st.append(" Columns:");
-		for (BasicColumnMetadata column : getColumns()) {
+		for (final BasicColumnMetadata column : getColumns()) {
 			st.append(System.lineSeparator());
 			st.append("---------->");
 			st.append(column.toString());
@@ -115,7 +124,7 @@ public class IndexMetadata extends AbstractMetadata {
 	}
 
 	public boolean isUnique() {
-		return unique;
+		return this.unique;
 	}
 
 	public void setUnique(boolean unique) {
@@ -123,7 +132,7 @@ public class IndexMetadata extends AbstractMetadata {
 	}
 
 	public String getQualifier() {
-		return qualifier;
+		return this.qualifier;
 	}
 
 	public void setQualifier(String qualifier) {
@@ -131,7 +140,7 @@ public class IndexMetadata extends AbstractMetadata {
 	}
 
 	public String getFilter() {
-		return filter;
+		return this.filter;
 	}
 
 	public void setFilter(String filter) {
@@ -139,13 +148,13 @@ public class IndexMetadata extends AbstractMetadata {
 	}
 
 	public List<IndexColumnMetadata> getColumns() {
-		columns.sort((BasicColumnMetadata o1, BasicColumnMetadata o2) -> o1.getIdx() - o2.getIdx());
-		return columns;
+		this.columns.sort((BasicColumnMetadata o1, BasicColumnMetadata o2) -> o1.getIdx() - o2.getIdx());
+		return this.columns;
 	}
 
 	@Override
 	public String getId() {
-		StringBuilder st = new StringBuilder();
+		final StringBuilder st = new StringBuilder();
 		st.append("Index.");
 		st.append(super.getId());
 		st.append(getTable());
@@ -156,7 +165,7 @@ public class IndexMetadata extends AbstractMetadata {
 
 	@Override
 	public String getDDL() {
-		StringBuilder st = new StringBuilder();
+		final StringBuilder st = new StringBuilder();
 		st.append("CREATE INDEX ");
 		if (isUnique()) {
 			st.append("UNIQUE ");
@@ -168,7 +177,7 @@ public class IndexMetadata extends AbstractMetadata {
 		st.append(getTable());
 		st.append("(");
 		boolean comma = false;
-		for (IndexColumnMetadata col : getColumns()) {
+		for (final IndexColumnMetadata col : getColumns()) {
 			if (comma) {
 				st.append(", ");
 			}

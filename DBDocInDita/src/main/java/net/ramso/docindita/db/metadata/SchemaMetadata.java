@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package net.ramso.docindita.db.metadata;
 
@@ -38,59 +38,76 @@ public class SchemaMetadata extends AbstractMetadata {
 			setName(resultSet.getString(DBConstants.METADATA_SCHEMA));
 			setCatalog(resultSet.getString(DBConstants.METADATA_CATALOG));
 			setSchema(getName());
-		} catch (SQLException e) {
+		} catch (final SQLException e) {
 			LogManager.warn("Error al preparar esquema", e);
 		}
 
 	}
 
 	public Collection<TableMetadata> getTables() throws SQLException {
-		if (tables == null) {
-			tables = new ArrayList<>();
-			ResultSet rs = getMetadata().getTables(getCatalog(), getSchema(), null, new String[] { DBConstants.TABLE });
+		if (this.tables == null) {
+			this.tables = new ArrayList<>();
+			final ResultSet rs = getMetadata().getTables(getCatalog(), getSchema(), null,
+					new String[] { DBConstants.TABLE });
 			while (rs.next()) {
-				TableMetadata tm = new TableMetadata(rs, getMetadata());
-				tables.add(tm);
+				final TableMetadata tm = new TableMetadata(rs, getMetadata());
+				this.tables.add(tm);
 			}
 		}
-		return tables;
+		return this.tables;
+
+	}
+	
+	public Collection<TableMetadata> getViews() throws SQLException {
+		if (this.tables == null) {
+			this.tables = new ArrayList<>();
+			final ResultSet rs = getMetadata().getTables(getCatalog(), getSchema(), null,
+					new String[] { DBConstants.VIEW });
+			while (rs.next()) {
+				final TableMetadata tm = new TableMetadata(rs, getMetadata());
+				this.tables.add(tm);
+			}
+		}
+		return this.tables;
 
 	}
 
 	public Collection<FunctionMetadata> getFunctions() throws SQLException {
-		if (functions == null) {
-			functions = new ArrayList<>();
-			ResultSet rs = getMetadata().getFunctions(getCatalog(), getSchema(), null);
+		if (this.functions == null) {
+			this.functions = new ArrayList<>();
+			final ResultSet rs = getMetadata().getFunctions(getCatalog(), getSchema(), null);
 			while (rs.next()) {
-				FunctionMetadata fm = new FunctionMetadata(rs, getMetadata());
-				functions.add(fm);
+				final FunctionMetadata fm = new FunctionMetadata(rs, getMetadata());
+				this.functions.add(fm);
 			}
 		}
-		return functions;
+		return this.functions;
 	}
-	
+
 	public Collection<UDTMetadata> getUDTs() throws SQLException {
-		if (udts == null) {
-			udts = new ArrayList<>();
-			ResultSet rs = getMetadata().getUDTs(getCatalog(), getSchema(),null, null);
+		if (this.udts == null) {
+			this.udts = new ArrayList<>();
+			final ResultSet rs = getMetadata().getUDTs(getCatalog(), getSchema(), null, null);
 			while (rs.next()) {
-				UDTMetadata um = new UDTMetadata(rs, getMetadata());
-				udts.add(um);
+				final UDTMetadata um = new UDTMetadata(rs, getMetadata());
+				this.udts.add(um);
 			}
 		}
-		return udts;
+		return this.udts;
 	}
+
 	public Collection<ProcedureMetadata> getProcedures() throws SQLException {
-		if (procedures == null) {
-			procedures = new ArrayList<>();
-			ResultSet rs = getMetadata().getProcedures(getCatalog(), getSchema(),null);
+		if (this.procedures == null) {
+			this.procedures = new ArrayList<>();
+			final ResultSet rs = getMetadata().getProcedures(getCatalog(), getSchema(), null);
 			while (rs.next()) {
-				ProcedureMetadata um = new ProcedureMetadata(rs, getMetadata());
-				procedures.add(um);
+				final ProcedureMetadata um = new ProcedureMetadata(rs, getMetadata());
+				this.procedures.add(um);
 			}
 		}
-		return procedures;
+		return this.procedures;
 	}
+
 	@Override
 	public String toString() {
 		return getCatalog() + "." + getSchema();
@@ -101,7 +118,5 @@ public class SchemaMetadata extends AbstractMetadata {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	
 
 }

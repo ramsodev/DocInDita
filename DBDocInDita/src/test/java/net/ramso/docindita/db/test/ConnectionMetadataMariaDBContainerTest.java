@@ -23,6 +23,7 @@ import net.ramso.docindita.db.metadata.UDTMetadata;
 
 /**
  * Class Test with mariadb container
+ * 
  * @author ramso
  *
  */
@@ -34,7 +35,6 @@ class ConnectionMetadataMariaDBContainerTest extends BaseTest {
 	@ClassRule
 	public static MariaDBContainer container;
 
-
 	@SuppressWarnings("rawtypes")
 	@BeforeAll
 	static void setUp() throws Exception {
@@ -42,136 +42,137 @@ class ConnectionMetadataMariaDBContainerTest extends BaseTest {
 		// Connection con = getConnection();
 		container = new MariaDBContainer();
 		container.withClasspathResourceMapping("mysql", "/docker-entrypoint-initdb.d", BindMode.READ_ONLY);
-//		container.addFileSystemBind("DB/mysql", "/var/lib/mysql", BindMode.READ_WRITE);
+		// container.addFileSystemBind("DB/mysql", "/var/lib/mysql",
+		// BindMode.READ_WRITE);
 		container.addEnv("MYSQL_ROOT_PASSWORD", "admin");
 		container.withUsername("sakila");
 		container.withPassword("sakila");
 		container.withDatabaseName("sakila");
 		container.start();
-		String jdbcUrl = container.getJdbcUrl();
-		String username = container.getUsername();
-		String password = container.getPassword();
+		final String jdbcUrl = container.getJdbcUrl();
+		final String username = container.getUsername();
+		final String password = container.getPassword();
 		try {
-			Connection con = DriverManager.getConnection(jdbcUrl, username, password);
+			final Connection con = DriverManager.getConnection(jdbcUrl, username, password);
 			meta = new ConnectionMetadata(con);
-		} catch (SQLException e) {
+		} catch (final SQLException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@AfterAll
 	static void tearDown() throws Exception {
 		meta.disconnect();
 	}
 
-//	@Test
-//	@DisplayName("Get Catalogs")
-//	void testGetCatalogs() {
-//		try {
-//			Collection<CatalogMetadata> c = meta.getCatalogs();
-//			System.out.println("Test Catalogos:");
-//			for (CatalogMetadata catalog : c) {
-//				System.out.println(catalog);
-//				for (SchemaMetadata schema : catalog.getSchemas()) {
-//					System.out.println("-->" + schema);
-//					for (TableMetadata table : schema.getTables()) {
-//						System.out.println("---->" + table);
-//						for (ColumnMetadata column : table.getColumns()) {
-//							System.out.println("------>" + column);
-//						}
-//						for (PrimaryKeyMetadata pk : table.getPrimaryKeys()) {
-//							System.out.println("------> " + pk);
-//						}
-//						for (ForeingKeyMetadata fk : table.getForeingKeys()) {
-//							System.out.println("------>" + fk);
-//						}
-//						for (IndexMetadata index : table.getIndex()) {
-//							System.out.println("------>" + index);
-//						}
-//					}
-//				}
-//			}
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//			fail("Por exception");
-//		}
-//	}
-//
-//	@Test
-//	@DisplayName("Get Schemas")
-//	void testGetschemass() {
-//		try {
-//			System.out.println("Test schemas");
-//			for (SchemaMetadata schema : meta.getSchemas()) {
-//				System.out.println("-->" + schema);
-//				for (TableMetadata table : schema.getTables()) {
-//					System.out.println("---->" + table);
-//					for (ColumnMetadata column : table.getColumns()) {
-//						System.out.println("------>" + column);
-//					}
-//					for (PrimaryKeyMetadata pk : table.getPrimaryKeys()) {
-//						System.out.println("------>" + pk);
-//					}
-//					for (ForeingKeyMetadata fk : table.getForeingKeys()) {
-//						System.out.println("------>" + fk);
-//					}
-//					for (IndexMetadata index : table.getIndex()) {
-//						System.out.println("------>" + index);
-//					}
-//				}
-//			}
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//			fail("Por exception");
-//		}
-//	}
-//
-//	@Test
-//	@DisplayName("Get Schema")
-//	void getSchema() {
-//		System.out.println("Test Current Schema");
-//		try {
-//			SchemaMetadata schema = meta.getSchema();
-//			System.out.println("-->" + schema);
-//			for (TableMetadata table : schema.getTables()) {
-//				System.out.println("---->" + table);
-//				for (ColumnMetadata column : table.getColumns()) {
-//					System.out.println("------>" + column);
-//				}
-//				for (PrimaryKeyMetadata pk : table.getPrimaryKeys()) {
-//					System.out.println("------>" + pk);
-//				}
-//				for (ForeingKeyMetadata fk : table.getForeingKeys()) {
-//					System.out.println("------>" + fk);
-//				}
-//				for (IndexMetadata index : table.getIndex()) {
-//					System.out.println("------>" + index);
-//				}
-//			}
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//			fail("Por exception");
-//		}
-//
-//	}
-	
+	// @Test
+	// @DisplayName("Get Catalogs")
+	// void testGetCatalogs() {
+	// try {
+	// Collection<CatalogMetadata> c = meta.getCatalogs();
+	// System.out.println("Test Catalogos:");
+	// for (CatalogMetadata catalog : c) {
+	// System.out.println(catalog);
+	// for (SchemaMetadata schema : catalog.getSchemas()) {
+	// System.out.println("-->" + schema);
+	// for (TableMetadata table : schema.getTables()) {
+	// System.out.println("---->" + table);
+	// for (ColumnMetadata column : table.getColumns()) {
+	// System.out.println("------>" + column);
+	// }
+	// for (PrimaryKeyMetadata pk : table.getPrimaryKeys()) {
+	// System.out.println("------> " + pk);
+	// }
+	// for (ForeingKeyMetadata fk : table.getForeingKeys()) {
+	// System.out.println("------>" + fk);
+	// }
+	// for (IndexMetadata index : table.getIndex()) {
+	// System.out.println("------>" + index);
+	// }
+	// }
+	// }
+	// }
+	// } catch (SQLException e) {
+	// e.printStackTrace();
+	// fail("Por exception");
+	// }
+	// }
+	//
+	// @Test
+	// @DisplayName("Get Schemas")
+	// void testGetschemass() {
+	// try {
+	// System.out.println("Test schemas");
+	// for (SchemaMetadata schema : meta.getSchemas()) {
+	// System.out.println("-->" + schema);
+	// for (TableMetadata table : schema.getTables()) {
+	// System.out.println("---->" + table);
+	// for (ColumnMetadata column : table.getColumns()) {
+	// System.out.println("------>" + column);
+	// }
+	// for (PrimaryKeyMetadata pk : table.getPrimaryKeys()) {
+	// System.out.println("------>" + pk);
+	// }
+	// for (ForeingKeyMetadata fk : table.getForeingKeys()) {
+	// System.out.println("------>" + fk);
+	// }
+	// for (IndexMetadata index : table.getIndex()) {
+	// System.out.println("------>" + index);
+	// }
+	// }
+	// }
+	// } catch (SQLException e) {
+	// e.printStackTrace();
+	// fail("Por exception");
+	// }
+	// }
+	//
+	// @Test
+	// @DisplayName("Get Schema")
+	// void getSchema() {
+	// System.out.println("Test Current Schema");
+	// try {
+	// SchemaMetadata schema = meta.getSchema();
+	// System.out.println("-->" + schema);
+	// for (TableMetadata table : schema.getTables()) {
+	// System.out.println("---->" + table);
+	// for (ColumnMetadata column : table.getColumns()) {
+	// System.out.println("------>" + column);
+	// }
+	// for (PrimaryKeyMetadata pk : table.getPrimaryKeys()) {
+	// System.out.println("------>" + pk);
+	// }
+	// for (ForeingKeyMetadata fk : table.getForeingKeys()) {
+	// System.out.println("------>" + fk);
+	// }
+	// for (IndexMetadata index : table.getIndex()) {
+	// System.out.println("------>" + index);
+	// }
+	// }
+	// } catch (SQLException e) {
+	// e.printStackTrace();
+	// fail("Por exception");
+	// }
+	//
+	// }
+
 	@Test
 	@DisplayName("Get Schema Functions")
 	void getSchema() {
 		System.out.println("Test Current Schema for functions");
 		try {
-			SchemaMetadata schema = meta.getSchema();
+			final SchemaMetadata schema = meta.getSchema();
 			System.out.println("-->" + schema);
-			for(FunctionMetadata function:schema.getFunctions()) {
+			for (final FunctionMetadata function : schema.getFunctions()) {
 				System.out.println("---->" + function);
 			}
-			for(ProcedureMetadata procedure:schema.getProcedures()) {
+			for (final ProcedureMetadata procedure : schema.getProcedures()) {
 				System.out.println("---->" + procedure);
 			}
-			for(UDTMetadata udt:schema.getUDTs()) {
+			for (final UDTMetadata udt : schema.getUDTs()) {
 				System.out.println("---->" + udt);
 			}
-		} catch (SQLException e) {
+		} catch (final SQLException e) {
 			e.printStackTrace();
 			fail("Por exception");
 		}

@@ -26,42 +26,55 @@ public class ProcedureColumnMetadata extends BasicColumnMetadata {
 	public void init(ResultSet resultSet) {
 		try {
 			loadLabels(resultSet.getMetaData());
-			if (labelExist(DBConstants.METADATA_PROCEDURE_SCHEM))
+			if (labelExist(DBConstants.METADATA_PROCEDURE_SCHEM)) {
 				setSchema(resultSet.getString(DBConstants.METADATA_PROCEDURE_SCHEM));
-			if (labelExist(DBConstants.METADATA_PROCEDURE_CAT))
+			}
+			if (labelExist(DBConstants.METADATA_PROCEDURE_CAT)) {
 				setCatalog(resultSet.getString(DBConstants.METADATA_PROCEDURE_CAT));
-			if (labelExist(DBConstants.METADATA_PROCEDURE_NAME))
+			}
+			if (labelExist(DBConstants.METADATA_PROCEDURE_NAME)) {
 				setTable(resultSet.getString(DBConstants.METADATA_PROCEDURE_NAME));
-			if (labelExist(DBConstants.METADATA_COLUMN))
+			}
+			if (labelExist(DBConstants.METADATA_COLUMN)) {
 				setName(resultSet.getString(DBConstants.METADATA_COLUMN));
-			if (labelExist(DBConstants.METADATA_TYPE_NAME))
+			}
+			if (labelExist(DBConstants.METADATA_TYPE_NAME)) {
 				setType(resultSet.getString(DBConstants.METADATA_TYPE_NAME));
-			if (labelExist(DBConstants.METADATA_METADATA_PRECISION))
+			}
+			if (labelExist(DBConstants.METADATA_METADATA_PRECISION)) {
 				setSize(resultSet.getInt(DBConstants.METADATA_METADATA_PRECISION));
-			if (labelExist(DBConstants.METADATA_METADATA_SCALE))
+			}
+			if (labelExist(DBConstants.METADATA_METADATA_SCALE)) {
 				setDecimal(resultSet.getInt(DBConstants.METADATA_METADATA_SCALE));
-			if (labelExist(DBConstants.METADATA_IS_NULLABLE))
+			}
+			if (labelExist(DBConstants.METADATA_IS_NULLABLE)) {
 				setNullable(resultSet.getString(DBConstants.METADATA_IS_NULLABLE).equalsIgnoreCase("YES"));
-			if (labelExist(DBConstants.METADATA_REMARKS))
+			}
+			if (labelExist(DBConstants.METADATA_REMARKS)) {
 				setDoc(resultSet.getString(DBConstants.METADATA_REMARKS));
-			if (labelExist(DBConstants.METADATA_ORDINAL_POSITION))
+			}
+			if (labelExist(DBConstants.METADATA_ORDINAL_POSITION)) {
 				setIdx(resultSet.getInt(DBConstants.METADATA_ORDINAL_POSITION));
-			if (labelExist(DBConstants.METADATA_SPECIFIC_NAME))
+			}
+			if (labelExist(DBConstants.METADATA_SPECIFIC_NAME)) {
 				setSpecificName(resultSet.getString(DBConstants.METADATA_SPECIFIC_NAME));
-			if (labelExist(DBConstants.METADATA_COLUMN_TYPE))
+			}
+			if (labelExist(DBConstants.METADATA_COLUMN_TYPE)) {
 				setColumnType(resultSet.getShort(DBConstants.METADATA_COLUMN_TYPE));
-			if (labelExist(DBConstants.METADATA_COLUMN_DEF))
+			}
+			if (labelExist(DBConstants.METADATA_COLUMN_DEF)) {
 				setDefaultValue(resultSet.getString(DBConstants.METADATA_COLUMN_DEF));
-		} catch (SQLException e) {
+			}
+		} catch (final SQLException e) {
 			LogManager.warn("Error al preparar esquema", e);
 		}
 
 	}
 
 	public String getType() {
-		StringBuilder st = new StringBuilder();
-		st.append(type);
-		switch (type.toUpperCase()) {
+		final StringBuilder st = new StringBuilder();
+		st.append(this.type);
+		switch (this.type.toUpperCase()) {
 		case DBConstants.SMALLINT:
 		case DBConstants.INTEGER:
 		case DBConstants.INT:
@@ -99,7 +112,7 @@ public class ProcedureColumnMetadata extends BasicColumnMetadata {
 	}
 
 	public int getSize() {
-		return size;
+		return this.size;
 	}
 
 	public void setSize(int size) {
@@ -107,7 +120,7 @@ public class ProcedureColumnMetadata extends BasicColumnMetadata {
 	}
 
 	public int getDecimal() {
-		return decimal;
+		return this.decimal;
 	}
 
 	public void setDecimal(int decimal) {
@@ -115,7 +128,7 @@ public class ProcedureColumnMetadata extends BasicColumnMetadata {
 	}
 
 	public boolean isNullable() {
-		return isNullable;
+		return this.isNullable;
 	}
 
 	public void setNullable(boolean isNullable) {
@@ -123,7 +136,7 @@ public class ProcedureColumnMetadata extends BasicColumnMetadata {
 	}
 
 	public String getSpecificName() {
-		return specificName;
+		return this.specificName;
 	}
 
 	public void setSpecificName(String specificName) {
@@ -131,7 +144,7 @@ public class ProcedureColumnMetadata extends BasicColumnMetadata {
 	}
 
 	public String getColumnType() {
-		return columnType;
+		return this.columnType;
 	}
 
 	public void setColumnType(Short columnType) {
@@ -159,7 +172,7 @@ public class ProcedureColumnMetadata extends BasicColumnMetadata {
 	}
 
 	public String getDefaultValue() {
-		return defaultValue != null ? defaultValue : "";
+		return this.defaultValue != null ? this.defaultValue : "";
 	}
 
 	protected void setDefaultValue(String defaultValue) {
@@ -168,7 +181,7 @@ public class ProcedureColumnMetadata extends BasicColumnMetadata {
 
 	@Override
 	public String toString() {
-		StringBuilder st = new StringBuilder();
+		final StringBuilder st = new StringBuilder();
 		st.append(super.toString());
 		st.append(" Specific Name: ");
 		st.append(getSpecificName());

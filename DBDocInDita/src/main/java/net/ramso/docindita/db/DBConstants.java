@@ -6,6 +6,9 @@ public class DBConstants {
 	}
 
 	public static final String TABLE = "TABLE";
+	public static final String VIEW = "VIEW";
+	public static final String ALIAS="ALIAS";
+	public static final String SYNONYM="SYNONYM";
 	public static final String METADATA_TABLE = "TABLE_NAME";
 	public static final String METADATA_TABLE_TYPE = "TABLE_TYPE";
 	public static final String METADATA_REMARKS = "REMARKS";
@@ -97,4 +100,5 @@ public class DBConstants {
 	public static final String PROCEDURE_NO_RESULT = "Without result";
 	public static final String PROCEDURE_RETUNS_RESULT = "Return value";
 	public static final String PROCEDURE_RESULT_UNKNOWN = "Unknown";
+	
 }

@@ -26,39 +26,48 @@ public class ForeingKeyMetadata extends AbstractMetadata {
 	public void init(ResultSet resultSet) {
 		try {
 			loadLabels(resultSet.getMetaData());
-			if (labelExist(DBConstants.METADATA_FKTABLE_SCHEM))
+			if (labelExist(DBConstants.METADATA_FKTABLE_SCHEM)) {
 				setSchema(resultSet.getString(DBConstants.METADATA_FKTABLE_SCHEM));
-			if (labelExist(DBConstants.METADATA_FKTABLE_CAT))
+			}
+			if (labelExist(DBConstants.METADATA_FKTABLE_CAT)) {
 				setCatalog(resultSet.getString(DBConstants.METADATA_FKTABLE_CAT));
-			if (labelExist(DBConstants.METADATA_FKTABLE_NAME))
+			}
+			if (labelExist(DBConstants.METADATA_FKTABLE_NAME)) {
 				setTable(resultSet.getString(DBConstants.METADATA_FKTABLE_NAME));
-			if (labelExist(DBConstants.METADATA_FK_NAME))
+			}
+			if (labelExist(DBConstants.METADATA_FK_NAME)) {
 				setName(resultSet.getString(DBConstants.METADATA_FK_NAME));
-			if (labelExist(DBConstants.METADATA_PK_NAME))
+			}
+			if (labelExist(DBConstants.METADATA_PK_NAME)) {
 				setPkName(resultSet.getString(DBConstants.METADATA_PK_NAME));
-			if (labelExist(DBConstants.METADATA_UPDATE_RULE))
+			}
+			if (labelExist(DBConstants.METADATA_UPDATE_RULE)) {
 				setUpdateRule(resultSet.getShort(DBConstants.METADATA_UPDATE_RULE));
-			if (labelExist(DBConstants.METADATA_DELETE_RULE))
+			}
+			if (labelExist(DBConstants.METADATA_DELETE_RULE)) {
 				setDeleteRule(resultSet.getShort(DBConstants.METADATA_DELETE_RULE));
-			if (labelExist(DBConstants.METADATA_DEFERRABILITY))
+			}
+			if (labelExist(DBConstants.METADATA_DEFERRABILITY)) {
 				setDeferrability(resultSet.getShort(DBConstants.METADATA_DEFERRABILITY));
+			}
 			setDoc("");
 			addColumn(resultSet);
-		} catch (SQLException e) {
+		} catch (final SQLException e) {
 			LogManager.warn("Error al preparar esquema", e);
 		}
 
 	}
 
 	public void addColumn(ResultSet resultSet) {
-		if (this.columns == null)
+		if (this.columns == null) {
 			this.columns = new ArrayList<>();
+		}
 		this.columns.add(new ForeingKeyColumnMetadata(resultSet, getMetadata()));
 
 	}
 
 	public String getTable() {
-		return table;
+		return this.table;
 	}
 
 	protected void setTable(String table) {
@@ -67,7 +76,7 @@ public class ForeingKeyMetadata extends AbstractMetadata {
 
 	@Override
 	public String toString() {
-		StringBuilder st = new StringBuilder();
+		final StringBuilder st = new StringBuilder();
 		st.append("FK " + getName());
 		st.append(" From ");
 		st.append(getPkName());
@@ -78,7 +87,7 @@ public class ForeingKeyMetadata extends AbstractMetadata {
 		st.append(" Deferrability ");
 		st.append(getDeferrability());
 		st.append(" Columns:");
-		for (ForeingKeyColumnMetadata column : getColumns()) {
+		for (final ForeingKeyColumnMetadata column : getColumns()) {
 			st.append(System.lineSeparator());
 			st.append("----------->");
 			st.append(column.toString());
@@ -92,7 +101,7 @@ public class ForeingKeyMetadata extends AbstractMetadata {
 	}
 
 	public String getUpdateRule() {
-		return updateRule;
+		return this.updateRule;
 	}
 
 	public void setUpdateRule(short rule) {
@@ -116,7 +125,7 @@ public class ForeingKeyMetadata extends AbstractMetadata {
 	}
 
 	public String getDeleteRule() {
-		return deleteRule;
+		return this.deleteRule;
 	}
 
 	public void setDeleteRule(short rule) {
@@ -140,7 +149,7 @@ public class ForeingKeyMetadata extends AbstractMetadata {
 	}
 
 	public String getDeferrability() {
-		return deferrability;
+		return this.deferrability;
 	}
 
 	public void setDeferrability(short deferrability) {
@@ -159,7 +168,7 @@ public class ForeingKeyMetadata extends AbstractMetadata {
 	}
 
 	public String getPkName() {
-		return pkName;
+		return this.pkName;
 	}
 
 	public void setPkName(String pkName) {
@@ -168,7 +177,7 @@ public class ForeingKeyMetadata extends AbstractMetadata {
 
 	@Override
 	public String getId() {
-		StringBuilder st = new StringBuilder();
+		final StringBuilder st = new StringBuilder();
 		st.append("FK.");
 		st.append(super.getId());
 		st.append(getTable());
@@ -179,7 +188,7 @@ public class ForeingKeyMetadata extends AbstractMetadata {
 
 	@Override
 	public String getDDL() {
-		StringBuilder st = new StringBuilder();
+		final StringBuilder st = new StringBuilder();
 		st.append("ALTER TABLE ");
 		st.append(super.getId());
 		st.append(getTable());
@@ -189,7 +198,7 @@ public class ForeingKeyMetadata extends AbstractMetadata {
 		st.append(System.lineSeparator());
 		st.append("	 FOREIGN KEY (");
 		boolean comma = false;
-		for (ForeingKeyColumnMetadata col : getColumns()) {
+		for (final ForeingKeyColumnMetadata col : getColumns()) {
 			if (comma) {
 				st.append(", ");
 			}
@@ -200,13 +209,13 @@ public class ForeingKeyMetadata extends AbstractMetadata {
 		st.append(System.lineSeparator());
 		st.append("	 REFERENCES ");
 		comma = false;
-		for (ForeingKeyColumnMetadata col : getColumns()) {
+		for (final ForeingKeyColumnMetadata col : getColumns()) {
 			if (!comma) {
-				if (col.getFkCatalog() != null && !col.getFkCatalog().isEmpty()) {
+				if ((col.getFkCatalog() != null) && !col.getFkCatalog().isEmpty()) {
 					st.append(col.getFkCatalog());
 					st.append(".");
 				}
-				if (col.getFkSchema() != null && !col.getFkSchema().isEmpty()) {
+				if ((col.getFkSchema() != null) && !col.getFkSchema().isEmpty()) {
 					st.append(col.getFkSchema());
 					st.append(".");
 				}

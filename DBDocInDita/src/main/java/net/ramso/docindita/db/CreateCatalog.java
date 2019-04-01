@@ -7,7 +7,7 @@ import net.ramso.docindita.References;
 import net.ramso.docindita.db.metadata.CatalogMetadata;
 import net.ramso.tools.BundleManager;
 
-public class CreateCatalog extends BasicCreate{
+public class CreateCatalog extends BasicCreate {
 
 	public CreateCatalog() {
 		super("", "");

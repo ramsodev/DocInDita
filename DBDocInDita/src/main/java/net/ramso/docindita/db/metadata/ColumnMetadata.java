@@ -28,33 +28,46 @@ public class ColumnMetadata extends BasicColumnMetadata {
 	public void init(ResultSet resultSet) {
 		try {
 			loadLabels(resultSet.getMetaData());
-			if (labelExist(DBConstants.METADATA_SCHEMA))
+			if (labelExist(DBConstants.METADATA_SCHEMA)) {
 				setSchema(resultSet.getString(DBConstants.METADATA_SCHEMA));
-			if (labelExist(DBConstants.METADATA_TABLE_CATALOG))
+			}
+			if (labelExist(DBConstants.METADATA_TABLE_CATALOG)) {
 				setCatalog(resultSet.getString(DBConstants.METADATA_TABLE_CATALOG));
-			if (labelExist(DBConstants.METADATA_TABLE))
+			}
+			if (labelExist(DBConstants.METADATA_TABLE)) {
 				setTable(resultSet.getString(DBConstants.METADATA_TABLE));
-			if (labelExist(DBConstants.METADATA_COLUMN))
+			}
+			if (labelExist(DBConstants.METADATA_COLUMN)) {
 				setName(resultSet.getString(DBConstants.METADATA_COLUMN));
-			if (labelExist(DBConstants.METADATA_TYPE_NAME))
+			}
+			if (labelExist(DBConstants.METADATA_TYPE_NAME)) {
 				setType(resultSet.getString(DBConstants.METADATA_TYPE_NAME));
-			if (labelExist(DBConstants.METADATA_COLUMN_SIZE))
+			}
+			if (labelExist(DBConstants.METADATA_COLUMN_SIZE)) {
 				setSize(resultSet.getInt(DBConstants.METADATA_COLUMN_SIZE));
-			if (labelExist(DBConstants.METADATA_DECIMAL_DIGITS))
+			}
+			if (labelExist(DBConstants.METADATA_DECIMAL_DIGITS)) {
 				setDecimal(resultSet.getInt(DBConstants.METADATA_DECIMAL_DIGITS));
-			if (labelExist(DBConstants.METADATA_COLUMN_DEF))
+			}
+			if (labelExist(DBConstants.METADATA_COLUMN_DEF)) {
 				setDefaultValue(resultSet.getString(DBConstants.METADATA_COLUMN_DEF));
-			if (labelExist(DBConstants.METADATA_IS_NULLABLE))
+			}
+			if (labelExist(DBConstants.METADATA_IS_NULLABLE)) {
 				setNullable(resultSet.getString(DBConstants.METADATA_IS_NULLABLE).equalsIgnoreCase("YES"));
-			if (labelExist(DBConstants.METADATA_IS_AUTOINCREMENT))
+			}
+			if (labelExist(DBConstants.METADATA_IS_AUTOINCREMENT)) {
 				setAutoincrement(resultSet.getString(DBConstants.METADATA_IS_AUTOINCREMENT).equalsIgnoreCase("YES"));
-			if (labelExist(DBConstants.METADATA_IS_GENERATEDCOLUMN))
+			}
+			if (labelExist(DBConstants.METADATA_IS_GENERATEDCOLUMN)) {
 				setGenerated(resultSet.getString(DBConstants.METADATA_IS_GENERATEDCOLUMN).equalsIgnoreCase("YES"));
-			if (labelExist(DBConstants.METADATA_REMARKS))
+			}
+			if (labelExist(DBConstants.METADATA_REMARKS)) {
 				setDoc(resultSet.getString(DBConstants.METADATA_REMARKS));
-			if (labelExist(DBConstants.METADATA_ORDINAL_POSITION))
+			}
+			if (labelExist(DBConstants.METADATA_ORDINAL_POSITION)) {
 				setIdx(resultSet.getInt(DBConstants.METADATA_ORDINAL_POSITION));
-		} catch (SQLException e) {
+			}
+		} catch (final SQLException e) {
 			LogManager.warn("Error al preparar esquema", e);
 		}
 
@@ -89,9 +102,9 @@ public class ColumnMetadata extends BasicColumnMetadata {
 	}
 
 	public String getType() {
-		StringBuilder st = new StringBuilder();
-		st.append(type);
-		switch (type.toUpperCase()) {
+		final StringBuilder st = new StringBuilder();
+		st.append(this.type);
+		switch (this.type.toUpperCase()) {
 		case DBConstants.SMALLINT:
 		case DBConstants.INTEGER:
 		case DBConstants.INT:
@@ -125,23 +138,23 @@ public class ColumnMetadata extends BasicColumnMetadata {
 	}
 
 	public String getDefaultValue() {
-		return defaultValue != null ? defaultValue : "";
+		return this.defaultValue != null ? this.defaultValue : "";
 	}
 
 	public boolean isNullable() {
-		return isNullable;
+		return this.isNullable;
 	}
 
 	public boolean isAutoincrement() {
-		return isAutoincrement;
+		return this.isAutoincrement;
 	}
 
 	public boolean isGenerated() {
-		return isGenerated;
+		return this.isGenerated;
 	}
 
 	public boolean isPrimaryKey() {
-		return primaryKey;
+		return this.primaryKey;
 	}
 
 	public void setPrimaryKey(boolean primaryKey) {
@@ -149,7 +162,7 @@ public class ColumnMetadata extends BasicColumnMetadata {
 	}
 
 	public boolean isForeingKey() {
-		return foreingKey;
+		return this.foreingKey;
 	}
 
 	public void setForeingKey(boolean foreingKey) {
@@ -158,7 +171,7 @@ public class ColumnMetadata extends BasicColumnMetadata {
 
 	@Override
 	public String toString() {
-		StringBuilder st = new StringBuilder();
+		final StringBuilder st = new StringBuilder();
 		st.append(super.toString());
 		st.append(" type: ");
 		st.append(getType());
@@ -174,18 +187,18 @@ public class ColumnMetadata extends BasicColumnMetadata {
 
 	@Override
 	public String getDDL() {
-		StringBuilder st = new StringBuilder();
+		final StringBuilder st = new StringBuilder();
 		st.append(getName());
 		st.append(' ');
 		st.append(getType());
 		if (isNullable()) {
 			st.append(" NOT NULL");
 		}
-		if (defaultValue != null) {
+		if (this.defaultValue != null) {
 			st.append(" DEFAULT ");
 			st.append(getDefaultValue());
 		}
-		if (isGenerated) {
+		if (this.isGenerated) {
 			st.append(" GENERATED ALWAYS AS IDENTITY");
 		}
 		return st.toString();

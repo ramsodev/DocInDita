@@ -23,25 +23,33 @@ public class ForeingKeyColumnMetadata extends BasicColumnMetadata {
 	public void init(ResultSet resultSet) {
 		try {
 			loadLabels(resultSet.getMetaData());
-			if (labelExist(DBConstants.METADATA_FKTABLE_SCHEM))
+			if (labelExist(DBConstants.METADATA_FKTABLE_SCHEM)) {
 				setSchema(resultSet.getString(DBConstants.METADATA_FKTABLE_SCHEM));
-			if (labelExist(DBConstants.METADATA_FKTABLE_CAT))
+			}
+			if (labelExist(DBConstants.METADATA_FKTABLE_CAT)) {
 				setCatalog(resultSet.getString(DBConstants.METADATA_FKTABLE_CAT));
-			if (labelExist(DBConstants.METADATA_FKTABLE_NAME))
+			}
+			if (labelExist(DBConstants.METADATA_FKTABLE_NAME)) {
 				setTable(resultSet.getString(DBConstants.METADATA_FKTABLE_NAME));
-			if (labelExist(DBConstants.METADATA_FKCOLUMN_NAME))
+			}
+			if (labelExist(DBConstants.METADATA_FKCOLUMN_NAME)) {
 				setName(resultSet.getString(DBConstants.METADATA_FKCOLUMN_NAME));
-			if (labelExist(DBConstants.METADATA_PKTABLE_CAT))
+			}
+			if (labelExist(DBConstants.METADATA_PKTABLE_CAT)) {
 				setFkCatalog(resultSet.getString(DBConstants.METADATA_PKTABLE_CAT));
-			if (labelExist(DBConstants.METADATA_PKTABLE_SCHEM))
+			}
+			if (labelExist(DBConstants.METADATA_PKTABLE_SCHEM)) {
 				setFkSchema(resultSet.getString(DBConstants.METADATA_PKTABLE_SCHEM));
-			if (labelExist(DBConstants.METADATA_PKTABLE_NAME))
+			}
+			if (labelExist(DBConstants.METADATA_PKTABLE_NAME)) {
 				setFkTable(resultSet.getString(DBConstants.METADATA_PKTABLE_NAME));
-			if (labelExist(DBConstants.METADATA_PKCOLUMN_NAME))
+			}
+			if (labelExist(DBConstants.METADATA_PKCOLUMN_NAME)) {
 				setFkColumn(resultSet.getString(DBConstants.METADATA_PKCOLUMN_NAME));
+			}
 			setDoc("");
 			setIdx(resultSet.getShort(DBConstants.METADATA_KEY_SEQ));
-		} catch (SQLException e) {
+		} catch (final SQLException e) {
 			LogManager.warn("Error al preparar esquema", e);
 		}
 
@@ -49,7 +57,7 @@ public class ForeingKeyColumnMetadata extends BasicColumnMetadata {
 
 	@Override
 	public String toString() {
-		StringBuilder st = new StringBuilder();
+		final StringBuilder st = new StringBuilder();
 		st.append(super.toString());
 		st.append(" (FK ");
 		st.append(getFkName() + ": ");
@@ -64,23 +72,23 @@ public class ForeingKeyColumnMetadata extends BasicColumnMetadata {
 	}
 
 	public String getFkCatalog() {
-		return fkCatalog;
+		return this.fkCatalog;
 	}
 
 	public String getFkSchema() {
-		return fkSchema;
+		return this.fkSchema;
 	}
 
 	public String getFkTable() {
-		return fkTable;
+		return this.fkTable;
 	}
 
 	public String getFkName() {
-		return fkName;
+		return this.fkName;
 	}
 
 	public String getFkColumn() {
-		return fkColumn;
+		return this.fkColumn;
 	}
 
 	public void setFkCatalog(String fkCatalog) {
@@ -104,8 +112,8 @@ public class ForeingKeyColumnMetadata extends BasicColumnMetadata {
 	}
 
 	public String getPkTxt() {
-		StringBuilder st = new StringBuilder();
-		if (getCatalog() != null && !getCatalog().isEmpty()) {
+		final StringBuilder st = new StringBuilder();
+		if ((getCatalog() != null) && !getCatalog().isEmpty()) {
 			st.append(getCatalog());
 			st.append(".");
 		}
@@ -118,8 +126,8 @@ public class ForeingKeyColumnMetadata extends BasicColumnMetadata {
 	}
 
 	public String getFkTxt() {
-		StringBuilder st = new StringBuilder();
-		if (getFkCatalog() != null && !getFkCatalog().isEmpty()) {
+		final StringBuilder st = new StringBuilder();
+		if ((getFkCatalog() != null) && !getFkCatalog().isEmpty()) {
 			st.append(getFkCatalog());
 			st.append(".");
 		}
@@ -133,7 +141,7 @@ public class ForeingKeyColumnMetadata extends BasicColumnMetadata {
 
 	@Override
 	public String getId() {
-		StringBuilder st = new StringBuilder();
+		final StringBuilder st = new StringBuilder();
 		st.append("FKColumn.");
 		st.append(super.getId());
 		return st.toString();

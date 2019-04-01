@@ -3,7 +3,6 @@ package net.ramso.docindita.db.test;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Collection;
 
@@ -12,7 +11,6 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.testcontainers.containers.BindMode;
 import org.testcontainers.containers.MariaDBContainer;
 
 import net.ramso.docindita.db.Config;
@@ -38,7 +36,7 @@ class ConnectionMetadataTest extends BaseTest {
 	@BeforeAll
 	static void setUp() throws Exception {
 		Config.start();
-		Connection con = getConnection();
+		final Connection con = getConnection();
 		meta = new ConnectionMetadata(con);
 	}
 
@@ -52,39 +50,39 @@ class ConnectionMetadataTest extends BaseTest {
 	@DisplayName("Get Catalogs")
 	void testGetCatalogs() {
 		try {
-			Collection<CatalogMetadata> c = meta.getCatalogs();
+			final Collection<CatalogMetadata> c = meta.getCatalogs();
 			System.out.println("Test Catalogos:");
-			for (CatalogMetadata catalog : c) {
+			for (final CatalogMetadata catalog : c) {
 				System.out.println(catalog);
-				for (SchemaMetadata schema : catalog.getSchemas()) {
+				for (final SchemaMetadata schema : catalog.getSchemas()) {
 					System.out.println("-->" + schema);
-					for (TableMetadata table : schema.getTables()) {
+					for (final TableMetadata table : schema.getTables()) {
 						System.out.println("---->" + table);
-						for (ColumnMetadata column : table.getColumns()) {
+						for (final ColumnMetadata column : table.getColumns()) {
 							System.out.println("------>" + column);
 						}
-						for (PrimaryKeyMetadata pk : table.getPrimaryKeys()) {
+						for (final PrimaryKeyMetadata pk : table.getPrimaryKeys()) {
 							System.out.println("------> " + pk);
 						}
-						for (ForeingKeyMetadata fk : table.getForeingKeys()) {
+						for (final ForeingKeyMetadata fk : table.getForeingKeys()) {
 							System.out.println("------>" + fk);
 						}
-						for (IndexMetadata index : table.getIndex()) {
+						for (final IndexMetadata index : table.getIndex()) {
 							System.out.println("------>" + index);
 						}
 					}
-					for (FunctionMetadata function : schema.getFunctions()) {
+					for (final FunctionMetadata function : schema.getFunctions()) {
 						System.out.println("---->" + function);
 					}
-					for (ProcedureMetadata procedure : schema.getProcedures()) {
+					for (final ProcedureMetadata procedure : schema.getProcedures()) {
 						System.out.println("---->" + procedure);
 					}
-					for (UDTMetadata udt : schema.getUDTs()) {
+					for (final UDTMetadata udt : schema.getUDTs()) {
 						System.out.println("---->" + udt);
 					}
 				}
 			}
-		} catch (SQLException e) {
+		} catch (final SQLException e) {
 			e.printStackTrace();
 			fail("Por exception");
 		}
@@ -95,25 +93,25 @@ class ConnectionMetadataTest extends BaseTest {
 	void testGetschemass() {
 		try {
 			System.out.println("Test schemas");
-			for (SchemaMetadata schema : meta.getSchemas()) {
+			for (final SchemaMetadata schema : meta.getSchemas()) {
 				System.out.println("-->" + schema);
-				for (TableMetadata table : schema.getTables()) {
+				for (final TableMetadata table : schema.getTables()) {
 					System.out.println("---->" + table);
-					for (ColumnMetadata column : table.getColumns()) {
+					for (final ColumnMetadata column : table.getColumns()) {
 						System.out.println("------>" + column);
 					}
-					for (PrimaryKeyMetadata pk : table.getPrimaryKeys()) {
+					for (final PrimaryKeyMetadata pk : table.getPrimaryKeys()) {
 						System.out.println("------>" + pk);
 					}
-					for (ForeingKeyMetadata fk : table.getForeingKeys()) {
+					for (final ForeingKeyMetadata fk : table.getForeingKeys()) {
 						System.out.println("------>" + fk);
 					}
-					for (IndexMetadata index : table.getIndex()) {
+					for (final IndexMetadata index : table.getIndex()) {
 						System.out.println("------>" + index);
 					}
 				}
 			}
-		} catch (SQLException e) {
+		} catch (final SQLException e) {
 			e.printStackTrace();
 			fail("Por exception");
 		}
@@ -124,33 +122,33 @@ class ConnectionMetadataTest extends BaseTest {
 	void getSchema() {
 		System.out.println("Test Current Schema");
 		try {
-			SchemaMetadata schema = meta.getSchema();
+			final SchemaMetadata schema = meta.getSchema();
 			System.out.println("-->" + schema);
-			for (TableMetadata table : schema.getTables()) {
+			for (final TableMetadata table : schema.getTables()) {
 				System.out.println("---->" + table);
-				for (ColumnMetadata column : table.getColumns()) {
+				for (final ColumnMetadata column : table.getColumns()) {
 					System.out.println("------>" + column);
 				}
-				for (PrimaryKeyMetadata pk : table.getPrimaryKeys()) {
+				for (final PrimaryKeyMetadata pk : table.getPrimaryKeys()) {
 					System.out.println("------>" + pk);
 				}
-				for (ForeingKeyMetadata fk : table.getForeingKeys()) {
+				for (final ForeingKeyMetadata fk : table.getForeingKeys()) {
 					System.out.println("------>" + fk);
 				}
-				for (IndexMetadata index : table.getIndex()) {
+				for (final IndexMetadata index : table.getIndex()) {
 					System.out.println("------>" + index);
 				}
-				for(FunctionMetadata function:schema.getFunctions()) {
+				for (final FunctionMetadata function : schema.getFunctions()) {
 					System.out.println("---->" + function);
 				}
-				for(ProcedureMetadata procedure:schema.getProcedures()) {
+				for (final ProcedureMetadata procedure : schema.getProcedures()) {
 					System.out.println("---->" + procedure);
 				}
-				for(UDTMetadata udt:schema.getUDTs()) {
+				for (final UDTMetadata udt : schema.getUDTs()) {
 					System.out.println("---->" + udt);
 				}
 			}
-		} catch (SQLException e) {
+		} catch (final SQLException e) {
 			e.printStackTrace();
 			fail("Por exception");
 		}

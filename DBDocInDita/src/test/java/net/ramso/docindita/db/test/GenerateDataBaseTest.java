@@ -16,7 +16,8 @@ import net.ramso.docindita.db.GenerateDataBase;
 import net.ramso.docindita.tools.DitaConstants;
 
 /**
- * Test class with embebed derby 
+ * Test class with embebed derby
+ *
  * @author ramso
  *
  */
@@ -27,7 +28,7 @@ class GenerateDataBaseTest extends BaseTest {
 	@BeforeAll
 	static void setUp() throws Exception {
 		Config.start();
-		Connection con = getConnection();
+		final Connection con = getConnection();
 		generate = new GenerateDataBase(con);
 	}
 
@@ -43,7 +44,7 @@ class GenerateDataBaseTest extends BaseTest {
 		Config.setOutputDir(DitaConstants.OUTDIR_DEFAULT + File.separator + "catalogs");
 		clean();
 		try {
-			this.generate.generateCatalogs();
+			generate.generateCatalogs();
 			assertTrue(valid(), "Fallo en la validación de los xml");
 		} catch (final Exception e) {
 			e.printStackTrace();
@@ -58,7 +59,7 @@ class GenerateDataBaseTest extends BaseTest {
 		Config.setOutputDir(DitaConstants.OUTDIR_DEFAULT + File.separator + "schemas");
 		clean();
 		try {
-			this.generate.generateSchemas();
+			generate.generateSchemas();
 			assertTrue(valid(), "Fallo en la validación de los xml");
 		} catch (final Exception e) {
 			e.printStackTrace();
@@ -72,7 +73,7 @@ class GenerateDataBaseTest extends BaseTest {
 		Config.setOutputDir(DitaConstants.OUTDIR_DEFAULT + File.separator + "schema");
 		clean();
 		try {
-			this.generate.generateSchema();
+			generate.generateSchema();
 			assertTrue(valid(), "Fallo en la validación de los xml");
 		} catch (final Exception e) {
 			e.printStackTrace();
@@ -86,7 +87,7 @@ class GenerateDataBaseTest extends BaseTest {
 		Config.setOutputDir(DitaConstants.OUTDIR_DEFAULT + File.separator + "EMPEX");
 		clean();
 		try {
-			this.generate.generateSchema("EMPEX");
+			generate.generateSchema("EMPEX");
 			assertTrue(valid(), "Fallo en la validación de los xml");
 		} catch (final Exception e) {
 			e.printStackTrace();

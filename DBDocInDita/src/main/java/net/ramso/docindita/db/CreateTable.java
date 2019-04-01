@@ -18,7 +18,7 @@ public class CreateTable extends BasicCreate {
 		setTitle(BundleManager.getString("Table.title", table.getName()));
 		setContent(table.getDoc());
 		setTemplateFile("template/table.vm");
-		getContext().put("content", getContent());		
+		getContext().put("content", getContent());
 		getContext().put("table", table);
 		run(getContext());
 		return new References(getFileName());

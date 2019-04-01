@@ -22,7 +22,7 @@ import net.ramso.docindita.tools.DitaConstants;
 
 /**
  * Test class with embebed derby
- * 
+ *
  * @author ramso
  *
  */
@@ -39,21 +39,22 @@ class GenerateDataBasePgSqlContainerTest extends BaseTest {
 		// Connection con = getConnection();
 		container = new PostgreSQLContainer<>();
 		container.withClasspathResourceMapping("pgsql", "/docker-entrypoint-initdb.d", BindMode.READ_ONLY);
-//		container.addFileSystemBind("DB/pgsql", "/var/lib/postgresql/data", BindMode.READ_WRITE);
+		// container.addFileSystemBind("DB/pgsql", "/var/lib/postgresql/data",
+		// BindMode.READ_WRITE);
 		container.addEnv("POSTGRES_PASSWORD", "admin");
-//		container.withUsername("postgres");
-//		container.withPassword("postgres");
-//		container.withDatabaseName("sakila");
+		// container.withUsername("postgres");
+		// container.withPassword("postgres");
+		// container.withDatabaseName("sakila");
 		container.start();
-		String jdbcUrl = container.getJdbcUrl();
+		final String jdbcUrl = container.getJdbcUrl();
 
-		String username = container.getUsername();
-		String password = container.getPassword();
+		final String username = container.getUsername();
+		final String password = container.getPassword();
 		System.out.println(jdbcUrl + "-" + username + "-" + password + "-" + container.getDatabaseName());
 		try {
-			Connection con = DriverManager.getConnection(jdbcUrl, username, password);
+			final Connection con = DriverManager.getConnection(jdbcUrl, username, password);
 			generate = new GenerateDataBase(con);
-		} catch (SQLException e) {
+		} catch (final SQLException e) {
 			e.printStackTrace();
 		}
 	}
@@ -106,7 +107,5 @@ class GenerateDataBasePgSqlContainerTest extends BaseTest {
 			fail(e.getLocalizedMessage());
 		}
 	}
-
-	
 
 }

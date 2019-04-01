@@ -25,20 +25,26 @@ public class ProcedureMetadata extends AbstractMetadata {
 	public void init(ResultSet resultSet) {
 		try {
 			loadLabels(resultSet.getMetaData());
-			if (labelExist(DBConstants.METADATA_PROCEDURE_SCHEM))
+			if (labelExist(DBConstants.METADATA_PROCEDURE_SCHEM)) {
 				setSchema(resultSet.getString(DBConstants.METADATA_PROCEDURE_SCHEM));
-			if (labelExist(DBConstants.METADATA_PROCEDURE_CAT))
+			}
+			if (labelExist(DBConstants.METADATA_PROCEDURE_CAT)) {
 				setCatalog(resultSet.getString(DBConstants.METADATA_PROCEDURE_CAT));
-			if (labelExist(DBConstants.METADATA_PROCEDURE_NAME))
+			}
+			if (labelExist(DBConstants.METADATA_PROCEDURE_NAME)) {
 				setName(resultSet.getString(DBConstants.METADATA_PROCEDURE_NAME));
-			if (labelExist(DBConstants.METADATA_SPECIFIC_NAME))
+			}
+			if (labelExist(DBConstants.METADATA_SPECIFIC_NAME)) {
 				setSpecificName(resultSet.getString(DBConstants.METADATA_SPECIFIC_NAME));
-			if (labelExist(DBConstants.METADATA_PROCEDURE_TYPE))
+			}
+			if (labelExist(DBConstants.METADATA_PROCEDURE_TYPE)) {
 				setType(resultSet.getShort(DBConstants.METADATA_PROCEDURE_TYPE));
-			if (labelExist(DBConstants.METADATA_REMARKS))
+			}
+			if (labelExist(DBConstants.METADATA_REMARKS)) {
 				setDoc(resultSet.getString(DBConstants.METADATA_REMARKS));
+			}
 
-		} catch (SQLException e) {
+		} catch (final SQLException e) {
 			LogManager.warn("Error al preparar esquema", e);
 		}
 
@@ -60,11 +66,11 @@ public class ProcedureMetadata extends AbstractMetadata {
 	}
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	public String getSpecificName() {
-		return specificName;
+		return this.specificName;
 	}
 
 	public void setSpecificName(String specificName) {
@@ -73,7 +79,7 @@ public class ProcedureMetadata extends AbstractMetadata {
 
 	@Override
 	public String toString() {
-		StringBuilder st = new StringBuilder();
+		final StringBuilder st = new StringBuilder();
 		st.append("Procedure: ");
 		st.append(getCatalog());
 		st.append(".");
@@ -86,12 +92,12 @@ public class ProcedureMetadata extends AbstractMetadata {
 		st.append(getType() + " ");
 		st.append(" Columns:");
 		try {
-			for (BasicColumnMetadata column : getColumns()) {
+			for (final BasicColumnMetadata column : getColumns()) {
 				st.append(System.lineSeparator());
 				st.append("---------->");
 				st.append(column.toString());
 			}
-		} catch (SQLException e) {
+		} catch (final SQLException e) {
 			e.printStackTrace();
 		}
 
@@ -99,22 +105,22 @@ public class ProcedureMetadata extends AbstractMetadata {
 	}
 
 	public List<ProcedureColumnMetadata> getColumns() throws SQLException {
-		if (columns == null) {
-			Map<String, ProcedureColumnMetadata> columnsMap = new HashMap<>();
-			ResultSet rs = getMetadata().getProcedureColumns(getCatalog(), getSchema(), getName(), null);
+		if (this.columns == null) {
+			final Map<String, ProcedureColumnMetadata> columnsMap = new HashMap<>();
+			final ResultSet rs = getMetadata().getProcedureColumns(getCatalog(), getSchema(), getName(), null);
 			while (rs.next()) {
-				ProcedureColumnMetadata cm = new ProcedureColumnMetadata(rs, getMetadata());
+				final ProcedureColumnMetadata cm = new ProcedureColumnMetadata(rs, getMetadata());
 				columnsMap.put(cm.getName(), cm);
 			}
-			columns = new ArrayList<>(columnsMap.values());
-			columns.sort((BasicColumnMetadata o1, BasicColumnMetadata o2) -> o1.getIdx() - o2.getIdx());
+			this.columns = new ArrayList<>(columnsMap.values());
+			this.columns.sort((BasicColumnMetadata o1, BasicColumnMetadata o2) -> o1.getIdx() - o2.getIdx());
 		}
-		return columns;
+		return this.columns;
 	}
 
 	@Override
 	public String getId() {
-		StringBuilder st = new StringBuilder();
+		final StringBuilder st = new StringBuilder();
 		st.append("Procedure.");
 		st.append(super.getId());
 		st.append('.');

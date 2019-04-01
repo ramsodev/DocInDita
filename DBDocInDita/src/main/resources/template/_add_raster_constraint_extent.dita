@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd">
+
+<topic id="_add_raster_constraint_extent">
+  <title>Función definida por el usuario _add_raster_constraint_extent</title>
+  <body>
+    <dl>
+      <dlentry>
+        <dt>Nombre Especifico</dt>
+        <dd />
+      </dlentry>
+      <dlentry>
+        <dt>Lenguaje</dt>
+        <dd />
+      </dlentry>
+      <dlentry>
+        <dt>SQL Data Access</dt>
+        <dd>NO_SQL</dd>
+      </dlentry>
+      <dlentry>
+        <dt>Deterministic</dt>
+        <dd>false</dd>
+      </dlentry>
+      <dlentry>
+        <dt>Return Scalar</dt>
+        <dd>returnValue (BOOL)</dd>
+      </dlentry>
+      <dlentry>
+        <dt>Parametros</dt>
+        <dd>
+          <sl>
+            <sli>rastschema (CIDR)</sli>
+            <sli>rasttable (CIDR)</sli>
+            <sli>rastcolumn (CIDR)</sli>
+          </sl>
+        </dd>
+      </dlentry>
+    </dl>
+    <section id="ddl">
+      <title>DDL</title>
+      <codeblock>CREATE FUNCTION _add_raster_constraint_extent (
+		IN rastschema CIDR,
+		IN rasttable CIDR,
+		IN rastcolumn CIDR)
+	RETURNS BOOL
+	NOT DETERMINISTIC
+	NO_SQL
+	CALLED ON NULL INPUT
+;</codeblock>
+    </section>
+  </body>
+</topic>
+

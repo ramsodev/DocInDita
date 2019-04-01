@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -38,7 +39,12 @@ class GenreateWSDLTest extends BaseTest {
 			e.printStackTrace();
 			fail(e.getLocalizedMessage());
 		}
-		assertTrue(true);
+		try {
+			assertTrue(valid());
+		} catch (MalformedURLException e) {			
+			e.printStackTrace();
+			fail("Por excepcion en validación");
+		}
 	}
 
 	@Test
@@ -54,7 +60,12 @@ class GenreateWSDLTest extends BaseTest {
 			e.printStackTrace();
 			fail(e.getLocalizedMessage());
 		}
-		assertTrue(true);
+		try {
+			assertTrue(valid());
+		} catch (MalformedURLException e) {			
+			e.printStackTrace();
+			fail("Por excepcion en validación");
+		}
 	}
 
 	@Test
@@ -66,13 +77,17 @@ class GenreateWSDLTest extends BaseTest {
 		try {
 			wsdl = new URL("http://webservices.amazon.com/AWSECommerceService/AWSECommerceService.wsdl");
 			this.generate.generateWSDL(wsdl);
-			validXML();
 		} catch (final Exception e) {
 
 			e.printStackTrace();
 			fail(e.getLocalizedMessage());
 		}
-		assertTrue(true);
+		try {
+			assertTrue(valid());
+		} catch (MalformedURLException e) {			
+			e.printStackTrace();
+			fail("Por excepcion en validación");
+		}
 	}
 
 	@Test
@@ -89,7 +104,12 @@ class GenreateWSDLTest extends BaseTest {
 			e.printStackTrace();
 			fail(e.getLocalizedMessage());
 		}
-		assertTrue(true);
+		try {
+			assertTrue(valid());
+		} catch (MalformedURLException e) {			
+			e.printStackTrace();
+			fail("Por excepcion en validación");
+		}
 	}
 
 	@Test
@@ -106,17 +126,14 @@ class GenreateWSDLTest extends BaseTest {
 			e.printStackTrace();
 			fail(e.getLocalizedMessage());
 		}
-		assertTrue(true);
-	}
-
-	protected boolean validXML() throws IOException {
-		final File[] files = new File(Config.getOutputDir()).listFiles();
-
-		for (final File file : files) {
-
+		try {
+			assertTrue(valid());
+		} catch (MalformedURLException e) {			
+			e.printStackTrace();
+			fail("Por excepcion en validación");
 		}
-
-		return true;
 	}
+
+	
 
 }

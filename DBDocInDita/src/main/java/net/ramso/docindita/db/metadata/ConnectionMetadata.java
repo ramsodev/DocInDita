@@ -14,7 +14,7 @@ import net.ramso.tools.TextTools;
 
 public class ConnectionMetadata {
 
-	private Connection connection;
+	private final Connection connection;
 
 	public ConnectionMetadata(Connection connection) {
 		super();
@@ -25,12 +25,12 @@ public class ConnectionMetadata {
 	public SchemaMetadata getSchema() throws SQLException {
 		String schema = "";
 		try {
-			schema = connection.getSchema();
-		} catch (SQLFeatureNotSupportedException e) {
+			schema = this.connection.getSchema();
+		} catch (final SQLFeatureNotSupportedException e) {
 			LogManager.warn("No se puede recuperar esquema por defecto. Se usa el nombre de usuario", e);
 		} finally {
-			if (schema == null || schema.isEmpty()) {
-				schema = connection.getMetaData().getUserName();
+			if ((schema == null) || schema.isEmpty()) {
+				schema = this.connection.getMetaData().getUserName();
 			}
 		}
 		return getSchema(schema);
@@ -38,7 +38,7 @@ public class ConnectionMetadata {
 
 	public SchemaMetadata getSchema(String name) throws SQLException {
 		SchemaMetadata schema = null;
-		DatabaseMetaData metadata = connection.getMetaData();
+		final DatabaseMetaData metadata = this.connection.getMetaData();
 
 		ResultSet rs = metadata.getSchemas(null, name);
 		boolean have = false;
@@ -49,7 +49,7 @@ public class ConnectionMetadata {
 		if (!have) {
 			rs = metadata.getCatalogs();
 			while (rs.next()) {
-				CatalogMetadata catalog = new CatalogMetadata(rs, metadata);
+				final CatalogMetadata catalog = new CatalogMetadata(rs, metadata);
 				if (catalog.getName().equalsIgnoreCase(name)) {
 					schema = catalog.getSchemas().iterator().next();
 				}
@@ -58,19 +58,10 @@ public class ConnectionMetadata {
 		return schema;
 	}
 
-	private SchemaMetadata getSchemaFromList(String name) throws SQLException {
-		for (SchemaMetadata schema : getSchemas()) {
-			if (schema.getName().equalsIgnoreCase(name)) {
-				return schema;
-			}
-		}
-		return null;
-	}
-
 	public Collection<CatalogMetadata> getCatalogs() throws SQLException {
-		DatabaseMetaData metadata = connection.getMetaData();
-		Collection<CatalogMetadata> catalogs = new ArrayList<>();
-		ResultSet rs = metadata.getCatalogs();
+		final DatabaseMetaData metadata = this.connection.getMetaData();
+		final Collection<CatalogMetadata> catalogs = new ArrayList<>();
+		final ResultSet rs = metadata.getCatalogs();
 		while (rs.next()) {
 			catalogs.add(new CatalogMetadata(rs, metadata));
 		}
@@ -78,9 +69,9 @@ public class ConnectionMetadata {
 	}
 
 	public Collection<SchemaMetadata> getSchemas() throws SQLException {
-		DatabaseMetaData metadata = connection.getMetaData();
-		Collection<SchemaMetadata> schemas = new ArrayList<>();
-		ResultSet rs = metadata.getSchemas();
+		final DatabaseMetaData metadata = this.connection.getMetaData();
+		final Collection<SchemaMetadata> schemas = new ArrayList<>();
+		final ResultSet rs = metadata.getSchemas();
 		while (rs.next()) {
 			schemas.add(new SchemaMetadata(rs, metadata));
 		}
@@ -88,22 +79,23 @@ public class ConnectionMetadata {
 	}
 
 	public String getDescription() throws SQLException {
-		DatabaseMetaData metadata = connection.getMetaData();
-		StringBuilder st = new StringBuilder();
+		final DatabaseMetaData metadata = this.connection.getMetaData();
+		final StringBuilder st = new StringBuilder();
 		st.append(BundleManager.getString("Database.title", metadata.getDatabaseProductName(),
 				metadata.getDatabaseProductVersion()));
 		return st.toString();
 	}
 
 	public String getId() throws SQLException {
-		DatabaseMetaData metadata = connection.getMetaData();
+		final DatabaseMetaData metadata = this.connection.getMetaData();
 		return TextTools.cleanNonAlfaNumeric(
 				metadata.getDatabaseProductName() + "." + metadata.getDatabaseProductVersion(), "_");
 	}
 
 	public void disconnect() throws SQLException {
-		if (!connection.isClosed())
-			connection.close();
+		if (!this.connection.isClosed()) {
+			this.connection.close();
+		}
 
 	}
 }

@@ -27,7 +27,7 @@ public abstract class AbstractMetadata implements IBasicMetadata {
 
 	@Override
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public abstract class AbstractMetadata implements IBasicMetadata {
 
 	@Override
 	public String getCatalog() {
-		return catalog;
+		return this.catalog;
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public abstract class AbstractMetadata implements IBasicMetadata {
 
 	@Override
 	public DatabaseMetaData getMetadata() {
-		return metadata;
+		return this.metadata;
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public abstract class AbstractMetadata implements IBasicMetadata {
 
 	@Override
 	public String getSchema() {
-		return schema;
+		return this.schema;
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public abstract class AbstractMetadata implements IBasicMetadata {
 
 	@Override
 	public String getDoc() {
-		return doc;
+		return this.doc;
 	}
 
 	@Override
@@ -75,13 +75,14 @@ public abstract class AbstractMetadata implements IBasicMetadata {
 		this.doc = doc;
 	}
 
+	@Override
 	public String getId() {
-		StringBuilder st = new StringBuilder();
-		if (getCatalog() != null && !getCatalog().isEmpty()) {
+		final StringBuilder st = new StringBuilder();
+		if ((getCatalog() != null) && !getCatalog().isEmpty()) {
 			st.append(getCatalog());
 			st.append(".");
 		}
-		if (getSchema() != null && !getSchema().isEmpty()) {
+		if ((getSchema() != null) && !getSchema().isEmpty()) {
 			st.append(getSchema());
 			st.append(".");
 		}
@@ -89,15 +90,15 @@ public abstract class AbstractMetadata implements IBasicMetadata {
 	}
 
 	protected void loadLabels(ResultSetMetaData metaData) throws SQLException {
-		labels = new ArrayList<>();
+		this.labels = new ArrayList<>();
 		for (int i = 1; i <= metaData.getColumnCount(); i++) {
-			labels.add(metaData.getColumnLabel(i).toUpperCase());
+			this.labels.add(metaData.getColumnLabel(i).toUpperCase());
 		}
 
 	}
 
 	protected boolean labelExist(String label) {
-		return labels.contains(label);
+		return this.labels.contains(label);
 	}
 
 }

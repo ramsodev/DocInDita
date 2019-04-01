@@ -22,7 +22,7 @@ import net.ramso.docindita.tools.DitaConstants;
 
 /**
  * Test class with embebed derby
- * 
+ *
  * @author ramso
  *
  */
@@ -41,19 +41,20 @@ class GenerateDataBaseMariaDbContainerTest extends BaseTest {
 		// Connection con = getConnection();
 		container = new MariaDBContainer();
 		container.withClasspathResourceMapping("mysql", "/docker-entrypoint-initdb.d", BindMode.READ_ONLY);
-//		container.addFileSystemBind("DB/mysql", "/var/lib/mysql", BindMode.READ_WRITE);
+		// container.addFileSystemBind("DB/mysql", "/var/lib/mysql",
+		// BindMode.READ_WRITE);
 		container.addEnv("MYSQL_ROOT_PASSWORD", "admin");
 		container.withUsername("sakila");
 		container.withPassword("sakila");
 		container.withDatabaseName("sakila");
 		container.start();
-		String jdbcUrl = container.getJdbcUrl();
-		String username = container.getUsername();
-		String password = container.getPassword();
+		final String jdbcUrl = container.getJdbcUrl();
+		final String username = container.getUsername();
+		final String password = container.getPassword();
 		try {
-			Connection con = DriverManager.getConnection(jdbcUrl, username, password);
+			final Connection con = DriverManager.getConnection(jdbcUrl, username, password);
 			generate = new GenerateDataBase(con);
-		} catch (SQLException e) {
+		} catch (final SQLException e) {
 			e.printStackTrace();
 		}
 	}

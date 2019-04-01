@@ -26,25 +26,30 @@ public class UDTMetadata extends AbstractMetadata {
 	public void init(ResultSet resultSet) {
 		try {
 			loadLabels(resultSet.getMetaData());
-			if (labelExist(DBConstants.METADATA_TYPE_SCHEM))
+			if (labelExist(DBConstants.METADATA_TYPE_SCHEM)) {
 				setSchema(resultSet.getString(DBConstants.METADATA_TYPE_SCHEM));
-			if (labelExist(DBConstants.METADATA_TYPE_CAT))
+			}
+			if (labelExist(DBConstants.METADATA_TYPE_CAT)) {
 				setCatalog(resultSet.getString(DBConstants.METADATA_TYPE_CAT));
-			if (labelExist(DBConstants.METADATA_TYPE_NAME))
+			}
+			if (labelExist(DBConstants.METADATA_TYPE_NAME)) {
 				setName(resultSet.getString(DBConstants.METADATA_TYPE_NAME));
-			if (labelExist(DBConstants.METADATA_TYPE_NAME))
+			}
+			if (labelExist(DBConstants.METADATA_TYPE_NAME)) {
 				setType(resultSet.getString(DBConstants.METADATA_TYPE_NAME));
-			if (labelExist(DBConstants.METADATA_REMARKS))
+			}
+			if (labelExist(DBConstants.METADATA_REMARKS)) {
 				setDoc(resultSet.getString(DBConstants.METADATA_REMARKS));
+			}
 
-		} catch (SQLException e) {
+		} catch (final SQLException e) {
 			LogManager.warn("Error al preparar columna", e);
 		}
 
 	}
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(String type) {
@@ -52,28 +57,28 @@ public class UDTMetadata extends AbstractMetadata {
 	}
 
 	public List<AttributeMetadata> getAttributes() throws SQLException {
-		if (attributes == null) {
-			Map<String, AttributeMetadata> attributesMap = new HashMap<>();
+		if (this.attributes == null) {
+			final Map<String, AttributeMetadata> attributesMap = new HashMap<>();
 			try {
-				ResultSet rs = getMetadata().getAttributes(getCatalog(), getSchema(), getName(), null);
+				final ResultSet rs = getMetadata().getAttributes(getCatalog(), getSchema(), getName(), null);
 				while (rs.next()) {
-					AttributeMetadata cm = new AttributeMetadata(rs, getMetadata());
+					final AttributeMetadata cm = new AttributeMetadata(rs, getMetadata());
 					attributesMap.put(cm.getName(), cm);
 				}
-				attributes = new ArrayList<>(attributesMap.values());
-				attributes.sort((BasicColumnMetadata o1, BasicColumnMetadata o2) -> o1.getIdx() - o2.getIdx());
-			} catch (SQLFeatureNotSupportedException e) {
+				this.attributes = new ArrayList<>(attributesMap.values());
+				this.attributes.sort((BasicColumnMetadata o1, BasicColumnMetadata o2) -> o1.getIdx() - o2.getIdx());
+			} catch (final SQLFeatureNotSupportedException e) {
 				LogManager.info("UDT Attributes no soportado");
-				attributes = new ArrayList<>();
+				this.attributes = new ArrayList<>();
 			}
 
 		}
-		return attributes;
+		return this.attributes;
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder st = new StringBuilder();
+		final StringBuilder st = new StringBuilder();
 		st.append("UTD: ");
 		st.append(getCatalog());
 		st.append(".");
@@ -84,12 +89,12 @@ public class UDTMetadata extends AbstractMetadata {
 		st.append(getType());
 		st.append(" Attributes:");
 		try {
-			for (BasicColumnMetadata column : getAttributes()) {
+			for (final BasicColumnMetadata column : getAttributes()) {
 				st.append(System.lineSeparator());
 				st.append("---------->");
 				st.append(column.toString());
 			}
-		} catch (SQLException e) {
+		} catch (final SQLException e) {
 			e.printStackTrace();
 		}
 		return st.toString();
@@ -97,7 +102,7 @@ public class UDTMetadata extends AbstractMetadata {
 
 	@Override
 	public String getId() {
-		StringBuilder st = new StringBuilder();
+		final StringBuilder st = new StringBuilder();
 		st.append(super.getId());
 		st.append(getName());
 		return st.toString();

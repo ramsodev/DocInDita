@@ -22,31 +22,36 @@ public class PrimaryKeyMetadata extends AbstractMetadata {
 	public void init(ResultSet resultSet) {
 		try {
 			loadLabels(resultSet.getMetaData());
-			if (labelExist(DBConstants.METADATA_SCHEMA))
+			if (labelExist(DBConstants.METADATA_SCHEMA)) {
 				setSchema(resultSet.getString(DBConstants.METADATA_SCHEMA));
-			if (labelExist(DBConstants.METADATA_TABLE_CATALOG))
+			}
+			if (labelExist(DBConstants.METADATA_TABLE_CATALOG)) {
 				setCatalog(resultSet.getString(DBConstants.METADATA_TABLE_CATALOG));
-			if (labelExist(DBConstants.METADATA_TABLE))
+			}
+			if (labelExist(DBConstants.METADATA_TABLE)) {
 				setTable(resultSet.getString(DBConstants.METADATA_TABLE));
-			if (labelExist(DBConstants.METADATA_PK_NAME))
+			}
+			if (labelExist(DBConstants.METADATA_PK_NAME)) {
 				setName(resultSet.getString(DBConstants.METADATA_PK_NAME));
+			}
 			setDoc("");
 			addColumn(resultSet);
-		} catch (SQLException e) {
+		} catch (final SQLException e) {
 			LogManager.warn("Error al preparar la PK", e);
 		}
 
 	}
 
 	public void addColumn(ResultSet resultSet) {
-		if (this.columns == null)
+		if (this.columns == null) {
 			this.columns = new ArrayList<>();
+		}
 		this.columns.add(new BasicColumnMetadata(resultSet, getMetadata()));
 
 	}
 
 	public String getTable() {
-		return table;
+		return this.table;
 	}
 
 	protected void setTable(String table) {
@@ -55,10 +60,10 @@ public class PrimaryKeyMetadata extends AbstractMetadata {
 
 	@Override
 	public String toString() {
-		StringBuilder st = new StringBuilder();
+		final StringBuilder st = new StringBuilder();
 		st.append("PK " + getName());
 		st.append(" Columns:");
-		for (BasicColumnMetadata column : getColumns()) {
+		for (final BasicColumnMetadata column : getColumns()) {
 			st.append(System.lineSeparator());
 			st.append("---------->");
 			st.append(column.toString());
@@ -73,7 +78,7 @@ public class PrimaryKeyMetadata extends AbstractMetadata {
 
 	@Override
 	public String getId() {
-		StringBuilder st = new StringBuilder();
+		final StringBuilder st = new StringBuilder();
 		st.append("PK.");
 		st.append(super.getId());
 		st.append(getTable());
@@ -84,7 +89,7 @@ public class PrimaryKeyMetadata extends AbstractMetadata {
 
 	@Override
 	public String getDDL() {
-		StringBuilder st = new StringBuilder();
+		final StringBuilder st = new StringBuilder();
 		st.append("ALTER TABLE ");
 		st.append(super.getId());
 		st.append(getTable());
@@ -93,7 +98,7 @@ public class PrimaryKeyMetadata extends AbstractMetadata {
 		st.append(getName());
 		st.append(" PRIMARY KEY (");
 		boolean comma = false;
-		for (BasicColumnMetadata col : getColumns()) {
+		for (final BasicColumnMetadata col : getColumns()) {
 			if (comma) {
 				st.append(", ");
 			}

@@ -21,28 +21,34 @@ public class IndexColumnMetadata extends BasicColumnMetadata {
 			loadLabels(resultSet.getMetaData());
 			setIdx(0);
 			setOrder("");
-			if (labelExist(DBConstants.METADATA_SCHEMA))
+			if (labelExist(DBConstants.METADATA_SCHEMA)) {
 				setSchema(resultSet.getString(DBConstants.METADATA_SCHEMA));
-			if (labelExist(DBConstants.METADATA_TABLE_CATALOG))
+			}
+			if (labelExist(DBConstants.METADATA_TABLE_CATALOG)) {
 				setCatalog(resultSet.getString(DBConstants.METADATA_TABLE_CATALOG));
-			if (labelExist(DBConstants.METADATA_TABLE))
+			}
+			if (labelExist(DBConstants.METADATA_TABLE)) {
 				setTable(resultSet.getString(DBConstants.METADATA_TABLE));
-			if (labelExist(DBConstants.METADATA_COLUMN))
+			}
+			if (labelExist(DBConstants.METADATA_COLUMN)) {
 				setName(resultSet.getString(DBConstants.METADATA_COLUMN));
-			if (labelExist(DBConstants.METADATA_ORDINAL_POSITION))
+			}
+			if (labelExist(DBConstants.METADATA_ORDINAL_POSITION)) {
 				setIdx(resultSet.getInt(DBConstants.METADATA_ORDINAL_POSITION));
-			if (labelExist(DBConstants.METADATA_ASC_OR_DESC))
+			}
+			if (labelExist(DBConstants.METADATA_ASC_OR_DESC)) {
 				setOrder(resultSet.getString(DBConstants.METADATA_ASC_OR_DESC));
-		} catch (SQLException e) {
+			}
+		} catch (final SQLException e) {
 			LogManager.warn("Error al preparar columna", e);
 		}
 	}
 
 	public String getOrder() {
-		if (order == null) {
-			order = "";
+		if (this.order == null) {
+			this.order = "";
 		}
-		return order.startsWith("A") ? "ASC" : order.startsWith("D") ? "DES" : "";
+		return this.order.startsWith("A") ? "ASC" : this.order.startsWith("D") ? "DES" : "";
 	}
 
 	public void setOrder(String order) {
@@ -51,7 +57,7 @@ public class IndexColumnMetadata extends BasicColumnMetadata {
 
 	@Override
 	public String toString() {
-		StringBuilder st = new StringBuilder();
+		final StringBuilder st = new StringBuilder();
 		st.append(super.toString());
 		st.append(" (");
 		st.append(getOrder());
@@ -61,7 +67,7 @@ public class IndexColumnMetadata extends BasicColumnMetadata {
 
 	@Override
 	public String getId() {
-		StringBuilder st = new StringBuilder();
+		final StringBuilder st = new StringBuilder();
 		st.append("IndexColumn.");
 		st.append(super.getId());
 		return st.toString();
@@ -69,7 +75,7 @@ public class IndexColumnMetadata extends BasicColumnMetadata {
 
 	@Override
 	public String getDDL() {
-		StringBuilder st = new StringBuilder();
+		final StringBuilder st = new StringBuilder();
 		st.append(super.getDDL());
 		st.append(" (");
 		st.append(getOrder());

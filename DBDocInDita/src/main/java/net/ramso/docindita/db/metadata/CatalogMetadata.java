@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package net.ramso.docindita.db.metadata;
 
@@ -28,31 +28,29 @@ public class CatalogMetadata extends AbstractMetadata {
 		try {
 			setCatalog(resultSet.getString(DBConstants.METADATA_TABLE_CATALOG));
 			setName(getCatalog());
-		} catch (SQLException e) {
+		} catch (final SQLException e) {
 			LogManager.warn("Error al preparar esquema", e);
 		}
 	}
 
 	public Collection<SchemaMetadata> getSchemas() throws SQLException {
-		if (schemas == null) {
-			schemas = new ArrayList<>();
-			ResultSet rs = getMetadata().getSchemas(getCatalog(), null);
+		if (this.schemas == null) {
+			this.schemas = new ArrayList<>();
+			final ResultSet rs = getMetadata().getSchemas(getCatalog(), null);
 			while (rs.next()) {
-				schemas.add(new SchemaMetadata(rs, getMetadata()));
+				this.schemas.add(new SchemaMetadata(rs, getMetadata()));
 			}
 		}
-		if(schemas.isEmpty()) {
-			schemas.add(new SchemaMetadata(this));
+		if (this.schemas.isEmpty()) {
+			this.schemas.add(new SchemaMetadata(this));
 		}
-		return schemas;
+		return this.schemas;
 
 	}
 
-	
-
 	public SchemaMetadata getSchema(String name) throws SQLException {
 		SchemaMetadata schema = null;
-		ResultSet rs = getMetadata().getSchemas(getCatalog(), name);
+		final ResultSet rs = getMetadata().getSchemas(getCatalog(), name);
 		if (rs.first()) {
 			schema = new SchemaMetadata(rs, getMetadata());
 		}
@@ -69,7 +67,5 @@ public class CatalogMetadata extends AbstractMetadata {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
 
 }

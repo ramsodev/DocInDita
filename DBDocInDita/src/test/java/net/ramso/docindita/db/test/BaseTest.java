@@ -25,15 +25,15 @@ public abstract class BaseTest {
 	public static String db = "DB/BirtSample";
 	private static Validator topicValidator;
 	private static Validator bookmapValidator;
-	
-	protected static Connection getConnection() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-		String path = Thread.currentThread().getContextClassLoader().getResource(db).getPath();
-		Class.forName(driver).getDeclaredConstructor().newInstance();		
+
+	protected static Connection getConnection()
+			throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException,
+			IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+		final String path = Thread.currentThread().getContextClassLoader().getResource(db).getPath();
+		Class.forName(driver).getDeclaredConstructor().newInstance();
 		return DriverManager.getConnection(protocol + path);
 	}
-	
-	
-	
+
 	protected void clean() {
 		clean(Config.getOutputDir());
 	}
@@ -49,10 +49,11 @@ public abstract class BaseTest {
 			}
 		}
 	}
+
 	protected boolean valid() throws MalformedURLException {
 		boolean valid = true;
-		File files = new File(Config.getOutputDir());
-		for (File file : files.listFiles()) {
+		final File files = new File(Config.getOutputDir());
+		for (final File file : files.listFiles()) {
 			if (file.getAbsolutePath().endsWith(".dita")) {
 				valid = validateXMLSchema(getTopicValidator(), file);
 				if (!valid) {
@@ -70,14 +71,14 @@ public abstract class BaseTest {
 
 	private Validator getTopicValidator() throws MalformedURLException {
 		if (topicValidator == null) {
-			URL XSD_TOPIC = new URL(
+			final URL XSD_TOPIC = new URL(
 					"http://docs.oasis-open.org/dita/v1.2/os/DITA1.2-xsds/xsd1.2-url/technicalContent/xsd/topic.xsd");
-			SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+			final SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 			Schema schema;
 			try {
 				schema = factory.newSchema(XSD_TOPIC);
 				topicValidator = schema.newValidator();
-			} catch (SAXException e) {
+			} catch (final SAXException e) {
 				e.printStackTrace();
 			}
 		}
@@ -86,14 +87,14 @@ public abstract class BaseTest {
 
 	private Validator getBookmapValidator() throws MalformedURLException {
 		if (bookmapValidator == null) {
-			URL XSD_BOOKMAP = new URL(
+			final URL XSD_BOOKMAP = new URL(
 					"http://docs.oasis-open.org/dita/v1.2/os/DITA1.2-xsds/xsd1.2-url/bookmap/xsd/bookmap.xsd");
-			SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+			final SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 			Schema schema;
 			try {
 				schema = factory.newSchema(XSD_BOOKMAP);
 				bookmapValidator = schema.newValidator();
-			} catch (SAXException e) {
+			} catch (final SAXException e) {
 				e.printStackTrace();
 			}
 		}
@@ -103,10 +104,10 @@ public abstract class BaseTest {
 	private static boolean validateXMLSchema(Validator validator, File xml) {
 		try {
 			validator.validate(new StreamSource(xml));
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			System.out.println("Exception: " + e.getMessage());
 			return false;
-		} catch (SAXException e1) {
+		} catch (final SAXException e1) {
 			System.out.println("SAX Exception: " + e1.getMessage());
 			return false;
 		}
@@ -114,5 +115,5 @@ public abstract class BaseTest {
 		return true;
 
 	}
-	
+
 }
