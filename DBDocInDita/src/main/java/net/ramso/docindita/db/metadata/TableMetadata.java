@@ -124,7 +124,43 @@ public class TableMetadata extends AbstractMetadata implements IBaseMetadata {
 
 	@Override
 	public String toString() {
-		return getCatalog() + "." + getSchema() + "." + getName() + " (" + getType() + ")";
+		StringBuilder st = new StringBuilder();
+		st.append(getType());
+		st.append(": ");
+		st.append(getId());
+		st.append(System.lineSeparator());
+		st.append("------->Columns:");
+		try {
+			for (final ColumnMetadata column : getColumns()) {
+				st.append(System.lineSeparator());
+				st.append("---------->");
+				st.append(column.toString());
+			}
+			st.append(System.lineSeparator());
+			st.append("------->PrimaryKeys:");
+			for (PrimaryKeyMetadata pk : getPrimaryKeys()) {
+				st.append(System.lineSeparator());
+				st.append("---------->");
+				st.append(pk);
+			}
+			st.append(System.lineSeparator());
+			st.append("------->ForeingKeys:");
+			for (ForeingKeyMetadata fk : getForeingKeys()) {
+				st.append(System.lineSeparator());
+				st.append("---------->");
+				st.append(fk);
+			}
+			st.append(System.lineSeparator());
+			st.append("------->Index:");
+			for (IndexMetadata index : getIndex()) {
+				st.append(System.lineSeparator());
+				st.append("---------->");
+				st.append(index);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return st.toString();
 	}
 
 	@Override
@@ -169,7 +205,25 @@ public class TableMetadata extends AbstractMetadata implements IBaseMetadata {
 					st.append(System.lineSeparator());
 					st.append(fk.getDDL());
 				}
+			}else if (getType().equals(DBConstants.VIEW)) {
+				st.append("CREATE VIEW ");
+				st.append(super.getId());
+				st.append(System.lineSeparator());
+				st.append(" SELECT ");
+				boolean comma = false;
+				for (final ColumnMetadata col : getColumns()) {
+					if (comma) {
+						st.append(", ");
+					}
+					comma = true;
+					st.append(col.getName());
+				}
+				st.append(System.lineSeparator());
+				st.append(" FROM ....");
+				st.append(System.lineSeparator());
+				st.append(" WHERE ....");
 			}
+			
 		} catch (final SQLException e) {
 			LogManager.warn("Fallo al crear el ddl de la tabla " + getName(), e);
 		}

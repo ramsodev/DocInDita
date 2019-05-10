@@ -67,6 +67,7 @@ public class ColumnMetadata extends BasicColumnMetadata {
 			if (labelExist(DBConstants.METADATA_ORDINAL_POSITION)) {
 				setIdx(resultSet.getInt(DBConstants.METADATA_ORDINAL_POSITION));
 			}
+
 		} catch (final SQLException e) {
 			LogManager.warn("Error al preparar esquema", e);
 		}

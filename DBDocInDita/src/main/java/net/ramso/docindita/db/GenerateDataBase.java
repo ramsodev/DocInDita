@@ -104,6 +104,9 @@ public class GenerateDataBase {
 		for (final TableMetadata table : schema.getTables()) {
 			ref.addChild(generateTable(table));
 		}
+		for (final TableMetadata table : schema.getViews()) {
+			ref.addChild(generateTable(table));
+		}
 		return ref;
 	}
 

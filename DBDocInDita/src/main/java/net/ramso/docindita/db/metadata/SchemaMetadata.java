@@ -21,6 +21,7 @@ public class SchemaMetadata extends AbstractMetadata {
 	private Collection<FunctionMetadata> functions;
 	private Collection<UDTMetadata> udts;
 	private Collection<ProcedureMetadata> procedures;
+	private Collection<TableMetadata> views;
 
 	public SchemaMetadata(ResultSet resultSet, DatabaseMetaData metadata) {
 		super(resultSet, metadata);
@@ -57,18 +58,18 @@ public class SchemaMetadata extends AbstractMetadata {
 		return this.tables;
 
 	}
-	
+
 	public Collection<TableMetadata> getViews() throws SQLException {
-		if (this.tables == null) {
-			this.tables = new ArrayList<>();
+		if (this.views == null) {
+			this.views = new ArrayList<>();
 			final ResultSet rs = getMetadata().getTables(getCatalog(), getSchema(), null,
 					new String[] { DBConstants.VIEW });
 			while (rs.next()) {
 				final TableMetadata tm = new TableMetadata(rs, getMetadata());
-				this.tables.add(tm);
+				this.views.add(tm);
 			}
 		}
-		return this.tables;
+		return this.views;
 
 	}
 
@@ -115,8 +116,7 @@ public class SchemaMetadata extends AbstractMetadata {
 
 	@Override
 	public String getDDL() {
-		// TODO Auto-generated method stub
-		return null;
+		return getSchema() != null ? "CREATE SCHEMA " + getName() : "";
 	}
 
 }

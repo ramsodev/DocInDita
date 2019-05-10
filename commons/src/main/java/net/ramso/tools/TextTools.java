@@ -10,7 +10,7 @@ public class TextTools {
 
 	public static final Pattern DIACRITICS_AND_FRIENDS = Pattern
 			.compile("[\\p{InCombiningDiacriticalMarks}\\p{IsLm}\\p{IsSk}]+"); //$NON-NLS-1$
-	
+
 	public static final Pattern NON_ALFANUMERIC = Pattern.compile("[\\W]|_");
 
 	public static String eliminaAcentos(String str) {
@@ -24,14 +24,28 @@ public class TextTools {
 		str = DIACRITICS_AND_FRIENDS.matcher(str).replaceAll(""); //$NON-NLS-1$
 		return str;
 	}
+
 	public static String cleanNonAlfaNumeric(String str) {
-		return cleanNonAlfaNumeric(str,"");
+		return cleanNonAlfaNumeric(str, "");
 	}
+
 	public static String cleanNonAlfaNumeric(String str, String replace) {
 		str = Normalizer.normalize(str, Normalizer.Form.NFD);
-		str = NON_ALFANUMERIC.matcher(str).replaceAll(replace); //$NON-NLS-1$
+		str = NON_ALFANUMERIC.matcher(str).replaceAll(replace); // $NON-NLS-1$
 		return str;
 	}
-	
-	
+
+	public static String toCamelCase(String s) {
+		String[] parts = s.split("_");
+		String camelCaseString = "";
+		for (String part : parts) {
+			camelCaseString += toProperCase(part);
+		}
+		return camelCaseString;
+	}
+
+	public static String toProperCase(String s) {
+		return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
+	}
+
 }

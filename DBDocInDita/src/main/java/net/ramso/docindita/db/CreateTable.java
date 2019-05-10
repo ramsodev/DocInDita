@@ -6,6 +6,7 @@ import net.ramso.docindita.BasicCreate;
 import net.ramso.docindita.References;
 import net.ramso.docindita.db.metadata.TableMetadata;
 import net.ramso.tools.BundleManager;
+import net.ramso.tools.TextTools;
 
 public class CreateTable extends BasicCreate {
 
@@ -15,7 +16,7 @@ public class CreateTable extends BasicCreate {
 
 	public References create(TableMetadata table) throws IOException {
 		setId(table.getId());
-		setTitle(BundleManager.getString("Table.title", table.getName()));
+		setTitle(BundleManager.getString("Table.title", TextTools.toCamelCase(table.getType()), table.getName()));
 		setContent(table.getDoc());
 		setTemplateFile("template/table.vm");
 		getContext().put("content", getContent());

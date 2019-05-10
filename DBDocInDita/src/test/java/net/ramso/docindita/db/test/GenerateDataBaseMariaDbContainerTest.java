@@ -64,35 +64,35 @@ class GenerateDataBaseMariaDbContainerTest extends BaseTest {
 		generate.disconnect();
 
 	}
-
-	@Test
-	@DisplayName("Catalogos")
-	void testGenerateCatalog() {
-		Config.setOutputDir(DitaConstants.OUTDIR_DEFAULT + File.separator + "mysql/catalogs");
-		clean();
-		try {
-			generate.generateCatalogs();
-			assertTrue(valid(), "Fallo en la validación de los xml");
-		} catch (final Exception e) {
-			e.printStackTrace();
-			fail(e.getLocalizedMessage());
-		}
-		assertTrue(true);
-	}
-
-	@Test
-	@DisplayName("schemas")
-	void testGenerateSchemas() {
-		Config.setOutputDir(DitaConstants.OUTDIR_DEFAULT + File.separator + "mysql/schemas");
-		clean();
-		try {
-			generate.generateSchemas();
-			assertTrue(valid(), "Fallo en la validación de los xml");
-		} catch (final Exception e) {
-			e.printStackTrace();
-			fail(e.getLocalizedMessage());
-		}
-	}
+//
+//	@Test
+//	@DisplayName("Catalogos")
+//	void testGenerateCatalog() {
+//		Config.setOutputDir(DitaConstants.OUTDIR_DEFAULT + File.separator + "mysql/catalogs");
+//		clean();
+//		try {
+//			generate.generateCatalogs();
+//			assertTrue(valid(), "Fallo en la validación de los xml");
+//		} catch (final Exception e) {
+//			e.printStackTrace();
+//			fail(e.getLocalizedMessage());
+//		}
+//		assertTrue(true);
+//	}
+//
+//	@Test
+//	@DisplayName("schemas")
+//	void testGenerateSchemas() {
+//		Config.setOutputDir(DitaConstants.OUTDIR_DEFAULT + File.separator + "mysql/schemas");
+//		clean();
+//		try {
+//			generate.generateSchemas();
+//			assertTrue(valid(), "Fallo en la validación de los xml");
+//		} catch (final Exception e) {
+//			e.printStackTrace();
+//			fail(e.getLocalizedMessage());
+//		}
+//	}
 
 	@Test
 	@DisplayName("Default schema")
