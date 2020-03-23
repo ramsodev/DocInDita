@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>net.ramso</groupId>
 		<artifactId>DocInDita</artifactId>
-		<version>1.0.1</version>
+		<version>1.2.0</version>
 		<relativePath>../</relativePath>
 	</parent>
 	<artifactId>XMLDocInDita</artifactId>
