@@ -19,5 +19,4 @@ addons:
     organization: "ramsodev-github"
     token:
       secure: 44552d00fbdabbf6f19398e8627ac2edc6b102fa
-script:
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -P Tag
+
