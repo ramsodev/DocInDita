@@ -24,6 +24,7 @@ import net.ramso.docindita.xml.schema.model.GroupModel;
 import net.ramso.docindita.xml.schema.model.IComplexContentModel;
 import net.ramso.docindita.xml.schema.model.IComponentModel;
 import net.ramso.docindita.xml.schema.model.SimpleTypeModel;
+import net.ramso.tools.FileTools;
 import net.ramso.tools.LogManager;
 import net.ramso.tools.graph.GraphConstants;
 import net.ramso.tools.graph.GraphTools;
@@ -41,7 +42,11 @@ public class ComplexTypeGraph extends AbstractXmlGraph {
 		super();
 		this.complexType = complexType;
 		suffix = DitaConstants.SUFFIX_COMPLEXTYPE;
-		setFileName(complexType.getName());
+		if (complexType.getFileName().isEmpty()) {
+			setFileName(complexType.getName());
+		} else {
+			setFileName(FileTools.withoutExtension(complexType.getFileName()));
+		}
 	}
 
 	public ComplexTypeGraph(ComplexTypeModel complexType, mxGraph graph) {

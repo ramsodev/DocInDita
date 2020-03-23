@@ -1,8 +1,10 @@
 package net.ramso.docindita.xml;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -35,6 +37,12 @@ class GenreateXSDTest extends BaseTest {
 			e.printStackTrace();
 			fail(e.getLocalizedMessage());
 		}
+		try {
+			assertTrue(valid());
+		} catch (MalformedURLException e) {			
+			e.printStackTrace();
+			fail("Por excepcion en validación");
+		}
 	}
 
 	@Test
@@ -48,6 +56,12 @@ class GenreateXSDTest extends BaseTest {
 		} catch (final Exception e) {
 			e.printStackTrace();
 			fail(e.getLocalizedMessage());
+		}
+		try {
+			assertTrue(valid());
+		} catch (MalformedURLException e) {			
+			e.printStackTrace();
+			fail("Por excepcion en validación");
 		}
 	}
 
@@ -77,6 +91,12 @@ class GenreateXSDTest extends BaseTest {
 			e.printStackTrace();
 			fail(e.getLocalizedMessage());
 		}
+		try {
+			assertTrue(valid());
+		} catch (MalformedURLException e) {			
+			e.printStackTrace();
+			fail("Por excepcion en validación");
+		}
 	}
 
 	@Test
@@ -91,6 +111,12 @@ class GenreateXSDTest extends BaseTest {
 			e.printStackTrace();
 			fail(e.getLocalizedMessage());
 		}
+		try {
+			assertTrue(valid());
+		} catch (MalformedURLException e) {			
+			e.printStackTrace();
+			fail("Por excepcion en validación");
+		}
 	}
 
 	@Test
@@ -103,6 +129,12 @@ class GenreateXSDTest extends BaseTest {
 		} catch (final Exception e) {
 			e.printStackTrace();
 			fail(e.getLocalizedMessage());
+		}
+		try {
+			assertTrue(valid());
+		} catch (MalformedURLException e) {			
+			e.printStackTrace();
+			fail("Por excepcion en validación");
 		}
 	}
 

@@ -18,19 +18,19 @@ public class CreatePortada extends BasicCreate {
 		getContext().put("diagram", getDiagram());
 
 		run(getContext());
-		return getFile_name();
+		return getFileName();
 	}
 
 	@Override
 	public String getContent() {
-		return content;
+		return this.content;
 	}
 
 	/**
 	 * @return the diagram
 	 */
 	public String getDiagram() {
-		return diagram;
+		return this.diagram;
 	}
 
 	@Override

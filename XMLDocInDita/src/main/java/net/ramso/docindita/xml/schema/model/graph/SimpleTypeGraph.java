@@ -9,6 +9,7 @@ import com.mxgraph.view.mxGraph;
 import net.ramso.docindita.tools.DitaConstants;
 import net.ramso.docindita.xml.Config;
 import net.ramso.docindita.xml.schema.model.SimpleTypeModel;
+import net.ramso.tools.FileTools;
 import net.ramso.tools.graph.GraphTools;
 
 public class SimpleTypeGraph extends AbstractXmlGraph {
@@ -27,7 +28,11 @@ public class SimpleTypeGraph extends AbstractXmlGraph {
 		} else if (simpleType.getType() != null) {
 			this.graphName = simpleType.getType().getLocalPart();
 		}
-		setFileName(this.graphName);
+		if (simpleType.getFileName().isEmpty()) {
+			setFileName(this.graphName);
+		} else {
+			setFileName(FileTools.withoutExtension(simpleType.getFileName()));
+		}
 	}
 
 	public SimpleTypeGraph(SimpleTypeModel simpleType, mxGraph graph) {

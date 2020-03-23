@@ -1,11 +1,12 @@
 package net.ramso.docindita;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class References {
 	private String id;
 	private String href;
-	private ArrayList<References> childs;
+	private List<References> childs;
 
 	public References(String href) {
 		super();
@@ -14,41 +15,42 @@ public class References {
 	}
 
 	public void addChild(References child) {
-		if (childs == null) {
-			childs = new ArrayList<>();
+		if (this.childs == null) {
+			this.childs = new ArrayList<>();
 		}
-		childs.add(child);
+		this.childs.add(child);
 	}
 
-	public ArrayList<References> getChilds() {
-		if (childs == null) {
-			childs = new ArrayList<>();
+	public List<References> getChilds() {
+		if (this.childs == null) {
+			this.childs = new ArrayList<>();
 		}
-		return childs;
+		return this.childs;
 	}
 
 	public String getHref() {
-		return href;
+		return this.href;
 	}
 
 	public String getId() {
-		return id;
+		return this.id;
 	}
 
 	public References searchChild(String id) {
 		for (final References child : getChilds()) {
-			if (child.getId().equalsIgnoreCase(id))
+			if (child.getId().equalsIgnoreCase(id)) {
 				return child;
-			else if (!child.getChilds().isEmpty()) {
+			} else if (!child.getChilds().isEmpty()) {
 				final References c = child.searchChild(id);
-				if (c != null)
+				if (c != null) {
 					return c;
+				}
 			}
 		}
 		return null;
 	}
 
-	public void setChilds(ArrayList<References> childs) {
+	public void setChilds(List<References> childs) {
 		this.childs = childs;
 	}
 

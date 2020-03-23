@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<topic id="${id}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:oasis:names:tc:dita:xsd:topic.xsd">
+  <title>${title}</title>
+    <shortdesc>${content}</shortdesc>
+  <body>
+    <section id="erd">
+      <title>${text.getString("Table.section.er")}</title>
+      <fig expanse="page">
+        <title>${text.getString("Table.er.title", $title)}</title>
+        <image placement="break" href="${table.getDiagram()}" align="center" id="${id}Image" #if(${table.isScaleDiagram()})scalefit="yes"#end/>
+      </fig>
+    </section>
+    <table frame="all" colsep="1" rowsep="1" pgwide="1" scale="80" id="table_col_mns">
+      <title>${text.getString("Table.colums.table.title",${table.getName()})}</title>
+      <tgroup cols="8">
+        <colspec align="left" colname="NOMBRE" colnum="1" colwidth="2*" />
+        <colspec align="left" colname="TIPO" colnum="2" colwidth="2*" />
+        <colspec align="left" colname="DEF.VALUE" colnum="3" colwidth="3*" />
+        <colspec align="center" colname="ID" colnum="4" colwidth="1*" />
+        <colspec align="center" colname="NULL" colnum="5" colwidth="1*" />
+        <colspec align="center" colname="PK" colnum="6" colwidth="1*" />
+        <colspec align="center" colname="FK" colnum="7" colwidth="1*" />
+        <colspec align="center" colname="UQ" colnum="8" colwidth="1*" />
+        <thead>
+          <row valign="middle">
+            <entry align="center">${text.getString("Table.colums.headers.name")}</entry>
+            <entry align="center">${text.getString("Table.colums.headers.type")}</entry>
+            <entry align="center">${text.getString("Table.colums.headers.defvalue")}</entry>
+            <entry align="center">${text.getString("Table.colums.headers.id")}</entry>
+            <entry align="center">${text.getString("Table.colums.headers.null")}</entry>
+            <entry align="center">${text.getString("Table.colums.headers.pk")}</entry>
+            <entry align="center">${text.getString("Table.colums.headers.fk")}</entry>
+            <entry align="center">${text.getString("Table.colums.headers.uq")}</entry>
+          </row>
+        </thead>
+        <tbody>
+        #foreach($col in ${table.getColumns()})
+          <row valign="middle">
+            <entry morerows="1">${col.getName()}</entry>
+            <entry>${col.getType()}</entry>
+            <entry>${col.getDefaultValue()}</entry>
+            <entry>#if(${col.isAutoincrement()})✔#end</entry>
+            <entry>#if(${col.isNullable()})✔#end</entry>
+            <entry>#if(${col.isPrimaryKey()})✔#end</entry>
+            <entry>#if(${col.isForeingKey()})✔#end</entry>
+            <entry></entry>
+          </row>
+          <row>
+            <entry  namest="TIPO" nameend="UQ" >${col.getDoc()}</entry>
+          </row>
+        #end        
+        </tbody>
+      </tgroup>
+    </table>
+    #foreach($pk in ${table.getPrimaryKeys()})
+    <section id="pk_${pk.getName()}">
+      <title>${text.getString("Table.pk",${pk.getName()})}</title>
+      <dl>
+        <dlentry>
+          <dt>${text.getString("Table.columns")}</dt>
+          <dd>
+            <sl>
+            #foreach($col in ${pk.getColumns()})
+              <sli>${col.getName()}</sli>
+            #end
+            </sl>
+          </dd>
+        </dlentry>
+      </dl>
+    </section>
+    #end
+    #foreach($fk in ${table.getForeingKeys()})
+    <section id="fk_${fk.getName()}">
+      <title>${text.getString("Table.fk", ${fk.getName()})}</title>
+      <dl id="fk_dl_${fk.getName()}">
+        <dlentry>
+          <dt>${text.getString("Table.columns")}</dt>
+          <dd>
+            <simpletable frame="all" id="fk_cols_${fk.getName()}">
+            	<sthead>
+               		<stentry>${fk.getPkName()}</stentry>
+                    <stentry>${fk.getName()}</stentry>
+                </sthead>
+                #foreach($col in ${fk.getColumns()})
+                <strow>
+                	<stentry>${col.getPkTxt()}</stentry>
+                    <stentry>${col.getFkTxt()}</stentry>
+                </strow>
+                #end
+            </simpletable>
+          </dd>
+        </dlentry>
+        <dlentry>
+          <dt>${text.getString("Table.onupdate")}</dt>
+          <dd>${fk.getUpdateRule()}</dd>
+        </dlentry>
+        <dlentry>
+          <dt>${text.getString("Table.onupdate")}</dt>
+          <dd>${fk.getDeleteRule()}</dd>
+        </dlentry>
+        <dlentry>
+          <dt>${text.getString("Table.deferr")}</dt>
+          <dd>${fk.getDeferrability()}</dd>
+        </dlentry>
+      </dl>
+    </section>
+    #end
+    #foreach($idx in ${table.getIndex()})
+    <section id="idx_${idx.getName()}">
+      <title>${text.getString("Table.index", ${idx.getName()})}</title>
+      <dl id="idx${idx.getName()}">
+        <dlentry>
+          <dt>${text.getString("Table.columns")}</dt>
+          <dd>
+            <sl>
+            #foreach($col in ${idx.getColumns()})
+              <sli>${col.getName()} (${col.getOrder()})</sli>
+            #end
+            </sl>
+          </dd>
+        </dlentry>
+        <dlentry>
+          <dt>${text.getString("Table.unique")}</dt>
+          <dd>${idx.isUnique()}</dd>
+        </dlentry>
+      </dl>
+    </section>
+    #end   
+    <section id="ddl">
+      <title>${text.getString("Table.ddl")}</title>
+      <codeblock>${table.getDDL()}</codeblock>
+    </section>
+  </body>
+</topic>

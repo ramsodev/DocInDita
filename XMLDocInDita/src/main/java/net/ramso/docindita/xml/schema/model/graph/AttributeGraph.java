@@ -9,6 +9,7 @@ import com.mxgraph.view.mxGraph;
 import net.ramso.docindita.tools.DitaConstants;
 import net.ramso.docindita.xml.Config;
 import net.ramso.docindita.xml.schema.model.AttributeModel;
+import net.ramso.tools.FileTools;
 import net.ramso.tools.graph.GraphConstants;
 import net.ramso.tools.graph.GraphTools;
 
@@ -20,7 +21,11 @@ public class AttributeGraph extends AbstractXmlGraph {
 		super();
 		this.attribute = attribute;
 		suffix = DitaConstants.SUFFIX_ATTRIBUTE;
-		setFileName(attribute.getName());
+		if (attribute.getFileName().isEmpty()) {
+			setFileName(attribute.getName());
+		} else {
+			setFileName(FileTools.withoutExtension(attribute.getFileName()));
+		}
 	}
 
 	public AttributeGraph(AttributeModel attribute, mxGraph graph) {

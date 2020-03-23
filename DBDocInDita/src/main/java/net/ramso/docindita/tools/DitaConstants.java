@@ -13,5 +13,6 @@ public class DitaConstants {
 	public static final String CMD_ID = "id";
 	public static final String CMD_TITLE = "title";
 	public static final String CMD_DESCRIPTION = "description";
+	public static final String VELOCITY_PREFIX = "velocity";
 
 }

@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -36,7 +37,12 @@ class GenreateWADLTest extends BaseTest {
 			e.printStackTrace();
 			fail(e.getLocalizedMessage());
 		}
-		assertTrue(true);
+		try {
+			assertTrue(valid());
+		} catch (MalformedURLException e) {			
+			e.printStackTrace();
+			fail("Por excepcion en validación");
+		}
 	}
 
 	@Test
@@ -51,7 +57,12 @@ class GenreateWADLTest extends BaseTest {
 			e.printStackTrace();
 			fail(e.getLocalizedMessage());
 		}
-		assertTrue(true);
+		try {
+			assertTrue(valid());
+		} catch (MalformedURLException e) {			
+			e.printStackTrace();
+			fail("Por excepcion en validación");
+		}
 	}
 
 	@Test
@@ -66,7 +77,12 @@ class GenreateWADLTest extends BaseTest {
 			e.printStackTrace();
 			fail(e.getLocalizedMessage());
 		}
-		assertTrue(true);
+		try {
+			assertTrue(valid());
+		} catch (MalformedURLException e) {			
+			e.printStackTrace();
+			fail("Por excepcion en validación");
+		}
 	}
 
 }
